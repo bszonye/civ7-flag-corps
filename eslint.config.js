@@ -15,7 +15,15 @@ export default [
         },
         languageOptions: {
             globals: {
+                Cities: "readonly",
+                Constructibles: "readonly",
+                GameInfo: "readonly",
+                GameplayMap: "readonly",
+                MapCities: "readonly",
+                MapConstructibles: "readonly",
+                MapUnits: "readonly",
                 console: "readonly",
+                engine: "readonly",
             }
         }
 
