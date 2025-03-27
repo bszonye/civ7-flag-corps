@@ -1,2 +1,2 @@
-# civ7-flag-corps
-Flag Corps mod for Civilization VII
+# Flag Corps 1.0.0
+better unit flags
