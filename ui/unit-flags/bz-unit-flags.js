@@ -30,6 +30,7 @@ function isVillage(loc) {
         const cons = Constructibles.getByComponentID(item);
         const info = GameInfo.Constructibles.lookup(cons.type);
         if (info.ConstructibleType == "IMPROVEMENT_VILLAGE") return true;
+        if (info.ConstructibleType == "IMPROVEMENT_ENCAMPMENT") return true;
     }
     return false;
 }
@@ -49,8 +50,9 @@ UFMproto.onRecalculateFlagOffsets = function() {
         const units = MapUnits.getUnits(loc.x, loc.y);
         const position = { x: 0, y: 0 };
         // dimensions
-        const ycity = 8;
-        const ytown = 24;
+        const yCity = 8;
+        const yTown = 24;
+        const yVillage = 18;
         const icon = 33;  // icon width (healthbar)
         const offset = icon + 3;  // x-offset between icons
         const width = icon + (units.length - 1) * offset;
@@ -58,10 +60,11 @@ UFMproto.onRecalculateFlagOffsets = function() {
         // is there a city or town banner?
         const cityID = MapCities.getCity(loc.x, loc.y);
         const city = cityID && Cities.get(cityID);
-        if (city) {
-            position.y = city.isTown ? ytown : ycity;
+        if (city && city.location.x == loc.x && city.location.y == loc.y) {
+            position.y = city.isTown ? yTown : yCity;
         } else if (isVillage(loc)) {
-            position.y = ytown;
+            console.warn(`TRIX VILLAGE ${JSON.stringify(loc)}`);
+            position.y = yVillage;
         }
         for (let u = 0; u < units.length; u++) {
             const unitFlag = UnitFlagManager.instance.getFlag(units[u]);
