@@ -23,6 +23,7 @@ export default [
                 MapConstructibles: "readonly",
                 MapUnits: "readonly",
                 console: "readonly",
+                document: "readonly",
                 engine: "readonly",
             }
         }

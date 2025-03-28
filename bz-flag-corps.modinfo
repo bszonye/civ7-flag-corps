@@ -19,14 +19,33 @@
         </Criteria>
     </ActionCriteria>
     <ActionGroups>
+        <ActionGroup id="bz-flag-corps-menu" scope="shell" criteria="always">
+            <Properties>
+                <LoadOrder>1000</LoadOrder>
+            </Properties>
+            <Actions>
+                <UIScripts>
+                    <Item>ui/options/bz-flag-corps-options.js</Item>
+                    <Item>ui/options/mod-options-decorator.js</Item>
+                </UIScripts>
+                <UpdateText>
+                    <Item>text/en_us/InGameText.xml</Item>
+                </UpdateText>
+            </Actions>
+        </ActionGroup>
         <ActionGroup id="bz-flag-corps-ui" scope="game" criteria="always">
             <Properties>
                 <LoadOrder>1000</LoadOrder>
             </Properties>
             <Actions>
                 <UIScripts>
+                    <Item>ui/options/bz-flag-corps-options.js</Item>
+                    <Item>ui/options/mod-options-decorator.js</Item>
                     <Item>ui/unit-flags/bz-unit-flags.js</Item>
                 </UIScripts>
+                <UpdateText>
+                    <Item>text/en_us/InGameText.xml</Item>
+                </UpdateText>
             </Actions>
         </ActionGroup>
     </ActionGroups>

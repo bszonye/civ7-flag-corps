@@ -1,9 +1,29 @@
+import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
 import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
 import { utils } from '/core/ui/graph-layout/utils.js';
 import { Layout } from '/core/ui/utilities/utilities-layout.js';
 import { UnitFlagManager } from '/base-standard/ui/unit-flags/unit-flag-manager.js';
 import { GenericUnitFlag } from '/base-standard/ui/unit-flags/unit-flags.js';
 import { IndependentPowersUnitFlag } from '/base-standard/ui/unit-flags/unit-flags-independent-powers.js';
+
+// additional CSS definitions
+const BZ_HEAD_STYLE = document.createElement('style');
+BZ_HEAD_STYLE.textContent = [
+`
+.bz-flags-no-shadow .unit-flag__shadow,
+.bz-flags-no-shadow .unit-flag--civilian .unit-flag__shadow,
+.bz-flags-no-shadow .unit-flag--army .unit-flag__shadow,
+.bz-flags-no-shadow .unit-flag--combat .unit-flag__shadow {
+    background-image: none;
+}`,
+].join('\n');
+document.head.appendChild(BZ_HEAD_STYLE);
+// sync optional styling
+if (bzFlagCorpsOptions.noShadow) {
+    document.body.classList.add("bz-flags-no-shadow");
+} else {
+    document.body.classList.remove("bz-flags-no-shadow");
+}
 
 const UFMproto = UnitFlagManager.prototype;
 const UFM_onInitialize = UFMproto.onInitialize;
