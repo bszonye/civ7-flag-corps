@@ -48,15 +48,14 @@ UFMproto.onRecalculateFlagOffsets = function() {
     for (const plotIndex of this.plotIndicesToCheck) {
         const loc = GameplayMap.getLocationFromIndex(plotIndex);
         const units = MapUnits.getUnits(loc.x, loc.y);
-        const position = { x: 0, y: 0 };
+        const position = { x: 0, y: -24 };
         // dimensions
         const yCity = 8;
         const yTown = 24;
         const yVillage = 18;
-        const icon = 33;  // icon width (healthbar)
-        const offset = icon + 3;  // x-offset between icons
-        const width = icon + (units.length - 1) * offset;
-        const xorigin = -icon/4;  // origin for centering
+        const xOrigin = -6;
+        const xOffset = 36;  // x-offset between icons
+        const width = units.length * xOffset;
         // is there a city or town banner?
         const cityID = MapCities.getCity(loc.x, loc.y);
         const city = cityID && Cities.get(cityID);
@@ -68,7 +67,7 @@ UFMproto.onRecalculateFlagOffsets = function() {
         for (let u = 0; u < units.length; u++) {
             const unitFlag = UnitFlagManager.instance.getFlag(units[u]);
             if (unitFlag) {
-                position.x = xorigin - width/2 + offset * u;
+                position.x = xOrigin - width/2 + xOffset * u;
                 unitFlag.updatePosition(position);
             }
             else {
@@ -143,9 +142,15 @@ const override = () => {
             .then(_mod => console.warn(`bz-unit-flags: override=${mod}`))
             .catch((_err) => null);
     }
-    // restore standard implementation
+    // restore standard implementations
     GUFproto.checkUnitPosition = IUFproto.checkUnitPosition = function(unit) {
         UnitFlagManager.instance.recalculateFlagOffsets(unit.location);
+    }
+    GUFproto.updateTop = IUFproto.updateTop = function(position) {
+        if (this.unitContainer && this.flagOffset != position) {
+            this.flagOffset = position;
+            this.unitContainer.style.top = Layout.pixels(position * -16);
+        }
     }
 };
 engine.whenReady.then(override);
