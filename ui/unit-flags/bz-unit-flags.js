@@ -126,7 +126,7 @@ IUFproto.realizeUnitHealth = function(...args) {
     if (this.unitHealthBarInner) {
         const health = this.unit.Health;
         const damage = (health.maxDamage - health.damage) / health.maxDamage;
-        const MAX = 89;  // max-width of unit health bar
+        const MAX = 28/33 * 100;  // healthbar/container = 28/33 pixels
         this.unitHealthBarInner.style.widthPERCENT = utils.clamp(damage, 0, 1) * MAX;
     }
 }
