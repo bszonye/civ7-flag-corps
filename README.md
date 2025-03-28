@@ -5,7 +5,7 @@ better unit flags
 - horizontal “parade” of unit flags for easier selection
 - red borders for enemy civilizations and their city-state allies
 
-## fixes and customizes base-game features
+## fixes and customizes game features
 - health bars adjusted to show damage more accurately
 - optionally remove the black “shadow” from unit flags
 
