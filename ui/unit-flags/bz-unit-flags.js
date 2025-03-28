@@ -69,7 +69,7 @@ UFMproto.onRecalculateFlagOffsets = function() {
             const unitFlag = UnitFlagManager.instance.getFlag(units[u]);
             if (unitFlag) {
                 position.x = xOrigin - width/2 + xOffset * u;
-                unitFlag.updatePosition(position);
+                unitFlag.bzUpdatePosition(position);
             }
             else {
                 console.error("unit-flag-manager: onRecalculateFlagOffsets(): Unit flag's for unit " + ComponentID.toLogString(units[u]) + " is not found");
@@ -88,7 +88,7 @@ GUFproto.onAttach = function(...args) {  // GeneralUnitFlag only
     GUF_onAttach.apply(this, args);
     this.realizeAffinity();
 };
-GUFproto.updatePosition = IUFproto.updatePosition = function(position) {
+GUFproto.bzUpdatePosition = IUFproto.bzUpdatePosition = function(position) {
     if (this.unitContainer && this.flagOffset != position) {
         this.flagOffset = position;
         this.unitContainer.style.left = Layout.pixels(position.x);
@@ -113,24 +113,23 @@ GUFproto.getRelationship = function() {
 }
 GUFproto.realizeAffinity = IUFproto.realizeAffinity;
 // fix unit health bars
-const GUFrealizeUnitHealth = GUFproto.realizeUnitHealth;
-GUFproto.realizeUnitHealth = function(...args) {
-    GUFrealizeUnitHealth.apply(this, args);
-    if (this.unitHealthBarInner) {
-        const health = this.unit.Health;
-        const damage = (health.maxDamage - health.damage) / health.maxDamage;
-        this.unitHealthBarInner.style.widthPERCENT = utils.clamp(damage, 0, 1) * 85;
-    }
-}
-const IUFrealizeUnitHealth = IUFproto.realizeUnitHealth;
-IUFproto.realizeUnitHealth = function(...args) {
-    IUFrealizeUnitHealth.apply(this, args);
+GUFproto.bzFixUnitHealth = IUFproto.bzFixUnitHealth = function() {
     if (this.unitHealthBarInner) {
         const health = this.unit.Health;
         const damage = (health.maxDamage - health.damage) / health.maxDamage;
         const MAX = 28/33 * 100;  // healthbar/container = 28/33 pixels
         this.unitHealthBarInner.style.widthPERCENT = utils.clamp(damage, 0, 1) * MAX;
     }
+}
+const GUFrealizeUnitHealth = GUFproto.realizeUnitHealth;
+GUFproto.realizeUnitHealth = function(...args) {
+    GUFrealizeUnitHealth.apply(this, args);
+    this.bzFixUnitHealth();
+}
+const IUFrealizeUnitHealth = IUFproto.realizeUnitHealth;
+IUFproto.realizeUnitHealth = function(...args) {
+    IUFrealizeUnitHealth.apply(this, args);
+    this.bzFixUnitHealth();
 }
 // undo other patches
 // dynamically import conflicting mods
