@@ -15,7 +15,8 @@ BZ_HEAD_STYLE.textContent = [
 .bz-flags-no-shadow .unit-flag--army .unit-flag__shadow,
 .bz-flags-no-shadow .unit-flag--combat .unit-flag__shadow {
     background-image: none;
-}`,
+}
+`,
 ].join('\n');
 document.head.appendChild(BZ_HEAD_STYLE);
 // sync optional styling
