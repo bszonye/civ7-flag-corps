@@ -30,6 +30,8 @@ const UFM_onInitialize = UFMproto.onInitialize;
 UFMproto.onInitialize = function(...args) {
     UFM_onInitialize.apply(this, args);
     console.warn(`TRIX ONINIT ${UnitFlagManager.instance}`);
+    engine.on('DiplomacyEventStarted', (_data) => { this.requestFlagsRebuild() });
+    engine.on('DiplomacyEventEnded', (_data) => { this.requestFlagsRebuild() });
 };
 
 const _onRecalculateFlagOffsets = UFMproto.onRecalculateFlagOffsets;
@@ -58,7 +60,9 @@ UFMproto.onRecalculateFlagOffsets = function() {
             const unitFlag = UnitFlagManager.instance.getFlag(units[u]);
             if (unitFlag) {
                 console.warn(`TRIX CITY=${JSON.stringify(city)}`);
-                position.x = 36 * (u - 1/2);
+                // TODO: enemy flags are always wider
+                const spacing = bzFlagCorpsOptions.noShadow ? 24 : 36;
+                position.x = spacing * (u - 1/2);
                 unitFlag.updatePosition(position);
             }
             else {
@@ -71,6 +75,14 @@ UFMproto.onRecalculateFlagOffsets = function() {
 
 const GUFproto = GenericUnitFlag.prototype;
 const IUFproto = IndependentPowersUnitFlag.prototype;
+
+// patched methods
+const GUF_onAttach = GUFproto.onAttach;
+GUFproto.onAttach = function(...args) {  // GeneralUnitFlag only
+    GUF_onAttach.apply(this, args);
+    console.warn(`TRIX GUF ONATTACH ${this}`);
+    this.realizeAffinity();
+};
 GUFproto.updatePosition = IUFproto.updatePosition = function(position) {
     // console.warn(`TRIX UPDATE ${position}`);
     if (this.unitContainer && this.flagOffset != position) {
@@ -79,6 +91,24 @@ GUFproto.updatePosition = IUFproto.updatePosition = function(position) {
         this.unitContainer.style.top = Layout.pixels(position.y);
     }
 };
+// show relationships for majors & city-states
+GUFproto.getRelationship = function() {
+    // parallel to IndependentPowersUnitFlag.getRelationship
+    const IR = IndependentRelationship;
+    const ownerID = this.componentID.owner;
+    const observerID = GameContext.localObserverID;
+    if (ownerID == observerID) return IR.FRIENDLY;
+    const owner = Players.get(ownerID);
+    if (owner.Diplomacy?.hasAllied(observerID)) return IR.FRIENDLY;
+    if (owner.Diplomacy?.isAtWarWith(observerID)) return IR.HOSTILE;
+    if (owner.isMinor && owner.Influence?.hasSuzerain &&
+        owner.Influence.getSuzerain() == observerID) {
+        return IR.FRIENDLY;
+    }
+    return IR.NEUTRAL;
+}
+GUFproto.realizeAffinity = IUFproto.realizeAffinity;
+// fix unit health bars
 const GUFrealizeUnitHealth = GUFproto.realizeUnitHealth;
 GUFproto.realizeUnitHealth = function(...args) {
     GUFrealizeUnitHealth.apply(this, args);
