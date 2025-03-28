@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <EnglishText>
+        <Row Tag="LOC_MOD_BZ_FLAG_CORPS_NAME">
+            <Text>Flag Corps</Text>
+        </Row>
+        <Row Tag="LOC_MOD_BZ_FLAG_CORPS_DESCRIPTION">
+            <Text>better unit flags</Text>
+        </Row>
+    </EnglishText>
+</Database>

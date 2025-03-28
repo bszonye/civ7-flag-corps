@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <EnglishText>
+        <Row Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW">
+            <Text>Flag Corps • remove black “shadow” from unit flags</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION">
+            <Text>Removes the heavy black outline from friendly and neutral unit flags.</Text>
+        </Row>
+        <InsertOrIgnore Tag="LOC_OPTIONS_GROUP_BZ_MODS">
+            <Text>trixie's mods</Text>
+        </InsertOrIgnore>
+    </EnglishText>
+</Database>
