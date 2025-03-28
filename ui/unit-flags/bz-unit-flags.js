@@ -63,7 +63,6 @@ UFMproto.onRecalculateFlagOffsets = function() {
         if (city && city.location.x == loc.x && city.location.y == loc.y) {
             position.y = city.isTown ? yTown : yCity;
         } else if (isVillage(loc)) {
-            console.warn(`TRIX VILLAGE ${JSON.stringify(loc)}`);
             position.y = yVillage;
         }
         for (let u = 0; u < units.length; u++) {
