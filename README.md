@@ -1,4 +1,4 @@
-# Flag Corps 1.0.0
+# Flag Corps 1.0.1
 better unit flags
 
 ## improves unit flag layout and design
@@ -14,3 +14,13 @@ known interactions:
 
 - **Sukritact's Simple UI Adjustments: compatible.**  when both mods are
   installed, Flag Corps manages unit flags.
+
+## localization
+the mod is language-independent during play.
+only the menu screens (Mods and Options) contain localized text.
+
+supported languages:
+
+- Korean (translated by Hotsolidinfill)
+
+thank you for your help!
