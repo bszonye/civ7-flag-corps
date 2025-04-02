@@ -79,24 +79,23 @@ UFMproto.onRecalculateFlagOffsets = function() {
     this.plotIndicesToCheck.clear();
 }
 
-const GUFproto = GenericUnitFlag.prototype;
-const IUFproto = IndependentPowersUnitFlag.prototype;
-
 // patched methods
-const GUF_onAttach = GUFproto.onAttach;
-GUFproto.onAttach = function(...args) {  // GeneralUnitFlag only
+const GUF_onAttach = GenericUnitFlag.prototype.onAttach;
+GenericUnitFlag.prototype.onAttach = function(...args) {  // GeneralUnitFlag only
     GUF_onAttach.apply(this, args);
     this.realizeAffinity();
 };
-GUFproto.bzUpdatePosition = IUFproto.bzUpdatePosition = function(position) {
+function bzUpdatePosition(position) {
     if (this.unitContainer && this.flagOffset != position) {
         this.flagOffset = position;
         this.unitContainer.style.left = Layout.pixels(position.x);
         this.unitContainer.style.top = Layout.pixels(position.y);
     }
 };
+GenericUnitFlag.prototype.bzUpdatePosition = bzUpdatePosition;
+IndependentPowersUnitFlag.prototype.bzUpdatePosition = bzUpdatePosition;
 // show relationships for majors & city-states
-GUFproto.getRelationship = function() {
+GenericUnitFlag.prototype.getRelationship = function() {
     // parallel to IndependentPowersUnitFlag.getRelationship
     const IR = IndependentRelationship;
     const ownerID = this.componentID.owner;
@@ -111,23 +110,26 @@ GUFproto.getRelationship = function() {
     }
     return IR.NEUTRAL;
 }
-GUFproto.realizeAffinity = IUFproto.realizeAffinity;
+GenericUnitFlag.prototype.realizeAffinity =
+    IndependentPowersUnitFlag.prototype.realizeAffinity;
 // fix unit health bars
-GUFproto.bzFixUnitHealth = IUFproto.bzFixUnitHealth = function() {
+function bzFixUnitHealth() {
     if (this.unitHealthBarInner) {
-        const health = this.unit.Health;
+        const health = this.unit?.Health ?? 1.0;
         const damage = (health.maxDamage - health.damage) / health.maxDamage;
         const MAX = 28/33 * 100;  // healthbar/container = 28/33 pixels
         this.unitHealthBarInner.style.widthPERCENT = utils.clamp(damage, 0, 1) * MAX;
     }
 }
-const GUFrealizeUnitHealth = GUFproto.realizeUnitHealth;
-GUFproto.realizeUnitHealth = function(...args) {
+GenericUnitFlag.prototype.bzFixUnitHealth = bzFixUnitHealth;
+IndependentPowersUnitFlag.prototype.bzFixUnitHealth = bzFixUnitHealth;
+const GUFrealizeUnitHealth = GenericUnitFlag.prototype.realizeUnitHealth;
+GenericUnitFlag.prototype.realizeUnitHealth = function(...args) {
     GUFrealizeUnitHealth.apply(this, args);
     this.bzFixUnitHealth();
 }
-const IUFrealizeUnitHealth = IUFproto.realizeUnitHealth;
-IUFproto.realizeUnitHealth = function(...args) {
+const IUFrealizeUnitHealth = IndependentPowersUnitFlag.prototype.realizeUnitHealth;
+IndependentPowersUnitFlag.prototype.realizeUnitHealth = function(...args) {
     IUFrealizeUnitHealth.apply(this, args);
     this.bzFixUnitHealth();
 }
@@ -143,10 +145,19 @@ const override = () => {
             .catch((_err) => null);
     }
     // restore standard implementations
-    GUFproto.checkUnitPosition = IUFproto.checkUnitPosition = function(unit) {
+    GenericUnitFlag.prototype.checkUnitPosition = function(unit) {
         UnitFlagManager.instance.recalculateFlagOffsets(unit.location);
     }
-    GUFproto.updateTop = IUFproto.updateTop = function(position) {
+    IndependentPowersUnitFlag.prototype.checkUnitPosition = function(unit) {
+        UnitFlagManager.instance.recalculateFlagOffsets(unit.location);
+    }
+    GenericUnitFlag.prototype.updateTop = function(position) {
+        if (this.unitContainer && this.flagOffset != position) {
+            this.flagOffset = position;
+            this.unitContainer.style.top = Layout.pixels(position * -16);
+        }
+    }
+    IndependentPowersUnitFlag.prototype.updateTop = function(position) {
         if (this.unitContainer && this.flagOffset != position) {
             this.flagOffset = position;
             this.unitContainer.style.top = Layout.pixels(position * -16);
