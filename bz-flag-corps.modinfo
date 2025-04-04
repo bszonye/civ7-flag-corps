@@ -21,7 +21,7 @@
     <ActionGroups>
         <ActionGroup id="bz-flag-corps-menu" scope="shell" criteria="always">
             <Properties>
-                <LoadOrder>1000</LoadOrder>
+                <LoadOrder>1001</LoadOrder>
             </Properties>
             <Actions>
                 <UIScripts>
@@ -36,10 +36,11 @@
         </ActionGroup>
         <ActionGroup id="bz-flag-corps-ui" scope="game" criteria="always">
             <Properties>
-                <LoadOrder>1000</LoadOrder>
+                <LoadOrder>1001</LoadOrder>
             </Properties>
             <Actions>
                 <UIScripts>
+                    <Item>ui/city-banners/bz-city-banners.js</Item>
                     <Item>ui/options/bz-flag-corps-options.js</Item>
                     <Item>ui/options/mod-options-decorator.js</Item>
                     <Item>ui/unit-flags/bz-unit-flags.js</Item>
