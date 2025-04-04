@@ -133,35 +133,25 @@ IndependentPowersUnitFlag.prototype.realizeUnitHealth = function(...args) {
     IUFrealizeUnitHealth.apply(this, args);
     this.bzFixUnitHealth();
 }
-// undo other patches
-// dynamically import conflicting mods
-const override = () => {
-    const overrides = [
-        "/sukritacts_simple_ui_adjustments/ui/unit-flags/suk-unit-flags.js",
-    ];
-    for (const mod of overrides) {
-        import(mod)
-            .then(_mod => console.warn(`bz-unit-flags: override=${mod}`))
-            .catch((_err) => null);
+// undo conflicting patches
+function checkUnitPosition(unit) {
+    UnitFlagManager.instance.recalculateFlagOffsets(unit.location);
+}
+function updateTop(position) {
+    if (this.unitContainer && this.flagOffset != position) {
+        this.flagOffset = position;
+        this.unitContainer.style.top = Layout.pixels(position * -16);
     }
-    // restore standard implementations
-    GenericUnitFlag.prototype.checkUnitPosition = function(unit) {
-        UnitFlagManager.instance.recalculateFlagOffsets(unit.location);
-    }
-    IndependentPowersUnitFlag.prototype.checkUnitPosition = function(unit) {
-        UnitFlagManager.instance.recalculateFlagOffsets(unit.location);
-    }
-    GenericUnitFlag.prototype.updateTop = function(position) {
-        if (this.unitContainer && this.flagOffset != position) {
-            this.flagOffset = position;
-            this.unitContainer.style.top = Layout.pixels(position * -16);
-        }
-    }
-    IndependentPowersUnitFlag.prototype.updateTop = function(position) {
-        if (this.unitContainer && this.flagOffset != position) {
-            this.flagOffset = position;
-            this.unitContainer.style.top = Layout.pixels(position * -16);
-        }
-    }
-};
-engine.whenReady.then(override);
+}
+// dynamically import the conflicting mods
+const conflicts = [
+    "/sukritacts_simple_ui_adjustments/ui/unit-flags/suk-unit-flags.js",
+];
+const promises = conflicts.map(mod => import(mod));
+Promise.allSettled(promises).then((mods) => {
+    if (!mods.some(mod => mod.status == "fulfilled")) return;  // no conflicts
+    GenericUnitFlag.prototype.checkUnitPosition = checkUnitPosition;
+    GenericUnitFlag.prototype.updateTop = updateTop;
+    IndependentPowersUnitFlag.prototype.checkUnitPosition = checkUnitPosition;
+    IndependentPowersUnitFlag.prototype.updateTop = updateTop;
+});

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Mod id="bz-flag-corps" version="10002"
+<Mod id="bz-flag-corps" version="10003"
     xmlns="ModInfo">
     <Properties>
         <Name>LOC_MOD_BZ_FLAG_CORPS_NAME</Name>
-        <Version>1.0.2</Version>
+        <Version>1.0.3</Version>
         <Description>LOC_MOD_BZ_FLAG_CORPS_DESCRIPTION</Description>
         <Authors>beezany</Authors>
         <URL>https://forums.civfanatics.com/resources/flag-corps.32132/</URL>
@@ -21,7 +21,7 @@
     <ActionGroups>
         <ActionGroup id="bz-flag-corps-menu" scope="shell" criteria="always">
             <Properties>
-                <LoadOrder>1000</LoadOrder>
+                <LoadOrder>1001</LoadOrder>
             </Properties>
             <Actions>
                 <UIScripts>
@@ -36,10 +36,11 @@
         </ActionGroup>
         <ActionGroup id="bz-flag-corps-ui" scope="game" criteria="always">
             <Properties>
-                <LoadOrder>1000</LoadOrder>
+                <LoadOrder>1001</LoadOrder>
             </Properties>
             <Actions>
                 <UIScripts>
+                    <Item>ui/city-banners/bz-city-banners.js</Item>
                     <Item>ui/options/bz-flag-corps-options.js</Item>
                     <Item>ui/options/mod-options-decorator.js</Item>
                     <Item>ui/unit-flags/bz-unit-flags.js</Item>
