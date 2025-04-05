@@ -90,27 +90,43 @@ const BZ_COLOR = {
 //              city-banner__time-text
 const BZ_HEAD_STYLE = [
     // 1 CONTAINER flex flex-col mt-2">
-    //   2 STRETCH absolute flex flex-row justify-center align-center w-full h-8 top-1\.5 pointer-events-none
+`
+.bz-city-banners .city-banner.city-banner--citystate .city-banner__container {
+    margin-top: 1.1111111111rem;
+}
+`,  //   2 STRETCH absolute flex flex-row justify-center align-center w-full h-8 top-1\.5 pointer-events-none
 `
 .bz-city-banners .city-banner.city-banner--citystate .city-banner__stretch {
+.bz-city-banners .city-banner.city-banner--village .city-banner__stretch {
+    top: 0.3333333333rem;
+    height: 3.6666666667rem;
+}
+.bz-city-banners .city-banner.city-banner--city .city-banner__stretch {
     top: 0.6666666667rem;
     height: 4rem;
 }
 `,  //     3 CITY-STATE-BORDER absolute -left-2 -right-2 -top-0 -bottom-0
-`.bz-city-banners .city-banner.city-banner--friendly .city-banner__city-state-border {
+`
+.bz-city-banners .city-banner.city-banner--friendly .city-banner__city-state-border {
     fxs-border-image-tint: ${BZ_COLOR.friendly};
 }
 .bz-city-banners .city-banner.city-banner--hostile .city-banner__city-state-border {
     border-image-outset: 0.2222222222rem 0.1111111111rem;
     fxs-border-image-tint: ${BZ_COLOR.hostile};
 }
-`,  //     3 CITY-STATE-RING
-`.bz-city-banners .city-banner.city-banner--citystate .city-banner__city-state-ring,
+`,  //     3 CITY-STATE-RING absolute -left-1 -right-1 top-1 bottom-0
+`
+.bz-city-banners .city-banner.city-banner--citystate .city-banner__city-state-ring,
 .bz-city-banners .city-banner.city-banner--village .city-banner__city-state-ring {
     border-image-source: url("fs://game/city_pill.png");
     border-image-outset: 0.2222222222rem 0.3888888889rem;
 }
-`,  //     3 STRETCH-BG
+.bz-city-banners .city-banner.city-banner--citystate .city-banner__city-state-ring {
+    fxs-border-image-tint: var(--player-color-secondary);
+.bz-city-banners .city-banner.city-banner--village .city-banner__city-state-ring {
+    fxs-border-image-tint: var(--player-color-primary);
+}
+`,  //     3 STRETCH-BG absolute inset-0 pointer-events-none
 `
 .bz-city-banners .city-banner.city-banner--town .city-banner__stretch-bg {
     border-image-source: url("fs://game/town_pill.png");
@@ -119,21 +135,47 @@ const BZ_HEAD_STYLE = [
     border-image-source: url("fs://game/town_pill.png");
     fxs-border-image-tint: var(--player-color-primary);
 }
-`,  //   2 HSLOT NAME-CONTAINER
+.bz-city-banners .city-banner.city-banner--city .city-banner__stretch-bg {
+    border-image-source: url("fs://game/town_pill.png");
+}
+.bz-city-banners .city-banner.city-banner--city-other .city-banner__stretch-bg {
+    border-image-source: url("fs://game/town_pill.png");
+}
+.bz-city-banners .city-banner.city-banner--citystate .city-banner__stretch-bg,
+.bz-city-banners .city-banner.city-banner--village .city-banner__stretch-bg {
+    border-image-source: url("fs://game/town_pill.png");
+    border-image-outset: 0rem 0.4444444444rem;
+    border-image-width: 3.3333333333rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
+}
+.bz-city-banners .city-banner.city-banner--citystate .city-banner__stretch-bg {
+    fxs-border-image-tint: var(--player-color-primary);
+}
+.bz-city-banners .city-banner.city-banner--village .city-banner__stretch-bg {
+    fxs-border-image-tint: var(--player-color-secondary);
+}
+`,  //   2 HSLOT NAME-CONTAINER relative flex justify-between
 `
 .bz-city-banners .city-banner__name-container {
     line-height: 2rem;
     color: var(--player-color-secondary);
     pointer-events: auto;
     margin-left: 0.4444444444rem;
+    background-color: #0088;  /* DEBUG */
 }
-.bz-city-banners .city-banner .city-banner__name-container {
-    background-color: #0088;
+.bz-city-banners .city-banner.city-banner--citystate .city-banner__name-container,
+.bz-city-banners .city-banner.city-banner--village .city-banner__name-container {
+    margin-top: -0.3333333333rem;
 }
-`,  //     3 PORTRAIT
-    //       4 PORTRAIT-BG1
-    //       4 PORTRAIT-BG2
-    //       4 PORTRAIT-IMG
+.bz-city-banners .city-banner.city-banner--citystate .city-banner__name-container {
+    color: var(--player-color-secondary);
+}
+.bz-city-banners .city-banner.city-banner--village .city-banner__name-container {
+    color: var(--player-color-primary);
+}
+`,  //     3 PORTRAIT relative pointer-events-auto flex
+    //       4 PORTRAIT-BG1 absolute inset-0 bg-center bg-cover bg-no-repeat
+    //       4 PORTRAIT-BG2 absolute inset-x-0 top-0 -bottom-2 bg-center bg-cover bg-no-repeat
+    //       4 PORTRAIT-IMG absolute -left-2 -right-2 -top-1 bottom-0 bg-cover bg-center bg-no-repeat pointer-events-none
 `
 .bz-city-banners .city-banner.city-banner--citystate .city-banner__portrait {
     /* TODO */
@@ -142,39 +184,57 @@ const BZ_HEAD_STYLE = [
 	height: 1.7777777778rem;
 	display: flex;
 }
-`,  //     3 VSLOT NAME-VSLOT
+`,  //     3 VSLOT NAME-VSLOT pointer-events-auto cursor-pointer max-h-10
     //       4 HSLOT
-    //         5 CAPITAL-STAR
-    //         5 NAME
-    //       4 HSLOT STATUS-RELIGION
-    //         5 STATUS
-    //           6 STATUS-BACKGROUND
-    //           6 STATUS-ICON
-    //         5 HSLOT RELIGION
+    //         5 CAPITAL-STAR w-8 h-8 bg-cover bg-no-repeat hidden
+    //         5 NAME font-title-base uppercase
+`
+.bz-city-banners .city-banner.city-banner--town .city-banner__name {
+    margin-top: -0.2777777778rem;
+}
+.bz-city-banners .city-banner.city-banner--citystate .city-banner__name,
+.bz-city-banners .city-banner.city-banner--village .city-banner__name {
+    margin-top: 0.3888888889rem;
+    text-shadow: none;
+}
+.bz-city-banners .city-banner.city-banner--citystate .city-banner__name {
+    margin-right: 0.2222222222rem;
+}
+`,  //       4 HSLOT STATUS-RELIGION
+    //         5 STATUS flex justify-center align-center opacity-100
+    //           6 STATUS-BACKGROUND h-full w-full absolute
+    //           6 STATUS-ICON absolute w-full h-full bg-no-repeat
+    //         5 HSLOT RELIGION self-center
     //           6 RELIGION-SYMBOL-BG
-    //             7 RELIGION-SYMBOL
-    //           6 RELIGION-SYMBOL-BG
-    //             7 RELIGION-SYMBOL
-    //     3 POPULATION-CONTAINER
+    //             7 RELIGION-SYMBOL bg-contain bg-no-repeat bg-center
+    //           6 RELIGION-SYMBOL-BG religion-bg--right
+    //             7 RELIGION-SYMBOL bg-contain bg-no-repeat bg-center religion-symbol--right
+    //     3 POPULATION-CONTAINER items-center justify-center w-6 h-6 -mt-2
 `
 .bz-city-banners .city-banner__population-container {
     position: relative;
-    background-color: #0808;
+    background-color: #0808;  /* DEBUG */
 }
-`,  //       4 RING-METER RING
+`,  //       4 RING-METER RING POPULATION-RING bg-cover bg-center flex size-9 self-center align-center
 `
 .bz-city-banners .city-banner__ring {
     position: absolute;
 }
-`,  //         5 POPULATION-NUMBER
-    //       4 TURN
+.bz-city-banners .city-banner.city-banner--citystate .city-banner__ring {
+    /* TODO */
+    top: 0.5rem;
+    transform: translateX(-50%) scale(1);
+    background-color: #8008;  /* DEBUG */
+}
+`,  //         5 POPULATION-NUMBER font-body-xs text-white top-0 w-full text-center pointer-events-auto
+    //       4 TURN flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative
 `
 .bz-city-banners .city-banner__turn {
     position: absolute;
     top: 0.2222222222rem;
     left: 0rem;
 }
-`,  //         5 TURN-NUMBER
+`,  //         5 TURN-NUMBER font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat
 `
 .bz-city-banners .city-banner__turn-number {
     background-image: url("fs://game/town_turn-bg.png");
@@ -187,128 +247,54 @@ const BZ_HEAD_STYLE = [
     padding-bottom: 0.1111111111rem;
     min-width: 1.6666666667rem;
 }
-`,  //     3 QUEUE-CONTAINER
-    //       4 RING-METER
-    //         5 QUEUE-IMG
-    //       4 TURN
-    //         5 TURN-NUMBER
-    //     3 CITY-STATE-CONTAINER
-    //       4 CITY-STATE-TYPE
-    //         5 CITY-STATE-ICON
-    // 1 HSLOT
-    //   2 VSLOT
-    //     3 CONQUERED-ICON
-    //   2 VSLOT UNREST
-    //     3 UNREST-ICON
-    //     3 TIME-CONTAINER
-    //       4 TIME-ICON
-    //       4 TIME-TEXT
-    //   2 VSLOT RAZING
-    //     3 RAZING-ICON
-    //     3 TIME-CONTAINER
-    //       4 TIME-ICON
-    //       4 TIME-TEXT
-// all settlements
+`,  //     3 QUEUE-CONTAINER queue-production queue-none justify-center w-8 h-6 -mt-2 flex-col align-center
+    //       4 RING-METER RING PRODUCTION-RING bg-cover bg-center flex size-9 self-center align-center
+    //         5 QUEUE-IMG queue-production size-4 self-center
+    //       4 TURN flex flex-col justify-end align-center self-center w-8 mt-0\.5 pointer-events-none
+    //         5 TURN-NUMBER font-base-xs text-white text-center w-full bg-cover bg-center bg-no-repeat
+    //     3 CITY-STATE-CONTAINER justify-center
 `
-`,
-// towns
-`.bz-city-banners .city-banner.city-banner--town .city-banner__name {
-}`,
-// player cities
-`.bz-city-banners .city-banner.city-banner--city .city-banner__stretch {
-    top: 0.6666666667rem;
-    height: 4rem;
-}
-.bz-city-banners .city-banner.city-banner--city .city-banner__stretch-bg {
-    border-image-source: url("fs://game/town_pill.png");
-}`,
-// rival cities
-`.bz-city-banners .city-banner.city-banner--city-other .city-banner__stretch-bg {
-    border-image-source: url("fs://game/town_pill.png");
-}`,
-// city-states and villages
-`
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__center,
-.bz-city-banners .city-banner.city-banner--village .city-banner__center {
-    width: 4rem;
-    height: 3.6666666667rem;
-}
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__city-state-type,
-.bz-city-banners .city-banner.city-banner--village .city-banner__city-state-type {
-    display: flex;
-    margin-top: 0.3333333333rem;
-    margin-right: 0.1111111111rem;
-}
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__stretch {
-.bz-city-banners .city-banner.city-banner--village .city-banner__stretch {
-    top: 0.3333333333rem;
-    height: 3.6666666667rem;
-}
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__stretch-bg,
-.bz-city-banners .city-banner.city-banner--village .city-banner__stretch-bg {
-    border-image-source: url("fs://game/town_pill.png");
-    border-image-outset: 0rem 0.4444444444rem;
-    border-image-width: 3.3333333333rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
-}
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__name-container,
-.bz-city-banners .city-banner.city-banner--village .city-banner__name-container {
-    margin-top: -0.3333333333rem;
-}
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__name,
-.bz-city-banners .city-banner.city-banner--village .city-banner__name {
-    margin-top: 0.3888888889rem;
-    text-shadow: none;
-}
 .bz-city-banners .city-banner.city-banner--citystate .city-banner__city-state-container,
 .bz-city-banners .city-banner.city-banner--village .city-banner__city-state-container {
     margin-top: 0.2222222222rem;
     margin-left: 0.2222222222rem;
     margin-right: 0rem;
 }
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__stretch-bg {
-    fxs-border-image-tint: var(--player-color-primary);
+`,  //       4 CITY-STATE-TYPE size-7 self-center align-center justify-center
+`
+.bz-city-banners .city-banner.city-banner--citystate .city-banner__city-state-type,
+.bz-city-banners .city-banner.city-banner--village .city-banner__city-state-type {
+    display: flex;
+    margin-top: 0.3333333333rem;
+    margin-right: 0.1111111111rem;
 }
-.bz-city-banners .city-banner.city-banner--village .city-banner__stretch-bg {
-    fxs-border-image-tint: var(--player-color-secondary);
-}
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__name-container {
-    color: var(--player-color-secondary);
-}
-.bz-city-banners .city-banner.city-banner--village .city-banner__name-container {
-    color: var(--player-color-primary);
-}
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__name {
-    margin-right: 0.2222222222rem;
-}
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__ring {
-    top: 0.5rem;
-    transform: translateX(-50%) scale(1);
-    background-color: #8008;
-}
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__city-state-ring {
-    fxs-border-image-tint: var(--player-color-secondary);
-.bz-city-banners .city-banner.city-banner--village .city-banner__city-state-ring {
-    fxs-border-image-tint: var(--player-color-primary);
-}
-/* TODO */
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__container {
-	margin-top: 1.1111111111rem;
-}
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__center-bottom-bg {
-    /* TODO */
-	width: 2.4444444444rem;
-	height: 4rem;
-	mask-image: url("fs://game/core/ui/themes/default/img/city_banners/mask_citybanner_big-village-center.png");
-}
+`,  //         5 CITY-STATE-ICON size-8 self-center align-center bg-cover bg-no-repeat
+    // 1 HSLOT items-center -ml-12 mt-10
+    //   2 VSLOT -mr-3
+    //     3 CONQUERED-ICON relative size-14 -mr-6 bg-cover bg-no-repeat
+`
 .bz-city-banners .city-banner.city-banner--citystate .city-banner__conquered-icon {
 	margin-top: 1.3333333333rem;
 }
+`,  //   2 VSLOT UNREST -mr-3
+    //     3 UNREST-ICON relative size-14 bg-cover bg-no-repeat
+`
 .bz-city-banners .city-banner.city-banner--citystate .city-banner__unrest-icon {
 	margin-top: 1.3333333333rem;
 }
+`,  //     3 TIME-CONTAINER -mt-3 flex flex-row
+    //       4 TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
+    //       4 TIME-TEXT self-center font-body-xs text-white
+    //   2 VSLOT RAZING
+    //     3 RAZING-ICON relative size-14 bg-cover bg-no-repeat
+`
 .bz-city-banners .city-banner.city-banner--citystate .city-banner__razing-icon {
 	margin-top: 1.3333333333rem;
-}`,
+}
+`,  //     3 TIME-CONTAINER -mt-3 flex flex-row
+    //       4 TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
+    //       4 TIME-TEXT self-center font-body-xs text-white
+
 ];
 BZ_HEAD_STYLE.map(style => {
     const e = document.createElement('style');
