@@ -39,65 +39,88 @@ const BZ_COLOR = {
     friendly: "#e5d2ac",  // TODO
     hostile: "#af1b1c",
 };
-// city-banner__container
-//  city-banner__stretch
-//      city-banner__city-state-border
-//      city-banner__city-state-ring
-//      city-banner__stretch-bg
-//  hslot city-banner__name-container
-//      city-banner__portrait
-//          city-banner__portrait-bg1
-//          city-banner__portrait-bg2
-//          city-banner__portrait-img
-//      vslot city-banner__name-vslot
-//          hslot
-//              city-banner__capital-star
-//              city-banner__name
-//          hslot city-banner__status-religion
-//              city-banner__status
-//                  city-banner__status-background
-//                  city-banner__status-icon
-//              hslot city-banner__religion
-//                  city-banner__religion-symbol-bg
-//                      city-banner__religion-symbol
-//                  city-banner__religion-symbol-bg
-//                      city-banner__religion-symbol
-//      city-banner__population-container
-//          ring-meter city-banner__ring
-//              city-banner__population-number
-//          city-banner__turn
-//              city-banner__turn-number
-//      city-banner__queue-container
-//          ring-meter
-//              city-banner__queue-img
-//          city-banner__turn
-//              city-banner__turn-number
-//      city-banner__city-state-container
-//          city-banner__city-state-type
-//              city-banner__city-state-icon
-// hslot
-//  vslot
-//      city-banner__conquered-icon
-//  vslot city-banner__unrest
-//      city-banner__unrest-icon
-//      city-banner__time-container
-//          city-banner__time-icon
-//          city-banner__time-text
-//  vslot city-banner__razing
-//      city-banner__razing-icon
-//      city-banner__time-container
-//          city-banner__time-icon
-//          city-banner__time-text
+//  city-banner__container
+//      city-banner__stretch
+//          city-banner__city-state-border
+//          city-banner__city-state-ring
+//          city-banner__stretch-bg
+//      hslot city-banner__name-container
+//          city-banner__portrait
+//              city-banner__portrait-bg1
+//              city-banner__portrait-bg2
+//              city-banner__portrait-img
+//          vslot city-banner__name-vslot
+//              hslot
+//                  city-banner__capital-star
+//                  city-banner__name
+//              hslot city-banner__status-religion
+//                  city-banner__status
+//                      city-banner__status-background
+//                      city-banner__status-icon
+//                  hslot city-banner__religion
+//                      city-banner__religion-symbol-bg
+//                          city-banner__religion-symbol
+//                      city-banner__religion-symbol-bg
+//                          city-banner__religion-symbol
+//          city-banner__population-container
+//              ring-meter city-banner__ring
+//                  city-banner__population-number
+//              city-banner__turn
+//                  city-banner__turn-number
+//          city-banner__queue-container
+//              ring-meter
+//                  city-banner__queue-img
+//              city-banner__turn
+//                  city-banner__turn-number
+//          city-banner__city-state-container
+//              city-banner__city-state-type
+//                  city-banner__city-state-icon
+//  hslot
+//      vslot
+//          city-banner__conquered-icon
+//      vslot city-banner__unrest
+//          city-banner__unrest-icon
+//          city-banner__time-container
+//              city-banner__time-icon
+//              city-banner__time-text
+//      vslot city-banner__razing
+//          city-banner__razing-icon
+//          city-banner__time-container
+//              city-banner__time-icon
+//              city-banner__time-text
 const BZ_HEAD_STYLE = [
-// all settlements
-`.bz-city-banners .city-banner.city-banner--citystate .city-banner__stretch {
+    // 1 CONTAINER flex flex-col mt-2">
+    //   2 STRETCH absolute flex flex-row justify-center align-center w-full h-8 top-1\.5 pointer-events-none
+`
+.bz-city-banners .city-banner.city-banner--citystate .city-banner__stretch {
     top: 0.6666666667rem;
     height: 4rem;
+}
+`,  //     3 CITY-STATE-BORDER absolute -left-2 -right-2 -top-0 -bottom-0
+`.bz-city-banners .city-banner.city-banner--friendly .city-banner__city-state-border {
+    fxs-border-image-tint: ${BZ_COLOR.friendly};
+}
+.bz-city-banners .city-banner.city-banner--hostile .city-banner__city-state-border {
+    border-image-outset: 0.2222222222rem 0.1111111111rem;
+    fxs-border-image-tint: ${BZ_COLOR.hostile};
+}
+`,  //     3 CITY-STATE-RING
+`.bz-city-banners .city-banner.city-banner--citystate .city-banner__city-state-ring,
+.bz-city-banners .city-banner.city-banner--village .city-banner__city-state-ring {
+    border-image-source: url("fs://game/city_pill.png");
+    border-image-outset: 0.2222222222rem 0.3888888889rem;
+}
+`,  //     3 STRETCH-BG
+`
+.bz-city-banners .city-banner.city-banner--town .city-banner__stretch-bg {
+    border-image-source: url("fs://game/town_pill.png");
 }
 .bz-city-banners .city-banner__stretch-bg {
     border-image-source: url("fs://game/town_pill.png");
     fxs-border-image-tint: var(--player-color-primary);
 }
+`,  //   2 HSLOT NAME-CONTAINER
+`
 .bz-city-banners .city-banner__name-container {
     line-height: 2rem;
     color: var(--player-color-secondary);
@@ -107,32 +130,89 @@ const BZ_HEAD_STYLE = [
 .bz-city-banners .city-banner .city-banner__name-container {
     background-color: #0088;
 }
+`,  //     3 PORTRAIT
+    //       4 PORTRAIT-BG1
+    //       4 PORTRAIT-BG2
+    //       4 PORTRAIT-IMG
+`
+.bz-city-banners .city-banner.city-banner--citystate .city-banner__portrait {
+    /* TODO */
+	top: 0.3333333333rem;
+	width: 1.1111111111rem;
+	height: 1.7777777778rem;
+	display: flex;
+}
+`,  //     3 VSLOT NAME-VSLOT
+    //       4 HSLOT
+    //         5 CAPITAL-STAR
+    //         5 NAME
+    //       4 HSLOT STATUS-RELIGION
+    //         5 STATUS
+    //           6 STATUS-BACKGROUND
+    //           6 STATUS-ICON
+    //         5 HSLOT RELIGION
+    //           6 RELIGION-SYMBOL-BG
+    //             7 RELIGION-SYMBOL
+    //           6 RELIGION-SYMBOL-BG
+    //             7 RELIGION-SYMBOL
+    //     3 POPULATION-CONTAINER
+`
 .bz-city-banners .city-banner__population-container {
     position: relative;
     background-color: #0808;
 }
+`,  //       4 RING-METER RING
+`
 .bz-city-banners .city-banner__ring {
     position: absolute;
 }
-.bz-city-banners .city-banner__turn-number {
+`,  //         5 POPULATION-NUMBER
+    //       4 TURN
+`
+.bz-city-banners .city-banner__turn {
     position: absolute;
+    top: 0.2222222222rem;
+    left: 0rem;
+}
+`,  //         5 TURN-NUMBER
+`
+.bz-city-banners .city-banner__turn-number {
     background-image: url("fs://game/town_turn-bg.png");
     background-repeat: no-repeat;
     background-size: 100% 100%;
     line-height: 1;
-    top: 0.2222222222rem;
-    left: 0rem;
     padding-left: 0.1111111111rem;
     padding-right: 0.1111111111rem;
     padding-top: 0.4444444444rem;
     padding-bottom: 0.1111111111rem;
     min-width: 1.6666666667rem;
-}`,
+}
+`,  //     3 QUEUE-CONTAINER
+    //       4 RING-METER
+    //         5 QUEUE-IMG
+    //       4 TURN
+    //         5 TURN-NUMBER
+    //     3 CITY-STATE-CONTAINER
+    //       4 CITY-STATE-TYPE
+    //         5 CITY-STATE-ICON
+    // 1 HSLOT
+    //   2 VSLOT
+    //     3 CONQUERED-ICON
+    //   2 VSLOT UNREST
+    //     3 UNREST-ICON
+    //     3 TIME-CONTAINER
+    //       4 TIME-ICON
+    //       4 TIME-TEXT
+    //   2 VSLOT RAZING
+    //     3 RAZING-ICON
+    //     3 TIME-CONTAINER
+    //       4 TIME-ICON
+    //       4 TIME-TEXT
+// all settlements
+`
+`,
 // towns
 `.bz-city-banners .city-banner.city-banner--town .city-banner__name {
-}`,
-`.bz-city-banners .city-banner.city-banner--town .city-banner__stretch-bg {
-    border-image-source: url("fs://game/town_pill.png");
 }`,
 // player cities
 `.bz-city-banners .city-banner.city-banner--city .city-banner__stretch {
@@ -185,11 +265,6 @@ const BZ_HEAD_STYLE = [
     margin-left: 0.2222222222rem;
     margin-right: 0rem;
 }
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__city-state-ring,
-.bz-city-banners .city-banner.city-banner--village .city-banner__city-state-ring {
-    border-image-source: url("fs://game/city_pill.png");
-    border-image-outset: 0.2222222222rem 0.3888888889rem;
-}
 .bz-city-banners .city-banner.city-banner--citystate .city-banner__stretch-bg {
     fxs-border-image-tint: var(--player-color-primary);
 }
@@ -219,12 +294,6 @@ const BZ_HEAD_STYLE = [
 .bz-city-banners .city-banner.city-banner--citystate .city-banner__container {
 	margin-top: 1.1111111111rem;
 }
-.bz-city-banners .city-banner.city-banner--citystate .city-banner__portrait {
-	top: 0.3333333333rem;
-	width: 1.1111111111rem;
-	height: 1.7777777778rem;
-	display: flex;
-}
 .bz-city-banners .city-banner.city-banner--citystate .city-banner__center-bottom-bg {
     /* TODO */
 	width: 2.4444444444rem;
@@ -239,14 +308,6 @@ const BZ_HEAD_STYLE = [
 }
 .bz-city-banners .city-banner.city-banner--citystate .city-banner__razing-icon {
 	margin-top: 1.3333333333rem;
-}`,
-// relationship rings
-`.bz-city-banners .city-banner.city-banner--friendly .city-banner__city-state-border {
-    fxs-border-image-tint: ${BZ_COLOR.friendly};
-}
-.bz-city-banners .city-banner.city-banner--hostile .city-banner__city-state-border {
-    border-image-outset: 0.2222222222rem 0.1111111111rem;
-    fxs-border-image-tint: ${BZ_COLOR.hostile};
 }`,
 ];
 BZ_HEAD_STYLE.map(style => {
