@@ -28,6 +28,7 @@ export default [
                 console: "readonly",
                 document: "readonly",
                 engine: "readonly",
+                localStorage: "readonly",
             }
         }
 
