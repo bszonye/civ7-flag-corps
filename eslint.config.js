@@ -17,6 +17,7 @@ export default [
             globals: {
                 Cities: "readonly",
                 Constructibles: "readonly",
+                Controls: "readonly",
                 GameContext: "readonly",
                 GameInfo: "readonly",
                 GameplayMap: "readonly",
