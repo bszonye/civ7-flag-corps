@@ -173,8 +173,13 @@ const BZ_HEAD_STYLE = [
     //           6 .RELIGION-SYMBOL-BG religion-bg--right
     //             7 .RELIGION-SYMBOL bg-contain bg-no-repeat bg-center religion-symbol--right
     // TODO: religion icons
-
-    //     3 .POPULATION-CONTAINER items-center justify-center w-6 h-6 -mt-2
+`
+.bz-flags city-banner.city-banner .city-banner__status-religion {
+    position: absolute;
+    left: 0rem;
+    background-color: #0808;
+}
+`,  //     3 .POPULATION-CONTAINER items-center justify-center w-6 h-6 -mt-2
     //       4 FXS-RING-METER.RING.POPULATION-RING bg-cover bg-center flex size-9 self-center align-center
     //         5 .POPULATION-NUMBER font-body-xs text-white top-0 w-full text-center pointer-events-auto
     // TODO: fix side margins
@@ -203,7 +208,7 @@ const BZ_HEAD_STYLE = [
     background-size: 100% 100%;
     line-height: 1;
     margin: 0rem;
-    padding: 0.8888888889rem 0.1111111111rem 0.1111111111rem;
+    padding: 0.8888888889rem 0.1111111111rem 0.1666666667rem;
     min-width: 1.6666666667rem;
     z-index: 1;
 }
@@ -232,7 +237,7 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner > fxs-hslot {
     position: absolute;
-    margin: 0;
+    margin: 0rem;
     display: flex;
     justify-content: center;
     transform: translateX(-50%) scale(1);
@@ -242,12 +247,12 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner > fxs-hslot > fxs-vslot {
     position: absolute;
-    margin: 0;
+    margin: 0rem;
 }
 .bz-flags .city-banner.city-banner--town .city-banner__conquered-icon {
     position: relative;
     margin: 0rem;
-    top: -0.9444444444rem;
+    top: 1rem;
     transform: none;
 }
 `,  //   2 FXS-VSLOT.UNREST -mr-3
@@ -258,7 +263,8 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags .city-banner.city-banner .city-banner__unrest {
     position: relative;
-    top: -3em;
+    top: -3.1666666667em;
+    margin: 0rem;
 }
 .bz-flags .city-banner.city-banner--town .city-banner__unrest-icon {
     position: relative;
@@ -269,7 +275,8 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags .city-banner.city-banner .city-banner__razing {
     position: relative;
-    top: -3em;
+    top: -3.1666666667em;
+    margin: 0rem;
 }
 .bz-flags .city-banner.city-banner--town .city-banner__razing-icon {
     position: relative;
