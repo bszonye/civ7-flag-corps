@@ -51,9 +51,10 @@ UFMproto.onRecalculateFlagOffsets = function() {
         const units = MapUnits.getUnits(loc.x, loc.y);
         const position = { x: 0, y: -24 };
         // dimensions
-        const yCity = 8;
-        const yTown = 24;
-        const yVillage = 18;
+        const yBanners = bzFlagCorpsOptions.banners ? 0 : null;  // TODO: confirm
+        const yCity = yBanners ?? 8;
+        const yTown = yBanners ?? 24;
+        const yVillage = yBanners ?? 18;
         const xOrigin = -6;
         const xOffset = 36;  // x-offset between icons
         const width = units.length * xOffset;

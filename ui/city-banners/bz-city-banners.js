@@ -42,6 +42,7 @@ const BZ_COLOR = {
     neutral: "#0000",
 };
 const BZ_HEAD_STYLE = [
+// ROOT -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
 `
 .bz-flags .city-banner.city-banner--town,
 .bz-flags .city-banner.city-banner--city,
@@ -49,6 +50,10 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--citystate,
 .bz-flags .city-banner.city-banner--village {
     top: -3em;
+    height: 3.6666666667rem;
+}
+.bz-debug .city-banner {
+    background-color: #fffa;
 }
 `,  // 1 CONTAINER flex flex-col mt-2">
 `
@@ -59,18 +64,11 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--village .city-banner__container {
     margin: 0rem;
 }
-.bz-debug .city-banner.city-banner--town .city-banner__container,
-.bz-debug .city-banner.city-banner--city .city-banner__container,
-.bz-debug .city-banner.city-banner--city-other .city-banner__container,
-.bz-debug .city-banner.city-banner--citystate .city-banner__container,
-.bz-debug .city-banner.city-banner--village .city-banner__container {
-    background-color: #f0f8;
+.bz-debug .city-banner .city-banner__container {
+    background-color: #f0fa;
 }
 `,  //   2 STRETCH absolute flex flex-row justify-center align-center w-full h-8 top-1\.5 pointer-events-none
 `
-.bz-flags .city-banner. .city-banner__stretch {
-    /* background-color: #8088;  /* DEBUG */
-}
 .bz-flags .city-banner.city-banner--town .city-banner__stretch,
 .bz-flags .city-banner.city-banner--city .city-banner__stretch,
 .bz-flags .city-banner.city-banner--city-other .city-banner__stretch,
@@ -87,9 +85,10 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--city-other .city-banner__city-state-border,
 .bz-flags .city-banner.city-banner--citystate .city-banner__city-state-border,
 .bz-flags .city-banner.city-banner--village .city-banner__city-state-border {
-        border-image-slice: 60 24 2 24 fill;
-        border-image-outset: 0.2222222222rem 0.1111111111rem;
-        border-image-width: 3rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
+    display: flex;
+    border-image-slice: 60 24 2 24 fill;
+    border-image-outset: 0.2222222222rem 0.1111111111rem;
+    border-image-width: 3rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
 }
 .bz-flags .city-banner.city-banner--town .city-banner__city-state-border,
 .bz-flags .city-banner.city-banner--city .city-banner__city-state-border,
@@ -103,6 +102,9 @@ const BZ_HEAD_STYLE = [
 }
 .bz-flags .city-banner.city-banner--hostile .city-banner__city-state-border {
     fxs-border-image-tint: ${BZ_COLOR.hostile};
+}
+.bz-debug .city-banner .city-banner__city-state-border {
+    /* background-color: #f80a; */
 }
 `,  //     3 CITY-STATE-RING absolute -left-1 -right-1 top-1 bottom-0
 `
@@ -128,6 +130,9 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--village .city-banner__city-state-ring {
     fxs-border-image-tint: var(--player-color-primary);
 }
+.bz-debug .city-banner__city-state-ring {
+    /* background-color: #8f0a; */
+}
 `,  //     3 STRETCH-BG absolute inset-0 pointer-events-none
 `
 .bz-flags .city-banner__stretch-bg,
@@ -150,6 +155,9 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--village .city-banner__stretch-bg {
     fxs-border-image-tint: var(--player-color-secondary);
 }
+.bz-debug .city-banner__stretch-bg {
+    /* background-color: #08fa; */
+}
 `,  //   2 HSLOT NAME-CONTAINER relative flex justify-between
 `
 .bz-flags .city-banner.city-banner--town .city-banner__name-container,
@@ -159,7 +167,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--village .city-banner__name-container {
     line-height: 2rem;
     pointer-events: auto;
-    margin-top: -0.3333333333rem;
+    margin-top: -0.4444444444rem;
     margin-left: 0.4444444444rem;
 }
 .bz-flags .city-banner__name-container {
@@ -214,6 +222,7 @@ const BZ_HEAD_STYLE = [
     position: relative;
 }
 `,  //       4 RING-METER RING POPULATION-RING bg-cover bg-center flex size-9 self-center align-center
+    // TODO: fix side margins
 `
 .bz-flags .city-banner.city-banner--town .city-banner__ring,
 .bz-flags .city-banner.city-banner--city .city-banner__ring,
@@ -276,23 +285,43 @@ const BZ_HEAD_STYLE = [
     //   2 VSLOT -mr-3
     //     3 CONQUERED-ICON relative size-14 -mr-6 bg-cover bg-no-repeat
 `
-.bz-flags .city-banner.city-banner--citystate .city-banner__conquered-icon {
-	margin-top: 1.3333333333rem;
+.bz-flags .city-banner.city-banner--town .city-banner__conquered-icon {
+    top: -1.3333333333rem;
+    left: 1rem;
+    background-color: #fffa;
 }
 `,  //   2 VSLOT UNREST -mr-3
     //     3 UNREST-ICON relative size-14 bg-cover bg-no-repeat
 `
-.bz-flags .city-banner.city-banner--citystate .city-banner__unrest-icon {
-	margin-top: 1.3333333333rem;
+.bz-flags .city-banner.city-banner--town .city-banner__unrest-icon {
+    top: -2.3333333333rem;
+    left: 1rem;
+    background-color: #fffa;
 }
 `,  //     3 TIME-CONTAINER -mt-3 flex flex-row
     //       4 TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
     //       4 TIME-TEXT self-center font-body-xs text-white
-    //   2 VSLOT RAZING
+    // TODO: vertical alignment
+`
+.bz-flags .city-banner .city-banner__time-container {
+    margin-top: -3.1111111111rem;
+    margin-left: 1rem;
+    margin-right: -1.3333333333rem;
+}
+.bz-flags .city-banner .city-banner__time-icon {
+    margin-top: 0.1111111111rem;
+}
+.bz-flags .city-banner .city-banner__time-text {
+    line-height: 1;
+    padding: 0.1111111111rem 0rem;
+}
+`,  //   2 VSLOT RAZING
     //     3 RAZING-ICON relative size-14 bg-cover bg-no-repeat
 `
-.bz-flags .city-banner.city-banner--citystate .city-banner__razing-icon {
-	margin-top: 1.3333333333rem;
+.bz-flags .city-banner.city-banner--town .city-banner__razing-icon {
+    top: -2.3333333333rem;
+    left: 1rem;
+    background-color: #fffa;
 }
 `,  //     3 TIME-CONTAINER -mt-3 flex flex-row
     //       4 TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
@@ -304,6 +333,7 @@ BZ_HEAD_STYLE.map(style => {
     e.textContent = style;
     document.head.appendChild(e);
 });
+// TODO: text & localization
 if (bzFlagCorpsOptions.banners) {
     document.body.classList.add("bz-flags");
 } else {
