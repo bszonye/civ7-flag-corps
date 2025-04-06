@@ -161,11 +161,11 @@ const BZ_HEAD_STYLE = [
     margin-top: 0.3333333333rem;
     margin-right: -0.0555555556rem;
     padding: 0 0.3333333333rem;
-    text-shadow: 0.0555555556rem 0.0555555556rem 0rem rgba(0, 0, 0, 0.25), 0.0833333333rem 0.0833333333rem 0rem rgba(0, 0, 0, 0.25);
     letter-spacing: 0.0555555556rem;
     font-weight: bold;
+    text-shadow: 0.0555555556rem 0.0555555556rem 0rem rgba(0, 0, 0, 0.25), 0.0833333333rem 0.0833333333rem 0rem rgba(0, 0, 0, 0.25);
     pointer-events: auto;
-    background-color: #0aaa;
+    background-color: #fff8;
 }
 .bz-flags .city-banner.city-banner--citystate .city-banner__name {
     margin-right: 0.2222222222rem;
@@ -183,7 +183,7 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner.city-banner .city-banner__status-religion {
     position: absolute;
-    left: 0rem;
+    left: 0.3333333333rem;
     background-color: #0808;
 }
 `,  //     3 .POPULATION-CONTAINER items-center justify-center w-6 h-6 -mt-2
@@ -197,7 +197,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__ring {
     position: relative;
     margin: 0rem 0.1111111111rem;
-    top: 0.8rem;
+    top: 0.6333333333rem;
     left: 0rem;
     z-index: 2;
 }
@@ -208,7 +208,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__turn {
     position: relative;
     margin: 0rem;
-    top: -0.2222222222rem;
+    top: -0.3888888889rem;
 }
 .bz-flags city-banner.city-banner .city-banner__turn-number {
     background-image: url("fs://game/town_turn-bg.png");
@@ -231,7 +231,7 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags .city-banner.city-banner--citystate .city-banner__city-state-container,
 .bz-flags .city-banner.city-banner--village .city-banner__city-state-container {
-    margin-top: 0.2222222222rem;
+    margin-top: 0.0555555556rem;
     margin-left: 0.2222222222rem;
     margin-right: 0rem;
 }
