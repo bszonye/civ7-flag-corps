@@ -45,12 +45,12 @@ const BZ_COLOR = {
 const BZ_HEAD_STYLE = [
 // 0. CITY-BANNER -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
 `
-.bz-flags city-banner {
-    /* background-color: #fffa; */
-}
 .bz-flags city-banner.city-banner {
     top: -3em;
     height: 3.6666666667rem;
+}
+.bz-debug city-banner {
+    background-color: #fffa;
 }
 `,  // 1 .CONTAINER flex flex-col mt-2">
 `
@@ -58,7 +58,7 @@ const BZ_HEAD_STYLE = [
     margin: 0rem;
 }
 .bz-debug .city-banner .city-banner__container {
-    /* background-color: #f0fa; */
+    background-color: #f0fa;
 }
 `,  //   2 .STRETCH absolute flex flex-row justify-center align-center w-full h-8 top-1\.5 pointer-events-none
 `
@@ -83,9 +83,6 @@ const BZ_HEAD_STYLE = [
 }
 .bz-flags .city-banner.city-banner--hostile .city-banner__city-state-border {
     fxs-border-image-tint: ${BZ_COLOR.hostile};
-}
-.bz-debug city-banner.city-banner .city-banner__city-state-border {
-    /* background-color: #f80a; */
 }
 `,  //     3 .CITY-STATE-RING absolute -left-1 -right-1 top-1 bottom-0
 `
@@ -118,16 +115,13 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--village .city-banner__stretch-bg {
     fxs-border-image-tint: var(--player-color-secondary);
 }
-.bz-debug .city-banner__stretch-bg {
-    /* background-color: #08fa; */
-}
 `,  //   2 FXS-HSLOT.NAME-CONTAINER relative flex justify-between
 `
 .bz-flags city-banner.city-banner .city-banner__name-container {
     line-height: 1.6666666667rem;
     pointer-events: auto;
     margin-top: -0.3333333333rem;
-    margin-left: 0.4444444444rem;
+    margin-left: 0.1666666667rem;
     color: var(--player-color-secondary);
 }
 .bz-flags .city-banner.city-banner--citystate .city-banner__name-container {
@@ -151,9 +145,19 @@ const BZ_HEAD_STYLE = [
 `,  //     3 FXS-VSLOT.NAME-VSLOT pointer-events-auto cursor-pointer max-h-10
     //       4 FXS-HSLOT
     //         5 .CAPITAL-STAR w-8 h-8 bg-cover bg-no-repeat hidden
-    // TODO: adjust start
+    // TODO: adjust star
     // TODO: town focus icons
-    //         5 .NAME font-title-base uppercase
+`
+.bz-flags city-banner.city-banner .city-banner__capital-star {
+    background-image: url("blp:icon-capital.png");
+    margin-top: 0.2222222222rem;
+    margin-right: -0.3333333333rem;
+}
+.bz-flags .city-banner.city-banner--town .city-banner__capital-star {
+    display: flex;
+    background-image: url("blp:focus_growth.png");
+}
+`,  //         5 .NAME font-title-base uppercase
 `
 .bz-flags city-banner.city-banner .city-banner__name.city-banner__icons-below-name,
 .bz-flags city-banner.city-banner .city-banner__name {
@@ -165,7 +169,9 @@ const BZ_HEAD_STYLE = [
     font-weight: bold;
     text-shadow: 0.0555555556rem 0.0555555556rem 0rem rgba(0, 0, 0, 0.25), 0.0833333333rem 0.0833333333rem 0rem rgba(0, 0, 0, 0.25);
     pointer-events: auto;
-    /* background-color: #fff8; */
+}
+.bz-debug city-banner.city-banner .city-banner__name {
+    background-color: #fff8;
 }
 .bz-flags .city-banner.city-banner--citystate .city-banner__name {
     margin-right: 0.2222222222rem;
@@ -183,7 +189,10 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner.city-banner .city-banner__status-religion {
     position: absolute;
-    left: 0.3333333333rem;
+    top: 1.7777777778rem;
+    left: -0.1111111111rem;
+}
+.bz-debug city-banner.city-banner .city-banner__status-religion {
     background-color: #0808;
 }
 `,  //     3 .POPULATION-CONTAINER items-center justify-center w-6 h-6 -mt-2
@@ -196,7 +205,7 @@ const BZ_HEAD_STYLE = [
     width: 1.5555555556rem;
     height: 1.5555555556rem;
     top: 0.4166666667rem;
-    margin: 0rem 0.1111111111rem 0rem 0rem;
+    margin: 0rem 0.1111111111rem 0rem 0.1666666667rem;
     padding: 0rem;
 }
 .bz-flags city-banner.city-banner .city-banner__ring {
@@ -270,10 +279,9 @@ const BZ_HEAD_STYLE = [
     margin: 0rem;
 }
 .bz-flags .city-banner.city-banner--town .city-banner__conquered-icon {
-    position: relative;
+    position: absolute;
     margin: 0rem;
-    top: 1rem;
-    transform: none;
+    top: -0.4444444444rem;
 }
 `,  //   2 FXS-VSLOT.UNREST -mr-3
     //     3 .UNREST-ICON relative size-14 bg-cover bg-no-repeat
@@ -283,24 +291,34 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags .city-banner.city-banner .city-banner__unrest {
     position: relative;
-    top: -3.1666666667em;
-    margin: 0rem;
+    width: 2.6666666667rem;
+    height: 2.6666666667rem;
+    top: -3.7777777778rem;
+    margin: 0rem 0.1666666667rem;
 }
 .bz-flags .city-banner.city-banner--town .city-banner__unrest-icon {
     position: relative;
     margin: 0rem;
+}
+.bz-debug .city-banner.city-banner--town .city-banner__unrest {
+    background-color: #fffa;
 }
 `,  //   2 FXS-VSLOT.RAZING
     //     3 .RAZING-ICON relative size-14 bg-cover bg-no-repeat
 `
 .bz-flags .city-banner.city-banner .city-banner__razing {
     position: relative;
-    top: -3.1666666667em;
-    margin: 0rem;
+    width: 2.6666666667rem;
+    height: 2.6666666667rem;
+    top: -3.7777777778rem;
+    margin: 0rem 0.1666666667rem;
 }
 .bz-flags .city-banner.city-banner--town .city-banner__razing-icon {
     position: relative;
     margin: 0rem;
+}
+.bz-debug .city-banner.city-banner--town .city-banner__razing {
+    background-color: #fffa;
 }
 `,  //     3 .TIME-CONTAINER -mt-3 flex flex-row
     //       4 .TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
@@ -311,7 +329,7 @@ const BZ_HEAD_STYLE = [
     position: relative;
     background-image: none;
     background-color: #0009;
-    margin: -0.4444444444rem 0.1666666667rem 0rem;
+    margin: -0.4444444444rem 0rem 0rem;
     border-radius: 1rem;
     justify-content: center;
     align-items: center;
