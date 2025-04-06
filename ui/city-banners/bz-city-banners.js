@@ -192,7 +192,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__status-religion {
     position: absolute;
     top: 1.7777777778rem;
-    left: -0.1111111111rem;
+    left: -0.1666666667rem;
 }
 .bz-debug city-banner.city-banner .city-banner__status-religion {
     background-color: #0808;
@@ -208,14 +208,17 @@ const BZ_HEAD_STYLE = [
 `,  //     3 .POPULATION-CONTAINER items-center justify-center w-6 h-6 -mt-2
     //       4 FXS-RING-METER.RING.POPULATION-RING bg-cover bg-center flex size-9 self-center align-center
     //         5 .POPULATION-NUMBER font-body-xs text-white top-0 w-full text-center pointer-events-auto
+    //       4 .TURN flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative
+    //         5 .TURN-NUMBER font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat
 `
-.bz-flags city-banner.city-banner .city-banner__population-container {
+.bz-flags city-banner.city-banner div.city-banner__population-container {
     position: relative;
     width: 1.5555555556rem;
     height: 1.5555555556rem;
     top: 0.4166666667rem;
     margin: 0rem 0.1111111111rem 0rem 0.1666666667rem;
     padding: 0rem;
+    box-shadow: none;
 }
 .bz-flags city-banner.city-banner .city-banner__ring {
     position: relative;
@@ -227,8 +230,37 @@ const BZ_HEAD_STYLE = [
     left: -0.0277777778rem;
     z-index: 2;
 }
-`,  //       4 .TURN flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative
-    //         5 .TURN-NUMBER font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat
+`,  //     compatibility with F1rstDan's Cool UI:
+    //     3 .DAN-TOOLTIP items-center justify-center w-8 h-6 -mt-2 -mr-1 pointer-events-auto dan-tooltip hidden
+    //       4 FXS-RING-METER.DAN-TOOLTIP items-center justify-center w-8 h-6 -mt-2 -mr-1 pointer-events-auto dan-tooltip
+    //       4 .TURN city-banner__turn flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative
+    //         5 .TURN-NUMBER -banner__turn-number font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat hidden
+`
+.bz-flags .city-banner div.dan-tooltip {
+    position: relative;
+    width: 1.5555555556rem;
+    height: 1.5555555556rem;
+    top: 0.4166666667rem;
+    margin: 0rem 0.1111111111rem 0rem 0.1666666667rem;
+    padding: 0rem;
+    border-radius: 0.7777777778rem;
+    box-shadow: 0 0 0.3333333333rem 0.1111111111rem #0006;
+}
+`,  //     3 .QUEUE-CONTAINER queue-production queue-none justify-center w-8 h-6 -mt-2 flex-col align-center
+    //       4 FXS-RING-METER.RING.PRODUCTION-RING bg-cover bg-center flex size-9 self-center align-center
+    //         5 .QUEUE-IMG queue-production size-4 self-center
+`
+.bz-flags city-banner.city-banner .city-banner__queue-container {
+    position: relative;
+    width: 1.5555555556rem;
+    height: 1.5555555556rem;
+    top: 0.4166666667rem;
+    margin: 0rem 0.2777777777rem 0rem -0.1111111111rem;
+    padding: 0rem;
+    box-shadow: none;
+}
+`,  //       4 .TURN flex flex-col justify-end align-center self-center w-8 mt-0\.5 pointer-events-none
+    //         5 .TURN-NUMBER font-base-xs text-white text-center w-full bg-cover bg-center bg-no-repeat
 `
 .bz-flags city-banner.city-banner .city-banner__turn {
     position: relative;
@@ -243,20 +275,6 @@ const BZ_HEAD_STYLE = [
     padding: 0.8333333333rem 0.1111111111rem 0.1666666667rem;
     min-width: 1.6666666667rem;
     z-index: 1;
-}
-`,  //     3 .QUEUE-CONTAINER queue-production queue-none justify-center w-8 h-6 -mt-2 flex-col align-center
-    //       4 FXS-RING-METER.RING.PRODUCTION-RING bg-cover bg-center flex size-9 self-center align-center
-    //         5 .QUEUE-IMG queue-production size-4 self-center
-    //       4 .TURN flex flex-col justify-end align-center self-center w-8 mt-0\.5 pointer-events-none
-    //         5 .TURN-NUMBER font-base-xs text-white text-center w-full bg-cover bg-center bg-no-repeat
-`
-.bz-flags city-banner.city-banner .city-banner__queue-container {
-    position: relative;
-    width: 1.5555555556rem;
-    height: 1.5555555556rem;
-    top: 0.4166666667rem;
-    margin: 0rem 0.2777777777rem 0rem -0.1111111111rem;
-    padding: 0rem;
 }
 `,  //     3 .CITY-STATE-CONTAINER justify-center
     //       4 .CITY-STATE-TYPE size-7 self-center align-center justify-center
