@@ -241,7 +241,7 @@ const BZ_HEAD_STYLE = [
     width: 1.5555555556rem;
     height: 1.5555555556rem;
     top: 0.4166666667rem;
-    margin: 0rem 0.1111111111rem 0rem 0.1666666667rem;
+    margin: 0rem 0.1111111111rem 0rem 0.1111111111rem;
     padding: 0rem;
     border-radius: 0.7777777778rem;
     box-shadow: 0 0 0.3333333333rem 0.1111111111rem #0006;
