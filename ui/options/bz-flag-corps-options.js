@@ -2,13 +2,15 @@ import '/core/ui/options/options.js';  // make sure this loads first
 import { CategoryType } from '/core/ui/options/options-helpers.js';
 import { Options, OptionType } from '/core/ui/options/model-options.js';
 import ModSettings from '/bz-flag-corps/ui/options/mod-options-decorator.js';
-// to refresh unit flags
+// to refresh banners and flags
+import CityBannerManager from '/base-standard/ui/city-banners/city-banner-manager.js';
 import { UnitFlagManager } from '/base-standard/ui/unit-flags/unit-flag-manager.js';
 
 const MOD_ID = "bz-flag-corps";
 
 const bzFlagCorpsOptions = new class {
     data = {
+        banners: true,
         noShadow: false,
     };
     constructor() {
@@ -18,12 +20,25 @@ const bzFlagCorpsOptions = new class {
     save() {
         ModSettings.save(MOD_ID, this.data);
         // sync optional styling
+        if (this.data.banners) {
+            document.body.classList.add("bz-flags");
+        } else {
+            document.body.classList.remove("bz-flags");
+        }
         if (this.data.noShadow) {
             document.body.classList.add("bz-flags-no-shadow");
         } else {
             document.body.classList.remove("bz-flags-no-shadow");
         }
+        CityBannerManager.instance?.createAllBanners();
         UnitFlagManager.instance?.requestFlagsRebuild();
+    }
+    get banners() {
+        return this.data.banners ?? true;
+    }
+    set banners(flag) {
+        this.data.banners = !!flag;
+        this.save();
     }
     get noShadow() {
         return this.data.noShadow;
@@ -33,6 +48,25 @@ const bzFlagCorpsOptions = new class {
         this.save();
     }
 };
+const onInitBanners = (info) => {
+    info.currentValue = bzFlagCorpsOptions.banners;
+};
+const onUpdateBanners = (_info, flag) => {
+    bzFlagCorpsOptions.banners = flag;
+};
+Options.addInitCallback(() => {
+    Options.addOption({
+        category: CategoryType.Mods,
+        // @ts-ignore
+        group: "bz_mods",
+        type: OptionType.Checkbox,
+        id: "bz-city-banners",
+        initListener: onInitBanners,
+        updateListener: onUpdateBanners,
+        label: "LOC_OPTIONS_BZ_CITY_BANNERS",
+        description: "LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION",
+    });
+});
 const onInitNoShadow = (info) => {
     info.currentValue = bzFlagCorpsOptions.noShadow;
 };

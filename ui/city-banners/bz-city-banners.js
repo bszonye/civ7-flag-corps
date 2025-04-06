@@ -1,3 +1,4 @@
+import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
 // color palette
 const BZ_COLOR = {
     // game colors
@@ -38,65 +39,32 @@ const BZ_COLOR = {
     // relationship ring colors
     friendly: "#e5d2ac",  // TODO
     hostile: "#af1b1c",
+    neutral: "#0000",
 };
-//  city-banner__container
-//      city-banner__stretch
-//          city-banner__city-state-border
-//          city-banner__city-state-ring
-//          city-banner__stretch-bg
-//      hslot city-banner__name-container
-//          city-banner__portrait
-//              city-banner__portrait-bg1
-//              city-banner__portrait-bg2
-//              city-banner__portrait-img
-//          vslot city-banner__name-vslot
-//              hslot
-//                  city-banner__capital-star
-//                  city-banner__name
-//              hslot city-banner__status-religion
-//                  city-banner__status
-//                      city-banner__status-background
-//                      city-banner__status-icon
-//                  hslot city-banner__religion
-//                      city-banner__religion-symbol-bg
-//                          city-banner__religion-symbol
-//                      city-banner__religion-symbol-bg
-//                          city-banner__religion-symbol
-//          city-banner__population-container
-//              ring-meter city-banner__ring
-//                  city-banner__population-number
-//              city-banner__turn
-//                  city-banner__turn-number
-//          city-banner__queue-container
-//              ring-meter
-//                  city-banner__queue-img
-//              city-banner__turn
-//                  city-banner__turn-number
-//          city-banner__city-state-container
-//              city-banner__city-state-type
-//                  city-banner__city-state-icon
-//  hslot
-//      vslot
-//          city-banner__conquered-icon
-//      vslot city-banner__unrest
-//          city-banner__unrest-icon
-//          city-banner__time-container
-//              city-banner__time-icon
-//              city-banner__time-text
-//      vslot city-banner__razing
-//          city-banner__razing-icon
-//          city-banner__time-container
-//              city-banner__time-icon
-//              city-banner__time-text
 const BZ_HEAD_STYLE = [
-    // 1 CONTAINER flex flex-col mt-2">
+`
+.bz-flags .city-banner.city-banner--town,
+.bz-flags .city-banner.city-banner--city,
+.bz-flags .city-banner.city-banner--city-other,
+.bz-flags .city-banner.city-banner--citystate,
+.bz-flags .city-banner.city-banner--village {
+    top: -3em;
+}
+`,  // 1 CONTAINER flex flex-col mt-2">
 `
 .bz-flags .city-banner.city-banner--town .city-banner__container,
 .bz-flags .city-banner.city-banner--city .city-banner__container,
 .bz-flags .city-banner.city-banner--city-other .city-banner__container,
 .bz-flags .city-banner.city-banner--citystate .city-banner__container,
 .bz-flags .city-banner.city-banner--village .city-banner__container {
-    margin-top: 0.4444444444rem;
+    margin: 0rem;
+}
+.bz-debug .city-banner.city-banner--town .city-banner__container,
+.bz-debug .city-banner.city-banner--city .city-banner__container,
+.bz-debug .city-banner.city-banner--city-other .city-banner__container,
+.bz-debug .city-banner.city-banner--citystate .city-banner__container,
+.bz-debug .city-banner.city-banner--village .city-banner__container {
+    background-color: #f0f8;
 }
 `,  //   2 STRETCH absolute flex flex-row justify-center align-center w-full h-8 top-1\.5 pointer-events-none
 `
@@ -108,16 +76,27 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--city-other .city-banner__stretch,
 .bz-flags .city-banner.city-banner--citystate .city-banner__stretch,
 .bz-flags .city-banner.city-banner--village .city-banner__stretch {
-    top: 0.3333333333rem;
+    top: 0.0555555556rem;
     height: 3.6666666667rem;
 }
 `,  //     3 CITY-STATE-BORDER absolute -left-2 -right-2 -top-0 -bottom-0
+    //       TODO: .city-banner--allied and .city-banner--warring?
 `
+.bz-flags .city-banner.city-banner--town .city-banner__city-state-border,
+.bz-flags .city-banner.city-banner--city .city-banner__city-state-border,
+.bz-flags .city-banner.city-banner--city-other .city-banner__city-state-border,
 .bz-flags .city-banner.city-banner--citystate .city-banner__city-state-border,
 .bz-flags .city-banner.city-banner--village .city-banner__city-state-border {
-	border-image-slice: 60 24 2 24 fill;
-	border-image-outset: 0.2222222222rem 0.1111111111rem;
-	border-image-width: 3rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
+        border-image-slice: 60 24 2 24 fill;
+        border-image-outset: 0.2222222222rem 0.1111111111rem;
+        border-image-width: 3rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
+}
+.bz-flags .city-banner.city-banner--town .city-banner__city-state-border,
+.bz-flags .city-banner.city-banner--city .city-banner__city-state-border,
+.bz-flags .city-banner.city-banner--city-other .city-banner__city-state-border,
+.bz-flags .city-banner.city-banner--citystate .city-banner__city-state-border,
+.bz-flags .city-banner.city-banner--village .city-banner__city-state-border {
+    fxs-border-image-tint: ${BZ_COLOR.neutral};
 }
 .bz-flags .city-banner.city-banner--friendly .city-banner__city-state-border {
     fxs-border-image-tint: ${BZ_COLOR.friendly};
@@ -127,6 +106,7 @@ const BZ_HEAD_STYLE = [
 }
 `,  //     3 CITY-STATE-RING absolute -left-1 -right-1 top-1 bottom-0
 `
+.bz-flags .city-banner.city-banner--town .city-banner__city-state-ring,
 .bz-flags .city-banner.city-banner--city .city-banner__city-state-ring,
 .bz-flags .city-banner.city-banner--city-other .city-banner__city-state-ring,
 .bz-flags .city-banner.city-banner--citystate .city-banner__city-state-ring,
@@ -137,10 +117,14 @@ const BZ_HEAD_STYLE = [
     border-image-outset: 0.2222222222rem 0.3888888889rem;
     border-image-width: 3.3333333333rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
 }
+.bz-flags .city-banner.city-banner--town .city-banner__city-state-ring {
+    fxs-border-image-tint: #0000;
+}
 .bz-flags .city-banner.city-banner--city .city-banner__city-state-ring,
 .bz-flags .city-banner.city-banner--city-other .city-banner__city-state-ring,
 .bz-flags .city-banner.city-banner--citystate .city-banner__city-state-ring {
     fxs-border-image-tint: var(--player-color-secondary);
+}
 .bz-flags .city-banner.city-banner--village .city-banner__city-state-ring {
     fxs-border-image-tint: var(--player-color-primary);
 }
@@ -168,21 +152,15 @@ const BZ_HEAD_STYLE = [
 }
 `,  //   2 HSLOT NAME-CONTAINER relative flex justify-between
 `
-.bz-flags .city-banner__name-container {
-    line-height: 2rem;
-    pointer-events: auto;
-    margin-left: 0.4444444444rem;
-}
-.bz-flags .city-banner.city-banner--town .city-banner__name-container {
-    margin-top: 0.8888888889rem;
-}
+.bz-flags .city-banner.city-banner--town .city-banner__name-container,
 .bz-flags .city-banner.city-banner--city .city-banner__name-container,
-.bz-flags .city-banner.city-banner--city-other .city-banner__name-container {
-    margin-top: 0.3333333333rem;
-}
+.bz-flags .city-banner.city-banner--city-other .city-banner__name-container,
 .bz-flags .city-banner.city-banner--citystate .city-banner__name-container,
 .bz-flags .city-banner.city-banner--village .city-banner__name-container {
+    line-height: 2rem;
+    pointer-events: auto;
     margin-top: -0.3333333333rem;
+    margin-left: 0.4444444444rem;
 }
 .bz-flags .city-banner__name-container {
     color: var(--player-color-secondary);
@@ -210,13 +188,13 @@ const BZ_HEAD_STYLE = [
     //         5 CAPITAL-STAR w-8 h-8 bg-cover bg-no-repeat hidden
     //         5 NAME font-title-base uppercase
 `
-.bz-flags .city-banner.city-banner--town .city-banner__name {
-    margin-top: -0.2777777778rem;
-}
+.bz-flags .city-banner.city-banner--town .city-banner__name,
+.bz-flags .city-banner.city-banner--city .city-banner__name,
+.bz-flags .city-banner.city-banner--city-other .city-banner__name,
 .bz-flags .city-banner.city-banner--citystate .city-banner__name,
 .bz-flags .city-banner.city-banner--village .city-banner__name {
-    margin-top: 0.3888888889rem;
-    text-shadow: none;
+    margin-top: 0.3333333333rem;
+    text-shadow: 0.0555555556rem 0.0555555556rem 0rem rgba(0, 0, 0, 0.25), 0.0833333333rem 0.0833333333rem 0rem rgba(0, 0, 0, 0.25);
 }
 .bz-flags .city-banner.city-banner--citystate .city-banner__name {
     margin-right: 0.2222222222rem;
@@ -237,23 +215,12 @@ const BZ_HEAD_STYLE = [
 }
 `,  //       4 RING-METER RING POPULATION-RING bg-cover bg-center flex size-9 self-center align-center
 `
-.bz-flags .city-banner__ring {
-    position: relative;
-}
 .bz-flags .city-banner.city-banner--town .city-banner__ring,
 .bz-flags .city-banner.city-banner--city .city-banner__ring,
-.bz-flags .city-banner.city-banner--city-other .city-banner__ring {
-    position: relative;
-    margin-top: 0rem;
-    margin-right: 0.1111111111rem;
-    top: 0.475rem;
-    left: 0rem;
-    z-index: 2;
-}
+.bz-flags .city-banner.city-banner--city-other .city-banner__ring,
 .bz-flags .city-banner.city-banner--citystate .city-banner__ring {
     position: relative;
-    margin-top: 0rem;
-    margin-right: 0.1111111111rem;
+    margin: 0rem 0.1111111111rem;
     top: 0.8rem;
     left: 0rem;
     z-index: 2;
@@ -267,20 +234,19 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--citystate .city-banner__turn {
     position: relative;
     margin: 0rem;
-    top: 0.2222222222rem;;
+    top: -0.2222222222rem;
 }
 `,  //         5 TURN-NUMBER font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat
 `
-.bz-flags .city-banner__turn-number {
+.bz-flags .city-banner.city-banner--town .city-banner__turn-number,
+.bz-flags .city-banner.city-banner--city .city-banner__turn-number,
+.bz-flags .city-banner.city-banner--city-other .city-banner__turn-number,
+.bz-flags .city-banner.city-banner--citystate .city-banner__turn-number {
     background-image: url("fs://game/town_turn-bg.png");
-    background-repeat: no-repeat;
     background-size: 100% 100%;
     line-height: 1;
     margin: 0rem;
-    padding-left: 0.1111111111rem;
-    padding-right: 0.1111111111rem;
-    padding-top: 0.8888888889rem;
-    padding-bottom: 0.1111111111rem;
+    padding: 0.8888888889rem 0.1111111111rem 0.1111111111rem;
     min-width: 1.6666666667rem;
     z-index: 1;
 }
@@ -338,7 +304,13 @@ BZ_HEAD_STYLE.map(style => {
     e.textContent = style;
     document.head.appendChild(e);
 });
-document.body.classList.add("bz-flags");
+if (bzFlagCorpsOptions.banners) {
+    document.body.classList.add("bz-flags");
+} else {
+    document.body.classList.remove("bz-flags");
+}
+// TODO: react to setting changes
+if (UI.isDebugPlotInfoVisible()) document.body.classList.add("bz-debug");
 
 export class bzCityBanner {
     static component_prototype;

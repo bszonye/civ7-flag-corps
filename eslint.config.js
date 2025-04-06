@@ -26,6 +26,7 @@ export default [
                 MapConstructibles: "readonly",
                 MapUnits: "readonly",
                 Players: "readonly",
+                UI: "readonly",
                 console: "readonly",
                 document: "readonly",
                 engine: "readonly",
