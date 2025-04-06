@@ -27,7 +27,6 @@ const bzFlagCorpsOptions = new class {
         } else {
             document.body.classList.remove("bz-flags-no-shadow");
         }
-        console.warn(`TRIX DISPATCH`);
     }
     get banners() {
         return this.data.banners ?? true;
