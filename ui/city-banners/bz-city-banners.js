@@ -157,6 +157,9 @@ const BZ_HEAD_STYLE = [
     display: flex;
     background-image: url("blp:focus_growth.png");
 }
+.bz-flags .city-banner.city-banner--village .city-banner__capital-star {
+    display: none;
+}
 `,  //         5 .NAME font-title-base uppercase
 `
 .bz-flags city-banner.city-banner .city-banner__name.city-banner__icons-below-name,
@@ -185,7 +188,6 @@ const BZ_HEAD_STYLE = [
     //             7 .RELIGION-SYMBOL bg-contain bg-no-repeat bg-center
     //           6 .RELIGION-SYMBOL-BG religion-bg--right
     //             7 .RELIGION-SYMBOL bg-contain bg-no-repeat bg-center religion-symbol--right
-    // TODO: religion icons
 `
 .bz-flags city-banner.city-banner .city-banner__status-religion {
     position: absolute;
@@ -195,10 +197,17 @@ const BZ_HEAD_STYLE = [
 .bz-debug city-banner.city-banner .city-banner__status-religion {
     background-color: #0808;
 }
+.bz-flags city-banner.city-banner .city-banner__status {
+    position: absolute;
+    top: -2.2222222222em;
+    left: 0.4444444444em;
+}
+.bz-flags city-banner.city-banner .city-banner__religion {
+    position: relative;
+}
 `,  //     3 .POPULATION-CONTAINER items-center justify-center w-6 h-6 -mt-2
     //       4 FXS-RING-METER.RING.POPULATION-RING bg-cover bg-center flex size-9 self-center align-center
     //         5 .POPULATION-NUMBER font-body-xs text-white top-0 w-full text-center pointer-events-auto
-    // TODO: fix side margins
 `
 .bz-flags city-banner.city-banner .city-banner__population-container {
     position: relative;
