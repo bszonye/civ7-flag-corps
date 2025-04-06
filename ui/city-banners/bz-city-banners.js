@@ -42,7 +42,7 @@ const BZ_COLOR = {
     neutral: "#0000",
 };
 const BZ_HEAD_STYLE = [
-// ROOT -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
+// <CITY-BANNER> -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
 `
 .bz-flags .city-banner.city-banner--town,
 .bz-flags .city-banner.city-banner--city,
@@ -55,7 +55,7 @@ const BZ_HEAD_STYLE = [
 .bz-debug .city-banner {
     background-color: #fffa;
 }
-`,  // 1 CONTAINER flex flex-col mt-2">
+`,  // 1 .CONTAINER flex flex-col mt-2">
 `
 .bz-flags .city-banner.city-banner--town .city-banner__container,
 .bz-flags .city-banner.city-banner--city .city-banner__container,
@@ -67,7 +67,7 @@ const BZ_HEAD_STYLE = [
 .bz-debug .city-banner .city-banner__container {
     background-color: #f0fa;
 }
-`,  //   2 STRETCH absolute flex flex-row justify-center align-center w-full h-8 top-1\.5 pointer-events-none
+`,  //   2 .STRETCH absolute flex flex-row justify-center align-center w-full h-8 top-1\.5 pointer-events-none
 `
 .bz-flags .city-banner.city-banner--town .city-banner__stretch,
 .bz-flags .city-banner.city-banner--city .city-banner__stretch,
@@ -77,7 +77,7 @@ const BZ_HEAD_STYLE = [
     top: 0.0555555556rem;
     height: 3.6666666667rem;
 }
-`,  //     3 CITY-STATE-BORDER absolute -left-2 -right-2 -top-0 -bottom-0
+`,  //     3 .CITY-STATE-BORDER absolute -left-2 -right-2 -top-0 -bottom-0
     //       TODO: .city-banner--allied and .city-banner--warring?
 `
 .bz-flags .city-banner.city-banner--town .city-banner__city-state-border,
@@ -106,7 +106,7 @@ const BZ_HEAD_STYLE = [
 .bz-debug .city-banner .city-banner__city-state-border {
     /* background-color: #f80a; */
 }
-`,  //     3 CITY-STATE-RING absolute -left-1 -right-1 top-1 bottom-0
+`,  //     3 .CITY-STATE-RING absolute -left-1 -right-1 top-1 bottom-0
 `
 .bz-flags .city-banner.city-banner--town .city-banner__city-state-ring,
 .bz-flags .city-banner.city-banner--city .city-banner__city-state-ring,
@@ -133,7 +133,7 @@ const BZ_HEAD_STYLE = [
 .bz-debug .city-banner__city-state-ring {
     /* background-color: #8f0a; */
 }
-`,  //     3 STRETCH-BG absolute inset-0 pointer-events-none
+`,  //     3 .STRETCH-BG absolute inset-0 pointer-events-none
 `
 .bz-flags .city-banner__stretch-bg,
 .bz-flags .city-banner.city-banner--town .city-banner__stretch-bg,
@@ -158,7 +158,7 @@ const BZ_HEAD_STYLE = [
 .bz-debug .city-banner__stretch-bg {
     /* background-color: #08fa; */
 }
-`,  //   2 HSLOT NAME-CONTAINER relative flex justify-between
+`,  //   2 FXS-HSLOT.NAME-CONTAINER relative flex justify-between
 `
 .bz-flags .city-banner.city-banner--town .city-banner__name-container,
 .bz-flags .city-banner.city-banner--city .city-banner__name-container,
@@ -179,10 +179,10 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--village .city-banner__name-container {
     color: var(--player-color-primary);
 }
-`,  //     3 PORTRAIT relative pointer-events-auto flex
-    //       4 PORTRAIT-BG1 absolute inset-0 bg-center bg-cover bg-no-repeat
-    //       4 PORTRAIT-BG2 absolute inset-x-0 top-0 -bottom-2 bg-center bg-cover bg-no-repeat
-    //       4 PORTRAIT-IMG absolute -left-2 -right-2 -top-1 bottom-0 bg-cover bg-center bg-no-repeat pointer-events-none
+`,  //     3 .PORTRAIT relative pointer-events-auto flex
+    //       4 .PORTRAIT-BG1 absolute inset-0 bg-center bg-cover bg-no-repeat
+    //       4 .PORTRAIT-BG2 absolute inset-x-0 top-0 -bottom-2 bg-center bg-cover bg-no-repeat
+    //       4 .PORTRAIT-IMG absolute -left-2 -right-2 -top-1 bottom-0 bg-cover bg-center bg-no-repeat pointer-events-none
 `
 .bz-flags .city-banner.city-banner--citystate .city-banner__portrait {
     /* TODO */
@@ -191,10 +191,10 @@ const BZ_HEAD_STYLE = [
 	height: 1.7777777778rem;
 	display: flex;
 }
-`,  //     3 VSLOT NAME-VSLOT pointer-events-auto cursor-pointer max-h-10
-    //       4 HSLOT
-    //         5 CAPITAL-STAR w-8 h-8 bg-cover bg-no-repeat hidden
-    //         5 NAME font-title-base uppercase
+`,  //     3 FXS-VSLOT.NAME-VSLOT pointer-events-auto cursor-pointer max-h-10
+    //       4 FXS-HSLOT
+    //         5 .CAPITAL-STAR w-8 h-8 bg-cover bg-no-repeat hidden
+    //         5 .NAME font-title-base uppercase
 `
 .bz-flags .city-banner.city-banner--town .city-banner__name,
 .bz-flags .city-banner.city-banner--city .city-banner__name,
@@ -207,21 +207,21 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--citystate .city-banner__name {
     margin-right: 0.2222222222rem;
 }
-`,  //       4 HSLOT STATUS-RELIGION
-    //         5 STATUS flex justify-center align-center opacity-100
-    //           6 STATUS-BACKGROUND h-full w-full absolute
-    //           6 STATUS-ICON absolute w-full h-full bg-no-repeat
-    //         5 HSLOT RELIGION self-center
-    //           6 RELIGION-SYMBOL-BG
-    //             7 RELIGION-SYMBOL bg-contain bg-no-repeat bg-center
-    //           6 RELIGION-SYMBOL-BG religion-bg--right
-    //             7 RELIGION-SYMBOL bg-contain bg-no-repeat bg-center religion-symbol--right
-    //     3 POPULATION-CONTAINER items-center justify-center w-6 h-6 -mt-2
+`,  //       4 FXS-HSLOT.STATUS-RELIGION
+    //         5 .STATUS flex justify-center align-center opacity-100
+    //           6 .STATUS-BACKGROUND h-full w-full absolute
+    //           6 .STATUS-ICON absolute w-full h-full bg-no-repeat
+    //         5 FXS-HSLOT.RELIGION self-center
+    //           6 .RELIGION-SYMBOL-BG
+    //             7 .RELIGION-SYMBOL bg-contain bg-no-repeat bg-center
+    //           6 .RELIGION-SYMBOL-BG religion-bg--right
+    //             7 .RELIGION-SYMBOL bg-contain bg-no-repeat bg-center religion-symbol--right
+    //     3 .POPULATION-CONTAINER items-center justify-center w-6 h-6 -mt-2
 `
 .bz-flags .city-banner__population-container {
     position: relative;
 }
-`,  //       4 RING-METER RING POPULATION-RING bg-cover bg-center flex size-9 self-center align-center
+`,  //       4 FXS-RING-METER.RING.POPULATION-RING bg-cover bg-center flex size-9 self-center align-center
     // TODO: fix side margins
 `
 .bz-flags .city-banner.city-banner--town .city-banner__ring,
@@ -234,8 +234,8 @@ const BZ_HEAD_STYLE = [
     left: 0rem;
     z-index: 2;
 }
-`,  //         5 POPULATION-NUMBER font-body-xs text-white top-0 w-full text-center pointer-events-auto
-    //       4 TURN flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative
+`,  //         5 .POPULATION-NUMBER font-body-xs text-white top-0 w-full text-center pointer-events-auto
+    //       4 .TURN flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative
 `
 .bz-flags .city-banner.city-banner--town .city-banner__turn,
 .bz-flags .city-banner.city-banner--city .city-banner__turn,
@@ -245,7 +245,7 @@ const BZ_HEAD_STYLE = [
     margin: 0rem;
     top: -0.2222222222rem;
 }
-`,  //         5 TURN-NUMBER font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat
+`,  //         5 .TURN-NUMBER font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat
 `
 .bz-flags .city-banner.city-banner--town .city-banner__turn-number,
 .bz-flags .city-banner.city-banner--city .city-banner__turn-number,
@@ -259,12 +259,12 @@ const BZ_HEAD_STYLE = [
     min-width: 1.6666666667rem;
     z-index: 1;
 }
-`,  //     3 QUEUE-CONTAINER queue-production queue-none justify-center w-8 h-6 -mt-2 flex-col align-center
-    //       4 RING-METER RING PRODUCTION-RING bg-cover bg-center flex size-9 self-center align-center
-    //         5 QUEUE-IMG queue-production size-4 self-center
-    //       4 TURN flex flex-col justify-end align-center self-center w-8 mt-0\.5 pointer-events-none
-    //         5 TURN-NUMBER font-base-xs text-white text-center w-full bg-cover bg-center bg-no-repeat
-    //     3 CITY-STATE-CONTAINER justify-center
+`,  //     3 .QUEUE-CONTAINER queue-production queue-none justify-center w-8 h-6 -mt-2 flex-col align-center
+    //       4 FXS-RING-METER.RING.PRODUCTION-RING bg-cover bg-center flex size-9 self-center align-center
+    //         5 .QUEUE-IMG queue-production size-4 self-center
+    //       4 .TURN flex flex-col justify-end align-center self-center w-8 mt-0\.5 pointer-events-none
+    //         5 .TURN-NUMBER font-base-xs text-white text-center w-full bg-cover bg-center bg-no-repeat
+    //     3 .CITY-STATE-CONTAINER justify-center
 `
 .bz-flags .city-banner.city-banner--citystate .city-banner__city-state-container,
 .bz-flags .city-banner.city-banner--village .city-banner__city-state-container {
@@ -272,35 +272,38 @@ const BZ_HEAD_STYLE = [
     margin-left: 0.2222222222rem;
     margin-right: 0rem;
 }
-`,  //       4 CITY-STATE-TYPE size-7 self-center align-center justify-center
+`,  //       4 .CITY-STATE-TYPE size-7 self-center align-center justify-center
 `
 .bz-flags .city-banner.city-banner--citystate .city-banner__city-state-type,
 .bz-flags .city-banner.city-banner--village .city-banner__city-state-type {
-    display: flex;
     margin-top: 0.3333333333rem;
     margin-right: 0.1111111111rem;
 }
-`,  //         5 CITY-STATE-ICON size-8 self-center align-center bg-cover bg-no-repeat
-    // 1 HSLOT items-center -ml-12 mt-10
-    //   2 VSLOT -mr-3
-    //     3 CONQUERED-ICON relative size-14 -mr-6 bg-cover bg-no-repeat
+`,  //         5 .CITY-STATE-ICON size-8 self-center align-center bg-cover bg-no-repeat
+    // 1 FXS-HSLOT items-center -ml-12 mt-10
+`
+.bz-flags city-banner > fxs-hslot {
+    background-color: #f0fa;
+}
+`,  //   2 FXS-VSLOT -mr-3
+    //     3 .CONQUERED-ICON relative size-14 -mr-6 bg-cover bg-no-repeat
 `
 .bz-flags .city-banner.city-banner--town .city-banner__conquered-icon {
     top: -1.3333333333rem;
     left: 1rem;
     background-color: #fffa;
 }
-`,  //   2 VSLOT UNREST -mr-3
-    //     3 UNREST-ICON relative size-14 bg-cover bg-no-repeat
+`,  //   2 FXS-VSLOT.UNREST -mr-3
+    //     3 .UNREST-ICON relative size-14 bg-cover bg-no-repeat
 `
 .bz-flags .city-banner.city-banner--town .city-banner__unrest-icon {
     top: -2.3333333333rem;
     left: 1rem;
     background-color: #fffa;
 }
-`,  //     3 TIME-CONTAINER -mt-3 flex flex-row
-    //       4 TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
-    //       4 TIME-TEXT self-center font-body-xs text-white
+`,  //     3 .TIME-CONTAINER -mt-3 flex flex-row
+    //       4 .TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
+    //       4 .TIME-TEXT self-center font-body-xs text-white
     // TODO: vertical alignment
 `
 .bz-flags .city-banner .city-banner__time-container {
@@ -315,17 +318,17 @@ const BZ_HEAD_STYLE = [
     line-height: 1;
     padding: 0.1111111111rem 0rem;
 }
-`,  //   2 VSLOT RAZING
-    //     3 RAZING-ICON relative size-14 bg-cover bg-no-repeat
+`,  //   2 FXS-VSLOT.RAZING
+    //     3 .RAZING-ICON relative size-14 bg-cover bg-no-repeat
 `
 .bz-flags .city-banner.city-banner--town .city-banner__razing-icon {
     top: -2.3333333333rem;
     left: 1rem;
     background-color: #fffa;
 }
-`,  //     3 TIME-CONTAINER -mt-3 flex flex-row
-    //       4 TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
-    //       4 TIME-TEXT self-center font-body-xs text-white
+`,  //     3 .TIME-CONTAINER -mt-3 flex flex-row
+    //       4 .TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
+    //       4 .TIME-TEXT self-center font-body-xs text-white
 
 ];
 BZ_HEAD_STYLE.map(style => {
