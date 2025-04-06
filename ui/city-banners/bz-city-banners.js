@@ -42,8 +42,11 @@ const BZ_COLOR = {
     neutral: "#0000",
 };
 const BZ_HEAD_STYLE = [
-// <CITY-BANNER> -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
+// 0. CITY-BANNER -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
 `
+.bz-flags city-banner {
+    background-color: #fffa;
+}
 .bz-flags .city-banner.city-banner--town,
 .bz-flags .city-banner.city-banner--city,
 .bz-flags .city-banner.city-banner--city-other,
@@ -51,9 +54,6 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--village {
     top: -3em;
     height: 3.6666666667rem;
-}
-.bz-debug .city-banner {
-    background-color: #fffa;
 }
 `,  // 1 .CONTAINER flex flex-col mt-2">
 `
@@ -65,7 +65,7 @@ const BZ_HEAD_STYLE = [
     margin: 0rem;
 }
 .bz-debug .city-banner .city-banner__container {
-    background-color: #f0fa;
+    /* background-color: #f0fa; */
 }
 `,  //   2 .STRETCH absolute flex flex-row justify-center align-center w-full h-8 top-1\.5 pointer-events-none
 `
@@ -199,6 +199,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--town .city-banner__name,
 .bz-flags .city-banner.city-banner--city .city-banner__name,
 .bz-flags .city-banner.city-banner--city-other .city-banner__name,
+.bz-flags .city-banner.city-banner--city-other .city-banner__name.city-banner__icons-below-name,
 .bz-flags .city-banner.city-banner--citystate .city-banner__name,
 .bz-flags .city-banner.city-banner--village .city-banner__name {
     margin-top: 0.3333333333rem;
@@ -283,23 +284,49 @@ const BZ_HEAD_STYLE = [
     // 1 FXS-HSLOT items-center -ml-12 mt-10
 `
 .bz-flags city-banner > fxs-hslot {
-    background-color: #f0fa;
+    position: absolute;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    transform: translateX(-50%) scale(1);
 }
 `,  //   2 FXS-VSLOT -mr-3
     //     3 .CONQUERED-ICON relative size-14 -mr-6 bg-cover bg-no-repeat
 `
+.bz-flags city-banner > fxs-hslot > fxs-vslot {
+    position: absolute;
+    margin: 0;
+}
 .bz-flags .city-banner.city-banner--town .city-banner__conquered-icon {
-    top: -1.3333333333rem;
-    left: 1rem;
-    background-color: #fffa;
+    position: relative;
+    margin: 0rem;
+    top: -0.9444444444rem;
+    transform: none;
 }
 `,  //   2 FXS-VSLOT.UNREST -mr-3
     //     3 .UNREST-ICON relative size-14 bg-cover bg-no-repeat
+    //     3 .TIME-CONTAINER -mt-3 flex flex-row
+    //       4 .TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
+    //       4 .TIME-TEXT self-center font-body-xs text-white
 `
+.bz-flags .city-banner.city-banner .city-banner__unrest {
+    position: relative;
+    top: -3em;
+}
 .bz-flags .city-banner.city-banner--town .city-banner__unrest-icon {
-    top: -2.3333333333rem;
-    left: 1rem;
-    background-color: #fffa;
+    position: relative;
+    margin: 0rem;
+}
+`,  //   2 FXS-VSLOT.RAZING
+    //     3 .RAZING-ICON relative size-14 bg-cover bg-no-repeat
+`
+.bz-flags .city-banner.city-banner .city-banner__razing {
+    position: relative;
+    top: -3em;
+}
+.bz-flags .city-banner.city-banner--town .city-banner__razing-icon {
+    position: relative;
+    margin: 0rem;
 }
 `,  //     3 .TIME-CONTAINER -mt-3 flex flex-row
     //       4 .TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
@@ -307,29 +334,22 @@ const BZ_HEAD_STYLE = [
     // TODO: vertical alignment
 `
 .bz-flags .city-banner .city-banner__time-container {
-    margin-top: -3.1111111111rem;
-    margin-left: 1rem;
-    margin-right: -1.3333333333rem;
+    position: relative;
+    background-image: none;
+    background-color: #0009;
+    margin: -0.4444444444rem 0.1666666667rem 0rem;
+    border-radius: 1rem;
+    justify-content: center;
+    align-items: center;
 }
 .bz-flags .city-banner .city-banner__time-icon {
-    margin-top: 0.1111111111rem;
+    margin: 0rem;
 }
 .bz-flags .city-banner .city-banner__time-text {
     line-height: 1;
-    padding: 0.1111111111rem 0rem;
+    margin-right: 0.3333333333rem;
 }
-`,  //   2 FXS-VSLOT.RAZING
-    //     3 .RAZING-ICON relative size-14 bg-cover bg-no-repeat
-`
-.bz-flags .city-banner.city-banner--town .city-banner__razing-icon {
-    top: -2.3333333333rem;
-    left: 1rem;
-    background-color: #fffa;
-}
-`,  //     3 .TIME-CONTAINER -mt-3 flex flex-row
-    //       4 .TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
-    //       4 .TIME-TEXT self-center font-body-xs text-white
-
+`,
 ];
 BZ_HEAD_STYLE.map(style => {
     const e = document.createElement('style');
