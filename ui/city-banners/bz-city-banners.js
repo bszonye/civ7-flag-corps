@@ -46,7 +46,7 @@ const BZ_HEAD_STYLE = [
 // 0. CITY-BANNER -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
 `
 .bz-flags city-banner {
-    background-color: #fffa;
+    /* background-color: #fffa; */
 }
 .bz-flags city-banner.city-banner {
     top: -3em;
@@ -128,7 +128,6 @@ const BZ_HEAD_STYLE = [
     pointer-events: auto;
     margin-top: -0.3333333333rem;
     margin-left: 0.4444444444rem;
-    margin-right: 0.2777777778rem;
     color: var(--player-color-secondary);
 }
 .bz-flags .city-banner.city-banner--citystate .city-banner__name-container {
@@ -166,7 +165,7 @@ const BZ_HEAD_STYLE = [
     font-weight: bold;
     text-shadow: 0.0555555556rem 0.0555555556rem 0rem rgba(0, 0, 0, 0.25), 0.0833333333rem 0.0833333333rem 0rem rgba(0, 0, 0, 0.25);
     pointer-events: auto;
-    background-color: #fff8;
+    /* background-color: #fff8; */
 }
 .bz-flags .city-banner.city-banner--citystate .city-banner__name {
     margin-right: 0.2222222222rem;
@@ -196,17 +195,16 @@ const BZ_HEAD_STYLE = [
     position: relative;
     width: 1.5555555556rem;
     height: 1.5555555556rem;
-    height: 0.7777777778rem;  /* DEBUG */
     top: 0.4166666667rem;
-    margin: 0rem;
+    margin: 0rem 0.1111111111rem 0rem 0rem;
     padding: 0rem;
-    background-color: #0888;
 }
 .bz-flags city-banner.city-banner .city-banner__ring {
-    line-height: 2rem;
     position: relative;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
     margin: 0rem;
-    padding: 0rem;
     top: -0.2222222222rem;
     left: -0.0277777778rem;
     z-index: 2;
@@ -224,7 +222,7 @@ const BZ_HEAD_STYLE = [
     background-size: 100% 100%;
     line-height: 1;
     margin: 0rem;
-    padding: 0.8888888889rem 0.1111111111rem 0.1666666667rem;
+    padding: 0.8333333333rem 0.1111111111rem 0.1666666667rem;
     min-width: 1.6666666667rem;
     z-index: 1;
 }
@@ -237,12 +235,10 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__queue-container {
     position: relative;
     width: 1.5555555556rem;
-    height: 0.7777777778rem;  /* DEBUG */
     height: 1.5555555556rem;
     top: 0.4166666667rem;
-    margin: 0rem;
+    margin: 0rem 0.2777777777rem 0rem -0.1111111111rem;
     padding: 0rem;
-    background-color: #0888;
 }
 `,  //     3 .CITY-STATE-CONTAINER justify-center
     //       4 .CITY-STATE-TYPE size-7 self-center align-center justify-center
@@ -250,9 +246,7 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags .city-banner.city-banner--citystate .city-banner__city-state-container,
 .bz-flags .city-banner.city-banner--village .city-banner__city-state-container {
-    margin-top: 0.0555555556rem;
-    margin-left: 0.2222222222rem;
-    margin-right: 0rem;
+    margin: 0.0555555556rem 0rem 0rem 0.0555555556rem;
 }
 .bz-flags .city-banner.city-banner--citystate .city-banner__city-state-type,
 .bz-flags .city-banner.city-banner--village .city-banner__city-state-type {
