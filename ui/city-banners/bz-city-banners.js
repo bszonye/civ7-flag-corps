@@ -1,4 +1,5 @@
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
+
 // color palette
 const BZ_COLOR = {
     // game colors

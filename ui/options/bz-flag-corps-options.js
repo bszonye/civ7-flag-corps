@@ -2,9 +2,6 @@ import '/core/ui/options/options.js';  // make sure this loads first
 import { CategoryType } from '/core/ui/options/options-helpers.js';
 import { Options, OptionType } from '/core/ui/options/model-options.js';
 import ModSettings from '/bz-flag-corps/ui/options/mod-options-decorator.js';
-// to refresh banners and flags
-import CityBannerManager from '/base-standard/ui/city-banners/city-banner-manager.js';
-import { UnitFlagManager } from '/base-standard/ui/unit-flags/unit-flag-manager.js';
 
 const MOD_ID = "bz-flag-corps";
 
@@ -30,8 +27,7 @@ const bzFlagCorpsOptions = new class {
         } else {
             document.body.classList.remove("bz-flags-no-shadow");
         }
-        CityBannerManager.instance?.createAllBanners();
-        UnitFlagManager.instance?.requestFlagsRebuild();
+        console.warn(`TRIX DISPATCH`);
     }
     get banners() {
         return this.data.banners ?? true;

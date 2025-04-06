@@ -18,6 +18,7 @@ export default [
                 Cities: "readonly",
                 Constructibles: "readonly",
                 Controls: "readonly",
+                CustomEvent: "readonly",
                 GameContext: "readonly",
                 GameInfo: "readonly",
                 GameplayMap: "readonly",
@@ -31,6 +32,7 @@ export default [
                 document: "readonly",
                 engine: "readonly",
                 localStorage: "readonly",
+                window: "readonly",
             }
         }
 
