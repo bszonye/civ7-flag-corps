@@ -124,9 +124,9 @@ const BZ_HEAD_STYLE = [
 `,  //   2 FXS-HSLOT.NAME-CONTAINER relative flex justify-between
 `
 .bz-flags city-banner.city-banner .city-banner__name-container {
-    line-height: 2rem;
+    line-height: 1.6666666667rem;
     pointer-events: auto;
-    margin-top: -0.4444444444rem;
+    margin-top: -0.3333333333rem;
     margin-left: 0.4444444444rem;
     color: var(--player-color-secondary);
 }
@@ -157,8 +157,15 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner.city-banner .city-banner__name.city-banner__icons-below-name,
 .bz-flags city-banner.city-banner .city-banner__name {
+    position: relative;
     margin-top: 0.3333333333rem;
+    margin-right: -0.0555555556rem;
+    padding: 0 0.3333333333rem;
     text-shadow: 0.0555555556rem 0.0555555556rem 0rem rgba(0, 0, 0, 0.25), 0.0833333333rem 0.0833333333rem 0rem rgba(0, 0, 0, 0.25);
+    letter-spacing: 0.0555555556rem;
+    font-weight: bold;
+    pointer-events: auto;
+    background-color: #0aaa;
 }
 .bz-flags .city-banner.city-banner--citystate .city-banner__name {
     margin-right: 0.2222222222rem;
