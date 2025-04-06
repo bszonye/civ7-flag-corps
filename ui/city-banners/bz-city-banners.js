@@ -128,6 +128,7 @@ const BZ_HEAD_STYLE = [
     pointer-events: auto;
     margin-top: -0.3333333333rem;
     margin-left: 0.4444444444rem;
+    margin-right: 0.2777777778rem;
     color: var(--player-color-secondary);
 }
 .bz-flags .city-banner.city-banner--citystate .city-banner__name-container {
@@ -191,24 +192,32 @@ const BZ_HEAD_STYLE = [
     //         5 .POPULATION-NUMBER font-body-xs text-white top-0 w-full text-center pointer-events-auto
     // TODO: fix side margins
 `
-.bz-flags city-banner.city-banner__population-container {
+.bz-flags city-banner.city-banner .city-banner__population-container {
     position: relative;
+    width: 1.5555555556rem;
+    height: 1.5555555556rem;
+    height: 0.7777777778rem;  /* DEBUG */
+    top: 0.4166666667rem;
+    margin: 0rem;
+    padding: 0rem;
+    background-color: #0888;
 }
 .bz-flags city-banner.city-banner .city-banner__ring {
+    line-height: 2rem;
     position: relative;
-    margin: 0rem 0.1111111111rem;
-    top: 0.6333333333rem;
-    left: 0rem;
+    margin: 0rem;
+    padding: 0rem;
+    top: -0.2222222222rem;
+    left: -0.0277777778rem;
     z-index: 2;
 }
-`,
-    //       4 .TURN flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative
+`,  //       4 .TURN flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative
     //         5 .TURN-NUMBER font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat
 `
 .bz-flags city-banner.city-banner .city-banner__turn {
     position: relative;
     margin: 0rem;
-    top: -0.3888888889rem;
+    top: -1.2222222222rem;
 }
 .bz-flags city-banner.city-banner .city-banner__turn-number {
     background-image: url("fs://game/town_turn-bg.png");
@@ -224,8 +233,18 @@ const BZ_HEAD_STYLE = [
     //         5 .QUEUE-IMG queue-production size-4 self-center
     //       4 .TURN flex flex-col justify-end align-center self-center w-8 mt-0\.5 pointer-events-none
     //         5 .TURN-NUMBER font-base-xs text-white text-center w-full bg-cover bg-center bg-no-repeat
-
-    //     3 .CITY-STATE-CONTAINER justify-center
+`
+.bz-flags city-banner.city-banner .city-banner__queue-container {
+    position: relative;
+    width: 1.5555555556rem;
+    height: 0.7777777778rem;  /* DEBUG */
+    height: 1.5555555556rem;
+    top: 0.4166666667rem;
+    margin: 0rem;
+    padding: 0rem;
+    background-color: #0888;
+}
+`,  //     3 .CITY-STATE-CONTAINER justify-center
     //       4 .CITY-STATE-TYPE size-7 self-center align-center justify-center
     //         5 .CITY-STATE-ICON size-8 self-center align-center bg-cover bg-no-repeat
 `
