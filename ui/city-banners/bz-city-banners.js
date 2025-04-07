@@ -53,7 +53,7 @@ const BZ_HEAD_STYLE = [
 // 0. CITY-BANNER -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
 `
 .bz-flags city-banner.city-banner {
-    top: -3em;
+    top: -3rem;
     height: 3.6666666667rem;
 }
 .bz-debug city-banner {
@@ -228,7 +228,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__status-religion {
     position: absolute;
     top: 1.8333333333rem;
-    left: 0.3888888888em;
+    left: 0.3888888889rem;
 }
 .bz-debug city-banner.city-banner .city-banner__status-religion {
     background-color: #0808;
@@ -264,7 +264,7 @@ const BZ_HEAD_STYLE = [
     height: 1rem;
 }
 .bz-flags city-banner.city-banner .city-banner__religion-symbol-bg {
-    margin: 0 0 0 0.0555555556rem;
+    margin: 0 0 0 0.0277777778rem;
 }
 .bz-flags city-banner.city-banner .religion-bg--right {
     /* display: none;  /* DEBUG */
@@ -459,6 +459,7 @@ export class bzCityBanner {
     constructor(component) {
         this.component = component;
         component.bzComponent = this;
+        this.hasHead = false;
         this.patchPrototypes(this.component);
         this.patchStyles(this.component);
     }
@@ -506,6 +507,7 @@ export class bzCityBanner {
         // show interesting icons for all settlements, where possible
         // TODO: tooltip
         // TODO: live updates
+        this.hasHead = false;
         const banner = this.component;
         if (!banner.city) return;
         const owner = Players.get(banner.componentID.owner);
@@ -520,12 +522,14 @@ export class bzCityBanner {
         const outline = `drop-shadow(${BZ_OUTLINE_SPEC} ${secondary})`;
         if (owner.isMinor) {
             // city-state
+            this.hasHead = !bzFlagCorpsOptions.noHeads;
             const suz = Players.get(owner.Influence?.getSuzerain() ?? -1);
             const civ = suz && GameInfo.Civilizations.lookup(suz.civilizationType);
             icon = civ && UI.getIconCSS(civ.CivilizationType);
             filter.push(tint);
         } else if (banner.city.isCapital) {
             // capital star
+            this.hasHead = !bzFlagCorpsOptions.noHeads;
             icon = "url('blp:icon-capital.png')";
             filter.push(outline);
         } else if (banner.city.isTown) {
@@ -536,6 +540,7 @@ export class bzCityBanner {
             filter.push(shadow, glow);
         } else {
             // city owner
+            this.hasHead = !bzFlagCorpsOptions.noHeads;
             const civ = GameInfo.Civilizations.lookup(owner.civilizationType);
             icon = UI.getIconCSS(civ.CivilizationType);
             filter.push(tint);
@@ -543,15 +548,25 @@ export class bzCityBanner {
         capitalIndicator.style.backgroundImage = icon;
         capitalIndicator.style.filter = filter.join(' ');
         capitalIndicator.classList.toggle('hidden', !icon);
+        // "no heads" option
+        const root = this.component.Root;
+        const portrait = root.querySelector(".city-banner__portrait");
+        const status = root.querySelector(".city-banner__status-religion");
+        if (this.hasHead) {
+            portrait.style.display = "flex";
+            status.style.left = "-1.1111111111rem";
+            // tint leader head frames
+            const primary = "var(--player-color-primary)";
+            const tint = `fxs-color-tint(${primary})`;
+            const portraitBG1 = root.querySelector(".city-banner__portrait-bg1");
+            portraitBG1.style.filter = tint;
+        } else {
+            portrait.style.display = "none";
+            status.style.left = "0.3888888889rem";
+        }
     }
     afterSetCityInfo(_data) {
-        const root = this.component.Root;
         this.afterCapitalUpdate();
-        // tint leader head frames
-        const primary = "var(--player-color-primary)";
-        const tint = `fxs-color-tint(${primary})`;
-        const portraitBG1 = root.querySelector(".city-banner__portrait-bg1");
-        portraitBG1.style.filter = tint;
     }
     afterRealizeReligion() {
         const {
@@ -566,15 +581,7 @@ export class bzCityBanner {
         ruralReligionSymbolBackground.classList.toggle('hidden', majority);
     }
     beforeAttach() { }
-    afterAttach() {
-        const root = this.component.Root;
-        // "no heads" option
-        console.warn(`TRIX OPT=${bzFlagCorpsOptions.noHeads}`);
-        const portrait = root.querySelector(".city-banner__portrait");
-        // portrait.classList.toggle('hidden', bzFlagCorpsOptions.noHeads);
-        portrait.style.display = bzFlagCorpsOptions.noHeads ? "none" : "flex";
-        this.component.buildBanner();
-    }
+    afterAttach() { }
     beforeDetach() { }
     afterDetach() { }
     onAttributeChanged(_name, _prev, _next) {
