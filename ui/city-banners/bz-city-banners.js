@@ -153,7 +153,8 @@ const BZ_HEAD_STYLE = [
     margin-top: 0.2222222222rem;
     margin-right: -0.3333333333rem;
 }
-.bz-flags .city-banner.city-banner--city .city-banner__capital-star {
+.bz-flags .city-banner.city-banner--city .city-banner__capital-star,
+.bz-flags .city-banner.city-banner--city-other .city-banner__capital-star {
     display: flex;
     background-image: url("blp:civ_sym_spain.png");
     fxs-background-image-tint: var(--player-color-secondary);
@@ -196,7 +197,7 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner.city-banner .city-banner__status-religion {
     position: absolute;
-    top: 1.7777777778rem;
+    top: 1.8333333333rem;
     left: 0.3888888888em;
 }
 .bz-debug city-banner.city-banner .city-banner__status-religion {
@@ -216,9 +217,9 @@ const BZ_HEAD_STYLE = [
     margin: 0;
     border: none;
     border-radius: 50%;
-    background-color: transparent;
-    box-shadow: 0 0 0.1666666667rem 0.1111111111rem #0006,
-                0 0 0.5rem 0 #0009 inset;
+    background-color: #0008;
+    box-shadow: 0 0.0555555556rem 0.1666666667rem 0.0833333333rem #0008,
+                0 0.0555555556rem 0.5rem 0 #0008 inset;
 }
 .bz-flags city-banner.city-banner .city-banner__status-icon {
     background-size: 125%;
@@ -230,7 +231,10 @@ const BZ_HEAD_STYLE = [
     height: 1rem;
 }
 .bz-flags city-banner.city-banner .city-banner__religion-symbol-bg {
-    margin: 0;
+    margin: 0 0 0 0.0555555556rem;
+}
+.bz-flags city-banner.city-banner .religion-bg--right {
+    /* display: none;  /* DEBUG */
 }
 .bz-flags city-banner.city-banner .city-banner__religion-symbol {
     width: 1rem;
@@ -341,7 +345,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--town .city-banner__conquered-icon {
     position: absolute;
     margin: 0rem;
-    top: -0.4444444444rem;
+    top: -0.7222222222rem;
 }
 `,  //   2 FXS-VSLOT.UNREST -mr-3
     //     3 .UNREST-ICON relative size-14 bg-cover bg-no-repeat
@@ -429,7 +433,16 @@ export class bzCityBanner {
         productionQueueTurns.classList.add("text-xs");
     }
     beforeAttach() { }
-    afterAttach() { }
+    afterAttach() {
+        const {
+            urbanReligionSymbol,
+            ruralReligionSymbol,
+            ruralReligionSymbolBackground,
+        } = this.component.elements;
+        const majority = urbanReligionSymbol.icon == ruralReligionSymbol.icon;
+        ruralReligionSymbolBackground.classList.toggle('hidden', majority);
+        this.buildBanner();
+    }
     beforeDetach() { }
     afterDetach() { }
     onAttributeChanged(_name, _prev, _next) { }
