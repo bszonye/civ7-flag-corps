@@ -153,6 +153,11 @@ const BZ_HEAD_STYLE = [
     margin-top: 0.2222222222rem;
     margin-right: -0.3333333333rem;
 }
+.bz-flags .city-banner.city-banner--city .city-banner__capital-star {
+    display: flex;
+    background-image: url("blp:civ_sym_spain.png");
+    fxs-background-image-tint: var(--player-color-secondary);
+}
 .bz-flags .city-banner.city-banner--town .city-banner__capital-star {
     display: flex;
     background-image: url("blp:focus_growth.png");
@@ -192,19 +197,47 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__status-religion {
     position: absolute;
     top: 1.7777777778rem;
-    left: -0.1666666667rem;
+    left: 0.3888888888em;
 }
 .bz-debug city-banner.city-banner .city-banner__status-religion {
     background-color: #0808;
 }
 .bz-flags city-banner.city-banner .city-banner__status {
-    position: absolute;
-    top: -2.2222222222em;
-    left: 0.4444444444em;
+    position: relative;
+    height: 1rem;
+    width: 1rem;
+    margin: 0;
+}
+.bz-flags city-banner.city-banner .city-banner__status-background,
+.bz-flags city-banner.city-banner .city-banner__religion-symbol-bg {
+    position: relative;
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    box-shadow: 0 0 0.1666666667rem 0.1111111111rem #0006,
+                0 0 0.5rem 0 #0009 inset;
+}
+.bz-flags city-banner.city-banner .city-banner__status-icon {
+    background-size: 125%;
+    background-position: center center;
 }
 .bz-flags city-banner.city-banner .city-banner__religion {
     position: relative;
+    width: 1rem;
+    height: 1rem;
 }
+.bz-flags city-banner.city-banner .city-banner__religion-symbol-bg {
+    margin: 0;
+}
+.bz-flags city-banner.city-banner .city-banner__religion-symbol {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+}
+
 `,  //     3 .POPULATION-CONTAINER items-center justify-center w-6 h-6 -mt-2
     //       4 FXS-RING-METER.RING.POPULATION-RING bg-cover bg-center flex size-9 self-center align-center
     //         5 .POPULATION-NUMBER font-body-xs text-white top-0 w-full text-center pointer-events-auto
