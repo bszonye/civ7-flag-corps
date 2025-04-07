@@ -42,12 +42,12 @@ const BZ_COLOR = {
     hostile: "#af1b1c",
     neutral: "#0000",
     // glow & shadow colors
-    glow: "#fff6e5",
+    glow: "#fff6e5cc",
     shadow: "#00000080",
-    shadowdark: "#000000",
 };
-const BZ_SHADOW_SPEC = `0 0.0555555556rem 0.0555555556rem ${BZ_COLOR.shadowdark}`;
+const BZ_SHADOW_SPEC = `0 0.0555555556rem 0.0555555556rem ${BZ_COLOR.black}`;
 const BZ_GLOW_SPEC = `0 -0.0555555556rem 0.1666666667rem ${BZ_COLOR.glow}`;
+const BZ_OUTLINE_SPEC = `0 0 0.1111111111rem`;
 
 const BZ_HEAD_STYLE = [
 // 0. CITY-BANNER -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
@@ -143,11 +143,44 @@ const BZ_HEAD_STYLE = [
     //       4 .PORTRAIT-IMG absolute -left-2 -right-2 -top-1 bottom-0 bg-cover bg-center bg-no-repeat pointer-events-none
     // TODO
 `
-.bz-flags .city-banner.city-banner--citystate .city-banner__portrait {
-	top: 0.3333333333rem;
-	width: 1.1111111111rem;
-	height: 1.7777777778rem;
-	display: flex;
+.bz-flags city-banner.city-banner .city-banner__portrait {
+    top: -0.1388888889rem;
+    left: 0.0555555556rem;
+    width: 1.3333333333rem;
+    height: 2rem;
+}
+.bz-flags .city-banner__portrait-bg1 {
+    top: 0.3333333333rem;
+    width: 1.3333333333rem;
+    height: 2rem;
+    background-size: cover;
+    background-image: url("fs://game/town_portrait-hex.png");
+}
+.bz-flags .city-banner__portrait-bg2 {
+    top: 0.3333333333rem;
+    width: 1.3333333333rem;
+    height: 2rem;
+    background-size: cover;
+    background-image: url("fs://game/town_portrait-frame.png");
+}
+.bz-flags .city-banner__portrait-img {
+    top: -0.7777777778rem;
+    left: -0.3333333333rem;
+    width: 2rem;
+    height: 3rem;
+    background-size: cover;
+}
+.bz-debug .city-banner__portrait {
+    background-color: #fff8;
+}
+.bz-debug .city-banner__portrait-bg1 {
+    background-color: #ff08;
+}
+.bz-debug .city-banner__portrait-bg2 {
+    background-color: #0ff8;
+}
+.bz-debug .city-banner__portrait-img {
+    background-color: #f0f8;
 }
 `,  //     3 FXS-VSLOT.NAME-VSLOT pointer-events-auto cursor-pointer max-h-10
     //       4 FXS-HSLOT
@@ -168,8 +201,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__name.city-banner__icons-below-name,
 .bz-flags city-banner.city-banner .city-banner__name {
     position: relative;
-    margin-top: 0.3333333333rem;
-    margin-right: -0.0555555556rem;
+    margin: 0.3333333333rem 0 0 0.1666666667rem;
     padding: 0 0.3333333333rem;
     letter-spacing: 0.0555555556rem;
     font-weight: bold;
@@ -182,9 +214,6 @@ const BZ_HEAD_STYLE = [
 }
 .bz-debug city-banner.city-banner .city-banner__name {
     background-color: #fff8;
-}
-.bz-flags .city-banner.city-banner--citystate .city-banner__name {
-    margin-right: 0.2222222222rem;
 }
 `,  //       4 FXS-HSLOT.STATUS-RELIGION
     //         5 .STATUS flex justify-center align-center opacity-100
@@ -346,10 +375,10 @@ const BZ_HEAD_STYLE = [
     position: absolute;
     margin: 0rem;
 }
-.bz-flags .city-banner.city-banner--town .city-banner__conquered-icon {
+.bz-flags city-banner.city-banner .city-banner__conquered-icon {
     position: absolute;
     margin: 0rem;
-    top: -0.7222222222rem;
+    top: -0.5555555556rem;
 }
 `,  //   2 FXS-VSLOT.UNREST -mr-3
     //     3 .UNREST-ICON relative size-14 bg-cover bg-no-repeat
@@ -438,18 +467,18 @@ export class bzCityBanner {
         if (bzCityBanner.c_prototype == c_prototype) return;
         // patch component methods
         const proto = bzCityBanner.c_prototype = c_prototype;
-        // wrap capitalUpdate and setCityInfo methods
-        const nonCapitalUpdate = this.nonCapitalUpdate;
+        const afterCapitalUpdate = this.afterCapitalUpdate;
         const capitalUpdate = proto.capitalUpdate;
         proto.capitalUpdate = function(...args) {
             const c_rv = capitalUpdate.apply(this, args);
-            const after_rv = nonCapitalUpdate.apply(this.bzComponent, args);
+            const after_rv = afterCapitalUpdate.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
+        const afterSetCityInfo = this.afterSetCityInfo;
         const setCityInfo = proto.setCityInfo;
         proto.setCityInfo = function(...args) {
             const c_rv = setCityInfo.apply(this, args);
-            const after_rv = nonCapitalUpdate.apply(this.bzComponent, args);
+            const after_rv = afterSetCityInfo.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
         const afterRealizeReligion = this.afterRealizeReligion;
@@ -473,24 +502,23 @@ export class bzCityBanner {
         productionQueueTurns.classList.remove("font-base-xs");
         productionQueueTurns.classList.add("text-xs");
     }
-    nonCapitalUpdate(_data) {
+    afterCapitalUpdate() {
         // show interesting icons for all settlements, where possible
         // TODO: tooltip
         // TODO: live updates
-        // TODO: drop shadows
         const banner = this.component;
         if (!banner.city) return;
         const owner = Players.get(banner.componentID.owner);
-        console.warn(`TRIX OWNER=${JSON.stringify(owner)}`);
+        if (!owner || owner.isIndependent) return;
         const { capitalIndicator, } = banner.elements;
         let icon;
         let filter = [];
-        const tint = "fxs-color-tint(var(--player-color-secondary))";
+        const secondary = "var(--player-color-secondary)";
+        const tint = `fxs-color-tint(${secondary})`;
         const shadow = `drop-shadow(${BZ_SHADOW_SPEC})`;
         const glow = `drop-shadow(${BZ_GLOW_SPEC})`;
-        if (!owner || owner.isIndependent) {
-            // skip
-        } else if (owner.isMinor) {
+        const outline = `drop-shadow(${BZ_OUTLINE_SPEC} ${secondary})`;
+        if (owner.isMinor) {
             // city-state
             const suz = Players.get(owner.Influence?.getSuzerain() ?? -1);
             const civ = suz && GameInfo.Civilizations.lookup(suz.civilizationType);
@@ -499,7 +527,7 @@ export class bzCityBanner {
         } else if (banner.city.isCapital) {
             // capital star
             icon = "url('blp:icon-capital.png')";
-            // filter.push(shadow);
+            filter.push(outline);
         } else if (banner.city.isTown) {
             // town focus
             const ptype = banner.city.Growth?.projectType ?? null;
@@ -507,14 +535,23 @@ export class bzCityBanner {
             icon = UI.getIconCSS(focus?.ProjectType ?? "PROJECT_GROWTH");
             filter.push(shadow, glow);
         } else {
-            // city
+            // city owner
             const civ = GameInfo.Civilizations.lookup(owner.civilizationType);
             icon = UI.getIconCSS(civ.CivilizationType);
-            filter.push(tint, shadow, glow);
+            filter.push(tint);
         }
         capitalIndicator.style.backgroundImage = icon;
         capitalIndicator.style.filter = filter.join(' ');
         capitalIndicator.classList.toggle('hidden', !icon);
+    }
+    afterSetCityInfo(_data) {
+        const root = this.component.Root;
+        this.afterCapitalUpdate();
+        // tint leader head frames
+        const primary = "var(--player-color-primary)";
+        const tint = `fxs-color-tint(${primary})`;
+        const portraitBG1 = root.querySelector(".city-banner__portrait-bg1");
+        portraitBG1.style.filter = tint;
     }
     afterRealizeReligion() {
         const {
@@ -523,17 +560,25 @@ export class bzCityBanner {
             ruralReligionSymbolBackground,
         } = this.component.elements;
         // hide rural religion if it matches urban religion
-        console.warn(`TRIX URBAN=${urbanReligionSymbol.style.backgroundImage}`);
-        console.warn(`TRIX URBAN=${ruralReligionSymbol.style.backgroundImage}`);
         const majority =
             urbanReligionSymbol.style.backgroundImage ==
             ruralReligionSymbol.style.backgroundImage;
         ruralReligionSymbolBackground.classList.toggle('hidden', majority);
     }
     beforeAttach() { }
-    afterAttach() { }
+    afterAttach() {
+        const root = this.component.Root;
+        // "no heads" option
+        console.warn(`TRIX OPT=${bzFlagCorpsOptions.noHeads}`);
+        const portrait = root.querySelector(".city-banner__portrait");
+        // portrait.classList.toggle('hidden', bzFlagCorpsOptions.noHeads);
+        portrait.style.display = bzFlagCorpsOptions.noHeads ? "none" : "flex";
+        this.component.buildBanner();
+    }
     beforeDetach() { }
     afterDetach() { }
-    onAttributeChanged(_name, _prev, _next) { }
+    onAttributeChanged(_name, _prev, _next) {
+        this.component.buildBanner();
+    }
 }
 Controls.decorate('city-banner', (component) => new bzCityBanner(component));

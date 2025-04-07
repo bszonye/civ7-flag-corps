@@ -8,6 +8,7 @@ const MOD_ID = "bz-flag-corps";
 const bzFlagCorpsOptions = new class {
     data = {
         banners: true,
+        noHeads: false,
         noShadow: false,
     };
     constructor() {
@@ -35,6 +36,13 @@ const bzFlagCorpsOptions = new class {
         this.data.banners = !!flag;
         this.save();
     }
+    get noHeads() {
+        return this.data.noHeads;
+    }
+    set noHeads(flag) {
+        this.data.noHeads = !!flag;
+        this.save();
+    }
     get noShadow() {
         return this.data.noShadow;
     }
@@ -60,6 +68,25 @@ Options.addInitCallback(() => {
         updateListener: onUpdateBanners,
         label: "LOC_OPTIONS_BZ_CITY_BANNERS",
         description: "LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION",
+    });
+});
+const onInitNoHeads = (info) => {
+    info.currentValue = bzFlagCorpsOptions.noHeads;
+};
+const onUpdateNoHeads = (_info, flag) => {
+    bzFlagCorpsOptions.noHeads = flag;
+};
+Options.addInitCallback(() => {
+    Options.addOption({
+        category: CategoryType.Mods,
+        // @ts-ignore
+        group: "bz_mods",
+        type: OptionType.Checkbox,
+        id: "bz-flags-no-heads",
+        initListener: onInitNoHeads,
+        updateListener: onUpdateNoHeads,
+        label: "LOC_OPTIONS_BZ_FLAGS_NO_HEADS",
+        description: "LOC_OPTIONS_BZ_FLAGS_NO_HEADS_DESCRIPTION",
     });
 });
 const onInitNoShadow = (info) => {
