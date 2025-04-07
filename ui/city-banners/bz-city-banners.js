@@ -1,3 +1,13 @@
+// TODO: text & localization
+// TODO: realign district healthbars
+// TODO: tooltips (mostly from Map Trix)
+// - owner & civ
+// - town focus
+// - fresh water
+// - religion
+// - connected settlements
+// - population growth
+// - build queue
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
 import CityBannerManager from '/base-standard/ui/city-banners/city-banner-manager.js';
 
@@ -144,6 +154,7 @@ const BZ_HEAD_STYLE = [
     // TODO
 `
 .bz-flags city-banner.city-banner .city-banner__portrait {
+    margin-right: 0.0555555556rem;  /* to line up status-religion */
     top: -0.1388888889rem;
     left: 0.0555555556rem;
     width: 1.3333333333rem;
@@ -185,8 +196,6 @@ const BZ_HEAD_STYLE = [
 `,  //     3 FXS-VSLOT.NAME-VSLOT pointer-events-auto cursor-pointer max-h-10
     //       4 FXS-HSLOT
     //         5 .CAPITAL-STAR w-8 h-8 bg-cover bg-no-repeat hidden
-    // TODO: adjust star
-    // TODO: town focus icons
 `
 .bz-flags city-banner.city-banner .city-banner__capital-star {
     background-image: url("blp:icon-capital.png");
@@ -264,7 +273,7 @@ const BZ_HEAD_STYLE = [
     height: 1rem;
 }
 .bz-flags city-banner.city-banner .city-banner__religion-symbol-bg {
-    margin: 0 0 0 0.0277777778rem;
+    margin: 0 0 0 0.0555555556rem;
 }
 .bz-flags city-banner.city-banner .religion-bg--right {
     /* display: none;  /* DEBUG */
@@ -420,7 +429,6 @@ const BZ_HEAD_STYLE = [
 `,  //     3 .TIME-CONTAINER -mt-3 flex flex-row
     //       4 .TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
     //       4 .TIME-TEXT self-center font-body-xs text-white
-    // TODO: vertical alignment
 `
 .bz-flags .city-banner .city-banner__time-container {
     position: relative;
@@ -445,7 +453,6 @@ BZ_HEAD_STYLE.map(style => {
     e.textContent = style;
     document.head.appendChild(e);
 });
-// TODO: text & localization
 if (bzFlagCorpsOptions.banners) {
     document.body.classList.add("bz-flags");
 } else {
@@ -538,7 +545,13 @@ export class bzCityBanner {
             // capital star
             this.hasHead = !bzFlagCorpsOptions.noHeads;
             icon = "url('blp:icon-capital.png')";
-        } else if (banner.city.isTown) {
+        } else if (!banner.city.isTown) {
+            // city owner
+            this.hasHead = !bzFlagCorpsOptions.noHeads;
+            const civ = GameInfo.Civilizations.lookup(owner.civilizationType);
+            icon = UI.getIconCSS(civ.CivilizationType);
+            filter.push(tint);
+        } else if (bzFlagCorpsOptions.banners) {
             // town focus
             if (banner.city.Growth?.growthType == GrowthTypes.EXPAND) {
                 icon = UI.getIconCSS("PROJECT_GROWTH");
@@ -548,12 +561,6 @@ export class bzCityBanner {
                 icon = UI.getIconCSS(focus?.ProjectType ?? "PROJECT_GROWTH");
             }
             filter.push(shadow, glow);
-        } else {
-            // city owner
-            this.hasHead = !bzFlagCorpsOptions.noHeads;
-            const civ = GameInfo.Civilizations.lookup(owner.civilizationType);
-            icon = UI.getIconCSS(civ.CivilizationType);
-            filter.push(tint);
         }
         capitalIndicator.style.backgroundImage = icon;
         capitalIndicator.style.filter = filter.join(' ');
@@ -562,17 +569,19 @@ export class bzCityBanner {
         const portrait = this.Root.querySelector(".city-banner__portrait");
         const status = this.Root.querySelector(".city-banner__status-religion");
         if (this.hasHead) {
+            // show head and color its background
             portrait.style.display = "flex";
-            status.style.left = "-1.1111111111rem";
-            // tint leader head frames
             const primary = "var(--player-color-primary)";
             const tint = `fxs-color-tint(${primary})`;
             const portraitBG1 = this.Root.querySelector(".city-banner__portrait-bg1");
             portraitBG1.style.filter = tint;
         } else {
             portrait.style.display = "none";
-            status.style.left = "0.3888888889rem";
         }
+        status.style.left =
+            !bzFlagCorpsOptions.banners ? "0.2222222222rem" :
+            this.hasHead ? "-1.1666666667rem" :
+            "0.3888888889rem";
     }
     afterDoBuildsUpdate() {
         // update town focus
