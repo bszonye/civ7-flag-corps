@@ -42,7 +42,7 @@ const BZ_COLOR = {
     hostile: "#af1b1c",
     neutral: "#0000",
     // glow & shadow colors
-    glow: "#f9f4ecaa",
+    glow: "#fff6e5",
     shadow: "#00000080",
     shadowdark: "#000000",
 };
@@ -175,6 +175,10 @@ const BZ_HEAD_STYLE = [
     font-weight: bold;
     text-shadow: ${BZ_SHADOW_SPEC}, ${BZ_GLOW_SPEC};
     pointer-events: auto;
+}
+.bz-flags .city-banner.city-banner--citystate .city-banner__name,
+.bz-flags .city-banner.city-banner--village .city-banner__name {
+    text-shadow: none;
 }
 .bz-debug city-banner.city-banner .city-banner__name {
     background-color: #fff8;
