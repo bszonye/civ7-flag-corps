@@ -1,4 +1,5 @@
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
+import CityBannerManager from '/base-standard/ui/city-banners/city-banner-manager.js';
 
 // color palette
 const BZ_COLOR = {
@@ -458,6 +459,7 @@ export class bzCityBanner {
     constructor(component) {
         this.component = component;
         component.bzComponent = this;
+        this.Root = this.component.Root;
         this.hasHead = false;
         this.patchPrototypes(this.component);
         this.patchStyles(this.component);
@@ -557,16 +559,15 @@ export class bzCityBanner {
         capitalIndicator.style.filter = filter.join(' ');
         capitalIndicator.classList.toggle('hidden', !icon);
         // "no heads" option
-        const root = this.component.Root;
-        const portrait = root.querySelector(".city-banner__portrait");
-        const status = root.querySelector(".city-banner__status-religion");
+        const portrait = this.Root.querySelector(".city-banner__portrait");
+        const status = this.Root.querySelector(".city-banner__status-religion");
         if (this.hasHead) {
             portrait.style.display = "flex";
             status.style.left = "-1.1111111111rem";
             // tint leader head frames
             const primary = "var(--player-color-primary)";
             const tint = `fxs-color-tint(${primary})`;
-            const portraitBG1 = root.querySelector(".city-banner__portrait-bg1");
+            const portraitBG1 = this.Root.querySelector(".city-banner__portrait-bg1");
             portraitBG1.style.filter = tint;
         } else {
             portrait.style.display = "none";
@@ -601,8 +602,15 @@ export class bzCityBanner {
     afterAttach() { }
     beforeDetach() { }
     afterDetach() { }
-    onAttributeChanged(_name, _prev, _next) {
-        this.component.buildBanner();
-    }
+    onAttributeChanged(_name, _prev, _next) { }
 }
+function refreshAllBanners() {
+    const banners = CityBannerManager.instance?.banners;
+    if (!banners) {
+        console.warn(`bz-city-banners: no banners to refresh`);
+        return;
+    }
+    banners.forEach((banner, _key) => banner.queueNameUpdate());
+}
+window.addEventListener('bz-flag-corps-options', refreshAllBanners);
 Controls.decorate('city-banner', (component) => new bzCityBanner(component));

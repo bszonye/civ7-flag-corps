@@ -5,6 +5,12 @@ import ModSettings from '/bz-flag-corps/ui/options/mod-options-decorator.js';
 
 const MOD_ID = "bz-flag-corps";
 
+export const bzFlagCorpsOptionsEventName = 'bz-flag-corps-options';
+class bzFlagCorpsOptionsEvent extends CustomEvent {
+    constructor() {
+        super(bzFlagCorpsOptionsEventName, { bubbles: false });
+    }
+}
 const bzFlagCorpsOptions = new class {
     data = {
         banners: true,
@@ -28,6 +34,7 @@ const bzFlagCorpsOptions = new class {
         } else {
             document.body.classList.remove("bz-flags-no-shadow");
         }
+        window.dispatchEvent(new bzFlagCorpsOptionsEvent());
     }
     get banners() {
         return this.data.banners ?? true;
