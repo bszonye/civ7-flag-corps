@@ -200,7 +200,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__name.city-banner__icons-below-name,
 .bz-flags city-banner.city-banner .city-banner__name {
     position: relative;
-    margin: 0.3333333333rem 0 0;
+    margin: 0.3333333333rem 0 0 0.1666666667rem;
     padding: 0 0.3333333333rem;
     letter-spacing: 0.0555555556rem;
     font-weight: bold;
