@@ -46,8 +46,7 @@ const BZ_COLOR = {
     shadow: "#00000080",
 };
 const BZ_SHADOW_SPEC = `0 0.0555555556rem 0.0555555556rem ${BZ_COLOR.black}`;
-const BZ_GLOW_SPEC = `0 -0.0555555556rem 0.1666666667rem ${BZ_COLOR.glow}`;
-const BZ_OUTLINE_SPEC = `0 0 0.1111111111rem`;
+const BZ_GLOW_SPEC = `0 -0.0555555556rem 0.0555555556rem ${BZ_COLOR.glow}`;
 
 const BZ_HEAD_STYLE = [
 // 0. CITY-BANNER -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
@@ -201,7 +200,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__name.city-banner__icons-below-name,
 .bz-flags city-banner.city-banner .city-banner__name {
     position: relative;
-    margin: 0.3333333333rem 0 0 0.1666666667rem;
+    margin: 0.3333333333rem 0 0;
     padding: 0 0.3333333333rem;
     letter-spacing: 0.0555555556rem;
     font-weight: bold;
@@ -468,6 +467,13 @@ export class bzCityBanner {
         if (bzCityBanner.c_prototype == c_prototype) return;
         // patch component methods
         const proto = bzCityBanner.c_prototype = c_prototype;
+        const afterDoBuildsUpdate = this.afterDoBuildsUpdate;
+        const doBuildsUpdate = proto.doBuildsUpdate;
+        proto.doBuildsUpdate = function(...args) {
+            const c_rv = doBuildsUpdate.apply(this, args);
+            const after_rv = afterDoBuildsUpdate.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
+        }
         const afterCapitalUpdate = this.afterCapitalUpdate;
         const capitalUpdate = proto.capitalUpdate;
         proto.capitalUpdate = function(...args) {
@@ -503,7 +509,7 @@ export class bzCityBanner {
         productionQueueTurns.classList.remove("font-base-xs");
         productionQueueTurns.classList.add("text-xs");
     }
-    afterCapitalUpdate() {
+    mainIconUpdate() {
         // show interesting icons for all settlements, where possible
         // TODO: tooltip
         // TODO: live updates
@@ -519,7 +525,6 @@ export class bzCityBanner {
         const tint = `fxs-color-tint(${secondary})`;
         const shadow = `drop-shadow(${BZ_SHADOW_SPEC})`;
         const glow = `drop-shadow(${BZ_GLOW_SPEC})`;
-        const outline = `drop-shadow(${BZ_OUTLINE_SPEC} ${secondary})`;
         if (owner.isMinor) {
             // city-state
             this.hasHead = !bzFlagCorpsOptions.noHeads;
@@ -531,12 +536,15 @@ export class bzCityBanner {
             // capital star
             this.hasHead = !bzFlagCorpsOptions.noHeads;
             icon = "url('blp:icon-capital.png')";
-            filter.push(outline);
         } else if (banner.city.isTown) {
             // town focus
-            const ptype = banner.city.Growth?.projectType ?? null;
-            const focus = ptype && GameInfo.Projects.lookup(ptype);
-            icon = UI.getIconCSS(focus?.ProjectType ?? "PROJECT_GROWTH");
+            if (banner.city.Growth?.growthType == GrowthTypes.EXPAND) {
+                icon = UI.getIconCSS("PROJECT_GROWTH");
+            } else {
+                const ptype = banner.city.Growth?.projectType ?? null;
+                const focus = ptype && GameInfo.Projects.lookup(ptype);
+                icon = UI.getIconCSS(focus?.ProjectType ?? "PROJECT_GROWTH");
+            }
             filter.push(shadow, glow);
         } else {
             // city owner
@@ -565,8 +573,16 @@ export class bzCityBanner {
             status.style.left = "0.3888888889rem";
         }
     }
+    afterDoBuildsUpdate() {
+        // update town focus
+        this.mainIconUpdate();
+    }
+    afterCapitalUpdate() {
+        // update capital star
+        this.mainIconUpdate();
+    }
     afterSetCityInfo(_data) {
-        this.afterCapitalUpdate();
+        this.mainIconUpdate();
     }
     afterRealizeReligion() {
         const {
@@ -579,6 +595,7 @@ export class bzCityBanner {
             urbanReligionSymbol.style.backgroundImage ==
             ruralReligionSymbol.style.backgroundImage;
         ruralReligionSymbolBackground.classList.toggle('hidden', majority);
+        ruralReligionSymbolBackground.style.filter = "";  // undo red tint
     }
     beforeAttach() { }
     afterAttach() { }

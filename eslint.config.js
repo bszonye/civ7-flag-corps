@@ -22,6 +22,7 @@ export default [
                 GameContext: "readonly",
                 GameInfo: "readonly",
                 GameplayMap: "readonly",
+                GrowthTypes: "readonly",
                 IndependentRelationship: "readonly",
                 MapCities: "readonly",
                 MapConstructibles: "readonly",
