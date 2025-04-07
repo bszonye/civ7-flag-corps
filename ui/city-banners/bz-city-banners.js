@@ -41,7 +41,14 @@ const BZ_COLOR = {
     friendly: "#e5d2ac",  // TODO
     hostile: "#af1b1c",
     neutral: "#0000",
+    // glow & shadow colors
+    glow: "#f9f4ecaa",
+    shadow: "#00000080",
+    shadowdark: "#000000",
 };
+const BZ_SHADOW_SPEC = `0 0.0555555556rem 0.0555555556rem ${BZ_COLOR.shadowdark}`;
+const BZ_GLOW_SPEC = `0 -0.0555555556rem 0.1666666667rem ${BZ_COLOR.glow}`;
+
 const BZ_HEAD_STYLE = [
 // 0. CITY-BANNER -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
 `
@@ -95,7 +102,7 @@ const BZ_HEAD_STYLE = [
     fxs-border-image-tint: var(--player-color-secondary);
 }
 .bz-flags .city-banner.city-banner--town .city-banner__city-state-ring {
-    fxs-border-image-tint: #0000;
+    fxs-border-image-tint: transparent;
 }
 .bz-flags .city-banner.city-banner--village .city-banner__city-state-ring {
     fxs-border-image-tint: var(--player-color-primary);
@@ -153,16 +160,6 @@ const BZ_HEAD_STYLE = [
     margin-top: 0.2222222222rem;
     margin-right: -0.3333333333rem;
 }
-.bz-flags .city-banner.city-banner--city .city-banner__capital-star,
-.bz-flags .city-banner.city-banner--city-other .city-banner__capital-star {
-    display: flex;
-    background-image: url("blp:civ_sym_spain.png");
-    fxs-background-image-tint: var(--player-color-secondary);
-}
-.bz-flags .city-banner.city-banner--town .city-banner__capital-star {
-    display: flex;
-    background-image: url("blp:focus_growth.png");
-}
 .bz-flags .city-banner.city-banner--village .city-banner__capital-star {
     display: none;
 }
@@ -176,7 +173,7 @@ const BZ_HEAD_STYLE = [
     padding: 0 0.3333333333rem;
     letter-spacing: 0.0555555556rem;
     font-weight: bold;
-    text-shadow: 0.0555555556rem 0.0555555556rem 0rem rgba(0, 0, 0, 0.25), 0.0833333333rem 0.0833333333rem 0rem rgba(0, 0, 0, 0.25);
+    text-shadow: ${BZ_SHADOW_SPEC}, ${BZ_GLOW_SPEC};
     pointer-events: auto;
 }
 .bz-debug city-banner.city-banner .city-banner__name {
@@ -209,6 +206,9 @@ const BZ_HEAD_STYLE = [
     width: 1rem;
     margin: 0;
 }
+.bz-flags .city-banner.city-banner--city-other .city-banner__status {
+    display: flex;
+}
 .bz-flags city-banner.city-banner .city-banner__status-background,
 .bz-flags city-banner.city-banner .city-banner__religion-symbol-bg {
     position: relative;
@@ -217,9 +217,9 @@ const BZ_HEAD_STYLE = [
     margin: 0;
     border: none;
     border-radius: 50%;
-    background-color: #0008;
-    box-shadow: 0 0.0555555556rem 0.1666666667rem 0.0833333333rem #0008,
-                0 0.0555555556rem 0.5rem 0 #0008 inset;
+    box-shadow: 0 0.0555555556rem 0.1666666667rem 0.0833333333rem ${BZ_COLOR.shadow},
+                0 0.0555555556rem 0.5rem 0 ${BZ_COLOR.shadow} inset;
+    background-color: ${BZ_COLOR.shadow};
 }
 .bz-flags city-banner.city-banner .city-banner__status-icon {
     background-size: 125%;
@@ -422,27 +422,112 @@ if (bzFlagCorpsOptions.banners) {
 if (UI.isDebugPlotInfoVisible()) document.body.classList.add("bz-debug");
 
 export class bzCityBanner {
-    static component_prototype;
+    static c_prototype;
     constructor(component) {
         this.component = component;
         component.bzComponent = this;
-        const { growthQueueTurns, productionQueueTurns } = this.component.elements;
+        this.patchPrototypes(this.component);
+        this.patchStyles(this.component);
+    }
+    patchPrototypes(component) {
+        const c_prototype = Object.getPrototypeOf(component);
+        if (bzCityBanner.c_prototype == c_prototype) return;
+        // patch component methods
+        const proto = bzCityBanner.c_prototype = c_prototype;
+        // wrap capitalUpdate and setCityInfo methods
+        const nonCapitalUpdate = this.nonCapitalUpdate;
+        const capitalUpdate = proto.capitalUpdate;
+        proto.capitalUpdate = function(...args) {
+            const c_rv = capitalUpdate.apply(this, args);
+            const after_rv = nonCapitalUpdate.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
+        }
+        const setCityInfo = proto.setCityInfo;
+        proto.setCityInfo = function(...args) {
+            const c_rv = setCityInfo.apply(this, args);
+            const after_rv = nonCapitalUpdate.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
+        }
+        const afterRealizeReligion = this.afterRealizeReligion;
+        const realizeReligion = proto.realizeReligion;
+        proto.realizeReligion = function(...args) {
+            const c_rv = realizeReligion.apply(this, args);
+            const after_rv = afterRealizeReligion.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
+        }
+        // wrap realizeReligion metho
+        // replace component.XXX to fix a bug
+        // bzCityBanner.component_XXX = proto.XXX;
+        // proto.XXX = function() {
+        //     return this.bzComponent.XXX();
+        // }
+    }
+    patchStyles(banner) {
+        const { growthQueueTurns, productionQueueTurns } = banner.elements;
         growthQueueTurns.classList.remove("font-base-2xs");
         growthQueueTurns.classList.add("text-xs");
         productionQueueTurns.classList.remove("font-base-xs");
         productionQueueTurns.classList.add("text-xs");
     }
-    beforeAttach() { }
-    afterAttach() {
+    nonCapitalUpdate(_data) {
+        // show interesting icons for all settlements, where possible
+        // TODO: tooltip
+        // TODO: live updates
+        // TODO: drop shadows
+        const banner = this.component;
+        if (!banner.city) return;
+        const owner = Players.get(banner.componentID.owner);
+        console.warn(`TRIX OWNER=${JSON.stringify(owner)}`);
+        const { capitalIndicator, } = banner.elements;
+        let icon;
+        let filter = [];
+        const tint = "fxs-color-tint(var(--player-color-secondary))";
+        const shadow = `drop-shadow(${BZ_SHADOW_SPEC})`;
+        const glow = `drop-shadow(${BZ_GLOW_SPEC})`;
+        if (!owner || owner.isIndependent) {
+            // skip
+        } else if (owner.isMinor) {
+            // city-state
+            const suz = Players.get(owner.Influence?.getSuzerain() ?? -1);
+            const civ = suz && GameInfo.Civilizations.lookup(suz.civilizationType);
+            icon = civ && UI.getIconCSS(civ.CivilizationType);
+            filter.push(tint);
+        } else if (banner.city.isCapital) {
+            // capital star
+            icon = "url('blp:icon-capital.png')";
+            // filter.push(shadow);
+        } else if (banner.city.isTown) {
+            // town focus
+            const ptype = banner.city.Growth?.projectType ?? null;
+            const focus = ptype && GameInfo.Projects.lookup(ptype);
+            icon = UI.getIconCSS(focus?.ProjectType ?? "PROJECT_GROWTH");
+            filter.push(shadow, glow);
+        } else {
+            // city
+            const civ = GameInfo.Civilizations.lookup(owner.civilizationType);
+            icon = UI.getIconCSS(civ.CivilizationType);
+            filter.push(tint, shadow, glow);
+        }
+        capitalIndicator.style.backgroundImage = icon;
+        capitalIndicator.style.filter = filter.join(' ');
+        capitalIndicator.classList.toggle('hidden', !icon);
+    }
+    afterRealizeReligion() {
         const {
             urbanReligionSymbol,
             ruralReligionSymbol,
             ruralReligionSymbolBackground,
         } = this.component.elements;
-        const majority = urbanReligionSymbol.icon == ruralReligionSymbol.icon;
+        // hide rural religion if it matches urban religion
+        console.warn(`TRIX URBAN=${urbanReligionSymbol.style.backgroundImage}`);
+        console.warn(`TRIX URBAN=${ruralReligionSymbol.style.backgroundImage}`);
+        const majority =
+            urbanReligionSymbol.style.backgroundImage ==
+            ruralReligionSymbol.style.backgroundImage;
         ruralReligionSymbolBackground.classList.toggle('hidden', majority);
-        this.buildBanner();
     }
+    beforeAttach() { }
+    afterAttach() { }
     beforeDetach() { }
     afterDetach() { }
     onAttributeChanged(_name, _prev, _next) { }
