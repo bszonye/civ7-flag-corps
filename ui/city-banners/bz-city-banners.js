@@ -494,6 +494,15 @@ export class bzCityBanner {
         if (bzCityBanner.c_prototype == c_prototype) return;
         // patch component methods
         const proto = bzCityBanner.c_prototype = c_prototype;
+        // beforeBuildBanner
+        const beforeBuildBanner = this.beforeBuildBanner;
+        const buildBanner = proto.buildBanner;
+        proto.buildBanner = function(...args) {
+            const before_rv = beforeBuildBanner.apply(this.bzComponent, args);
+            const c_rv = buildBanner.apply(this, args);
+            return c_rv ?? before_rv;
+        }
+        // afterDoBuildsUpdate
         const afterDoBuildsUpdate = this.afterDoBuildsUpdate;
         const doBuildsUpdate = proto.doBuildsUpdate;
         proto.doBuildsUpdate = function(...args) {
@@ -501,6 +510,7 @@ export class bzCityBanner {
             const after_rv = afterDoBuildsUpdate.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
+        // afterCapitalUpdate
         const afterCapitalUpdate = this.afterCapitalUpdate;
         const capitalUpdate = proto.capitalUpdate;
         proto.capitalUpdate = function(...args) {
@@ -508,6 +518,7 @@ export class bzCityBanner {
             const after_rv = afterCapitalUpdate.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
+        // afterSetCityInfo
         const afterSetCityInfo = this.afterSetCityInfo;
         const setCityInfo = proto.setCityInfo;
         proto.setCityInfo = function(...args) {
@@ -515,6 +526,15 @@ export class bzCityBanner {
             const after_rv = afterSetCityInfo.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
+        // afterRealizeHappiness
+        const afterRealizeHappiness = this.afterRealizeHappiness;
+        const realizeHappiness = proto.realizeHappiness;
+        proto.realizeHappiness = function(...args) {
+            const c_rv = realizeHappiness.apply(this, args);
+            const after_rv = afterRealizeHappiness.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
+        }
+        // afterRealizeReligion
         const afterRealizeReligion = this.afterRealizeReligion;
         const realizeReligion = proto.realizeReligion;
         proto.realizeReligion = function(...args) {
@@ -535,16 +555,19 @@ export class bzCityBanner {
         productionQueueTurns.classList.remove("font-base-xs");
         productionQueueTurns.classList.add("text-xs");
     }
+    beforeBuildBanner() {
+        this.componentID = this.component.componentID;
+        this.city = this.component.city;
+    }
     mainIconUpdate() {
         // show interesting icons for all settlements, where possible
         // TODO: tooltip
         // TODO: live updates
         this.hasHead = false;
-        const banner = this.component;
-        if (!banner.city) return;
-        const owner = Players.get(banner.componentID.owner);
+        if (!this.city) return;
+        const owner = Players.get(this.componentID.owner);
         if (!owner || owner.isIndependent) return;
-        const { capitalIndicator, } = banner.elements;
+        const { capitalIndicator, } = this.elements;
         let icon;
         let filter = [];
         const secondary = "var(--player-color-secondary)";
@@ -558,11 +581,11 @@ export class bzCityBanner {
             const civ = suz && GameInfo.Civilizations.lookup(suz.civilizationType);
             icon = civ && UI.getIconCSS(civ.CivilizationType);
             filter.push(tint);
-        } else if (banner.city.isCapital) {
+        } else if (this.city.isCapital) {
             // capital star
             this.hasHead = !bzFlagCorpsOptions.noHeads;
             icon = "url('blp:icon-capital.png')";
-        } else if (!banner.city.isTown) {
+        } else if (!this.city.isTown) {
             // city owner
             this.hasHead = !bzFlagCorpsOptions.noHeads;
             const civ = GameInfo.Civilizations.lookup(owner.civilizationType);
@@ -570,10 +593,10 @@ export class bzCityBanner {
             filter.push(tint);
         } else if (bzFlagCorpsOptions.banners) {
             // town focus
-            if (banner.city.Growth?.growthType == GrowthTypes.EXPAND) {
+            if (this.city.Growth?.growthType == GrowthTypes.EXPAND) {
                 icon = UI.getIconCSS("PROJECT_GROWTH");
             } else {
-                const ptype = banner.city.Growth?.projectType ?? null;
+                const ptype = this.city.Growth?.projectType ?? null;
                 const focus = ptype && GameInfo.Projects.lookup(ptype);
                 icon = UI.getIconCSS(focus?.ProjectType ?? "PROJECT_GROWTH");
             }
@@ -610,6 +633,10 @@ export class bzCityBanner {
     }
     afterSetCityInfo(_data) {
         this.mainIconUpdate();
+    }
+    afterRealizeHappiness() {
+        const showUnrest = this.city.Happiness?.hasUnrest && !this.city.isBeingRazed;
+        this.Root.classList.toggle("city-banner--unrest", showUnrest);
     }
     afterRealizeReligion() {
         const {
