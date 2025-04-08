@@ -53,7 +53,7 @@ const BZ_COLOR = {
     // relationship ring colors
     friendly: "#e0b96c",    // 40°  65 65 deep bronze
     hostile: "#af1b1c",
-    neutral: "#0000",
+    neutral: "#e5d2ac",
     // highlight & shadow colors
     light: "#fff6e5cc",      // 40° 100 95 pale bronze
     shadow: "#00000080",
@@ -97,6 +97,9 @@ const BZ_HEAD_STYLE = [
     border-image-width: 3rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
 }
 .bz-flags city-banner.city-banner .city-banner__city-state-border {
+    fxs-border-image-tint: transparent;
+}
+.bz-flags .city-banner.city-banner--citystate .city-banner__city-state-border {
     fxs-border-image-tint: ${BZ_COLOR.neutral};
 }
 .bz-flags .city-banner.city-banner--friendly .city-banner__city-state-border {
@@ -536,6 +539,14 @@ export class bzCityBanner {
             const c_rv = buildBanner.apply(this, args);
             return c_rv ?? before_rv;
         }
+        // afterAffinityUpdate
+        const afterAffinityUpdate = this.afterAffinityUpdate;
+        const affinityUpdate = proto.affinityUpdate;
+        proto.affinityUpdate = function(...args) {
+            const c_rv = affinityUpdate.apply(this, args);
+            const after_rv = afterAffinityUpdate.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
+        }
         // afterCapitalUpdate
         const afterCapitalUpdate = this.afterCapitalUpdate;
         const capitalUpdate = proto.capitalUpdate;
@@ -663,6 +674,19 @@ export class bzCityBanner {
             !bzFlagCorpsOptions.banners ? "0.2222222222rem" :
             this.hasHead ? "-1.1666666667rem" :
             "0.3888888889rem";
+    }
+    afterAffinityUpdate() {
+        // is the other player a city-state or village?
+        if (this.owner?.isMinor && bzFlagCorpsOptions.banners) {
+            const playerID = GameContext.localPlayerID;
+            const isVassal = this.owner.Influence?.hasSuzerain &&
+                this.owner.Influence.getSuzerain() == playerID;
+            const isEnemy = this.owner.Diplomacy?.isAtWarWith(playerID);
+            const isNeutral = !isVassal && !isEnemy;
+            this.Root.classList.toggle("city-banner--friendly", isVassal);
+            this.Root.classList.toggle("city-banner--hostile", isEnemy);
+            this.Root.classList.toggle("city-banner--neutral", isNeutral);
+        }
     }
     afterCapitalUpdate() {
         // update capital star
