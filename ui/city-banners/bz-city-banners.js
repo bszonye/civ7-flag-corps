@@ -59,9 +59,9 @@ const BZ_COLOR = {
     shadow: "#00000080",
     progress: "#e0b96c",    // 40°  65 65 deep bronze
 };
-const BZ_SHADOW_SHAPE = "0 0.0555555556rem 0.0555555556rem";
+const BZ_SHADOW_SHAPE = "0.0277777778rem 0.0555555556rem 0.0555555556rem";
 const BZ_SHADOW_SPEC = `${BZ_SHADOW_SHAPE} ${BZ_COLOR.black}`;
-const BZ_LIGHT_SHAPE = "0 -0.0555555556rem 0.0555555556rem";
+const BZ_LIGHT_SHAPE = "-0.0277777778rem -0.0555555556rem 0.0555555556rem";
 const BZ_LIGHT_SPEC = `${BZ_LIGHT_SHAPE} ${BZ_COLOR.light}`;
 
 const BZ_HEAD_STYLE = [
@@ -479,6 +479,39 @@ if (bzFlagCorpsOptions.banners) {
 // TODO: react to checkbox
 if (UI.isDebugPlotInfoVisible()) document.body.classList.add("bz-debug");
 
+function darkenColor(rgb, darkness) {
+    const srgb = PlayerColors.stringRGBtoRGB(rgb);
+    const min = Math.min(srgb.r, srgb.g, srgb.b);
+    const max = Math.max(srgb.r, srgb.g, srgb.b);
+    const dc = Math.round(max * darkness);
+    const maxt = max - dc;
+    const mint = Math.max(min - dc, 0);
+    if (maxt == mint) {
+        return PlayerColors.SRGBtoString({ r: mint, g: mint, b: mint });
+    }
+    const scale = (maxt - mint) / (max - min);
+    srgb.r = Math.round((srgb.r - min) * scale) + mint;
+    srgb.g = Math.round((srgb.g - min) * scale) + mint;
+    srgb.b = Math.round((srgb.b - min) * scale) + mint;
+    return PlayerColors.SRGBtoString(srgb);
+}
+function lightenColor(rgb, lightness) {
+    const srgb = PlayerColors.stringRGBtoRGB(rgb);
+    const min = Math.min(srgb.r, srgb.g, srgb.b);
+    const max = Math.max(srgb.r, srgb.g, srgb.b);
+    const dc = Math.round((255 - min) * lightness);
+    const mint = min + dc;
+    const maxt = Math.min(max + dc, 255);
+    if (maxt == mint) {
+        return PlayerColors.SRGBtoString({ r: mint, g: mint, b: mint });
+    }
+    const scale = (maxt - mint) / (max - min);
+    srgb.r = Math.round((srgb.r - min) * scale) + mint;
+    srgb.g = Math.round((srgb.g - min) * scale) + mint;
+    srgb.b = Math.round((srgb.b - min) * scale) + mint;
+    return PlayerColors.SRGBtoString(srgb);
+}
+
 export class bzCityBanner {
     static c_prototype;
     constructor(component) {
@@ -581,24 +614,24 @@ export class bzCityBanner {
         const tint = `fxs-color-tint(${this.color2})`;
         const shadow = `drop-shadow(${BZ_SHADOW_SHAPE} ${this.color1dark})`;
         const light = `drop-shadow(${BZ_LIGHT_SHAPE} ${this.color1light})`;
-        console.warn(`TRIX COLORS TINT=${tint} SHADOW=${shadow} LIGHT=${light}`);
         if (this.owner.isMinor) {
             // city-state
             this.hasHead = !bzFlagCorpsOptions.noHeads;
             const suz = Players.get(this.owner.Influence?.getSuzerain() ?? -1);
             const civ = suz && GameInfo.Civilizations.lookup(suz.civilizationType);
             icon = civ && UI.getIconCSS(civ.CivilizationType);
-            filter.push(tint);
+            filter.push(tint, shadow, light);
         } else if (this.city.isCapital) {
             // capital star
             this.hasHead = !bzFlagCorpsOptions.noHeads;
             icon = "url('blp:icon-capital.png')";
+            filter.push(shadow, light);
         } else if (!this.city.isTown) {
             // city owner
             this.hasHead = !bzFlagCorpsOptions.noHeads;
             const civ = GameInfo.Civilizations.lookup(this.owner.civilizationType);
             icon = UI.getIconCSS(civ.CivilizationType);
-            filter.push(tint);
+            filter.push(tint, shadow, light);
         } else if (bzFlagCorpsOptions.banners) {
             // town focus
             if (this.city.Growth?.growthType == GrowthTypes.EXPAND) {
@@ -637,7 +670,7 @@ export class bzCityBanner {
     }
     afterSetCityInfo(_data) {
         this.realizeIcon();
-        if (this.owner && !this.owner.isIndependent && !this.owner.isMinor) {
+        if (this.owner && !this.owner.isIndependent) {
             // improved text lighting
             const { cityName, } = this.elements;
             const shadowSpec = `${BZ_SHADOW_SHAPE} ${this.color1dark}`;
@@ -653,45 +686,13 @@ export class bzCityBanner {
         const showUnrest = this.city.Happiness?.hasUnrest && !this.city.isBeingRazed;
         this.Root.classList.toggle("city-banner--unrest", showUnrest);
     }
-    darkenColor(rgb, darkness) {
-        const srgb = PlayerColors.stringRGBtoRGB(rgb);
-        const min = Math.min(srgb.r, srgb.g, srgb.b);
-        const max = Math.max(srgb.r, srgb.g, srgb.b);
-        const dc = Math.round(max * darkness);
-        const maxt = max - dc;
-        const mint = Math.max(min - dc, 0);
-        if (maxt == mint) {
-            return PlayerColors.SRGBtoString({ r: mint, g: mint, b: mint });
-        }
-        const scale = (maxt - mint) / (max - min);
-        srgb.r = Math.round((srgb.r - min) * scale) + mint;
-        srgb.g = Math.round((srgb.g - min) * scale) + mint;
-        srgb.b = Math.round((srgb.b - min) * scale) + mint;
-        return PlayerColors.SRGBtoString(srgb);
-    }
-    lightenColor(rgb, lightness) {
-        const srgb = PlayerColors.stringRGBtoRGB(rgb);
-        const min = Math.min(srgb.r, srgb.g, srgb.b);
-        const max = Math.max(srgb.r, srgb.g, srgb.b);
-        const dc = Math.round((255 - min) * lightness);
-        const mint = min + dc;
-        const maxt = Math.min(max + dc, 255);
-        if (maxt == mint) {
-            return PlayerColors.SRGBtoString({ r: mint, g: mint, b: mint });
-        }
-        const scale = (maxt - mint) / (max - min);
-        srgb.r = Math.round((srgb.r - min) * scale) + mint;
-        srgb.g = Math.round((srgb.g - min) * scale) + mint;
-        srgb.b = Math.round((srgb.b - min) * scale) + mint;
-        return PlayerColors.SRGBtoString(srgb);
-    }
     afterRealizePlayerColors() {
         this.color1 = this.Root.style.getPropertyValue('--player-color-primary');
         this.color2 = this.Root.style.getPropertyValue('--player-color-secondary');
-        this.color1dark = this.darkenColor(this.color1, 4/5);
-        this.color2dark = this.darkenColor(this.color2, 4/5);
-        this.color1light = this.lightenColor(this.color1, 2/3);
-        this.color2light = this.lightenColor(this.color2, 2/3);
+        this.color1dark = darkenColor(this.color1, 2/3);
+        this.color2dark = darkenColor(this.color2, 2/3);
+        this.color1light = lightenColor(this.color1, 1/2);
+        this.color2light = lightenColor(this.color2, 1/2);
     }
     afterRealizeReligion() {
         const {
