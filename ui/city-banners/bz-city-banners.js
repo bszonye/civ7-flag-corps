@@ -1,4 +1,3 @@
-// TODO: text & localization
 // TODO: realign district healthbars
 // TODO: tooltips (mostly from Map Trix)
 // - owner & civ
@@ -521,6 +520,12 @@ export class bzCityBanner {
         component.bzComponent = this;
         this.Root = this.component.Root;
         this.elements = this.component.elements;
+        this.componentID = null;
+        this.city = null;
+        this.owner = null;
+        this.suzerain = null;
+        this.isVassal = false;
+        this.isEnemy = false;
         this.hasHead = false;
         this.patchPrototypes(this.component);
         this.patchStyles(this.component);
@@ -675,17 +680,20 @@ export class bzCityBanner {
             "0.3888888889rem";
     }
     afterAffinityUpdate() {
-        // is the other player a city-state or village?
+        const observer = GameContext.localObserverID;
+        if (this.owner.Influence?.hasSuzerain) {
+            const suzerainID = this.owner.Influence.getSuzerain();
+            this.suzerain = Players.get(suzerainID);
+        }
+        this.isVassal = this.suzerain?.id == observer;
+        this.isEnemy = this.owner.Diplomacy?.isAtWarWith(observer);
         if (this.owner?.isMinor && bzFlagCorpsOptions.banners) {
-            const playerID = GameContext.localPlayerID;
-            const isVassal = this.owner.Influence?.hasSuzerain &&
-                this.owner.Influence.getSuzerain() == playerID;
-            const isEnemy = this.owner.Diplomacy?.isAtWarWith(playerID);
-            const isNeutral = !isVassal && !isEnemy;
-            this.Root.classList.toggle("city-banner--friendly", isVassal);
-            this.Root.classList.toggle("city-banner--hostile", isEnemy);
+            const isNeutral = !this.isVassal && !this.isEnemy;
+            this.Root.classList.toggle("city-banner--friendly", this.isVassal);
+            this.Root.classList.toggle("city-banner--hostile", this.isEnemy);
             this.Root.classList.toggle("city-banner--neutral", isNeutral);
         }
+        this.realizePortrait();
     }
     afterCapitalUpdate() {
         // update capital star
@@ -701,6 +709,21 @@ export class bzCityBanner {
             cityName.style.textShadow = `${shadowSpec}, ${lightSpect}`;
         }
     }
+    realizePortrait() {
+        // get angry!
+        if (!this.owner || this.owner.isIndependent) return;
+        const owner = this.suzerain ?? this.owner;
+        const leader = GameInfo.Leaders.lookup(owner.leaderType);
+        if (!leader) return;
+        const observer = GameContext.localObserverID;
+        this.isEnemy = this.owner.Diplomacy?.isAtWarWith(observer);
+        const happiness = this.city.Yields?.getYield(YieldTypes.YIELD_HAPPINESS);
+        const context = this.isEnemy || happiness < 0 ? "LEADER_ANGRY" : "DEFAULT";
+        const icon = UI.getIconCSS(leader.LeaderType, context);
+        if (!icon) return;
+        const { portraitIcon, } = this.elements;
+        portraitIcon.style.backgroundImage = icon;
+    }
     afterRealizeBuilds() {
         // update town focus
         this.realizeIcon();
@@ -708,6 +731,7 @@ export class bzCityBanner {
     afterRealizeHappiness() {
         const showUnrest = this.city.Happiness?.hasUnrest && !this.city.isBeingRazed;
         this.Root.classList.toggle("city-banner--unrest", showUnrest);
+        this.realizePortrait();
     }
     afterRealizePlayerColors() {
         this.color1 = this.Root.style.getPropertyValue('--player-color-primary');
