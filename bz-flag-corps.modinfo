@@ -40,6 +40,7 @@
             </Properties>
             <Actions>
                 <UIScripts>
+                    <Item>ui/city-banners/bz-city-banner-manager.js</Item>
                     <Item>ui/city-banners/bz-city-banners.js</Item>
                     <Item>ui/options/bz-flag-corps-options.js</Item>
                     <Item>ui/options/mod-options-decorator.js</Item>

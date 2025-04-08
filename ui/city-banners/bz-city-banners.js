@@ -1,5 +1,6 @@
 // TODO: text & localization
 // TODO: realign district healthbars
+// TODO: update razing icon immediately
 // TODO: tooltips (mostly from Map Trix)
 // - owner & civ
 // - town focus
@@ -483,6 +484,7 @@ export class bzCityBanner {
         this.component = component;
         component.bzComponent = this;
         this.Root = this.component.Root;
+        this.elements = this.component.elements;
         this.hasHead = false;
         this.patchPrototypes(this.component);
         this.patchStyles(this.component);
@@ -520,7 +522,6 @@ export class bzCityBanner {
             const after_rv = afterRealizeReligion.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
-        // wrap realizeReligion metho
         // replace component.XXX to fix a bug
         // bzCityBanner.component_XXX = proto.XXX;
         // proto.XXX = function() {
@@ -615,7 +616,7 @@ export class bzCityBanner {
             urbanReligionSymbol,
             ruralReligionSymbol,
             ruralReligionSymbolBackground,
-        } = this.component.elements;
+        } = this.elements;
         // hide rural religion if it matches urban religion
         const majority =
             urbanReligionSymbol.style.backgroundImage ==
