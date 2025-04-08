@@ -8,6 +8,7 @@ export class bzCityBannerManager {
         this.banners = this.component.banners;
         this.patchPrototypes(this.component);
         this.cityRazingStartedListener = this.onCityRazingStarted.bind(this);
+        this.playerResourceChangedListener = this.onPlayerResourceChanged.bind(this);
     }
     patchPrototypes(component) {
         const c_prototype = Object.getPrototypeOf(component);
@@ -16,9 +17,11 @@ export class bzCityBannerManager {
     beforeAttach() { }
     afterAttach() {
         engine.on('CityRazingStarted', this.cityRazingStartedListener);
+        engine.on('PlayerResourceChanged', this.playerResourceChangedListener);
     }
     beforeDetach() {
         engine.off('CityRazingStarted', this.cityRazingStartedListener);
+        engine.off('PlayerResourceChanged', this.playerResourceChangedListener);
     }
     afterDetach() { }
     onAttributeChanged(_name, _prev, _next) { }
@@ -30,6 +33,12 @@ export class bzCityBannerManager {
         }
         // will trigger a full update
         cityBanner.queueNameUpdate();
+    }
+    onPlayerResourceChanged(data) {
+        // resource changes can affect food, production, happiness
+        this.banners.forEach((banner, _key) => {
+            if (banner.componentID.owner == data.player) banner.queueBuildsUpdate();
+        });
     }
 }
 Controls.decorate('city-banners', (component) => new bzCityBannerManager(component));
