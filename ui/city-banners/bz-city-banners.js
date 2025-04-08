@@ -1,6 +1,5 @@
 // TODO: text & localization
 // TODO: realign district healthbars
-// TODO: switch neutral city-states to friendly color
 // TODO: tooltips (mostly from Map Trix)
 // - owner & civ
 // - town focus
@@ -51,9 +50,9 @@ const BZ_COLOR = {
     economic: "#ffd553",
     cultural: "#892bb3",
     // relationship ring colors
-    friendly: "#e0b96c",    // 40°  65 65 deep bronze
+    friendly: "#e5d2ac",
     hostile: "#af1b1c",
-    neutral: "#e5d2ac",
+    neutral: "#e0b96c",    // 40°  65 65 deep bronze
     // highlight & shadow colors
     light: "#fff6e5cc",      // 40° 100 95 pale bronze
     shadow: "#00000080",
