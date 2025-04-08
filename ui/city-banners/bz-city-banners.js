@@ -36,25 +36,26 @@ const BZ_COLOR = {
     wet: "#55aaff66",  // Wet features = teal 60% opacity
     road: "#e5d2accc",  // Roads & Railroads = bronze 80% opacity
     // yield types
-    food: "#80b34d",        //  90° 40 50 green
-    production: "#a33d29",  //  10° 60 40 red
-    gold: "#f6ce55",        //  45° 90 65 yellow
-    science: "#6ca6e0",     // 210° 65 65 cyan
-    culture: "#5c5cd6",     // 240° 60 60 violet
-    happiness: "#f5993d",   //  30° 90 60 orange
-    diplomacy: "#afb7cf",   // 225° 25 75 gray
+    food: "#80b34d",        //  90°  40 50 green
+    production: "#a33d29",  //  10°  60 40 red
+    gold: "#f6ce55",        //  45°  90 65 yellow
+    science: "#6ca6e0",     // 210°  65 65 cyan
+    culture: "#5c5cd6",     // 240°  60 60 violet
+    happiness: "#f5993d",   //  30°  90 60 orange
+    diplomacy: "#afb7cf",   // 225°  25 75 gray
     // independent power types
     militaristic: "#af1b1c",
     scientific: "#4d7c96",
     economic: "#ffd553",
     cultural: "#892bb3",
     // relationship ring colors
-    friendly: "#e5d2ac",  // TODO
+    friendly: "#e0b96c",    // 40°  65 65 deep bronze
     hostile: "#af1b1c",
     neutral: "#0000",
     // glow & shadow colors
-    glow: "#fff6e5cc",
+    glow: "#fff6e5cc",      // 40° 100 95 pale bronze
     shadow: "#00000080",
+    progress: "#e0b96c",    // 40°  65 65 deep bronze
 };
 const BZ_SHADOW_SPEC = `0 0.0555555556rem 0.0555555556rem ${BZ_COLOR.black}`;
 const BZ_GLOW_SPEC = `0 -0.0555555556rem 0.0555555556rem ${BZ_COLOR.glow}`;
@@ -306,34 +307,23 @@ const BZ_HEAD_STYLE = [
     height: 2rem;
     line-height: 2rem;
     margin: 0rem;
+    z-index: 2;
+    /* position for F1rstDan's connections ring */
     top: -0.2222222222rem;
     left: -0.0277777778rem;
-    z-index: 2;
+}
+.bz-flags city-banner.city-banner .city-banner__population-ring,
+.bz-flags city-banner.city-banner .city-banner__production-ring {
+    /* position for base-game rings */
+    background-position: -0.0277777778rem 0.0277777778rem;
+    left: 0;
+    top: -0.25rem;
 }
 .bz-flags .city-banner__ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__ring .fxs-ring-meter__ring-left {
     background-image: url("fs://game/hud_small-progress_bar.png");
+    filter: brightness(1.5) fxs-color-tint(${BZ_COLOR.progress});
     background-size: cover;
-}
-.bz-flags .city-banner__ring .fxs-ring-meter__ring-left {
-    background-position: left;
-    position: relative;
-    top: -0.0277777778rem;
-    left: 0.0555555556rem;
-    background-color: #f0f8;
-}
-.bz-flags .city-banner__ring .fxs-ring-meter__ring-right {
-    background-position: right;
-    position: relative;
-    top: 0.0277777778rem;
-    left: 0.5rem;
-    background-color: #f808;
-}
-.bz-flags .city-banner__population-number {
-    background-image: url("fs://game/town_pop-bg.png");
-    position: relative;
-    top: -0.0277777778rem;
-    left: 0.0277777778rem;
 }
 `,  //     compatibility with F1rstDan's Cool UI:
     //     3 .DAN-TOOLTIP items-center justify-center w-8 h-6 -mt-2 -mr-1 pointer-events-auto dan-tooltip hidden
@@ -363,11 +353,6 @@ const BZ_HEAD_STYLE = [
     margin: 0rem 0.2777777777rem 0rem -0.1111111111rem;
     padding: 0rem;
     box-shadow: none;
-}
-.bz-flags .city-banner__queue-img {
-    position: relative;
-    top: -0.0277777778rem;
-    left: 0.0277777778rem;
 }
 `,  //       4 .TURN flex flex-col justify-end align-center self-center w-8 mt-0\.5 pointer-events-none
     //         5 .TURN-NUMBER font-base-xs text-white text-center w-full bg-cover bg-center bg-no-repeat
