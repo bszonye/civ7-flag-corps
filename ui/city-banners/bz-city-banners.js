@@ -54,15 +54,15 @@ const BZ_COLOR = {
     friendly: "#e0b96c",    // 40°  65 65 deep bronze
     hostile: "#af1b1c",
     neutral: "#0000",
-    // glow & shadow colors
-    glow: "#fff6e5cc",      // 40° 100 95 pale bronze
+    // highlight & shadow colors
+    light: "#fff6e5cc",      // 40° 100 95 pale bronze
     shadow: "#00000080",
     progress: "#e0b96c",    // 40°  65 65 deep bronze
 };
 const BZ_SHADOW_SHAPE = "0 0.0555555556rem 0.0555555556rem";
 const BZ_SHADOW_SPEC = `${BZ_SHADOW_SHAPE} ${BZ_COLOR.black}`;
-const BZ_GLOW_SHAPE = "0 -0.0555555556rem 0.0555555556rem";
-const BZ_GLOW_SPEC = `${BZ_GLOW_SHAPE} ${BZ_COLOR.glow}`;
+const BZ_LIGHT_SHAPE = "0 -0.0555555556rem 0.0555555556rem";
+const BZ_LIGHT_SPEC = `${BZ_LIGHT_SHAPE} ${BZ_COLOR.light}`;
 
 const BZ_HEAD_STYLE = [
 // 0. CITY-BANNER -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
@@ -217,7 +217,7 @@ const BZ_HEAD_STYLE = [
     padding: 0 0.3333333333rem;
     letter-spacing: 0.0555555556rem;
     font-weight: bold;
-    text-shadow: ${BZ_SHADOW_SPEC}, ${BZ_GLOW_SPEC};
+    text-shadow: ${BZ_SHADOW_SPEC}, ${BZ_LIGHT_SPEC};
     pointer-events: auto;
 }
 .bz-flags .city-banner.city-banner--citystate .city-banner__name,
@@ -567,25 +567,25 @@ export class bzCityBanner {
     beforeBuildBanner() {
         this.componentID = this.component.componentID;
         this.city = this.component.city;
+        this.owner = Players.get(this.componentID.owner);
         this.component.realizePlayerColors();
     }
     realizeIcon() {
         // expand the capital-star to show ownership & town focus
         this.hasHead = false;
         if (!this.city) return;
-        const owner = Players.get(this.componentID.owner);
-        if (!owner || owner.isIndependent) return;
+        if (!this.owner || this.owner.isIndependent) return;
         const { capitalIndicator, } = this.elements;
         let icon;
         let filter = [];
         const tint = `fxs-color-tint(${this.color2})`;
         const shadow = `drop-shadow(${BZ_SHADOW_SHAPE} ${this.color1dark})`;
-        const glow = `drop-shadow(${BZ_GLOW_SHAPE} ${this.color1light})`;
-        console.warn(`TRIX COLORS TINT=${tint} SHADOW=${shadow} GLOW=${glow}`);
-        if (owner.isMinor) {
+        const light = `drop-shadow(${BZ_LIGHT_SHAPE} ${this.color1light})`;
+        console.warn(`TRIX COLORS TINT=${tint} SHADOW=${shadow} LIGHT=${light}`);
+        if (this.owner.isMinor) {
             // city-state
             this.hasHead = !bzFlagCorpsOptions.noHeads;
-            const suz = Players.get(owner.Influence?.getSuzerain() ?? -1);
+            const suz = Players.get(this.owner.Influence?.getSuzerain() ?? -1);
             const civ = suz && GameInfo.Civilizations.lookup(suz.civilizationType);
             icon = civ && UI.getIconCSS(civ.CivilizationType);
             filter.push(tint);
@@ -596,7 +596,7 @@ export class bzCityBanner {
         } else if (!this.city.isTown) {
             // city owner
             this.hasHead = !bzFlagCorpsOptions.noHeads;
-            const civ = GameInfo.Civilizations.lookup(owner.civilizationType);
+            const civ = GameInfo.Civilizations.lookup(this.owner.civilizationType);
             icon = UI.getIconCSS(civ.CivilizationType);
             filter.push(tint);
         } else if (bzFlagCorpsOptions.banners) {
@@ -608,7 +608,7 @@ export class bzCityBanner {
                 const focus = ptype && GameInfo.Projects.lookup(ptype);
                 icon = UI.getIconCSS(focus?.ProjectType ?? "PROJECT_GROWTH");
             }
-            filter.push(shadow, glow);
+            filter.push(shadow, light);
         }
         capitalIndicator.style.backgroundImage = icon;
         capitalIndicator.style.filter = filter.join(' ');
@@ -637,6 +637,13 @@ export class bzCityBanner {
     }
     afterSetCityInfo(_data) {
         this.realizeIcon();
+        if (this.owner && !this.owner.isIndependent && !this.owner.isMinor) {
+            // improved text lighting
+            const { cityName, } = this.elements;
+            const shadowSpec = `${BZ_SHADOW_SHAPE} ${this.color1dark}`;
+            const lightSpect = `${BZ_LIGHT_SHAPE} ${this.color1light}`;
+            cityName.style.textShadow = `${shadowSpec}, ${lightSpect}`;
+        }
     }
     afterRealizeBuilds() {
         // update town focus
@@ -685,8 +692,6 @@ export class bzCityBanner {
         this.color2dark = this.darkenColor(this.color2, 4/5);
         this.color1light = this.lightenColor(this.color1, 2/3);
         this.color2light = this.lightenColor(this.color2, 2/3);
-        console.warn(`TRIX ${this.componentID.owner} 1=${this.color1} LIGHT=${this.color1light} DARK=${this.color1dark}`);
-        console.warn(`TRIX ${this.componentID.owner} 2=${this.color2} LIGHT=${this.color2light} DARK=${this.color2dark}`);
     }
     afterRealizeReligion() {
         const {
