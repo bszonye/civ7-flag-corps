@@ -300,6 +300,7 @@ const BZ_HEAD_STYLE = [
     box-shadow: none;
 }
 .bz-flags city-banner.city-banner .city-banner__ring {
+    background-image: url("fs://game/hud_sub_circle_bk.png");
     position: relative;
     width: 2rem;
     height: 2rem;
@@ -308,6 +309,31 @@ const BZ_HEAD_STYLE = [
     top: -0.2222222222rem;
     left: -0.0277777778rem;
     z-index: 2;
+}
+.bz-flags .city-banner__ring .fxs-ring-meter__ring-right,
+.bz-flags .city-banner__ring .fxs-ring-meter__ring-left {
+    background-image: url("fs://game/hud_small-progress_bar.png");
+    background-size: cover;
+}
+.bz-flags .city-banner__ring .fxs-ring-meter__ring-left {
+    background-position: left;
+    position: relative;
+    top: -0.0277777778rem;
+    left: 0.0555555556rem;
+    background-color: #f0f8;
+}
+.bz-flags .city-banner__ring .fxs-ring-meter__ring-right {
+    background-position: right;
+    position: relative;
+    top: 0.0277777778rem;
+    left: 0.5rem;
+    background-color: #f808;
+}
+.bz-flags .city-banner__population-number {
+    background-image: url("fs://game/town_pop-bg.png");
+    position: relative;
+    top: -0.0277777778rem;
+    left: 0.0277777778rem;
 }
 `,  //     compatibility with F1rstDan's Cool UI:
     //     3 .DAN-TOOLTIP items-center justify-center w-8 h-6 -mt-2 -mr-1 pointer-events-auto dan-tooltip hidden
@@ -319,11 +345,11 @@ const BZ_HEAD_STYLE = [
     position: relative;
     width: 1.5555555556rem;
     height: 1.5555555556rem;
-    top: 0.4166666667rem;
+    top: 0.3888888889rem;
     margin: 0rem 0.1111111111rem 0rem 0.1111111111rem;
     padding: 0rem;
     border-radius: 0.7777777778rem;
-    box-shadow: 0 0 0.3333333333rem 0.1111111111rem #0006;
+    box-shadow: 0 0.0555555556rem 0.3333333333rem 0.1111111111rem #0006;
 }
 `,  //     3 .QUEUE-CONTAINER queue-production queue-none justify-center w-8 h-6 -mt-2 flex-col align-center
     //       4 FXS-RING-METER.RING.PRODUCTION-RING bg-cover bg-center flex size-9 self-center align-center
@@ -337,6 +363,11 @@ const BZ_HEAD_STYLE = [
     margin: 0rem 0.2777777777rem 0rem -0.1111111111rem;
     padding: 0rem;
     box-shadow: none;
+}
+.bz-flags .city-banner__queue-img {
+    position: relative;
+    top: -0.0277777778rem;
+    left: 0.0277777778rem;
 }
 `,  //       4 .TURN flex flex-col justify-end align-center self-center w-8 mt-0\.5 pointer-events-none
     //         5 .TURN-NUMBER font-base-xs text-white text-center w-full bg-cover bg-center bg-no-repeat
