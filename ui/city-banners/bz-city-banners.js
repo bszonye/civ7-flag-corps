@@ -1,6 +1,6 @@
 // TODO: text & localization
 // TODO: realign district healthbars
-// TODO: update razing icon immediately
+// TODO: switch neutral city-states to friendly color
 // TODO: tooltips (mostly from Map Trix)
 // - owner & civ
 // - town focus
@@ -11,6 +11,7 @@
 // - build queue
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
 import CityBannerManager from '/base-standard/ui/city-banners/city-banner-manager.js';
+import PlayerColors from '/core/ui/utilities/utilities-color.js';
 
 // color palette
 const BZ_COLOR = {
@@ -58,8 +59,10 @@ const BZ_COLOR = {
     shadow: "#00000080",
     progress: "#e0b96c",    // 40°  65 65 deep bronze
 };
-const BZ_SHADOW_SPEC = `0 0.0555555556rem 0.0555555556rem ${BZ_COLOR.black}`;
-const BZ_GLOW_SPEC = `0 -0.0555555556rem 0.0555555556rem ${BZ_COLOR.glow}`;
+const BZ_SHADOW_SHAPE = "0 0.0555555556rem 0.0555555556rem";
+const BZ_SHADOW_SPEC = `${BZ_SHADOW_SHAPE} ${BZ_COLOR.black}`;
+const BZ_GLOW_SHAPE = "0 -0.0555555556rem 0.0555555556rem";
+const BZ_GLOW_SPEC = `${BZ_GLOW_SHAPE} ${BZ_COLOR.glow}`;
 
 const BZ_HEAD_STYLE = [
 // 0. CITY-BANNER -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
@@ -86,7 +89,6 @@ const BZ_HEAD_STYLE = [
     height: 3.6666666667rem;
 }
 `,  //     3 .CITY-STATE-BORDER absolute -left-2 -right-2 -top-0 -bottom-0
-    //       TODO: .city-banner--allied and .city-banner--warring?
 `
 .bz-flags city-banner.city-banner .city-banner__city-state-border {
     display: flex;
@@ -153,7 +155,6 @@ const BZ_HEAD_STYLE = [
     //       4 .PORTRAIT-BG1 absolute inset-0 bg-center bg-cover bg-no-repeat
     //       4 .PORTRAIT-BG2 absolute inset-x-0 top-0 -bottom-2 bg-center bg-cover bg-no-repeat
     //       4 .PORTRAIT-IMG absolute -left-2 -right-2 -top-1 bottom-0 bg-cover bg-center bg-no-repeat pointer-events-none
-    // TODO
 `
 .bz-flags city-banner.city-banner .city-banner__portrait {
     margin-right: 0.0555555556rem;  /* to line up status-religion */
@@ -475,7 +476,7 @@ if (bzFlagCorpsOptions.banners) {
 } else {
     document.body.classList.remove("bz-flags");
 }
-// TODO: react to setting changes
+// TODO: react to checkbox
 if (UI.isDebugPlotInfoVisible()) document.body.classList.add("bz-debug");
 
 export class bzCityBanner {
@@ -502,14 +503,6 @@ export class bzCityBanner {
             const c_rv = buildBanner.apply(this, args);
             return c_rv ?? before_rv;
         }
-        // afterDoBuildsUpdate
-        const afterDoBuildsUpdate = this.afterDoBuildsUpdate;
-        const doBuildsUpdate = proto.doBuildsUpdate;
-        proto.doBuildsUpdate = function(...args) {
-            const c_rv = doBuildsUpdate.apply(this, args);
-            const after_rv = afterDoBuildsUpdate.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
-        }
         // afterCapitalUpdate
         const afterCapitalUpdate = this.afterCapitalUpdate;
         const capitalUpdate = proto.capitalUpdate;
@@ -526,12 +519,28 @@ export class bzCityBanner {
             const after_rv = afterSetCityInfo.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
+        // afterRealizeBuilds
+        const afterRealizeBuilds = this.afterRealizeBuilds;
+        const realizeBuilds = proto.realizeBuilds;
+        proto.realizeBuilds = function(...args) {
+            const c_rv = realizeBuilds.apply(this, args);
+            const after_rv = afterRealizeBuilds.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
+        }
         // afterRealizeHappiness
         const afterRealizeHappiness = this.afterRealizeHappiness;
         const realizeHappiness = proto.realizeHappiness;
         proto.realizeHappiness = function(...args) {
             const c_rv = realizeHappiness.apply(this, args);
             const after_rv = afterRealizeHappiness.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
+        }
+        // afterRealizePlayerColors
+        const afterRealizePlayerColors = this.afterRealizePlayerColors;
+        const realizePlayerColors = proto.realizePlayerColors;
+        proto.realizePlayerColors = function(...args) {
+            const c_rv = realizePlayerColors.apply(this, args);
+            const after_rv = afterRealizePlayerColors.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
         // afterRealizeReligion
@@ -558,11 +567,10 @@ export class bzCityBanner {
     beforeBuildBanner() {
         this.componentID = this.component.componentID;
         this.city = this.component.city;
+        this.component.realizePlayerColors();
     }
-    mainIconUpdate() {
-        // show interesting icons for all settlements, where possible
-        // TODO: tooltip
-        // TODO: live updates
+    realizeIcon() {
+        // expand the capital-star to show ownership & town focus
         this.hasHead = false;
         if (!this.city) return;
         const owner = Players.get(this.componentID.owner);
@@ -570,10 +578,10 @@ export class bzCityBanner {
         const { capitalIndicator, } = this.elements;
         let icon;
         let filter = [];
-        const secondary = "var(--player-color-secondary)";
-        const tint = `fxs-color-tint(${secondary})`;
-        const shadow = `drop-shadow(${BZ_SHADOW_SPEC})`;
-        const glow = `drop-shadow(${BZ_GLOW_SPEC})`;
+        const tint = `fxs-color-tint(${this.color2})`;
+        const shadow = `drop-shadow(${BZ_SHADOW_SHAPE} ${this.color1dark})`;
+        const glow = `drop-shadow(${BZ_GLOW_SHAPE} ${this.color1light})`;
+        console.warn(`TRIX COLORS TINT=${tint} SHADOW=${shadow} GLOW=${glow}`);
         if (owner.isMinor) {
             // city-state
             this.hasHead = !bzFlagCorpsOptions.noHeads;
@@ -623,20 +631,62 @@ export class bzCityBanner {
             this.hasHead ? "-1.1666666667rem" :
             "0.3888888889rem";
     }
-    afterDoBuildsUpdate() {
-        // update town focus
-        this.mainIconUpdate();
-    }
     afterCapitalUpdate() {
         // update capital star
-        this.mainIconUpdate();
+        this.realizeIcon();
     }
     afterSetCityInfo(_data) {
-        this.mainIconUpdate();
+        this.realizeIcon();
+    }
+    afterRealizeBuilds() {
+        // update town focus
+        this.realizeIcon();
     }
     afterRealizeHappiness() {
         const showUnrest = this.city.Happiness?.hasUnrest && !this.city.isBeingRazed;
         this.Root.classList.toggle("city-banner--unrest", showUnrest);
+    }
+    darkenColor(rgb, darkness) {
+        const srgb = PlayerColors.stringRGBtoRGB(rgb);
+        const min = Math.min(srgb.r, srgb.g, srgb.b);
+        const max = Math.max(srgb.r, srgb.g, srgb.b);
+        const dc = Math.round(max * darkness);
+        const maxt = max - dc;
+        const mint = Math.max(min - dc, 0);
+        if (maxt == mint) {
+            return PlayerColors.SRGBtoString({ r: mint, g: mint, b: mint });
+        }
+        const scale = (maxt - mint) / (max - min);
+        srgb.r = Math.round((srgb.r - min) * scale) + mint;
+        srgb.g = Math.round((srgb.g - min) * scale) + mint;
+        srgb.b = Math.round((srgb.b - min) * scale) + mint;
+        return PlayerColors.SRGBtoString(srgb);
+    }
+    lightenColor(rgb, lightness) {
+        const srgb = PlayerColors.stringRGBtoRGB(rgb);
+        const min = Math.min(srgb.r, srgb.g, srgb.b);
+        const max = Math.max(srgb.r, srgb.g, srgb.b);
+        const dc = Math.round((255 - min) * lightness);
+        const mint = min + dc;
+        const maxt = Math.min(max + dc, 255);
+        if (maxt == mint) {
+            return PlayerColors.SRGBtoString({ r: mint, g: mint, b: mint });
+        }
+        const scale = (maxt - mint) / (max - min);
+        srgb.r = Math.round((srgb.r - min) * scale) + mint;
+        srgb.g = Math.round((srgb.g - min) * scale) + mint;
+        srgb.b = Math.round((srgb.b - min) * scale) + mint;
+        return PlayerColors.SRGBtoString(srgb);
+    }
+    afterRealizePlayerColors() {
+        this.color1 = this.Root.style.getPropertyValue('--player-color-primary');
+        this.color2 = this.Root.style.getPropertyValue('--player-color-secondary');
+        this.color1dark = this.darkenColor(this.color1, 4/5);
+        this.color2dark = this.darkenColor(this.color2, 4/5);
+        this.color1light = this.lightenColor(this.color1, 2/3);
+        this.color2light = this.lightenColor(this.color2, 2/3);
+        console.warn(`TRIX ${this.componentID.owner} 1=${this.color1} LIGHT=${this.color1light} DARK=${this.color1dark}`);
+        console.warn(`TRIX ${this.componentID.owner} 2=${this.color2} LIGHT=${this.color2light} DARK=${this.color2dark}`);
     }
     afterRealizeReligion() {
         const {
