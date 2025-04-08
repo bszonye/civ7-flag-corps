@@ -1,4 +1,4 @@
-# Flag Corps 1.1.0
+# Flag Corps 2.0.0
 better unit flags
 
 ## improves unit flag layout and design
