@@ -158,31 +158,32 @@ const BZ_HEAD_STYLE = [
     //       4 .PORTRAIT-IMG absolute -left-2 -right-2 -top-1 bottom-0 bg-cover bg-center bg-no-repeat pointer-events-none
 `
 .bz-flags city-banner.city-banner .city-banner__portrait {
-    margin-right: 0.0555555556rem;  /* to line up status-religion */
-    top: -0.1388888889rem;
-    left: 0.0555555556rem;
-    width: 1.3333333333rem;
-    height: 2rem;
+    margin: -0.1666666667rem;
+    margin-right: 0.0555555556rem;  /* TODO: line up status-religion */
+    top: -0.1111111111rem;
+    left: 0.1666666667rem;
+    width: 1.5555555555rem;
+    height: 2.3333333333rem;
 }
 .bz-flags .city-banner__portrait-bg1 {
     top: 0.3333333333rem;
-    width: 1.3333333333rem;
-    height: 2rem;
+    width: 1.5555555555rem;
+    height: 2.3333333333rem;
     background-size: cover;
     background-image: url("fs://game/town_portrait-hex.png");
 }
 .bz-flags .city-banner__portrait-bg2 {
     top: 0.3333333333rem;
-    width: 1.3333333333rem;
-    height: 2rem;
+    width: 1.5555555555rem;
+    height: 2.3333333333rem;
     background-size: cover;
     background-image: url("fs://game/town_portrait-frame.png");
 }
 .bz-flags .city-banner__portrait-img {
-    top: -0.7777777778rem;
-    left: -0.3333333333rem;
-    width: 2rem;
-    height: 3rem;
+    top: 0.0555555556rem;
+    left: 0rem;
+    width: 1.5555555556rem;
+    height: 2.3333333333rem;
     background-size: cover;
 }
 .bz-debug .city-banner__portrait {
@@ -252,8 +253,8 @@ const BZ_HEAD_STYLE = [
     width: 1rem;
     margin: 0;
 }
-.bz-flags .city-banner.city-banner--city-other .city-banner__status {
-    display: flex;
+.bz-flags city-banner.city-banner .city-banner__status.hidden {
+    display: none;
 }
 .bz-flags city-banner.city-banner .city-banner__status-background,
 .bz-flags city-banner.city-banner .city-banner__religion-symbol-bg {
@@ -747,6 +748,9 @@ export class bzCityBanner {
         const showUnrest = this.city.Happiness?.hasUnrest && !this.city.isBeingRazed;
         this.Root.classList.toggle("city-banner--unrest", showUnrest);
         this.realizePortrait();
+        // hide status/happiness for non-player banners
+        // base game attempts this, but it's broken
+        this.elements.statusContainer.classList.toggle("hidden", this.leader.id != this.player.id);
     }
     afterRealizePlayerColors() {
         this.color1 = this.Root.style.getPropertyValue('--player-color-primary');
