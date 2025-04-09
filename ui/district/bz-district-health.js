@@ -8,7 +8,7 @@ const BZ_HEAD_STYLE = [
 // set healthbar snug against city banner
 `
 .bz-flags .district-health-container {
-    top: -3.4722222222rem;
+    top: -3.3888888889rem;
     left: -4.7777777778rem;
     height: 1.8888888889rem;
     width: 11.1111111111rem;
@@ -17,9 +17,17 @@ const BZ_HEAD_STYLE = [
     position: absolute;
     left: 2rem;
     width: 5.5555555556rem;
-    height: 0.9444444444rem;
+    height: 0.8888888889rem;
     pointer-events: auto;
+    border-radius: 0.4444444444rem / 0.5555555556rem;
     background-color: black;
+}
+.bz-flags .district-health-bar-ink {
+    top: 0.1666666667rem;
+    right: 0.1666666667rem;
+    bottom: 0.1666666667rem;
+    left: 0.1666666667rem;
+    border-radius: 0.2777777778rem / 0.3888888889rem;
 }
 `,
 ];
