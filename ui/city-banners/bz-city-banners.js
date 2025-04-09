@@ -389,7 +389,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner > fxs-hslot {
     position: absolute;
     margin: 0rem;
-    top: -3rem;
+    top: -3.1944444444rem;
     height: 2.6666666667rem;
     display: flex;
     justify-content: center;
@@ -405,7 +405,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__conquered-icon {
     position: absolute;
     margin: 0rem;
-    top: 3.1111111111rem;
+    top: 3.3055555556rem;
 }
 `,  //   2 FXS-VSLOT.UNREST -mr-3
     //     3 .UNREST-ICON relative size-14 bg-cover bg-no-repeat
@@ -740,7 +740,7 @@ export class bzCityBanner {
             const max = districts?.getDistrictMaxHealth(this.location);
             const unrest = this.Root.querySelector(".city-banner__unrest");
             const razing = this.Root.querySelector(".city-banner__razing");
-            const shift = (cur && cur != max) ? "-0.7777777778rem" : "0";
+            const shift = (cur && cur != max) ? "-0.8333333333rem" : "0";
             unrest.style.top = razing.style.top = shift;
             console.warn(`TRIX DAMAGE=${cur}/${max} ${JSON.stringify(this.city.id)}`);
         }
