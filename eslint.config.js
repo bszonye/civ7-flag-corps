@@ -29,6 +29,7 @@ export default [
                 MapUnits: "readonly",
                 Players: "readonly",
                 UI: "readonly",
+                WorldAnchors: "readonly",
                 YieldTypes: "readonly",
                 console: "readonly",
                 document: "readonly",

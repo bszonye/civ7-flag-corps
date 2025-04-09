@@ -1,4 +1,3 @@
-// TODO: realign district healthbars
 // TODO: tooltips (mostly from Map Trix)
 // - owner & civ
 // - town focus
@@ -390,6 +389,8 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner > fxs-hslot {
     position: absolute;
     margin: 0rem;
+    top: -4rem;
+    height: 2.6666666667rem;
     display: flex;
     justify-content: center;
     transform: translateX(-50%) scale(1);
@@ -404,7 +405,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__conquered-icon {
     position: absolute;
     margin: 0rem;
-    top: -0.5555555556rem;
+    top: 3.9444444444rem;
 }
 `,  //   2 FXS-VSLOT.UNREST -mr-3
     //     3 .UNREST-ICON relative size-14 bg-cover bg-no-repeat
@@ -416,7 +417,6 @@ const BZ_HEAD_STYLE = [
     position: relative;
     width: 2.6666666667rem;
     height: 2.6666666667rem;
-    top: -3.7777777778rem;
     margin: 0rem 0.1666666667rem;
 }
 .bz-flags .city-banner.city-banner--town .city-banner__unrest-icon {
@@ -433,7 +433,6 @@ const BZ_HEAD_STYLE = [
     position: relative;
     width: 2.6666666667rem;
     height: 2.6666666667rem;
-    top: -3.7777777778rem;
     margin: 0rem 0.1666666667rem;
 }
 .bz-flags .city-banner.city-banner--town .city-banner__razing-icon {
@@ -600,11 +599,6 @@ export class bzCityBanner {
             const after_rv = afterRealizeReligion.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
-        // replace component.XXX to fix a bug
-        // bzCityBanner.component_XXX = proto.XXX;
-        // proto.XXX = function() {
-        //     return this.bzComponent.XXX();
-        // }
     }
     patchStyles(banner) {
         const { growthQueueTurns, productionQueueTurns } = banner.elements;
@@ -625,7 +619,7 @@ export class bzCityBanner {
         if (!this.city) return;
         if (!this.owner || this.owner.isIndependent) return;
         const { capitalIndicator, } = this.elements;
-        let icon;
+        let icon = "";
         let filter = [];
         const tint = `fxs-color-tint(${this.color2})`;
         const shadow = `drop-shadow(${BZ_SHADOW_SHAPE} ${this.color1dark})`;

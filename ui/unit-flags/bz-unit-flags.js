@@ -51,8 +51,7 @@ UFMproto.onRecalculateFlagOffsets = function() {
         const units = MapUnits.getUnits(loc.x, loc.y);
         const position = { x: 0, y: -24 };
         // dimensions
-        // TODO: adjust yBanners after fixing district healthbars
-        const yBanners = bzFlagCorpsOptions.banners ? 8 : null;
+        const yBanners = bzFlagCorpsOptions.banners ? 0 : null;
         const yCity = yBanners ?? 8;
         const yTown = yBanners ?? 24;
         const yVillage = yBanners ?? 18;
