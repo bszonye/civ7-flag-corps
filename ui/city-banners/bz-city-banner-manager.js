@@ -8,6 +8,7 @@ export class bzCityBannerManager {
         this.banners = this.component.banners;
         this.patchPrototypes(this.component);
         this.cityRazingStartedListener = this.onCityRazingStarted.bind(this);
+        this.districtDamageChangedListener = this.onDistrictDamageChanged.bind(this);
         this.playerResourceChangedListener = this.onPlayerResourceChanged.bind(this);
     }
     patchPrototypes(component) {
@@ -17,10 +18,12 @@ export class bzCityBannerManager {
     beforeAttach() { }
     afterAttach() {
         engine.on('CityRazingStarted', this.cityRazingStartedListener);
+        engine.on('DistrictDamageChanged', this.districtDamageChangedListener);
         engine.on('PlayerResourceChanged', this.playerResourceChangedListener);
     }
     beforeDetach() {
         engine.off('CityRazingStarted', this.cityRazingStartedListener);
+        engine.off('DistrictDamageChanged', this.districtDamageChangedListener);
         engine.off('PlayerResourceChanged', this.playerResourceChangedListener);
     }
     afterDetach() { }
@@ -33,6 +36,14 @@ export class bzCityBannerManager {
         }
         // will trigger a full update
         cityBanner.queueNameUpdate();
+    }
+    onDistrictDamageChanged(data) {
+        const cityBanner = this.banners.get(ComponentID.toBitfield(data.cityID));
+        if (cityBanner == undefined) {
+            console.error("District damage changed but no associated banner was found. cid: ", ComponentID.toLogString(data.cityID));
+            return;
+        }
+        cityBanner.queueBuildsUpdate();
     }
     onPlayerResourceChanged(data) {
         // resource changes can affect food, production, happiness

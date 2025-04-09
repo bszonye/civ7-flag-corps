@@ -742,6 +742,7 @@ export class bzCityBanner {
             const razing = this.Root.querySelector(".city-banner__razing");
             const shift = (cur && cur != max) ? "-0.7777777778rem" : "0";
             unrest.style.top = razing.style.top = shift;
+            console.warn(`TRIX DAMAGE=${cur}/${max} ${JSON.stringify(this.city.id)}`);
         }
         // hide unrest when razing
         const showUnrest = this.city.Happiness?.hasUnrest && !this.city.isBeingRazed;
