@@ -242,10 +242,11 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__status-religion {
     position: absolute;
     top: 1.8333333333rem;
-    left: 0.3888888889rem;
+    left: 0.8888888889rem;
+    transform: translateX(-50%) scale(1);
 }
 .bz-debug city-banner.city-banner .city-banner__status-religion {
-    background-color: #0808;
+    background-color: #fff8;
 }
 .bz-flags city-banner.city-banner .city-banner__status {
     position: relative;
@@ -259,14 +260,11 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__status-background,
 .bz-flags city-banner.city-banner .city-banner__religion-symbol-bg {
     position: relative;
-    width: 1rem;
-    height: 1rem;
     margin: 0;
     border: none;
     border-radius: 50%;
     box-shadow: 0 0.0555555556rem 0.1666666667rem 0.0833333333rem ${BZ_COLOR.shadow},
                 0 0.0555555556rem 0.5rem 0 ${BZ_COLOR.shadow} inset;
-    background-color: ${BZ_COLOR.shadow};
 }
 .bz-flags city-banner.city-banner .city-banner__status-icon {
     background-size: 125%;
@@ -274,14 +272,13 @@ const BZ_HEAD_STYLE = [
 }
 .bz-flags city-banner.city-banner .city-banner__religion {
     position: relative;
-    width: 1rem;
     height: 1rem;
+}
+.bz-debug city-banner.city-banner .city-banner__religion {
+    background-color: #f0f8;
 }
 .bz-flags city-banner.city-banner .city-banner__religion-symbol-bg {
     margin: 0 0.0277777778rem;
-}
-.bz-flags city-banner.city-banner .religion-bg--right {
-    /* display: none;  /* DEBUG */
 }
 .bz-flags city-banner.city-banner .city-banner__religion-symbol {
     width: 1rem;
@@ -667,7 +664,6 @@ export class bzCityBanner {
         capitalIndicator.classList.toggle('hidden', !icon);
         // "no heads" option
         const portrait = this.Root.querySelector(".city-banner__portrait");
-        const status = this.Root.querySelector(".city-banner__status-religion");
         if (this.hasHead) {
             // show head and color its background
             portrait.style.display = "flex";
@@ -678,11 +674,6 @@ export class bzCityBanner {
         } else {
             portrait.style.display = "none";
         }
-        // align status-religion icons under the portrait
-        status.style.left =
-            !bzFlagCorpsOptions.banners ? "0.2222222222rem" :
-            this.hasHead ? "-1.1944444444rem" :
-            "0.3333333333rem";
     }
     afterAffinityUpdate() {
         this.realizePortrait();  // sets relationship info too
