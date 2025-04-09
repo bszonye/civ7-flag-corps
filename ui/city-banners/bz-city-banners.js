@@ -159,7 +159,7 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner.city-banner .city-banner__portrait {
     margin: -0.1666666667rem;
-    margin-right: 0.0555555556rem;  /* TODO: line up status-religion */
+    margin-right: 0.0555555556rem;  /* align status-religion icons */
     top: -0.1111111111rem;
     left: 0.1666666667rem;
     width: 1.5555555555rem;
@@ -251,7 +251,7 @@ const BZ_HEAD_STYLE = [
     position: relative;
     height: 1rem;
     width: 1rem;
-    margin: 0;
+    margin: 0 0.0277777778rem;
 }
 .bz-flags city-banner.city-banner .city-banner__status.hidden {
     display: none;
@@ -278,7 +278,7 @@ const BZ_HEAD_STYLE = [
     height: 1rem;
 }
 .bz-flags city-banner.city-banner .city-banner__religion-symbol-bg {
-    margin: 0 0 0 0.0555555556rem;
+    margin: 0 0.0277777778rem;
 }
 .bz-flags city-banner.city-banner .religion-bg--right {
     /* display: none;  /* DEBUG */
@@ -678,10 +678,11 @@ export class bzCityBanner {
         } else {
             portrait.style.display = "none";
         }
+        // align status-religion icons under the portrait
         status.style.left =
             !bzFlagCorpsOptions.banners ? "0.2222222222rem" :
-            this.hasHead ? "-1.1666666667rem" :
-            "0.3888888889rem";
+            this.hasHead ? "-1.1944444444rem" :
+            "0.3333333333rem";
     }
     afterAffinityUpdate() {
         this.realizePortrait();  // sets relationship info too
