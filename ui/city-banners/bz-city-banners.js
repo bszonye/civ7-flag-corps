@@ -389,7 +389,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner > fxs-hslot {
     position: absolute;
     margin: 0rem;
-    top: -4rem;
+    top: -3rem;
     height: 2.6666666667rem;
     display: flex;
     justify-content: center;
@@ -405,7 +405,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__conquered-icon {
     position: absolute;
     margin: 0rem;
-    top: 3.9444444444rem;
+    top: 3.1111111111rem;
 }
 `,  //   2 FXS-VSLOT.UNREST -mr-3
     //     3 .UNREST-ICON relative size-14 bg-cover bg-no-repeat
@@ -519,6 +519,7 @@ export class bzCityBanner {
         this.elements = this.component.elements;
         this.componentID = null;
         this.city = null;
+        this.location = null;
         this.owner = null;
         this.suzerain = null;
         this.leader = null;
@@ -610,6 +611,7 @@ export class bzCityBanner {
     beforeBuildBanner() {
         this.componentID = this.component.componentID;
         this.city = this.component.city;
+        this.location = this.component.location;
         this.owner = Players.get(this.componentID.owner);
         this.component.realizePlayerColors();
     }
@@ -731,6 +733,17 @@ export class bzCityBanner {
         this.realizeIcon();
     }
     afterRealizeHappiness() {
+        // shift icons above damage bar
+        if (this.owner) {
+            const districts = Players.Districts.get(this.owner.id);
+            const cur = districts?.getDistrictHealth(this.location);
+            const max = districts?.getDistrictMaxHealth(this.location);
+            const unrest = this.Root.querySelector(".city-banner__unrest");
+            const razing = this.Root.querySelector(".city-banner__razing");
+            const shift = (cur && cur != max) ? "-0.7777777778rem" : "0";
+            unrest.style.top = razing.style.top = shift;
+        }
+        // hide unrest when razing
         const showUnrest = this.city.Happiness?.hasUnrest && !this.city.isBeingRazed;
         this.Root.classList.toggle("city-banner--unrest", showUnrest);
         this.realizePortrait();
