@@ -7,8 +7,8 @@
         <Row Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION" Language="ko_KR">
             <Text>우호 및 중립 유닛 깃발의 굵은 검은 윤곽선을 제거합니다.</Text>
         </Row>
-        <InsertOrIgnore Tag="LOC_OPTIONS_GROUP_BZ_MODS" Language="ko_KR">
+        <Replace Tag="LOC_OPTIONS_GROUP_BZ_MODS" Language="ko_KR">
             <Text>trixie의 다양한 모드</Text>
-        </InsertOrIgnore>
+        </Replace>
     </LocalizedText>
 </Database>

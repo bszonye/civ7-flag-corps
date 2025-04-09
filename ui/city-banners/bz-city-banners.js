@@ -524,8 +524,11 @@ export class bzCityBanner {
         this.city = null;
         this.owner = null;
         this.suzerain = null;
-        this.isVassal = false;
-        this.isEnemy = false;
+        this.leader = null;
+        this.player = null;  // local observer
+        this.isAlly = false;  // is leader allied?
+        this.isEnemy = false;  // is leader at war?
+        this.isVassal = false;  // is owner a vassal state?
         this.hasHead = false;
         this.patchPrototypes(this.component);
         this.patchStyles(this.component);
@@ -680,20 +683,13 @@ export class bzCityBanner {
             "0.3888888889rem";
     }
     afterAffinityUpdate() {
-        const observer = GameContext.localObserverID;
-        if (this.owner.Influence?.hasSuzerain) {
-            const suzerainID = this.owner.Influence.getSuzerain();
-            this.suzerain = Players.get(suzerainID);
-        }
-        this.isVassal = this.suzerain?.id == observer;
-        this.isEnemy = this.owner.Diplomacy?.isAtWarWith(observer);
+        this.realizePortrait();  // sets relationship info too
         if (this.owner?.isMinor && bzFlagCorpsOptions.banners) {
             const isNeutral = !this.isVassal && !this.isEnemy;
             this.Root.classList.toggle("city-banner--friendly", this.isVassal);
             this.Root.classList.toggle("city-banner--hostile", this.isEnemy);
             this.Root.classList.toggle("city-banner--neutral", isNeutral);
         }
-        this.realizePortrait();
     }
     afterCapitalUpdate() {
         // update capital star
@@ -709,20 +705,39 @@ export class bzCityBanner {
             cityName.style.textShadow = `${shadowSpec}, ${lightSpect}`;
         }
     }
+    setRelationshipInfo() {
+        this.player = Players.get(GameContext.localObserverID);
+        if (this.owner?.Influence?.hasSuzerain) {
+            this.suzerain = Players.get(this.owner.Influence.getSuzerain());
+        }
+        this.leader = this.suzerain ?? this.owner;
+        this.isAlly = this.leader?.Diplomacy?.hasAllied(this.player.id) ?? false;
+        this.isEnemy = this.leader?.Diplomacy?.isAtWarWith(this.player.id) ?? false;
+        this.isVassal = this.suzerain?.id == this.player.id;
+    }
     realizePortrait() {
+        this.setRelationshipInfo();
         // get angry!
         if (!this.owner || this.owner.isIndependent) return;
-        const owner = this.suzerain ?? this.owner;
-        const leader = GameInfo.Leaders.lookup(owner.leaderType);
-        if (!leader) return;
-        const observer = GameContext.localObserverID;
-        this.isEnemy = this.owner.Diplomacy?.isAtWarWith(observer);
-        const happiness = this.city.Yields?.getYield(YieldTypes.YIELD_HAPPINESS);
-        const context = this.isEnemy || happiness < 0 ? "LEADER_ANGRY" : "DEFAULT";
-        const icon = UI.getIconCSS(leader.LeaderType, context);
-        if (!icon) return;
-        const { portraitIcon, } = this.elements;
-        portraitIcon.style.backgroundImage = icon;
+        const leaderType = GameInfo.Leaders.lookup(this.leader.leaderType);
+        if (!leaderType) return;
+        let context = "DEFAULT";
+        let transform = "";
+        if (this.leader.id == this.player.id) {
+            // show local status: unhappiness, unrest, razing, plague
+            const happiness = this.city.Yields?.getYield(YieldTypes.YIELD_HAPPINESS);
+            if (happiness < 0) context = "LEADER_ANGRY";
+            // TODO: other negative statuses
+        } else {
+            transform = "scale(-1, 1)";  // face left
+            // show relationship: allied, neutral, at war
+            if (this.isAlly) context = "LEADER_HAPPY";
+            if (this.isEnemy) context = "LEADER_ANGRY";
+        }
+        const portrait = UI.getIconCSS(leaderType.LeaderType, context);
+        if (!portrait) return;
+        this.elements.portraitIcon.style.transform = transform;
+        this.elements.portraitIcon.style.backgroundImage = portrait;
     }
     afterRealizeBuilds() {
         // update town focus
