@@ -158,7 +158,7 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner.city-banner .city-banner__portrait {
     margin: -0.25rem;
-    margin-right: 0rem;
+    margin-right: 0;
     top: -0.1111111111rem;
     left: 0.1666666667rem;
     width: 1.7777777778rem;
@@ -203,8 +203,7 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner.city-banner .city-banner__capital-star {
     background-image: url("blp:icon-capital.png");
-    margin-top: 0.2222222222rem;
-    margin-right: -0.3333333333rem;
+    margin: 0.2222222222rem -0.1666666667rem 0 0;
 }
 .bz-flags .city-banner.city-banner--village .city-banner__capital-star {
     display: none;
@@ -214,7 +213,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__name.city-banner__icons-below-name,
 .bz-flags city-banner.city-banner .city-banner__name {
     position: relative;
-    margin: 0.3333333333rem 0 0 0.1666666667rem;
+    margin: 0.3333333333rem 0 0 0;
     padding: 0 0.3333333333rem;
     letter-spacing: 0.0555555556rem;
     font-weight: bold;
