@@ -25,12 +25,12 @@ const bzFlagCorpsOptions = new class {
     save() {
         ModSettings.save(MOD_ID, this.data);
         // sync optional styling
-        if (this.data.banners) {
+        if (this.banners) {
             document.body.classList.add("bz-flags");
         } else {
             document.body.classList.remove("bz-flags");
         }
-        if (this.data.noShadow) {
+        if (this.noShadow) {
             document.body.classList.add("bz-flags-no-shadow");
         } else {
             document.body.classList.remove("bz-flags-no-shadow");
