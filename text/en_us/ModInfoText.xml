@@ -5,7 +5,7 @@
             <Text>Flag Corps</Text>
         </Row>
         <Row Tag="LOC_MOD_BZ_FLAG_CORPS_DESCRIPTION">
-            <Text>better flags and banners</Text>
+            <Text>better banners and flags</Text>
         </Row>
     </EnglishText>
 </Database>
