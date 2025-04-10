@@ -157,32 +157,32 @@ const BZ_HEAD_STYLE = [
     //       4 .PORTRAIT-IMG absolute -left-2 -right-2 -top-1 bottom-0 bg-cover bg-center bg-no-repeat pointer-events-none
 `
 .bz-flags city-banner.city-banner .city-banner__portrait {
-    margin: -0.1666666667rem;
-    margin-right: 0.0555555556rem;  /* align status-religion icons */
+    margin: -0.25rem;
+    margin-right: 0.1111111111rem;
     top: -0.1111111111rem;
     left: 0.1666666667rem;
-    width: 1.5555555555rem;
-    height: 2.3333333333rem;
+    width: 1.7777777778rem;
+    height: 2.5rem;
 }
 .bz-flags .city-banner__portrait-bg1 {
     top: 0.3333333333rem;
-    width: 1.5555555555rem;
-    height: 2.3333333333rem;
+    width: 1.7777777778rem;
+    height: 2.5rem;
     background-size: cover;
     background-image: url("fs://game/town_portrait-hex.png");
 }
 .bz-flags .city-banner__portrait-bg2 {
     top: 0.3333333333rem;
-    width: 1.5555555555rem;
-    height: 2.3333333333rem;
+    width: 1.7777777778rem;
+    height: 2.5rem;
     background-size: cover;
     background-image: url("fs://game/town_portrait-frame.png");
 }
 .bz-flags .city-banner__portrait-img {
-    top: 0.0555555556rem;
+    top: 0.0277777778rem;
     left: 0rem;
-    width: 1.5555555556rem;
-    height: 2.3333333333rem;
+    width: 1.7777777778rem;  /* 64x90 */
+    height: 2.5rem;
     background-size: cover;
 }
 .bz-debug .city-banner__portrait {
