@@ -5,7 +5,7 @@
             <Text>Flag Corps</Text>
         </Row>
         <Row Tag="LOC_MOD_BZ_FLAG_CORPS_DESCRIPTION" Language="ko_KR">
-            <Text>유닛 깃발 개선</Text>
+            <Text>개선된 유닛 깃발과 정착지 배너</Text>
         </Row>
     </LocalizedText>
 </Database>
