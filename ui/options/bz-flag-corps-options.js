@@ -11,12 +11,13 @@ class bzFlagCorpsOptionsEvent extends CustomEvent {
         super(bzFlagCorpsOptionsEventName, { bubbles: false });
     }
 }
+const BZ_DEFAULT_OPTIONS = {
+    banners: true,
+    noHeads: false,
+    noShadow: false,
+};
 const bzFlagCorpsOptions = new class {
-    data = {
-        banners: true,
-        noHeads: false,
-        noShadow: false,
-    };
+    data = { ...BZ_DEFAULT_OPTIONS };
     constructor() {
         const modSettings = ModSettings.load(MOD_ID);
         if (modSettings) this.data = modSettings;
@@ -37,21 +38,21 @@ const bzFlagCorpsOptions = new class {
         window.dispatchEvent(new bzFlagCorpsOptionsEvent());
     }
     get banners() {
-        return this.data.banners ?? true;
+        return this.data.banners ?? BZ_DEFAULT_OPTIONS.banners;
     }
     set banners(flag) {
         this.data.banners = !!flag;
         this.save();
     }
     get noHeads() {
-        return this.data.noHeads;
+        return this.data.noHeads ?? BZ_DEFAULT_OPTIONS.noHeads;
     }
     set noHeads(flag) {
         this.data.noHeads = !!flag;
         this.save();
     }
     get noShadow() {
-        return this.data.noShadow;
+        return this.data.noShadow ?? BZ_DEFAULT_OPTIONS.noShadow;
     }
     set noShadow(flag) {
         this.data.noShadow = !!flag;
