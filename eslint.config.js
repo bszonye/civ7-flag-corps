@@ -17,17 +17,25 @@ export default [
             globals: {
                 Cities: "readonly",
                 Constructibles: "readonly",
+                Controls: "readonly",
+                CustomEvent: "readonly",
                 GameContext: "readonly",
                 GameInfo: "readonly",
                 GameplayMap: "readonly",
+                GrowthTypes: "readonly",
                 IndependentRelationship: "readonly",
                 MapCities: "readonly",
                 MapConstructibles: "readonly",
                 MapUnits: "readonly",
                 Players: "readonly",
+                UI: "readonly",
+                WorldAnchors: "readonly",
+                YieldTypes: "readonly",
                 console: "readonly",
                 document: "readonly",
                 engine: "readonly",
+                localStorage: "readonly",
+                window: "readonly",
             }
         }
 

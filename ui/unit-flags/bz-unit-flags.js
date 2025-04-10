@@ -7,8 +7,7 @@ import { GenericUnitFlag } from '/base-standard/ui/unit-flags/unit-flags.js';
 import { IndependentPowersUnitFlag } from '/base-standard/ui/unit-flags/unit-flags-independent-powers.js';
 
 // additional CSS definitions
-const BZ_HEAD_STYLE = document.createElement('style');
-BZ_HEAD_STYLE.textContent = [
+const BZ_HEAD_STYLE = [
 `
 .bz-flags-no-shadow .unit-flag__shadow,
 .bz-flags-no-shadow .unit-flag--civilian .unit-flag__shadow,
@@ -17,8 +16,28 @@ BZ_HEAD_STYLE.textContent = [
     background-image: none;
 }
 `,
-].join('\n');
-document.head.appendChild(BZ_HEAD_STYLE);
+`
+.bz-flags-no-shadow .unit-flag__healthbar-container {
+    top: 0.1111111111rem;
+}
+.bz-flags .unit-flag__healthbar-container {
+    top: 0.1944444444rem;
+}
+.bz-flags .unit-flag__healthbar {
+    height: 0.5555555556rem;
+    border-radius: 0.2777777778rem / 0.4444444444rem;
+}
+.bz-flags .unit-flag__healthbar-inner {
+    height: 0.3333333333rem;
+    border-radius: 0.1666666667rem / 0.3333333333rem;
+}
+`,
+];
+BZ_HEAD_STYLE.map(style => {
+    const e = document.createElement('style');
+    e.textContent = style;
+    document.head.appendChild(e);
+});
 // sync optional styling
 if (bzFlagCorpsOptions.noShadow) {
     document.body.classList.add("bz-flags-no-shadow");
@@ -51,9 +70,10 @@ UFMproto.onRecalculateFlagOffsets = function() {
         const units = MapUnits.getUnits(loc.x, loc.y);
         const position = { x: 0, y: -24 };
         // dimensions
-        const yCity = 8;
-        const yTown = 24;
-        const yVillage = 18;
+        const yBanners = bzFlagCorpsOptions.banners ? 8 : null;
+        const yCity = yBanners ?? 8;
+        const yTown = yBanners ?? 24;
+        const yVillage = yBanners ?? 18;
         const xOrigin = -6;
         const xOffset = 36;  // x-offset between icons
         const width = units.length * xOffset;
