@@ -1,5 +1,5 @@
 # Flag Corps 2.0.0
-better unit flags
+better flags and banners
 
 ## improves city banner design
 - town banners show their current focus
