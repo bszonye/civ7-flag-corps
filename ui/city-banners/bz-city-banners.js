@@ -157,8 +157,7 @@ const BZ_HEAD_STYLE = [
     //       4 .PORTRAIT-IMG absolute -left-2 -right-2 -top-1 bottom-0 bg-cover bg-center bg-no-repeat pointer-events-none
 `
 .bz-flags city-banner.city-banner .city-banner__portrait {
-    margin: -0.25rem;
-    margin-right: 0;
+    margin: -0.25rem 0 -0.25rem -0.2777777778rem;
     top: -0.1111111111rem;
     left: 0.1666666667rem;
     width: 1.7777777778rem;
