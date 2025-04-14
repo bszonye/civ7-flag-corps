@@ -1,4 +1,4 @@
-# Flag Corps 2.1.0
+# Flag Corps 2.0.1
 better banners and flags
 
 ## improves city banner design
@@ -37,5 +37,6 @@ only the menu screens (Mods and Options) contain localized text.
 supported languages:
 
 - Korean (translated by Hotsolidinfill)
+- Russian (translated by Webrok)
 
-thank you for your help!
+thank you both for your help!
