@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Mod id="bz-flag-corps" version="20000"
+<Mod id="bz-flag-corps" version="20001"
     xmlns="ModInfo">
     <Properties>
         <Name>LOC_MOD_BZ_FLAG_CORPS_NAME</Name>
-        <Version>2.0.0</Version>
+        <Version>2.0.1</Version>
         <Description>LOC_MOD_BZ_FLAG_CORPS_DESCRIPTION</Description>
         <Authors>beezany</Authors>
         <URL>https://forums.civfanatics.com/resources/flag-corps.32132/</URL>
@@ -31,6 +31,7 @@
                 <UpdateText>
                     <Item>text/en_us/InGameText.xml</Item>
                     <Item locale="ko_KR">text/ko_KR/InGameText.xml</Item>
+                    <Item locale="ru_RU">text/ru_RU/InGameText.xml</Item>
                 </UpdateText>
             </Actions>
         </ActionGroup>
@@ -50,6 +51,7 @@
                 <UpdateText>
                     <Item>text/en_us/InGameText.xml</Item>
                     <Item locale="ko_KR">text/ko_KR/InGameText.xml</Item>
+                    <Item locale="ru_RU">text/ru_RU/InGameText.xml</Item>
                 </UpdateText>
             </Actions>
         </ActionGroup>
@@ -57,5 +59,6 @@
     <LocalizedText>
         <File>text/en_us/ModInfoText.xml</File>
         <File>text/ko_KR/ModInfoText.xml</File>
+        <File>text/ru_RU/ModInfoText.xml</File>
     </LocalizedText>
 </Mod>

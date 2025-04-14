@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <LocalizedText>
+        <Row Tag="LOC_MOD_BZ_FLAG_CORPS_NAME" Language="ru_RU">
+            <Text>Flag Corps</Text>
+        </Row>
+        <Row Tag="LOC_MOD_BZ_FLAG_CORPS_DESCRIPTION" Language="ru_RU">
+            <Text>Улучшает баннеры городов и флаги юнитов</Text>
+        </Row>
+    </LocalizedText>
+</Database>

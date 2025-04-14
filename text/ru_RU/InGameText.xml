@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <LocalizedText>
+        <Row Tag="LOC_OPTIONS_BZ_CITY_BANNERS" Language="ru_RU">
+            <Text>Flag Corps • Улучшенные баннеры городов</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION" Language="ru_RU">
+            <Text>Обновляет баннеры городов для более информативного вида.</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS" Language="ru_RU">
+            <Text>Flag Corps • Удалить портреты лидеров</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS_DESCRIPTION" Language="ru_RU">
+            <Text>Удаляет портреты лидеров с баннеров городов.</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW" Language="ru_RU">
+            <Text>Flag Corps • Удалить черную обводку с флагов юнитов</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION" Language="ru_RU">
+            <Text>Удаляет черную обводку с флагов дружественных юнитов.</Text>
+        </Row>
+        <Replace Tag="LOC_OPTIONS_GROUP_BZ_MODS" Language="ru_RU">
+            <Text>Моды от Trixie</Text>
+        </Replace>
+    </LocalizedText>
+</Database>
