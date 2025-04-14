@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Database>
     <LocalizedText>
+        <Row Tag="LOC_OPTIONS_BZ_CITY_BANNERS" Language="ko_KR">
+            <Text>Flag Corps • 도시 배너 스타일 변경</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION" Language="ko_KR">
+            <Text>도시 및 마을 배너를 더 깔끔하고 일관된 스타일로 업데이트합니다.</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS" Language="ko_KR">
+            <Text>Flag Corps • 지도자 초상화 제거</Text>
+        </Row>
+        <Row Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS_DESCRIPTION" Language="ko_KR">
+            <Text>도시 배너에서 지도자 초상화를 제거합니다.</Text>
+        </Row>        
         <Row Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW" Language="ko_KR">
             <Text>Flag Corps • 유닛 깃발에서 검은 "그림자" 제거</Text>
         </Row>
