@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Mod id="bz-flag-corps" version="20001"
+<Mod id="bz-flag-corps" version="20002"
     xmlns="ModInfo">
     <Properties>
         <Name>LOC_MOD_BZ_FLAG_CORPS_NAME</Name>
-        <Version>2.0.1</Version>
+        <Version>2.0.2</Version>
         <Description>LOC_MOD_BZ_FLAG_CORPS_DESCRIPTION</Description>
         <Authors>beezany</Authors>
         <URL>https://forums.civfanatics.com/resources/flag-corps.32132/</URL>
