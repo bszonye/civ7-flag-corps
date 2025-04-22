@@ -17,6 +17,9 @@ class DistrictHealthManager extends Component {
 
 	private children: Map<Number, DistrictHealth> = new Map<number, DistrictHealth>();
 
+	private globalHideListener = this.onGlobalHide.bind(this);
+	private globalShowListener = this.onGlobalShow.bind(this);
+
 	private static _instance: DistrictHealthManager | null = null;
 	static get instance(): DistrictHealthManager {
 		return DistrictHealthManager._instance!;
@@ -43,6 +46,9 @@ class DistrictHealthManager extends Component {
 		engine.on('DistrictDamageChanged', this.onDistrictDamageChanged, this);
 		engine.on('CityTransfered', this.onCityTransfered, this);
 		engine.on('DistrictControlChanged', this.onDistrictControlChanged, this);
+
+		window.addEventListener('ui-hide-district-health-bars', this.globalHideListener);
+		window.addEventListener('ui-show-district-health-bars', this.globalShowListener);
 	}
 
 	onDetach() {
@@ -51,6 +57,9 @@ class DistrictHealthManager extends Component {
 		engine.off('DistrictDamageChanged', this.onDistrictDamageChanged, this);
 		engine.off('CityTransfered', this.onCityTransfered, this);
 		engine.off('DistrictControlChanged', this.onDistrictControlChanged, this);
+
+		window.removeEventListener('ui-hide-district-health-bars', this.globalHideListener);
+		window.removeEventListener('ui-show-district-health-bars', this.globalShowListener);
 
 		super.onDetach();
 	}
@@ -294,6 +303,14 @@ class DistrictHealthManager extends Component {
 		}
 
 		this.Root.removeChild(foundChild);
+	}
+
+	private onGlobalHide() {
+		this.Root.classList.add('hidden');
+	}
+
+	private onGlobalShow() {
+		this.Root.classList.remove('hidden');
 	}
 
 	static canShowDistrictHealth(currentHealth: number, maxHealth: number): boolean {

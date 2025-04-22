@@ -259,7 +259,7 @@ class CityBannerManager extends Component {
             return; // No one owns this plot, nothing city related to do.
         }
         const player = Players.get(data.cityID.owner);
-        if (player?.isIndependent) {
+        if (player?.isIndependent || player?.isMinor) {
             const cityBanner = this.banners.get(ComponentID.toBitfield(data.cityID));
             if (cityBanner) {
                 // Only delete the banner if the district being removed is the city center where the banner is rooted
@@ -586,6 +586,14 @@ class CityBannerManager extends Component {
         // We should be able to hide the root element inline, but there's a gameface bug that prevents some children from rendering again
         // this.Root.style.display = '';
         this.Root.classList.remove('hidden');
+        // we must force a visibility transition on each child that's supposed to be visible due to the above-noted GameFace bug.
+        this.banners.forEach((banner) => {
+            const vis = banner.getVisibility();
+            if (vis != RevealedStates.HIDDEN) {
+                banner.setVisibility(RevealedStates.HIDDEN);
+                banner.setVisibility(vis);
+            }
+        });
     }
     // TODO: This is a lot of script search to find a matching city for a given plot.  Add feature of engine for fast lookup?
     onPlotVisibilityChanged(data) {
@@ -652,5 +660,4 @@ Controls.define('city-banners', {
     description: 'City Banners',
     requires: ['city-banner']
 });
-
 //# sourceMappingURL=file:///base-standard/ui/city-banners/city-banner-manager.js.map

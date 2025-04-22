@@ -9,6 +9,8 @@ class DistrictHealthManager extends Component {
     constructor() {
         super(...arguments);
         this.children = new Map();
+        this.globalHideListener = this.onGlobalHide.bind(this);
+        this.globalShowListener = this.onGlobalShow.bind(this);
     }
     static get instance() {
         return DistrictHealthManager._instance;
@@ -32,6 +34,8 @@ class DistrictHealthManager extends Component {
         engine.on('DistrictDamageChanged', this.onDistrictDamageChanged, this);
         engine.on('CityTransfered', this.onCityTransfered, this);
         engine.on('DistrictControlChanged', this.onDistrictControlChanged, this);
+        window.addEventListener('ui-hide-district-health-bars', this.globalHideListener);
+        window.addEventListener('ui-show-district-health-bars', this.globalShowListener);
     }
     onDetach() {
         engine.off('DistrictAddedToMap', this.onDistrictAddedToMap, this);
@@ -39,6 +43,8 @@ class DistrictHealthManager extends Component {
         engine.off('DistrictDamageChanged', this.onDistrictDamageChanged, this);
         engine.off('CityTransfered', this.onCityTransfered, this);
         engine.off('DistrictControlChanged', this.onDistrictControlChanged, this);
+        window.removeEventListener('ui-hide-district-health-bars', this.globalHideListener);
+        window.removeEventListener('ui-show-district-health-bars', this.globalShowListener);
         super.onDetach();
     }
     createAllDistrictHealth() {
@@ -253,6 +259,12 @@ class DistrictHealthManager extends Component {
         }
         this.Root.removeChild(foundChild);
     }
+    onGlobalHide() {
+        this.Root.classList.add('hidden');
+    }
+    onGlobalShow() {
+        this.Root.classList.remove('hidden');
+    }
     static canShowDistrictHealth(currentHealth, maxHealth) {
         // only show if the district is not healthy or it is conquered
         return (!!currentHealth && !!maxHealth) && (maxHealth > currentHealth && currentHealth > 0);
@@ -265,5 +277,4 @@ Controls.define('district-health-bars', {
     description: 'District Health Manager',
     attributes: []
 });
-
 //# sourceMappingURL=file:///base-standard/ui/district/district-health-manager.js.map

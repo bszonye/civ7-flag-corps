@@ -24,7 +24,7 @@ interface ArmyCommanderFlagType {
 	enable(): void;
 	updateHealth(): void;
 	updateMovement(): void;
-	updateTop(position: number): void;
+	updateTop(position: number, total: number): void;
 	updateArmy(): void;
 	updatePromotions(): void;
 	updateTooltip(): void;

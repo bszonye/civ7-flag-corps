@@ -32,6 +32,7 @@ export class CityBannerComponent extends FxsActivatable implements CityBanner {
 		capitalIndicator: '.city-banner__capital-star',
 		cityStateColor: '.city-banner__city-state-type',
 		container: '.city-banner__container',
+		growthQueueContainer: '.city-banner__population-container',
 		growthQueueMeter: '.city-banner__population-ring',
 		growthQueueTurns: '.city-banner__population-container > .city-banner__turn > .city-banner__turn-number',
 		productionQueue: '.city-banner__queue-container.queue-production',
@@ -484,6 +485,7 @@ export class CityBannerComponent extends FxsActivatable implements CityBanner {
 
 	private setFood(turnsLeft: number, current: number, nextTarget: number) {
 		const {
+			growthQueueContainer,
 			growthQueueMeter,
 			growthQueueTurns
 		} = this.elements;
@@ -499,6 +501,16 @@ export class CityBannerComponent extends FxsActivatable implements CityBanner {
 			growthQueueTurns.classList.add('hidden');
 			growthQueueMeter.setAttribute("value", "0");
 			growthQueueMeter.setAttribute("max-value", "0");
+		}
+
+		if (this.city && this.city.Workers) {
+
+			const specialists = this.city.Workers.getNumWorkers(false) ?? 0;
+			const urbanPop = this.city.urbanPopulation ?? 0;
+			const ruralPop = this.city.ruralPopulation ?? 0;
+
+			const growthTooltip = Locale.compose("LOC_UI_CITY_BANNER_POPULATION_INFO", urbanPop.toString(), ruralPop.toString(), specialists.toString());
+			growthQueueContainer.setAttribute("data-tooltip-content", growthTooltip);
 		}
 	}
 

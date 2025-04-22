@@ -72,6 +72,8 @@
 
 	// TOWN OVERRIDES
 	&.city-banner--town {
+		top: pixels(-55);
+
 		.city-banner__name {
 			margin-top: pixels(-5);
 		}
@@ -656,9 +658,11 @@
 }
 
 .city-banner__time-container {
-	background-image: url('fs://game/turn_bg.png');
-	background-size: 100%;
+	border-image-source: url('fs://game/turn_bg.png');
+	border-image-slice: 20 16 fill;
+	border-image-width: pixels(20) pixels(16) pixels(20) pixels(16);
 }
+
 
 .city-banner__time-icon {
 	background-image: url('fs://game/town_turn-icon.png');

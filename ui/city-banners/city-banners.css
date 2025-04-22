@@ -49,6 +49,9 @@
 .city-banner .city-banner__ring {
 	margin-top: 0.1666666667rem;
 }
+.city-banner.city-banner--town {
+	top: -3.0555555556rem;
+}
 .city-banner.city-banner--town .city-banner__name {
 	margin-top: -0.2777777778rem;
 }
@@ -514,8 +517,9 @@
 }
 
 .city-banner__time-container {
-	background-image: url("fs://game/turn_bg.png");
-	background-size: 100%;
+	border-image-source: url("fs://game/turn_bg.png");
+	border-image-slice: 20 16 fill;
+	border-image-width: 1.1111111111rem 0.8888888889rem 1.1111111111rem 0.8888888889rem;
 }
 
 .city-banner__time-icon {

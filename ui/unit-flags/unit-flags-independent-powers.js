@@ -119,6 +119,7 @@ export class IndependentPowersUnitFlag extends Component {
         const unitFlagContainer = document.createElement('div');
         unitFlagContainer.classList.add('unit-flag__container', 'absolute', '-top-6', '-left-6', 'pointer-events-auto', 'flex', 'flex-col', 'justify-center', 'items-center', 'w-12', 'h-12');
         this.unitContainer = unitFlagContainer;
+        this.unitContainer.style.left = '0';
         const unitFlagShadow = document.createElement('div');
         unitFlagShadow.classList.add('unit-flag__shadow', 'pointer-events-none', 'absolute', 'inset-0', 'bg-cover');
         unitFlagContainer.appendChild(unitFlagShadow);
@@ -387,10 +388,13 @@ export class IndependentPowersUnitFlag extends Component {
     checkUnitPosition(unit) {
         UnitFlagManager.instance.recalculateFlagOffsets(unit.location);
     }
-    updateTop(position) {
-        if (this.unitContainer && this.flagOffset != position) {
-            this.flagOffset = position;
-            this.unitContainer.style.top = Layout.pixels(position * -16);
+    updateTop(position, total) {
+        const offset = position - ((total - 1) / 2) - 0.5;
+        if (this.unitContainer) {
+            if (this.flagOffset != offset) {
+                this.flagOffset = offset;
+                this.unitContainer.style.left = Layout.pixels(offset * 32);
+            }
         }
     }
     updateAffinity() {

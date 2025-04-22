@@ -28,6 +28,7 @@ export class CityBannerComponent extends FxsActivatable {
             capitalIndicator: '.city-banner__capital-star',
             cityStateColor: '.city-banner__city-state-type',
             container: '.city-banner__container',
+            growthQueueContainer: '.city-banner__population-container',
             growthQueueMeter: '.city-banner__population-ring',
             growthQueueTurns: '.city-banner__population-container > .city-banner__turn > .city-banner__turn-number',
             productionQueue: '.city-banner__queue-container.queue-production',
@@ -417,7 +418,7 @@ export class CityBannerComponent extends FxsActivatable {
         productionQueueMeter.setAttribute("value", (data) ? data.percentLeft.toString() : "0");
     }
     setFood(turnsLeft, current, nextTarget) {
-        const { growthQueueMeter, growthQueueTurns } = this.elements;
+        const { growthQueueContainer, growthQueueMeter, growthQueueTurns } = this.elements;
         if (turnsLeft >= 0) {
             growthQueueMeter.setAttribute("value", current.toString());
             growthQueueMeter.setAttribute("max-value", nextTarget.toString());
@@ -428,6 +429,13 @@ export class CityBannerComponent extends FxsActivatable {
             growthQueueTurns.classList.add('hidden');
             growthQueueMeter.setAttribute("value", "0");
             growthQueueMeter.setAttribute("max-value", "0");
+        }
+        if (this.city && this.city.Workers) {
+            const specialists = this.city.Workers.getNumWorkers(false) ?? 0;
+            const urbanPop = this.city.urbanPopulation ?? 0;
+            const ruralPop = this.city.ruralPopulation ?? 0;
+            const growthTooltip = Locale.compose("LOC_UI_CITY_BANNER_POPULATION_INFO", urbanPop.toString(), ruralPop.toString(), specialists.toString());
+            growthQueueContainer.setAttribute("data-tooltip-content", growthTooltip);
         }
     }
     realizePopulation() {
@@ -663,5 +671,4 @@ Controls.define('city-banner', {
     styles: ['fs://game/base-standard/ui/city-banners/city-banners.css'],
     content: ['fs://game/base-standard/ui/city-banners/city-banners.html']
 });
-
 //# sourceMappingURL=file:///base-standard/ui/city-banners/city-banners.js.map

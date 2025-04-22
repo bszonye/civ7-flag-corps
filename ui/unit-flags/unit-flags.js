@@ -77,6 +77,7 @@ export class GenericUnitFlag extends Component {
         const unitFlagContainer = document.createElement('div');
         unitFlagContainer.classList.add('unit-flag__container', 'absolute', '-top-6', '-left-6', 'pointer-events-auto', 'flex', 'flex-col', 'justify-center', 'items-center', 'w-12', 'h-12');
         this.unitContainer = unitFlagContainer;
+        this.unitContainer.style.left = '0';
         const unitFlagShadow = document.createElement('div');
         unitFlagShadow.classList.add('unit-flag__shadow', 'pointer-events-none', 'absolute', 'inset-0', 'bg-cover');
         unitFlagContainer.appendChild(unitFlagShadow);
@@ -100,9 +101,12 @@ export class GenericUnitFlag extends Component {
         unitFlagHealthbar.classList.add('unit-flag__healthbar', 'relative', 'h-3', 'w-full', 'bg-black');
         unitFlagHealthbarContainer.appendChild(unitFlagHealthbar);
         this.unitHealthBar = unitFlagHealthbar;
+        const unitFlagHealthbarSizer = document.createElement('div');
+        unitFlagHealthbarSizer.classList.add('unit-flag__healthbar-sizer', 'relative', 'h-3', 'w-full');
+        unitFlagHealthbar.appendChild(unitFlagHealthbarSizer);
         const unitFlagHealthbarInner = document.createElement('div');
-        unitFlagHealthbarInner.classList.add('unit-flag__healthbar-inner', 'relative', 'h-2', 'w-full', 'bg-no-repeat');
-        unitFlagHealthbar.appendChild(unitFlagHealthbarInner);
+        unitFlagHealthbarInner.classList.add('unit-flag__healthbar-inner', 'absolute', 'bg-no-repeat');
+        unitFlagHealthbarSizer.appendChild(unitFlagHealthbarInner);
         this.unitHealthBarInner = unitFlagHealthbarInner;
         const unitFlagIcon = document.createElement('div');
         unitFlagIcon.classList.add('unit-flag__icon', 'pointer-events-none', 'absolute', 'bg-contain', 'bg-no-repeat');
@@ -376,10 +380,13 @@ export class GenericUnitFlag extends Component {
     checkUnitPosition(unit) {
         UnitFlagManager.instance.recalculateFlagOffsets(unit.location);
     }
-    updateTop(position) {
-        if (this.unitContainer && this.flagOffset != position) {
-            this.flagOffset = position;
-            this.unitContainer.style.top = Layout.pixels(position * -16);
+    updateTop(position, total) {
+        const offset = position - ((total - 1) / 2) - 0.5;
+        if (this.unitContainer) {
+            if (this.flagOffset != offset) {
+                this.flagOffset = offset;
+                this.unitContainer.style.left = Layout.pixels(offset * 32);
+            }
         }
     }
     updatePromotions() {
@@ -403,5 +410,4 @@ Controls.define('unit-flag', {
     styles: ['fs://game/base-standard/ui/unit-flags/unit-flags.css']
 });
 UnitFlagFactory.registerStyle(new GenericFlagMaker());
-
 //# sourceMappingURL=file:///base-standard/ui/unit-flags/unit-flags.js.map

@@ -224,10 +224,7 @@ export class UnitFlagManager extends Component {
             for (let u = 0; u < units.length; u++) {
                 const unitFlag = UnitFlagManager.instance.getFlag(units[u]);
                 if (unitFlag) {
-                    unitFlag.updateTop(u);
-                }
-                else {
-                    console.error("unit-flag-manager: onRecalculateFlagOffsets(): Unit flag's for unit " + ComponentID.toLogString(units[u]) + " is not found");
+                    unitFlag.updateTop(u, units.length);
                 }
             }
         }
@@ -269,9 +266,6 @@ export class UnitFlagManager extends Component {
         const unitFlag = this.getFlag(data.unit);
         // unit can't be found, it might be part of an army in which case don't warn
         if (!unitFlag) {
-            if (!this.isUnitInArmy(data.unit)) {
-                console.error("A unit's health changed but couldn't obtain its unit flag.  cid: " + ComponentID.toLogString(data.unit));
-            }
             return;
         }
         unitFlag.updateHealth();
@@ -287,7 +281,6 @@ export class UnitFlagManager extends Component {
     onUnitRemovedFromMap(data) {
         const unitFlag = this.getFlag(data.unit);
         if (!unitFlag) {
-            console.error("A unit was removed from the map but couldn't obtain its unit flag.  cid: " + ComponentID.toLogString(data.unit));
             return;
         }
         unitFlag.Destroy();
@@ -314,16 +307,6 @@ export class UnitFlagManager extends Component {
             this.styleMap?.set('opacity', this.opacityStyle);
         }
     }
-    isUnitInArmy(unitID) {
-        const unit = Units.get(unitID);
-        if (unit && unit.armyId) {
-            const army = Armies.get(unit.armyId);
-            if (army) {
-                return true;
-            }
-        }
-        return false;
-    }
     /**
      * Engine callback when visibility of a unit changed.
      * Using this instead of UnitAddedToMap because of event race condition in looking up a valid Unit in WorldAnchor.
@@ -339,7 +322,6 @@ export class UnitFlagManager extends Component {
         }
         const unitFlag = this.flags.get(bitfieldID);
         if (!unitFlag) {
-            console.error("A valid UnitFlagType was not returned from the unit flag manager. cid: " + ComponentID.toLogString(componentID));
             return;
         }
         unitFlag.setVisibility(data.visibility);
@@ -370,7 +352,6 @@ export class UnitFlagManager extends Component {
             };
             stressTestUnits.push(args);
             Game.PlayerOperations.sendRequest(args.Owner, 'CREATE_ELEMENT', args);
-            console.log(`Creating ${unitType} at ${x}x${y}.`);
         }
         const alivePlayers = Players.getAliveIds();
         const trainableUnits = GameInfo.Units.filter(u => u.CanTrain && u.FormationClass != 'FORMATION_CLASS_COMMAND');
@@ -496,7 +477,6 @@ export class UnitFlagManager extends Component {
             return;
         }
         if (this.flags.has(ComponentID.toBitfield(id))) {
-            console.error("Attempt to add a unit flag to the manager for tracking but something (itself?) already is added with that id: " + ComponentID.toLogString(id));
             return;
         }
         this.flags.set(ComponentID.toBitfield(id), child);
@@ -508,12 +488,10 @@ export class UnitFlagManager extends Component {
     removeChildFromTracking(child) {
         const id = child.componentID; // Get the componentID of the unit from the child, don't try and get it from the child.unit, the actual instance is probably already gone by now
         if (ComponentID.isInvalid(id)) {
-            console.warn("Unable to remove a unit flag from the manager because the unit has an invalid componentID!");
             return;
         }
         const bitfield = ComponentID.toBitfield(id);
         if (!this.flags.has(bitfield)) {
-            console.warn("Attempt to remove a unit flag from the manager for tracking but none exists with that id: " + ComponentID.toLogString(id));
             return;
         }
         this.flags.delete(bitfield);
