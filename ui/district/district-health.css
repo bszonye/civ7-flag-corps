@@ -1,0 +1,31 @@
+/* DO NOT EDIT */
+/* Generated from district-health.scss */
+.district-health-container {
+	font-size: calc(1rem + -0.3333333333rem);
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	width: 11.1111111111rem;
+	align-items: center;
+	pointer-events: auto;
+}
+
+.district-health-bar {
+	position: relative;
+	width: 5.5555555556rem;
+	height: 0.9444444444rem;
+	pointer-events: auto;
+	background-color: black;
+}
+
+.district-health-bar-ink {
+	background-color: #9bd371;
+}
+
+.district-health-med {
+	background-color: #cea92f;
+}
+
+.district-health-low {
+	background-color: #bb2823;
+}

@@ -1,0 +1,264 @@
+/* DO NOT EDIT */
+/* Generated from unit-flags.scss */
+.unit-flag {
+	coh-simple-opacity: on;
+	width: 0.0555555556rem;
+	height: 0.0555555556rem;
+}
+.unit-flag.hidden {
+	opacity: 0;
+}
+.unit-flag.hidden .unit-flag__container {
+	pointer-events: auto;
+}
+.unit-flag.owned-unit {
+	transition-duration: 0.25s;
+}
+
+.unit-flag__container.no_movement {
+	coh-simple-opacity: on;
+	opacity: 0.75;
+}
+
+.unit-flag__shape {
+	background-size: 100%;
+	background-position: 50% 50%;
+}
+
+.unit-flag__stack-shape {
+	background-size: 100%;
+	background-position: 50% 50%;
+}
+
+.unit-flag__shape--outer {
+	background-image: url("fs://game/unit_support-frame.png");
+}
+
+.unit-flag--combat .unit-flag__shape--outer {
+	background-image: url("fs://game/unit_combat-frame.png");
+}
+
+.unit-flag--civilian .unit-flag__shape--outer {
+	background-image: url("fs://game/unit_civilian-frame.png");
+}
+
+.unit-flag--army .unit-flag__shape--outer {
+	background-image: url("fs://game/unit_commander-frame.png");
+}
+
+.unit-flag__highlight {
+	left: -0.1666666667rem;
+	right: -0.1666666667rem;
+	bottom: -0.1666666667rem;
+	top: -0.1666666667rem;
+	background-image: url("fs://game/mask_unitflag_combat.png");
+	background-size: 100%;
+	background-position: 50% 50%;
+	fxs-background-image-tint: #ece0d4;
+	transition-property: opacity;
+	transition-duration: 0.25s;
+	transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.unit-flag--civilian .unit-flag__highlight {
+	background-image: url("fs://game/mask_unitflag_civilian.png");
+}
+
+.unit-flag--army .unit-flag__highlight {
+	background-image: url("fs://game/mask_unitflag_army.png");
+}
+
+.unit-flag__container:hover > .unit-flag__highlight {
+	opacity: 1;
+}
+
+.unit-flag__shape--inner {
+	background-image: url("fs://game/unit_support-base.png");
+}
+
+.unit-flag--civilian .unit-flag__shape--inner {
+	background-image: url("fs://game/unit_civilian-base.png");
+}
+
+.unit-flag--army .unit-flag__shape--inner {
+	background-image: url("fs://game/unit_commander-base.png");
+}
+
+.unit-flag--combat .unit-flag__shape--inner {
+	background-image: url("fs://game/unit_combat-base.png");
+}
+
+.unit-flag--civilian .unit-flag__overlay {
+	background-image: url("fs://game/overlay_unitflag_civilian.png");
+}
+
+.unit-flag--army .unit-flag__overlay {
+	background-image: url("fs://game/overlay_unitflag_army.png");
+}
+
+.unit-flag__icon {
+	left: 25%;
+	top: 22.5%;
+	width: 50%;
+	height: 50%;
+	background-position: center center;
+}
+
+.unit-flag--has-promotions .unit-flag__icon {
+	top: 8.5%;
+}
+
+.unit-flag--civilian .unit-flag__icon {
+	top: 24.5%;
+}
+
+.unit-flag--combat .unit-flag__icon {
+	top: 12%;
+}
+
+.unit-flag__tier-graphic {
+	top: 1.2222222222rem;
+	left: 0.8888888889rem;
+	display: none;
+}
+
+.unit-flag--combat .unit-flag__tier-graphic {
+	display: flex;
+}
+
+.unit-flag--army .unit-flag__icon {
+	top: 8%;
+}
+
+.unit-flag__shadow {
+	background-image: url("fs://game/unit_support-shadow.png");
+	background-repeat: no-repeat;
+}
+
+.unit-flag--hostile .unit-flag__shadow {
+	background-image: url("fs://game/unit_support-shadow_red.png");
+	left: -0.1111111111rem;
+	right: -0.0555555556rem;
+	top: -0.0555555556rem;
+	bottom: -0.0555555556rem;
+}
+
+.unit-flag--civilian .unit-flag__shadow {
+	background-image: url("fs://game/unit_civilian-shadow.png");
+}
+
+.unit-flag--army .unit-flag__shadow {
+	background-image: url("fs://game/unit_commander-shadow.png");
+}
+
+.unit-flag--combat .unit-flag__shadow {
+	background-image: url("fs://game/unit_combat-shadow.png");
+}
+
+.unit-flag--hostile .unit-flag--civilian .unit-flag__shadow {
+	background-image: url("fs://game/unit_civilian-shadow_red.png");
+}
+
+.unit-flag--hostile .unit-flag--army .unit-flag__shadow {
+	background-image: url("fs://game/unit_commander-shadow_red.png");
+}
+
+.unit-flag--hostile .unit-flag--combat .unit-flag__shadow {
+	background-image: url("fs://game/unit_combat-shadow_red.png");
+}
+
+.unit-flag__promotion-number {
+	top: 1.1666666667rem;
+}
+
+.unit-flag__healthbar-container {
+	display: none;
+	width: 1.8333333333rem;
+}
+
+.unit-flag--with-healthbar .unit-flag__healthbar-container {
+	display: flex;
+}
+
+.unit-flag--with-healthbar .unit-flag__healthbar-container {
+	display: flex;
+}
+
+.unit-flag__healthbar-bg.healthbar-bg-inner {
+	background-color: #1c4212;
+}
+
+.unit-flag__healthbar-low-health .healthbar-bg-inner {
+	background-color: #3a0806;
+}
+
+.unit-flag__healthbar-med-health .healthbar-bg-inner {
+	background-color: #442c0b;
+}
+
+.unit-flag--combat > .unit-flag__healthbar-bg {
+	left: 0.0555555556rem;
+	right: 0.0555555556rem;
+}
+
+.unit-flag__healthbar {
+	top: -0.1111111111rem;
+}
+
+.unit-flag--civilian .unit-flag__healthbar {
+	top: -0.0555555556rem;
+}
+
+.unit-flag--combat .unit-flag__healthbar {
+	top: -0.3333333333rem;
+	width: 1.5555555556rem;
+	left: 0.1666666667rem;
+}
+
+.unit-flag--army .unit-flag__healthbar {
+	top: -0.3333333333rem;
+}
+
+.unit-flag--hostile .unit-flag__healthbar {
+	top: -0.2222222222rem;
+}
+
+.unit-flag--hostile .unit-flag--civilian .unit-flag__healthbar {
+	top: -0.0555555556rem;
+}
+
+.unit-flag--hostile .unit-flag--combat .unit-flag__healthbar {
+	top: -0.3333333333rem;
+}
+
+.unit-flag--hostile .unit-flag--army .unit-flag__healthbar {
+	top: -0.3333333333rem;
+}
+
+.unit-flag__healthbar-inner {
+	background-color: #9bd371;
+	top: 0.1111111111rem;
+	bottom: 0.1111111111rem;
+	left: 0.1111111111rem;
+	right: 0.1111111111rem;
+	max-width: 89%;
+}
+
+.unit-flag__healthbar-med-health .unit-flag__healthbar-inner {
+	background-color: #cea92f;
+}
+
+.unit-flag__healthbar-low-health .unit-flag__healthbar-inner {
+	background-color: #bb2823;
+}
+
+.unit-flag__army-stats {
+	top: -1rem;
+	letter-spacing: 0rem;
+	font-family: "BodyFont", "BodyFont-JP", "BodyFont-KR", "BodyFont-SC", "BodyFont-TC";
+	font-weight: 700;
+	font-size: calc(1rem + 0.2222222222rem);
+	line-height: 3;
+	color: #ece0d4;
+	text-shadow: -0.1666666667rem 0.1111111111rem black;
+}

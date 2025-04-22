@@ -1,0 +1,282 @@
+@use '../../../core/ui/utilities/utility-layout' as *;
+@use '../../../core/ui/utilities/utility-text' as *;
+@use '../../../core/ui/utilities/utility-shapes' as shapes;
+@use '../../../core/ui/themes/default/baseColors';
+
+.unit-flag {
+	coh-simple-opacity: on;
+	width: pixels(1);
+	height: pixels(1);
+
+	// coh-simple-opacity has conflicts w/ transitions.  Disabling the transition for now.
+	//transition: opacity 1s linear;
+
+	&.hidden {
+		opacity: 0;
+
+		.unit-flag__container {
+			pointer-events: auto;
+		}
+	}
+
+	&.owned-unit {
+		// quicker transition for swapping to unit interact for units owned by local player
+		transition-duration: .25s;
+	}
+}
+
+.unit-flag__container {
+
+	&.no_movement {
+		coh-simple-opacity: on;
+		opacity: 0.75;
+	}
+}
+
+.unit-flag__shape {
+	background-size: 100%;
+	background-position: 50% 50%;
+}
+
+.unit-flag__stack-shape {
+	background-size: 100%;
+	background-position: 50% 50%;
+}
+
+.unit-flag__shape--outer {
+	background-image: url("fs://game/unit_support-frame.png");
+}
+
+.unit-flag--combat .unit-flag__shape--outer {
+	background-image: url("fs://game/unit_combat-frame.png");
+}
+
+.unit-flag--civilian .unit-flag__shape--outer {
+	background-image: url("fs://game/unit_civilian-frame.png");
+}
+
+.unit-flag--army .unit-flag__shape--outer {
+	background-image: url("fs://game/unit_commander-frame.png");
+}
+
+.unit-flag__highlight {
+	left: pixels(-3);
+	right: pixels(-3);
+	bottom: pixels(-3);
+	top: pixels(-3);
+	background-image: url("fs://game/mask_unitflag_combat.png");
+	background-size: 100%;
+	background-position: 50% 50%;
+	//filter: fxs-color-tint(rgb(236, 224, 212));
+	fxs-background-image-tint: rgb(236, 224, 212);
+	transition-property: opacity;
+	transition-duration: .25s;
+	transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.unit-flag--civilian .unit-flag__highlight {
+	background-image: url("fs://game/mask_unitflag_civilian.png");
+}
+
+.unit-flag--army .unit-flag__highlight {
+	background-image: url("fs://game/mask_unitflag_army.png");
+}
+
+.unit-flag__container:hover>.unit-flag__highlight {
+	opacity: 1;
+}
+
+.unit-flag__shape--inner {
+	background-image: url("fs://game/unit_support-base.png");
+}
+
+.unit-flag--civilian .unit-flag__shape--inner {
+	background-image: url("fs://game/unit_civilian-base.png");
+}
+
+.unit-flag--army .unit-flag__shape--inner {
+	background-image: url("fs://game/unit_commander-base.png");
+}
+
+.unit-flag--combat .unit-flag__shape--inner {
+	background-image: url("fs://game/unit_combat-base.png");
+}
+
+.unit-flag--civilian .unit-flag__overlay {
+	background-image: url("fs://game/overlay_unitflag_civilian.png");
+}
+
+.unit-flag--army .unit-flag__overlay {
+	background-image: url("fs://game/overlay_unitflag_army.png");
+}
+
+.unit-flag__icon {
+	left: 25%;
+	top: 22.5%;
+	width: 50%;
+	height: 50%;
+	background-position: center center;
+}
+
+.unit-flag--has-promotions {
+	.unit-flag__icon {
+		top: 8.5%;
+	}
+}
+
+.unit-flag--civilian .unit-flag__icon {
+	top: 24.5%;
+}
+
+.unit-flag--combat .unit-flag__icon {
+	top: 12%;
+}
+
+.unit-flag__tier-graphic {
+	top: pixels(22);
+	left: pixels(16);
+	display: none;
+}
+
+.unit-flag--combat .unit-flag__tier-graphic {
+	display: flex;
+}
+
+.unit-flag--army .unit-flag__icon {
+	top: 8%;
+}
+
+.unit-flag__shadow {
+	background-image: url("fs://game/unit_support-shadow.png");
+	background-repeat: no-repeat;
+}
+
+.unit-flag--hostile .unit-flag__shadow {
+	background-image: url("fs://game/unit_support-shadow_red.png");
+	left: pixels(-2);
+	right: pixels(-1);
+	top: pixels(-1);
+	bottom: pixels(-1);
+}
+
+.unit-flag--civilian .unit-flag__shadow {
+	background-image: url("fs://game/unit_civilian-shadow.png");
+}
+
+.unit-flag--army .unit-flag__shadow {
+	background-image: url("fs://game/unit_commander-shadow.png");
+}
+
+.unit-flag--combat .unit-flag__shadow {
+	background-image: url("fs://game/unit_combat-shadow.png");
+}
+
+.unit-flag--hostile .unit-flag--civilian .unit-flag__shadow {
+	background-image: url("fs://game/unit_civilian-shadow_red.png");
+}
+
+.unit-flag--hostile .unit-flag--army .unit-flag__shadow {
+	background-image: url("fs://game/unit_commander-shadow_red.png");
+}
+
+.unit-flag--hostile .unit-flag--combat .unit-flag__shadow {
+	background-image: url("fs://game/unit_combat-shadow_red.png");
+}
+
+.unit-flag__promotion-number {
+	top: pixels(21);
+}
+
+.unit-flag__healthbar-container {
+	display: none;
+	width: pixels(33);
+}
+
+.unit-flag--with-healthbar .unit-flag__healthbar-container {
+	display: flex;
+}
+
+.unit-flag--with-healthbar .unit-flag__healthbar-container {
+	display: flex;
+}
+
+.unit-flag__healthbar-bg {
+	&.healthbar-bg-inner {
+		background-color: rgb(28, 66, 18);
+	}
+}
+
+.unit-flag__healthbar-low-health .healthbar-bg-inner {
+	background-color: rgb(58, 8, 6);
+}
+
+.unit-flag__healthbar-med-health .healthbar-bg-inner {
+	background-color: rgb(68, 44, 11);
+}
+
+.unit-flag--combat>.unit-flag__healthbar-bg {
+	left: pixels(1);
+	right: pixels(1);
+}
+
+.unit-flag__healthbar {
+	top: pixels(-2);
+}
+
+.unit-flag--civilian .unit-flag__healthbar {
+	top: pixels(-1);
+}
+
+.unit-flag--combat .unit-flag__healthbar {
+	top: pixels(-6);
+	width: pixels(28);
+	left: pixels(3);
+}
+
+.unit-flag--army .unit-flag__healthbar {
+	top: pixels(-6);
+}
+
+.unit-flag--hostile .unit-flag__healthbar {
+	top: pixels(-4);
+}
+
+.unit-flag--hostile .unit-flag--civilian .unit-flag__healthbar {
+	top: pixels(-1);
+}
+
+.unit-flag--hostile .unit-flag--combat .unit-flag__healthbar {
+	top: pixels(-6);
+}
+
+.unit-flag--hostile .unit-flag--army .unit-flag__healthbar {
+	top: pixels(-6);
+}
+
+.unit-flag__healthbar-inner {
+	background-color: rgb(155, 211, 113);
+	top: pixels(2);
+	bottom: pixels(2);
+	left: pixels(2);
+	right: pixels(2);
+	max-width: 89%;
+}
+
+.unit-flag__healthbar-med-health .unit-flag__healthbar-inner {
+	background-color: rgb(206, 169, 47);
+}
+
+.unit-flag__healthbar-low-health .unit-flag__healthbar-inner {
+	background-color: rgb(187, 40, 35);
+}
+
+.unit-flag__army-stats {
+	top: pixels(-18);
+	letter-spacing: pixels(0);
+	font-family: "BodyFont", "BodyFont-JP", "BodyFont-KR", "BodyFont-SC", "BodyFont-TC";
+	font-weight: 700;
+	font-size: pixels-font(23);
+	line-height: 3.0;
+	color: rgb(236, 224, 212);
+	text-shadow: pixels(-3) pixels(2) black;
+}

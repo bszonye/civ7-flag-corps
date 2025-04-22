@@ -1,0 +1,93 @@
+<div class="city-banner__container flex flex-col mt-2">
+	<div
+		 class="city-banner__stretch absolute flex flex-row justify-center align-center w-full h-8 top-1\.5 pointer-events-none">
+		<div class="city-banner__city-state-border absolute -left-2 -right-2 -top-0 -bottom-0"></div>
+		<div class="city-banner__city-state-ring absolute -left-1 -right-1 top-1 bottom-0"></div>
+		<div class="city-banner__stretch-bg absolute inset-0 pointer-events-none"></div>
+	</div>
+	<fxs-hslot class="city-banner__name-container relative flex justify-between">
+		<div class="city-banner__portrait relative pointer-events-auto flex">
+			<div class="city-banner__portrait-bg1 absolute inset-0 bg-center bg-cover bg-no-repeat"></div>
+			<div class="city-banner__portrait-bg2 absolute inset-x-0 top-0 -bottom-2 bg-center bg-cover bg-no-repeat">
+			</div>
+			<div
+				 class="city-banner__portrait-img absolute -left-2 -right-2 -top-1 bottom-0 bg-cover bg-center bg-no-repeat pointer-events-none">
+			</div>
+		</div>
+		<fxs-vslot class="city-banner__name-vslot pointer-events-auto cursor-pointer max-h-10">
+			<fxs-hslot>
+				<div class="city-banner__capital-star w-8 h-8 bg-cover bg-no-repeat hidden"></div>
+				<p class="city-banner__name font-title-base uppercase"></p>
+			</fxs-hslot>
+			<fxs-hslot class="city-banner__status-religion">
+				<div class="city-banner__status flex justify-center align-center opacity-100">
+					<div class="city-banner__status-background h-full w-full absolute"></div>
+					<div class="city-banner__status-icon absolute w-full h-full bg-no-repeat"></div>
+				</div>
+				<fxs-hslot class="city-banner__religion self-center">
+					<div class="city-banner__religion-symbol-bg">
+						<div class="city-banner__religion-symbol bg-contain bg-no-repeat bg-center"></div>
+					</div>
+					<div class="city-banner__religion-symbol-bg religion-bg--right">
+						<div
+							 class="city-banner__religion-symbol  bg-contain bg-no-repeat bg-center religion-symbol--right">
+						</div>
+					</div>
+				</fxs-hslot>
+			</fxs-hslot>
+		</fxs-vslot>
+		<div class="city-banner__population-container items-center justify-center w-6 h-6 -mt-2">
+			<fxs-ring-meter min-value="0" max-value="24" value="18"
+							class="city-banner__ring city-banner__population-ring bg-cover bg-center flex size-9 self-center align-center">
+				<div
+					 class="city-banner__population-number font-body-xs text-white top-0 w-full text-center pointer-events-auto">
+				</div>
+			</fxs-ring-meter>
+			<div
+				 class="city-banner__turn flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative">
+				<div
+					 class="city-banner__turn-number font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat">
+				</div>
+			</div>
+		</div>
+		<div
+			 class="city-banner__queue-container queue-production queue-none justify-center w-8 h-6 -mt-2 flex-col align-center">
+			<fxs-ring-meter min-value="0" max-value="100" value="6"
+							class="city-banner__ring city-banner__production-ring bg-cover bg-center flex size-9 self-center align-center">
+				<div class="city-banner__queue-img queue-production size-4 self-center"></div>
+			</fxs-ring-meter>
+
+			<div
+				 class="city-banner__turn flex flex-col justify-end align-center self-center w-8 mt-0\.5 pointer-events-none">
+				<div
+					 class="city-banner__turn-number font-base-xs text-white text-center w-full bg-cover bg-center bg-no-repeat">
+				</div>
+			</div>
+		</div>
+		<div class="city-banner__city-state-container justify-center">
+			<div class="city-banner__city-state-type size-7 self-center align-center justify-center">
+				<div class="city-banner__city-state-icon size-8 self-center align-center bg-cover bg-no-repeat">
+				</div>
+			</div>
+		</div>
+	</fxs-hslot>
+</div>
+<fxs-hslot class="items-center -ml-12 mt-10">
+	<fxs-vslot class="-mr-3">
+		<div class="city-banner__conquered-icon relative size-14 -mr-6 bg-cover bg-no-repeat"></div>
+	</fxs-vslot>
+	<fxs-vslot class="city-banner__unrest -mr-3">
+		<div class="city-banner__unrest-icon relative size-14 bg-cover bg-no-repeat"></div>
+		<div class="city-banner__time-container -mt-3 flex flex-row">
+			<div class="city-banner__time-icon self-center bg-cover bg-no-repeat size-6 ml-1"></div>
+			<div class="city-banner__time-text self-center font-body-xs text-white">4</div>
+		</div>
+	</fxs-vslot>
+	<fxs-vslot class="city-banner__razing">
+		<div class="city-banner__razing-icon relative size-14 bg-cover bg-no-repeat"></div>
+		<div class="city-banner__time-container -mt-3 flex flex-row">
+			<div class="city-banner__time-icon self-center bg-cover bg-no-repeat size-6 ml-1"></div>
+			<div class="city-banner__time-text self-center font-body-xs text-white">7</div>
+		</div>
+	</fxs-vslot>
+</fxs-hslot>

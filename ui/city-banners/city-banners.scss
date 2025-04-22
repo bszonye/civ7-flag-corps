@@ -1,0 +1,671 @@
+@use "sass:map";
+@use '../../../core/ui/utilities/utility-layout' as *;
+@use '../../../core/ui/utilities/utility-text' as *;
+@use '../../../core/ui/utilities/utility-shapes' as shapes;
+@use '../../../core/ui/themes/default/baseColors';
+
+.city-banner {
+	pointer-events: none;
+
+	&.disabled {
+		.city-banner__name {
+			pointer-events: none;
+		}
+	}
+
+	&.hidden {
+		visibility: hidden;
+	}
+
+	// START OF TOWN ********************************************************
+	.city-banner__stretch {
+		top: pixels(6);
+		height: pixels(66);
+	}
+
+	height: pixels(66);
+	top: pixels(-36);
+
+	.city-banner__center {
+		width: pixels(72);
+		height: pixels(66);
+	}
+
+	// Portrait
+	.city-banner__portrait {
+		display: none;
+	}
+
+	.city-banner__symbol {
+		width: pixels(18);
+		height: pixels(18);
+		margin-left: pixels(4);
+		margin-right: pixels(6);
+
+		&.symbol--right {
+			margin-left: pixels(6);
+			margin-right: pixels(4);
+		}
+	}
+
+	.city-banner__name-container {
+		margin-top: pixels(16);
+		pointer-events: auto;
+	}
+
+	.city-banner__name {
+		pointer-events: auto;
+	}
+
+	.city-banner__turn {
+		top: pixels(-3);
+	}
+
+	.city-banner__status-religion {
+		top: pixels(-8);
+		left: pixels(4);
+	}
+
+	.city-banner__ring {
+		margin-top: pixels(3);
+	}
+
+	// TOWN OVERRIDES
+	&.city-banner--town {
+		.city-banner__name {
+			margin-top: pixels(-5);
+		}
+
+		.city-banner__conquered-icon {
+			margin-top: pixels(8);
+		}
+
+		.city-banner__unrest-icon {
+			margin-top: pixels(8);
+		}
+
+		.city-banner__razing-icon {
+			margin-top: pixels(8);
+		}
+
+		.city-banner__population-container {
+			margin-top: pixels(-8);
+		}
+	}
+
+	&.city-banner--city-other {
+
+		top: pixels(-72);
+
+		.city-banner__container {
+			margin-top: pixels(28);
+		}
+
+		.city-banner__center {
+			width: pixels(72);
+			height: pixels(84);
+		}
+
+		.city-banner__center-bottom-bg {
+			width: pixels(72);
+			height: pixels(84);
+			mask-image: url('fs://game/core/ui/themes/default/img/city_banners/mask_citybanner_other-city-center.png');
+		}
+
+		.city-banner__stretch {
+			top: pixels(24);
+			height: pixels(84);
+		}
+
+		.city-banner__portrait {
+			top: pixels(0);
+			width: pixels(24);
+			height: pixels(36);
+			display: flex;
+		}
+
+		.city-banner__status {
+			display: none;
+		}
+
+		.city-banner__turn {
+			top: pixels(2);
+		}
+
+		.city-banner__pattern {
+
+			&.pattern-top {
+				border-right-width: pixels(2);
+				border-right-color: var(--player-color-primary);
+				border-right-style: solid;
+			}
+		}
+
+		.city-banner__stretch-bg {
+			border-image-source: url('fs://game/city_pill.png');
+		}
+
+		.city-banner__name-container {
+			margin-top: pixels(16);
+
+			&.city-banner__icons-below-name {
+				margin-top: pixels(28);
+			}
+		}
+
+
+		.city-banner__name {
+			margin-top: pixels(2);
+
+			&.city-banner__icons-below-name {
+				margin-top: pixels(0);
+			}
+		}
+
+		.city-banner__turn {
+			top: pixels(0);
+		}
+
+		.queue-production {
+			display: none;
+		}
+
+		.city-banner__status-religion {
+			top: pixels(-6);
+		}
+
+		.city-banner__ring {
+			margin-top: pixels(6);
+		}
+
+		.city-banner__population-container {
+			margin-top: pixels(-6);
+
+			&.city-banner__icons-below-name {
+				margin-top: pixels(0);
+			}
+		}
+	}
+
+	&.city-banner--city {
+		top: pixels(-72);
+
+		.city-banner__container {
+			margin-top: pixels(20);
+		}
+
+		.city-banner__center {
+			width: pixels(96);
+			height: pixels(84);
+			top: pixels(12);
+		}
+
+		.city-banner__population {
+			top: pixels(-7);
+			width: pixels(64);
+			height: pixels(64);
+		}
+
+		.city-banner__population-bg {
+			width: pixels(48);
+			height: pixels(48);
+		}
+
+		.city-banner__center-bottom-bg {
+			width: pixels(96);
+			height: pixels(84);
+			mask-image: url('fs://game/core/ui/themes/default/img/city_banners/mask_citybanner_city-center.png');
+		}
+
+		.city-banner__portrait {
+			top: pixels(-3);
+			width: pixels(24);
+			height: pixels(36);
+			display: flex;
+		}
+
+		.city-banner__capital-star {
+			margin-top: pixels(-1);
+		}
+
+		.city-banner__stretch {
+			top: pixels(24);
+			height: pixels(84);
+		}
+
+		.city-banner__stretch-bg {
+			border-image-source: url('fs://game/city_pill.png');
+		}
+
+		.city-banner__name-container {
+			margin-top: pixels(34);
+		}
+
+		.city-banner__status-religion {
+			top: pixels(-6);
+		}
+
+		.city-banner__turn {
+			top: pixels(2);
+		}
+	}
+
+	&.city-banner--village {
+		.city-banner__city-state-type {
+			display: flex;
+		}
+
+		.city-banner__population-container {
+			display: none;
+		}
+
+		.city-banner__city-state-type {
+			margin-top: pixels(6);
+		}
+
+		.city-banner__status {
+			display: none;
+		}
+
+		.city-banner__stretch-bg {
+			fxs-border-image-tint: rgb(22, 22, 35);
+		}
+
+		.city-banner__name-container {
+			margin-top: pixels(-6);
+			color: white;
+		}
+
+		.city-banner__name {
+			margin-top: pixels(7);
+			text-shadow: none;
+		}
+
+		.city-banner__city-state-container {
+			margin-top: pixels(4);
+		}
+
+		.city-banner__city-state-icon {
+			fxs-background-image-tint: white;
+		}
+	}
+
+	&.city-banner--hostile {
+		.city-banner__city-state-border {
+			display: flex;
+			fxs-border-image-tint: #a00000;
+		}
+
+		.city-banner__city-state-ring {
+			display: flex;
+			fxs-border-image-tint: white;
+		}
+	}
+
+	&.city-banner--friendly {
+		.city-banner__city-state-border {
+			display: flex;
+			fxs-border-image-tint: #ffd553;
+		}
+
+		.city-banner__city-state-ring {
+			display: flex;
+			fxs-border-image-tint: white;
+		}
+	}
+
+	&.city-banner--citystate {
+		.city-banner__container {
+			margin-top: pixels(28);
+		}
+
+		.city-banner__center {
+			width: pixels(44);
+			height: pixels(72);
+		}
+
+		.city-banner__portrait {
+			top: pixels(6);
+			width: pixels(20);
+			height: pixels(32);
+			display: flex;
+		}
+
+		.city-banner__center-bottom-bg {
+			width: pixels(44);
+			height: pixels(72);
+			mask-image: url('fs://game/core/ui/themes/default/img/city_banners/mask_citybanner_big-village-center.png');
+		}
+
+		.city-banner__city-state-container {
+			margin-top: pixels(-1);
+			margin-left: pixels(4);
+			margin-right: pixels(2);
+		}
+
+		.city-banner__name-container {
+			margin-top: pixels(-13);
+			color: black;
+		}
+
+		.city-banner__stretch {
+			top: pixels(12);
+			height: pixels(72);
+		}
+
+		.city-banner__stretch-bg {
+			border-image-source: url('fs://game/city_pill.png');
+		}
+
+		.city-banner__stretch-bg {
+			fxs-border-image-tint: white;
+		}
+
+		.city-banner__city-state-ring {
+			border-image-slice: 60 24 2 24 fill;
+			border-image-outset: pixels(4) pixels(2);
+			border-image-width: pixels(60) pixels(25) pixels(2) pixels(24);
+		}
+
+		.city-banner__city-state-type {
+			display: flex;
+		}
+
+		.city-banner__stretch-bg {
+			fxs-border-image-tint: var(--player-color-secondary);
+		}
+
+		.city-banner__name {
+			margin-top: pixels(5);
+			text-shadow: none;
+		}
+
+		.city-banner__ring {
+			margin-top: pixels(5);
+			margin-right: pixels(2);
+		}
+
+		.city-banner__conquered-icon {
+			margin-top: pixels(24);
+		}
+
+		.city-banner__unrest-icon {
+			margin-top: pixels(24);
+		}
+
+		.city-banner__razing-icon {
+			margin-top: pixels(24);
+		}
+	}
+
+	&.city-banner--has-religion .city-banner__religion {
+		display: flex;
+	}
+
+	&.city-banner--conquered {
+		.city-banner__conquered-icon {
+			display: flex;
+		}
+	}
+
+	&.city-banner--unrest {
+		.city-banner__unrest {
+			display: flex;
+		}
+	}
+
+	&.city-banner--razing {
+		.city-banner__razing {
+			display: flex;
+		}
+	}
+
+	// END OF VARIANTS ************************************************
+}
+
+.city-banner__container {
+	transform: translateX(-50.000000%) scale(1);
+
+	&.disabled {
+		pointer-events: none;
+	}
+}
+
+// Name Area
+.city-banner__name-container {
+	line-height: pixels(36);
+	color: var(--player-color-secondary);
+	pointer-events: auto;
+}
+
+// Name Text Area
+.city-banner__name {
+	position: relative;
+	padding: 0 pixels(6);
+	letter-spacing: pixels(1);
+	margin-right: pixels(-1);
+	margin-top: pixels(-4);
+	text-shadow: pixels(1) pixels(1) pixels(0) rgba(0, 0, 0, 0.25), pixels(1.5) pixels(1.5) pixels(0) rgba(0, 0, 0, 0.25);
+	font-weight: bold;
+	pointer-events: auto;
+
+	&.city-banner__icons-below-name {
+		margin-top: pixels(0);
+	}
+}
+
+// Central "pill" shape
+.city-banner__stretch-bg {
+	fxs-border-image-tint: var(--player-color-primary);
+	border-image-source: url('fs://game/town_pill.png');
+	border-image-slice: 60 24 2 24 fill;
+	border-image-outset: pixels(0) pixels(8);
+	border-image-width: pixels(60) pixels(24) pixels(2) pixels(24);
+}
+
+.city-banner__city-state-border {
+	display: none;
+	margin-top: pixels(7);
+	border-image-source: url('fs://game/hostile_pill.png');
+	border-image-slice: 60 24 2 24 fill;
+	border-image-outset: pixels(4) pixels(2);
+	border-image-width: pixels(54) pixels(24) pixels(2) pixels(24);
+}
+
+.city-banner__city-state-ring {
+	display: none;
+	border-image-source: url('fs://game/city_pill.png');
+	border-image-slice: 60 24 2 24 fill;
+	border-image-outset: pixels(4) pixels(7);
+	border-image-width: pixels(60) pixels(25) pixels(2) pixels(24);
+}
+
+// Number Text Area
+.city-banner__population-number {
+	background-image: url('fs://game/town_pop-bg.png');
+	background-size: cover;
+	background-repeat: no-repeat;
+	fxs-background-image-tint: black;
+}
+
+// Queue Info
+.city-banner__queue-container {
+	&.disabled {
+		pointer-events: none;
+	}
+
+	&.queue-production {
+		left: pixels(3);
+		pointer-events: auto;
+	}
+
+	&.queue-growth {
+		right: pixels(3);
+		pointer-events: auto;
+	}
+
+	&.queue-none {
+		display: none;
+	}
+}
+
+.city-banner__queue-img.queue-production {
+	background-image: url('fs://game/core/ui/themes/default/img/icons/unitList_Warrior.png');
+}
+
+.city-banner__queue-img.queue-growth {
+	background-image: url('fs://game/core/ui/themes/default/img/icons/Action_Upgrade.png');
+}
+
+// Icon for Current Queue Item
+.city-banner__queue-img {
+	margin-left: pixels(10);
+	background-size: contain;
+}
+
+// Turn Clock Icon
+.city-banner__turn-icon {
+	width: pixels(12);
+	height: pixels(13);
+	background-image: url('fs://game/core/ui/themes/default/img/turn_icon.png');
+	background-size: contain;
+	margin-bottom: pixels(-8);
+}
+
+// Turn Number
+.city-banner__turn-number {
+	background-image: url('fs://game/town_turn-bg.png');
+	line-height: pixels(18);
+	padding-left: pixels(1);
+}
+
+// Portrait
+.city-banner__portrait {
+	&.disabled {
+		pointer-events: none;
+	}
+}
+
+.city-banner__portrait-bg1 {
+	background-image: url('fs://game/town_portrait-hex.png');
+}
+
+.city-banner__portrait-bg2 {
+	background-image: url('fs://game/town_portrait-frame.png');
+}
+
+.city-banner__religion {
+	display: none;
+}
+
+.city-banner__religion-symbol-bg {
+	width: pixels(18);
+	height: pixels(18);
+	margin-right: pixels(2);
+
+	border-radius: 50%;
+	border-width: .25rem;
+	border-color: rgba(0, 0, 0, 0.5);
+	border-style: solid;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.city-banner__religion-symbol {
+	width: pixels(18);
+	height: pixels(18);
+	margin-top: pixels(-5);
+	margin-left: pixels(-5);
+}
+
+.city-banner__status {
+	height: pixels(18);
+	width: pixels(18);
+	margin-right: pixels(2);
+
+	.city-banner__status--hidden {
+		opacity: 0;
+	}
+}
+
+.city-banner__status-background {
+	border-radius: 50%;
+	border-width: .25rem;
+	border-color: rgba(0, 0, 0, 0.5);
+	border-style: solid;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.city-banner__status-icon {
+	background-size: 125%;
+	background-position: center center;
+}
+
+.city-banner__ring {
+	background-image: url("fs://game/hud_sub_circle_bk.png");
+	margin-right: pixels(-4);
+	margin-top: pixels(6);
+
+	.fxs-ring-meter__ring-right,
+	.fxs-ring-meter__ring-left {
+		background-image: url("fs://game/hud_small-progress_bar.png");
+		background-size: cover;
+	}
+
+	.fxs-ring-meter__ring-right {
+		background-position: right;
+	}
+
+	.fxs-ring-meter__ring-left {
+		background-position: left;
+	}
+}
+
+.city-banner__city-state-type {
+	display: none;
+	background-color: rgb(0, 0, 0);
+	border-color: #161a24d7;
+	margin-right: pixels(2);
+	margin-top: pixels(10);
+	border-radius: 50%;
+	border-width: .2rem;
+	border-style: solid;
+}
+
+.city-banner__city-state-icon {}
+
+.city-banner__conquered-icon {
+	transform: translateX(-50.000000%) scale(1);
+	display: none;
+	background-image: url('fs://game/icon-conquered.png');
+}
+
+.city-banner__unrest-icon {
+	background-image: url('fs://game/icon_unrest.png');
+}
+
+.city-banner__unrest {
+	display: none;
+}
+
+.city-banner__razing-icon {
+	background-image: url('fs://game/icon_razed.png');
+}
+
+.city-banner__razing {
+	display: none;
+}
+
+.city-banner__time-container {
+	background-image: url('fs://game/turn_bg.png');
+	background-size: 100%;
+}
+
+.city-banner__time-icon {
+	background-image: url('fs://game/town_turn-icon.png');
+}
+
+.city-banner__capital-star {
+	background-image: url('blp:icon-capital.png');
+	margin-top: pixels(4);
+	margin-right: pixels(-6);
+}

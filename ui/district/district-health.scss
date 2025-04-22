@@ -1,0 +1,36 @@
+@use '../../../core/ui/utilities/utility-layout' as *;
+@use '../../../core/ui/utilities/utility-text' as *;
+@use '../../../core/ui/themes/default/theme';
+
+// Center of plot
+.district-health-container {
+	font-size: pixels-font(12);
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	width: pixels(200);
+	align-items: center;
+	pointer-events: auto;
+}
+
+// Offsets from container, actual moving text
+.district-health-bar {
+	position: relative;
+	width: pixels(100);
+	height: pixels(17);
+	pointer-events: auto;
+
+	background-color: black;
+}
+
+.district-health-bar-ink {
+	background-color: theme.color('healthbar-full');
+}
+
+.district-health-med {
+	background-color: theme.color('healthbar-medium');
+}
+
+.district-health-low {
+	background-color: theme.color('healthbar-low');
+}
