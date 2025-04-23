@@ -39,11 +39,7 @@ BZ_HEAD_STYLE.map(style => {
     document.head.appendChild(e);
 });
 // sync optional styling
-if (bzFlagCorpsOptions.noShadow) {
-    document.body.classList.add("bz-flags-no-shadow");
-} else {
-    document.body.classList.remove("bz-flags-no-shadow");
-}
+document.body.classList.toggle("bz-flags-no-shadow", bzFlagCorpsOptions.noShadow);
 
 function isVillage(loc) {
     for (const item of MapConstructibles.getHiddenFilteredConstructibles(loc.x, loc.y)) {
@@ -157,10 +153,13 @@ IndependentPowersUnitFlag.prototype.realizeUnitHealth = function(...args) {
 function checkUnitPosition(unit) {
     UnitFlagManager.instance.recalculateFlagOffsets(unit.location);
 }
-function updateTop(position) {
-    if (this.unitContainer && this.flagOffset != position) {
-        this.flagOffset = position;
-        this.unitContainer.style.top = Layout.pixels(position * -16);
+function updateTop(position, total) {
+    const offset = position - ((total - 1) / 2) - 0.5;
+    if (this.unitContainer) {
+        if (this.flagOffset != offset) {
+            this.flagOffset = offset;
+            this.unitContainer.style.left = Layout.pixels(offset * 32);
+        }
     }
 }
 // dynamically import the conflicting mods
