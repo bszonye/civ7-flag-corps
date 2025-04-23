@@ -467,11 +467,7 @@ BZ_HEAD_STYLE.map(style => {
     e.textContent = style;
     document.head.appendChild(e);
 });
-if (bzFlagCorpsOptions.banners) {
-    document.body.classList.add("bz-flags");
-} else {
-    document.body.classList.remove("bz-flags");
-}
+document.body.classList.toggle("bz-flags", bzFlagCorpsOptions.banners);
 // use the Map Trix debug hotkey instead
 // if (UI.isDebugPlotInfoVisible()) document.body.classList.add("bz-debug");
 

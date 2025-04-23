@@ -39,11 +39,7 @@ BZ_HEAD_STYLE.map(style => {
     document.head.appendChild(e);
 });
 // sync optional styling
-if (bzFlagCorpsOptions.noShadow) {
-    document.body.classList.add("bz-flags-no-shadow");
-} else {
-    document.body.classList.remove("bz-flags-no-shadow");
-}
+document.body.classList.toggle("bz-flags-no-shadow", bzFlagCorpsOptions.noShadow);
 
 function isVillage(loc) {
     for (const item of MapConstructibles.getHiddenFilteredConstructibles(loc.x, loc.y)) {
