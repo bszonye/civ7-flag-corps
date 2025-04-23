@@ -393,7 +393,7 @@ const BZ_HEAD_STYLE = [
     justify-content: center;
     transform: translateX(-50%) scale(1);
 }
-`,  //   2 FXS-VSLOT -mr-3
+`,  //   2 FXS-VSLOT -mr-3 flex-auto
     //     3 .CONQUERED-ICON relative size-14 -mr-6 bg-cover bg-no-repeat
 `
 .bz-flags city-banner > fxs-hslot > fxs-vslot {
@@ -411,45 +411,47 @@ const BZ_HEAD_STYLE = [
     //       4 .TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
     //       4 .TIME-TEXT self-center font-body-xs text-white
 `
-.bz-flags .city-banner.city-banner .city-banner__unrest {
+.bz-flags city-banner.city-banner .city-banner__unrest {
     position: relative;
     width: 2.6666666667rem;
     height: 2.6666666667rem;
     margin: 0rem 0.1666666667rem;
 }
-.bz-flags .city-banner.city-banner--town .city-banner__unrest-icon {
+.bz-flags city-banner.city-banner .city-banner__unrest-icon {
     position: relative;
     margin: 0rem;
-}
-.bz-debug .city-banner.city-banner--town .city-banner__unrest {
-    background-color: #fffa;
+    top: -0.2222222222rem;
+    left: -0.1111111111rem;
 }
 `,  //   2 FXS-VSLOT.RAZING
     //     3 .RAZING-ICON relative size-14 bg-cover bg-no-repeat
 `
-.bz-flags .city-banner.city-banner .city-banner__razing {
+.bz-flags city-banner.city-banner .city-banner__razing {
     position: relative;
     width: 2.6666666667rem;
     height: 2.6666666667rem;
     margin: 0rem 0.1666666667rem;
 }
-.bz-flags .city-banner.city-banner--town .city-banner__razing-icon {
+.bz-flags city-banner.city-banner .city-banner__razing-icon {
     position: relative;
     margin: 0rem;
+    top: -0.2222222222rem;
+    left: -0.1111111111rem;
 }
-.bz-debug .city-banner.city-banner--town .city-banner__razing {
-    background-color: #fffa;
-}
-`,  //     3 .TIME-CONTAINER -mt-3 flex flex-row
+`,  //     3 .TIME-CONTAINER -mt-3 pr-2 flex flex-row
     //       4 .TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
     //       4 .TIME-TEXT self-center font-body-xs text-white
 `
 .bz-flags .city-banner .city-banner__time-container {
+    border-image-source: none;
+    border-image-slice: 0;
+    border-image-width: 0;
+    padding: 0;
     position: relative;
-    background-image: none;
-    background-color: #0009;
-    margin: -0.4444444444rem 0rem 0rem;
-    border-radius: 1rem;
+    background-color: #000a;
+    margin: -0.6666666667rem 0.1111111111rem 0rem;
+    height: 1.1111111111rem;
+    border-radius: 0.4444444444rem / 50%;
     justify-content: center;
     align-items: center;
 }
