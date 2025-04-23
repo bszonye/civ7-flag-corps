@@ -162,7 +162,6 @@ function updateTop(position, total) {
         }
     }
 }
-
 // dynamically import the conflicting mods
 const conflicts = [
     "/sukritacts_simple_ui_adjustments/ui/unit-flags/suk-unit-flags.js",
