@@ -472,8 +472,8 @@ if (bzFlagCorpsOptions.banners) {
 } else {
     document.body.classList.remove("bz-flags");
 }
-// TODO: react to checkbox
-if (UI.isDebugPlotInfoVisible()) document.body.classList.add("bz-debug");
+// use the Map Trix debug hotkey instead
+// if (UI.isDebugPlotInfoVisible()) document.body.classList.add("bz-debug");
 
 function darkenColor(rgb, darkness) {
     const srgb = PlayerColors.stringRGBtoRGB(rgb);
