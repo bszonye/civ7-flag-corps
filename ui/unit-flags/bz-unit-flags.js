@@ -153,12 +153,16 @@ IndependentPowersUnitFlag.prototype.realizeUnitHealth = function(...args) {
 function checkUnitPosition(unit) {
     UnitFlagManager.instance.recalculateFlagOffsets(unit.location);
 }
-function updateTop(position) {
-    if (this.unitContainer && this.flagOffset != position) {
-        this.flagOffset = position;
-        this.unitContainer.style.top = Layout.pixels(position * -16);
+function updateTop(position, total) {
+    const offset = position - ((total - 1) / 2) - 0.5;
+    if (this.unitContainer) {
+        if (this.flagOffset != offset) {
+            this.flagOffset = offset;
+            this.unitContainer.style.left = Layout.pixels(offset * 32);
+        }
     }
 }
+
 // dynamically import the conflicting mods
 const conflicts = [
     "/sukritacts_simple_ui_adjustments/ui/unit-flags/suk-unit-flags.js",
