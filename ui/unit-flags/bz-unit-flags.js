@@ -133,7 +133,7 @@ function bzFixUnitHealth() {
     if (this.unitHealthBarInner) {
         const health = this.unit?.Health ?? 1.0;
         const damage = (health.maxDamage - health.damage) / health.maxDamage;
-        const MAX = 28/33 * 100;  // healthbar/container = 28/33 pixels
+        const MAX = 24/28 * 100;  // inner/healthbar = 24/28 pixels
         this.unitHealthBarInner.style.widthPERCENT = utils.clamp(damage, 0, 1) * MAX;
     }
 }

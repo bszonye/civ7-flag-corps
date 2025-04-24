@@ -46,6 +46,9 @@ export class bzDistrictHealthBar {
     constructor(component) {
         this.component = component;
         component.bzComponent = this;
+        this.Root = this.component.Root;
+        this.progressBar = null;
+        this.progressInk = null;
         this.patchPrototypes(this.component);
     }
     patchPrototypes(component) {
@@ -58,6 +61,14 @@ export class bzDistrictHealthBar {
         bzDistrictHealthBar.c_makeWorldAnchor = proto.makeWorldAnchor;
         proto.makeWorldAnchor = function(...args) {
             return bzMakeWorldAnchor.apply(this.bzComponent, args);
+        }
+        // afterUpdateDistrictHealth
+        const afterUpdateDistrictHealth = this.afterUpdateDistrictHealth;
+        const updateDistrictHealth = proto.updateDistrictHealth;
+        proto.updateDistrictHealth = function(...args) {
+            const c_rv = updateDistrictHealth.apply(this, args);
+            const after_rv = afterUpdateDistrictHealth.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
         }
     }
     bzMakeWorldAnchor(location) {
@@ -74,16 +85,27 @@ export class bzDistrictHealthBar {
             worldAnchorHandle = WorldAnchors.RegisterFixedWorldAnchor(location, offset);
         }
         if (worldAnchorHandle !== null && worldAnchorHandle >= 0) {
-            this.component.Root.setAttribute('data-bind-style-transform2d', `{{FixedWorldAnchors.offsetTransforms[${worldAnchorHandle}].value}}`);
-            this.component.Root.setAttribute('data-bind-style-opacity', `{{FixedWorldAnchors.visibleValues[${worldAnchorHandle}]}}`);
+            this.Root.setAttribute('data-bind-style-transform2d', `{{FixedWorldAnchors.offsetTransforms[${worldAnchorHandle}].value}}`);
+            this.Root.setAttribute('data-bind-style-opacity', `{{FixedWorldAnchors.visibleValues[${worldAnchorHandle}]}}`);
             this.component._worldAnchorHandle = worldAnchorHandle;
         }
         else {
             console.error(`Failed to create WorldAnchorHandle for DistrictHealthBar, District id: ${ComponentID.toLogString(this.component._componentID)}`);
         }
     }
+    afterUpdateDistrictHealth(value) {
+        if (!this.progressBar || !this.progressInk) return;
+        const healthAmt = parseFloat(value);
+        const MAX = 92/100 * 100;  // ink/healthbar = 92/100 pixels
+        this.progressInk.style.widthPERCENT = healthAmt * MAX;
+    }
     beforeAttach() { }
-    afterAttach() { }
+    afterAttach() {
+        this.progressBar = this.component.progressBar;
+        this.progressInk = this.component.progressInk;
+        const healthValue = this.Root.getAttribute('data-district-health');
+        this.afterUpdateDistrictHealth(healthValue);
+    }
     beforeDetach() { }
     afterDetach() { }
     onAttributeChanged(_name, _prev, _next) { }
