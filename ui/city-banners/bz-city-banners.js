@@ -696,6 +696,7 @@ export class bzCityBanner {
             this.suzerain = Players.get(this.owner.Influence.getSuzerain());
         }
         this.leader = this.suzerain ?? this.owner;
+        if (!this.player) return;  // autoplaying
         this.isAlly = this.leader?.Diplomacy?.hasAllied(this.player.id) ?? false;
         this.isEnemy = this.leader?.Diplomacy?.isAtWarWith(this.player.id) ?? false;
         this.isVassal = this.suzerain?.id == this.player.id;
@@ -708,7 +709,7 @@ export class bzCityBanner {
         if (!leaderType) return;
         let context = "DEFAULT";
         let transform = "";
-        if (this.leader.id == this.player.id) {
+        if (this.leader.id == this.player?.id) {
             // show local status: unhappiness, unrest, razing, plague
             const happiness = this.city.Yields?.getYield(YieldTypes.YIELD_HAPPINESS);
             if (happiness < 0) context = "LEADER_ANGRY";
@@ -745,7 +746,7 @@ export class bzCityBanner {
         this.realizePortrait();
         // hide status/happiness for non-player banners
         // base game attempts this, but it's broken
-        this.elements.statusContainer.classList.toggle("hidden", this.leader.id != this.player.id);
+        this.elements.statusContainer.classList.toggle("hidden", this.leader.id != this.player?.id);
     }
     afterRealizePlayerColors() {
         this.color1 = this.Root.style.getPropertyValue('--player-color-primary');
