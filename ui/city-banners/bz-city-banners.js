@@ -741,7 +741,7 @@ export class bzCityBanner {
             unrest.style.top = razing.style.top = shift;
         }
         // hide unrest when razing
-        const showUnrest = this.city.Happiness?.hasUnrest && !this.city.isBeingRazed;
+        const showUnrest = this.city?.Happiness?.hasUnrest && !this.city.isBeingRazed;
         this.Root.classList.toggle("city-banner--unrest", showUnrest);
         this.realizePortrait();
         // hide status/happiness for non-player banners
