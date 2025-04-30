@@ -320,8 +320,11 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner__ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__ring .fxs-ring-meter__ring-left {
     background-image: url("fs://game/hud_small-progress_bar.png");
-    filter: brightness(1.5) fxs-color-tint(${BZ_COLOR.progress});
     background-size: cover;
+}
+.bz-flags .city-banner__population-ring .fxs-ring-meter__ring-right,
+.bz-flags .city-banner__population-ring .fxs-ring-meter__ring-left {
+    filter: brightness(1.75) fxs-color-tint(${BZ_COLOR.food});
 }
 `,  //     compatibility with F1rstDan's Cool UI:
     //     3 .DAN-TOOLTIP items-center justify-center w-8 h-6 -mt-2 -mr-1 pointer-events-auto dan-tooltip hidden
@@ -351,6 +354,10 @@ const BZ_HEAD_STYLE = [
     margin: 0rem 0.2777777777rem 0rem -0.1111111111rem;
     padding: 0rem;
     box-shadow: none;
+}
+.bz-flags .city-banner__production-ring .fxs-ring-meter__ring-right,
+.bz-flags .city-banner__production-ring .fxs-ring-meter__ring-left {
+    filter: brightness(1.75) fxs-color-tint(${BZ_COLOR.production});
 }
 `,  //       4 .TURN flex flex-col justify-end align-center self-center w-8 mt-0\.5 pointer-events-none
     //         5 .TURN-NUMBER font-base-xs text-white text-center w-full bg-cover bg-center bg-no-repeat
@@ -696,6 +703,7 @@ export class bzCityBanner {
             this.suzerain = Players.get(this.owner.Influence.getSuzerain());
         }
         this.leader = this.suzerain ?? this.owner;
+        if (!this.player) return;  // autoplaying
         this.isAlly = this.leader?.Diplomacy?.hasAllied(this.player.id) ?? false;
         this.isEnemy = this.leader?.Diplomacy?.isAtWarWith(this.player.id) ?? false;
         this.isVassal = this.suzerain?.id == this.player.id;
@@ -708,7 +716,7 @@ export class bzCityBanner {
         if (!leaderType) return;
         let context = "DEFAULT";
         let transform = "";
-        if (this.leader.id == this.player.id) {
+        if (this.leader.id == this.player?.id) {
             // show local status: unhappiness, unrest, razing, plague
             const happiness = this.city.Yields?.getYield(YieldTypes.YIELD_HAPPINESS);
             if (happiness < 0) context = "LEADER_ANGRY";
@@ -740,12 +748,12 @@ export class bzCityBanner {
             unrest.style.top = razing.style.top = shift;
         }
         // hide unrest when razing
-        const showUnrest = this.city.Happiness?.hasUnrest && !this.city.isBeingRazed;
+        const showUnrest = this.city?.Happiness?.hasUnrest && !this.city.isBeingRazed;
         this.Root.classList.toggle("city-banner--unrest", showUnrest);
         this.realizePortrait();
         // hide status/happiness for non-player banners
         // base game attempts this, but it's broken
-        this.elements.statusContainer.classList.toggle("hidden", this.leader.id != this.player.id);
+        this.elements.statusContainer.classList.toggle("hidden", this.leader.id != this.player?.id);
     }
     afterRealizePlayerColors() {
         this.color1 = this.Root.style.getPropertyValue('--player-color-primary');
