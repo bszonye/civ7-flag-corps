@@ -157,7 +157,8 @@ const BZ_HEAD_STYLE = [
     //       4 .PORTRAIT-IMG absolute -left-2 -right-2 -top-1 bottom-0 bg-cover bg-center bg-no-repeat pointer-events-none
 `
 .bz-flags city-banner.city-banner .city-banner__portrait {
-    margin: -0.25rem 0 -0.25rem -0.2777777778rem;
+    margin: -0.2777777778rem;
+    margin-right: 0;
     top: -0.1111111111rem;
     left: 0.1666666667rem;
     width: 1.7777777778rem;
@@ -178,7 +179,7 @@ const BZ_HEAD_STYLE = [
     background-image: url("fs://game/town_portrait-frame.png");
 }
 .bz-flags .city-banner__portrait-img {
-    top: 0.0277777778rem;
+    top: 0.0555555556rem;
     left: 0rem;
     width: 1.7777777778rem;  /* 64x90 */
     height: 2.5rem;
@@ -259,9 +260,7 @@ const BZ_HEAD_STYLE = [
     position: relative;
     margin: 0;
     border: none;
-    border-radius: 50%;
-    box-shadow: 0 0.0555555556rem 0.1666666667rem 0.0833333333rem ${BZ_COLOR.shadow},
-                0 0.0555555556rem 0.5rem 0 ${BZ_COLOR.shadow} inset;
+    filter: drop-shadow(0 0.0555555556rem 0.1111111111rem black);
 }
 .bz-flags city-banner.city-banner .city-banner__status-icon {
     background-size: 125%;
@@ -293,7 +292,7 @@ const BZ_HEAD_STYLE = [
     position: relative;
     width: 1.5555555556rem;
     height: 1.5555555556rem;
-    top: 0.4166666667rem;
+    top: 0.3888888889rem;
     margin: 0rem 0.1111111111rem 0rem 0.1666666667rem;
     padding: 0rem;
     box-shadow: none;
@@ -305,17 +304,14 @@ const BZ_HEAD_STYLE = [
     height: 2rem;
     line-height: 2rem;
     margin: 0rem;
-    z-index: 2;
-    /* position for F1rstDan's connections ring */
-    top: -0.1944444444rem;
-    left: -0.0277777778rem;
+    z-index: 1;
 }
 .bz-flags city-banner.city-banner .city-banner__population-ring,
 .bz-flags city-banner.city-banner .city-banner__production-ring {
     /* position for base-game rings */
     background-position: -0.0277777778rem 0.0277777778rem;
     left: 0;
-    top: -0.25rem;
+    top: -0.2222222222rem;
 }
 .bz-flags .city-banner__ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__ring .fxs-ring-meter__ring-left {
@@ -336,11 +332,10 @@ const BZ_HEAD_STYLE = [
     position: relative;
     width: 1.5555555556rem;
     height: 1.5555555556rem;
-    top: 0.3888888889rem;
+    top: 0.1666666667rem;
     margin: 0rem 0.1111111111rem 0rem 0.1111111111rem;
     padding: 0rem;
-    border-radius: 0.7777777778rem;
-    box-shadow: 0 0.0555555556rem 0.3333333333rem 0.1111111111rem #0006;
+    filter: drop-shadow(0 0.0555555556rem 0.1111111111rem #0006);
 }
 `,  //     3 .QUEUE-CONTAINER queue-production queue-none justify-center w-8 h-6 -mt-2 flex-col align-center
     //       4 FXS-RING-METER.RING.PRODUCTION-RING bg-cover bg-center flex size-9 self-center align-center
@@ -350,7 +345,7 @@ const BZ_HEAD_STYLE = [
     position: relative;
     width: 1.5555555556rem;
     height: 1.5555555556rem;
-    top: 0.4166666667rem;
+    top: 0.3888888889rem;
     margin: 0rem 0.2777777777rem 0rem -0.1111111111rem;
     padding: 0rem;
     box-shadow: none;
@@ -374,7 +369,6 @@ const BZ_HEAD_STYLE = [
     margin: 0rem;
     padding: 0.8333333333rem 0.1111111111rem 0.1666666667rem;
     min-width: 1.6666666667rem;
-    z-index: 1;
 }
 `,  //     3 .CITY-STATE-CONTAINER justify-center
     //       4 .CITY-STATE-TYPE size-7 self-center align-center justify-center
@@ -394,7 +388,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner > fxs-hslot {
     position: absolute;
     margin: 0rem;
-    top: -2.75rem;
+    top: -2.72222222222rem;
     height: 2.6666666667rem;
     display: flex;
     justify-content: center;
