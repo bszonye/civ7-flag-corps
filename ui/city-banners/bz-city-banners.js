@@ -307,7 +307,7 @@ const BZ_HEAD_STYLE = [
     margin: 0rem;
     z-index: 2;
     /* position for F1rstDan's connections ring */
-    top: -0.2222222222rem;
+    top: -0.1944444444rem;
     left: -0.0277777778rem;
 }
 .bz-flags city-banner.city-banner .city-banner__population-ring,
