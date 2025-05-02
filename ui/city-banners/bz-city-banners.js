@@ -1,11 +1,3 @@
-// TODO: tooltips (mostly from Map Trix)
-// - owner & civ
-// - town focus
-// - fresh water
-// - religion
-// - connected settlements
-// - population growth
-// - build queue
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
 import CityBannerManager from '/base-standard/ui/city-banners/city-banner-manager.js';
 import PlayerColors from '/core/ui/utilities/utilities-color.js';
@@ -539,6 +531,22 @@ export class bzCityBanner {
             const after_rv = afterSetCityInfo.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
+        // afterSetFood
+        const afterSetFood = this.afterSetFood;
+        const setFood = proto.setFood;
+        proto.setFood = function(...args) {
+            const c_rv = setFood.apply(this, args);
+            const after_rv = afterSetFood.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
+        }
+        // afterSetProduction
+        const afterSetProduction = this.afterSetProduction;
+        const setProduction = proto.setProduction;
+        proto.setProduction = function(...args) {
+            const c_rv = setProduction.apply(this, args);
+            const after_rv = afterSetProduction.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
+        }
         // afterRealizeBuilds
         const afterRealizeBuilds = this.afterRealizeBuilds;
         const realizeBuilds = proto.realizeBuilds;
@@ -664,6 +672,19 @@ export class bzCityBanner {
             const lightSpect = `${BZ_LIGHT_SHAPE} ${this.color1light}`;
             cityName.style.textShadow = `${shadowSpec}, ${lightSpect}`;
         }
+        this.Root.bzComponent = this;
+        this.Root.setAttribute('data-tooltip-style', 'bz-city-tooltip');
+        const { container, portrait, } = this.elements;
+        container.removeAttribute('data-tooltip-content');
+        portrait.removeAttribute('data-tooltip-content');
+    }
+    afterSetFood(_turnsLeft, _current, _nextTarget) {
+        // const { growthQueueContainer, } = this.elements;
+        // growthQueueContainer.removeAttribute('data-tooltip-content');
+    }
+    afterSetProduction(_data) {
+        // const { productionQueue, } = this.elements;
+        // productionQueue.removeAttribute('data-tooltip-content');
     }
     setRelationshipInfo() {
         this.player = Players.get(GameContext.localObserverID);
