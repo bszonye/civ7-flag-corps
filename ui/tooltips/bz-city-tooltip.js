@@ -5,6 +5,7 @@
 // - fresh water
 // - religion
 // - connected settlements
+// - city-state info
 // - population growth
 // - build queue (all civs during autoplay)
 // - total yields
@@ -12,20 +13,24 @@ import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 import LensManager from '/core/ui/lenses/lens-manager.js';
 import { InterfaceMode } from '/core/ui/interface-modes/interface-modes.js';
 
-// box metrics for warning banners
-const BZ_BORDER_WIDTH = "0.1111111111rem";  // tooltip main border
-
 // additional CSS definitions
 const BZ_HEAD_STYLE = [
 `
 .bz-city-tooltip .img-tooltip-border {
-    border-radius: 1rem;
+    border-radius: 0.6666666667rem;
     border-image-source: none;
-    border: ${BZ_BORDER_WIDTH} solid #8C7E62;
+    border: 0.1111111111rem solid #8C7E62;
+    filter: drop-shadow(0 1rem 1rem #000c);
+}
+.bz-city-tooltip .img-tooltip-bg {
+    background-image: linear-gradient(to bottom, rgba(35, 37, 43, 0.90) 0%, rgba(18, 21, 31, 0.90) 100%);
 }
 .tooltip.bz-city-tooltip {
-    --padding-top-bottom: 0.6666666667rem;
-    --padding-left-right: 0.9444444444rem;
+    --padding-top-bottom: 0.5555555556rem;
+    --padding-left-right: 0.8333333333rem;
+}
+.tooltip.bz-city-tooltip .tooltip__content {
+    padding-top: 0;
 }
 `,  // full-width banners: enemies and warnings
 `
@@ -63,9 +68,6 @@ BZ_HEAD_STYLE.map(style => {
 const BZ_DOT_DIVIDER = Locale.compose("LOC_PLOT_DIVIDER_DOT");
 const BZ_CITY_DIVIDER = "[icon:BZ_CITY_DOT]";
 const BZ_TOWN_DIVIDER = "[icon:BZ_TOWN_DOT]";
-
-// all urban DistrictTypes
-const BZ_URBAN_TYPES = [DistrictTypes.CITY_CENTER, DistrictTypes.URBAN];
 
 // custom & adapted icons
 const BZ_ICON_SIZE = 12;
@@ -394,9 +396,9 @@ class bzCityTooltipType {
     constructor() {
         // tooltip target
         this.target = null;
+        this.location = null;
         this.city = null;
         // coordinates
-        this.plotCoord = null;
         this.plotIndex = null;
         // document root
         this.tooltip = document.createElement('fxs-tooltip');
@@ -471,24 +473,18 @@ class bzCityTooltipType {
         // get target component, if possible
         const banner = target?.closest('city-banner');
         target = banner?.bzComponent ?? null;
-        const city = target?.city ?? null;
-        if (target == this.target && target?.city == this.city) return false;
-        // set target and city, if possible
+        if (target == this.target) return false;
+        // set target, location, and city
         this.target = target;
-        this.city = city;
-        console.warn(`TRIX TARGET=${this.target?.Root.tagName} CITY=${this.city?.name}`);
-        if (!this.target || !this.city) {
-            this.target = this.city = null;
-            return true;
-        }
-        this.plotCoord = city.location;
+        this.location = this.target?.location ?? null;
+        this.city = this.target?.city ?? null;
+        console.warn(`TRIX TARGET=${this.target?.Root.tagName} LOC=${JSON.stringify(this.location)} CITY=${this.city?.name}`);
         return true;
     }
     isBlank() {
         return (!this.target);
     }
     reset() {
-        this.plotCoord = null;
         this.plotIndex = null;
         // document root
         this.container.innerHTML = '';
@@ -532,13 +528,12 @@ class bzCityTooltipType {
         this.unitRelationship = null;
     }
     update() {
-        if (!this.city) return;
-        this.plotCoord = this.city.location;
-        this.plotIndex = GameplayMap.getIndexFromLocation(this.plotCoord);
+        if (!this.target) return;
+        this.plotIndex = GameplayMap.getIndexFromLocation(this.location);
         this.model();
         this.render();
-        UI.setPlotLocation(this.plotCoord.x, this.plotCoord.y, this.plotIndex);
-        this.setWarningCursor(this.plotCoord);
+        UI.setPlotLocation(this.location.x, this.location.y, this.plotIndex);
+        this.setWarningCursor(this.location);
     }
     model() {
         // update point-of-view info
@@ -554,14 +549,12 @@ class bzCityTooltipType {
     }
     render() {
         if (BZ_DUMP_ICONS) return this.dumpIcons();
-        this.renderGeographySection();
         this.renderSettlementSection();
-        this.renderHexSection();
         this.renderYields();
     }
     // data modeling methods
     modelWorld() {
-        const loc = this.plotCoord;
+        const loc = this.location;
         this.age = GameInfo.Ages.lookup(Game.age);
         const terrainType = GameplayMap.getTerrainType(loc.x, loc.y);
         this.terrain = GameInfo.Terrains.lookup(terrainType);
@@ -596,7 +589,7 @@ class bzCityTooltipType {
     }
     modelCivilization() {
         // owner, civ, city, district
-        const loc = this.plotCoord;
+        const loc = this.location;
         const ownerID = GameplayMap.getOwner(loc.x, loc.y);
         this.owner = Players.get(ownerID);
         this.ownerRelationship = this.getCivRelationship(this.owner);
@@ -625,7 +618,7 @@ class bzCityTooltipType {
         this.connections = getConnections(this.city);
     }
     modelConstructibles() {
-        const loc = this.plotCoord;
+        const loc = this.location;
         this.constructibles = [];
         const constructibles = MapConstructibles.getHiddenFilteredConstructibles(loc.x, loc.y);
         for (const constructible of constructibles) {
@@ -695,7 +688,7 @@ class bzCityTooltipType {
                 console.warn(`bz-city-tooltip: expected 1 constructible, not ${n}`);
             }
         }
-        this.specialists = getSpecialists(this.plotCoord, this.city);
+        this.specialists = getSpecialists(this.location, this.city);
         if (this.improvement) {
             // set up icons and special district names for improvements
             const info = this.improvement.info;
@@ -735,21 +728,18 @@ class bzCityTooltipType {
     modelYields() {
         this.yields = [];
         this.totalYields = 0;
+        const cityYields = this.city?.Yields?.getYields();
+        if (!cityYields) return;
         // one column per yield type
-        GameInfo.Yields.forEach(info => {
-            const value = GameplayMap.getYield(this.plotCoord.x, this.plotCoord.y, info.YieldType, this.observerID);
-            if (value) {
+        cityYields.forEach((y, i) => {
+            const info = GameInfo.Yields[i];
+            const value = y.value;
+            if (info && value) {
                 const column = { name: info.Name, type: info.YieldType, value };
                 this.yields.push(column);
-                this.totalYields += value;
+                this.totalYields += y.value;
             }
         });
-        if (!this.totalYields) return;
-        // total yield column
-        const type = BZ_URBAN_TYPES.includes(this.district?.type) ?
-            BZ_ICON_TOTAL_URBAN : BZ_ICON_TOTAL_RURAL;
-        const column = { name: "LOC_YIELD_BZ_TOTAL", type, value: this.totalYields };
-        this.yields.push(column);
     }
     renderFlexDivider(center, lines, ...style) {
         const layout = document.createElement("div");
@@ -790,7 +780,7 @@ class bzCityTooltipType {
     }
     renderGeographySection() {
         if (this.isCompact) return;
-        const loc = this.plotCoord;
+        const loc = this.location;
         // show geographical features
         const effects = this.getPlotEffects(this.plotIndex);
         const terrainLabel = this.getTerrainLabel(loc);
@@ -975,10 +965,10 @@ class bzCityTooltipType {
         return continent.Description;
     }
     getRouteList() {
-        const routeType = GameplayMap.getRouteType(this.plotCoord.x, this.plotCoord.y);
+        const routeType = GameplayMap.getRouteType(this.location.x, this.location.y);
         const route = GameInfo.Routes.lookup(routeType);
         if (!route) return [];
-        return GameplayMap.isFerry(this.plotCoord.x, this.plotCoord.y) ?
+        return GameplayMap.isFerry(this.location.x, this.location.y) ?
             [route.Name, "LOC_NAVIGABLE_RIVER_FERRY"] :
             [route.Name];
     }
@@ -998,7 +988,7 @@ class bzCityTooltipType {
             notes.push("LOC_BZ_PLOTKEY_NO_FRESHWATER");
         }
         // render headings and notes
-        this.renderTitleDivider(name);
+        this.renderTitleHeading(name);
         if (this.townFocus || notes.length) {
             // note: extra div layer here to align bz-debug levels
             const tt = document.createElement("div");
@@ -1045,7 +1035,7 @@ class bzCityTooltipType {
     }
     renderOwnerInfo() {
         if (!this.owner || !Players.isAlive(this.owner.id)) return;
-        const loc = this.plotCoord;
+        const loc = this.location;
         // TODO: simplify this check? why is it here?
         const filteredConstructibles = MapConstructibles.getHiddenFilteredConstructibles(loc.x, loc.y);
         const constructibles = MapConstructibles.getConstructibles(loc.x, loc.y);
@@ -1179,7 +1169,7 @@ class bzCityTooltipType {
         }
         // title bar
         this.renderTitleDivider(Locale.compose(hexName));
-        this.renderDistrictDefense(this.plotCoord);
+        this.renderDistrictDefense(this.location);
         // panel interior
         // show rules for city-states and unique quarters
         if (hexRules && this.isVerbose) {
@@ -1366,7 +1356,7 @@ class bzCityTooltipType {
             this.container.appendChild(tt);
         }
         // district health
-        const loc = this.plotCoord;
+        const loc = this.location;
         const info = [];
         const ownerID = GameplayMap.getOwner(loc.x, loc.y);
         const ownerDistricts = Players.Districts.get(ownerID);
@@ -1444,11 +1434,7 @@ class bzCityTooltipType {
             tt.appendChild(this.yieldColumn(column));
         }
         // set column width based on number of digits (at least two)
-        const numWidth = (n) => {
-            const frac = n % 1 != 0;
-            // decimal points need a little less room
-            return n.toString().length - (frac ? 0.4 : 0);
-        };
+        const numWidth = (n) => n.toFixed(0).length;
         const maxWidth = Math.max(2, ...this.yields.map(y => numWidth(y.value)));
         const yieldWidth = 1 + maxWidth / 3;  // width in rem
         tt.style.setProperty("--yield-width", `${yieldWidth}rem`);
@@ -1473,7 +1459,7 @@ class bzCityTooltipType {
         const ttIndividualYieldValues = document.createElement("div");
         ttIndividualYieldValues.classList.add("plot-tooltip__IndividualYieldValues", "font-body");
         if (isTotal) ttIndividualYieldValues.classList.add("text-secondary");
-        ttIndividualYieldValues.textContent = col.value.toString();
+        ttIndividualYieldValues.textContent = col.value.toFixed(0);
         ttIndividualYieldFlex.appendChild(ttIndividualYieldValues);
         return ttIndividualYieldFlex;
     }
