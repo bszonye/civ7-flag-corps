@@ -203,7 +203,7 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner.city-banner .city-banner__capital-star {
     background-image: url("blp:icon-capital.png");
-    margin: 0.2222222222rem -0.1666666667rem 0 0;
+    margin: 0.2222222222rem -0.3333333333rem 0 0;
 }
 .bz-flags .city-banner.city-banner--village .city-banner__capital-star {
     display: none;
@@ -213,7 +213,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__name.city-banner__icons-below-name,
 .bz-flags city-banner.city-banner .city-banner__name {
     position: relative;
-    margin: 0.3333333333rem 0.1111111111rem 0 0;
+    margin-top: 0.3333333333rem;
     padding: 0 0.3333333333rem;
     letter-spacing: 0.0555555556rem;
     font-weight: bold;
@@ -303,7 +303,8 @@ const BZ_HEAD_STYLE = [
     left: 0;
     width: 1.5555555556rem;
     height: 1.5555555556rem;
-    margin: 0 0.1111111111rem 0 0.0555555556rem;
+    margin-top: 0;
+    margin-right: 0.1111111111rem;
     padding: 0;
     box-shadow: none;
 }
@@ -311,9 +312,6 @@ const BZ_HEAD_STYLE = [
     filter: drop-shadow(0 0.0555555556rem 0.1111111111rem #0006);
 }
 .bz-flags city-banner.city-banner .city-banner__ring {
-    position: relative;
-    width: 2rem;
-    height: 2rem;
     line-height: 2rem;
     margin: 0;
     z-index: 1;
@@ -321,11 +319,6 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__population-ring,
 .bz-flags city-banner.city-banner .city-banner__production-ring {
     background-position: -0.0277777778rem 0.0277777778rem;
-}
-.bz-flags .city-banner__ring .fxs-ring-meter__ring-right,
-.bz-flags .city-banner__ring .fxs-ring-meter__ring-left {
-    background-image: url("fs://game/hud_small-progress_bar.png");
-    background-size: cover;
 }
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-left {
