@@ -213,7 +213,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__name.city-banner__icons-below-name,
 .bz-flags city-banner.city-banner .city-banner__name {
     position: relative;
-    margin: 0.3333333333rem 0 0 0;
+    margin: 0.3333333333rem 0.1111111111rem 0 0;
     padding: 0 0.3333333333rem;
     letter-spacing: 0.0555555556rem;
     font-weight: bold;
@@ -250,7 +250,7 @@ const BZ_HEAD_STYLE = [
     position: relative;
     height: 1rem;
     width: 1rem;
-    margin: 0 0.0277777778rem;
+    margin: 0 0.0555555556rem;
 }
 .bz-flags city-banner.city-banner .city-banner__status.hidden {
     display: none;
@@ -274,7 +274,7 @@ const BZ_HEAD_STYLE = [
     background-color: #f0f8;
 }
 .bz-flags city-banner.city-banner .city-banner__religion-symbol-bg {
-    margin: 0 0.0277777778rem;
+    margin: 0 0.0555555556rem;
 }
 .bz-flags city-banner.city-banner .city-banner__religion-symbol {
     width: 1rem;
@@ -287,31 +287,40 @@ const BZ_HEAD_STYLE = [
     //         5 .POPULATION-NUMBER font-body-xs text-white top-0 w-full text-center pointer-events-auto
     //       4 .TURN flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative
     //         5 .TURN-NUMBER font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat
+    //     3 .DAN-TOOLTIP items-center justify-center w-8 h-6 -mt-2 -mr-1 pointer-events-auto dan-tooltip hidden
+    //       4 FXS-RING-METER.DAN-TOOLTIP items-center justify-center w-8 h-6 -mt-2 -mr-1 pointer-events-auto dan-tooltip
+    //       4 .TURN city-banner__turn flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative
+    //         5 .TURN-NUMBER -banner__turn-number font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat hidden
+    //     3 .QUEUE-CONTAINER queue-production queue-none justify-center w-8 h-6 -mt-2 flex-col align-center
+    //       4 FXS-RING-METER.RING.PRODUCTION-RING bg-cover bg-center flex size-9 self-center align-center
+    //         5 .QUEUE-IMG queue-production size-4 self-center
 `
-.bz-flags city-banner.city-banner div.city-banner__population-container {
+.bz-flags city-banner.city-banner .city-banner__population-container,
+.bz-flags city-banner.city-banner .dan-tooltip,
+.bz-flags city-banner.city-banner .city-banner__queue-container {
     position: relative;
+    top: 0.1666666667rem;
+    left: 0;
     width: 1.5555555556rem;
     height: 1.5555555556rem;
-    top: 0.3888888889rem;
-    margin: 0rem 0.1111111111rem 0rem 0.1666666667rem;
-    padding: 0rem;
+    margin: 0 0.1111111111rem 0 0.0555555556rem;
+    padding: 0;
     box-shadow: none;
 }
+.bz-flags .city-banner .dan-tooltip {
+    filter: drop-shadow(0 0.0555555556rem 0.1111111111rem #0006);
+}
 .bz-flags city-banner.city-banner .city-banner__ring {
-    background-image: url("fs://game/hud_sub_circle_bk.png");
     position: relative;
     width: 2rem;
     height: 2rem;
     line-height: 2rem;
-    margin: 0rem;
+    margin: 0;
     z-index: 1;
 }
 .bz-flags city-banner.city-banner .city-banner__population-ring,
 .bz-flags city-banner.city-banner .city-banner__production-ring {
-    /* position for base-game rings */
     background-position: -0.0277777778rem 0.0277777778rem;
-    left: 0;
-    top: -0.2222222222rem;
 }
 .bz-flags .city-banner__ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__ring .fxs-ring-meter__ring-left {
@@ -322,34 +331,6 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-left {
     filter: brightness(1.75) fxs-color-tint(${BZ_COLOR.food});
 }
-`,  //     compatibility with F1rstDan's Cool UI:
-    //     3 .DAN-TOOLTIP items-center justify-center w-8 h-6 -mt-2 -mr-1 pointer-events-auto dan-tooltip hidden
-    //       4 FXS-RING-METER.DAN-TOOLTIP items-center justify-center w-8 h-6 -mt-2 -mr-1 pointer-events-auto dan-tooltip
-    //       4 .TURN city-banner__turn flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative
-    //         5 .TURN-NUMBER -banner__turn-number font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat hidden
-`
-.bz-flags .city-banner div.dan-tooltip {
-    position: relative;
-    width: 1.5555555556rem;
-    height: 1.5555555556rem;
-    top: 0.1666666667rem;
-    margin: 0rem 0.1111111111rem 0rem 0.1111111111rem;
-    padding: 0rem;
-    filter: drop-shadow(0 0.0555555556rem 0.1111111111rem #0006);
-}
-`,  //     3 .QUEUE-CONTAINER queue-production queue-none justify-center w-8 h-6 -mt-2 flex-col align-center
-    //       4 FXS-RING-METER.RING.PRODUCTION-RING bg-cover bg-center flex size-9 self-center align-center
-    //         5 .QUEUE-IMG queue-production size-4 self-center
-`
-.bz-flags city-banner.city-banner .city-banner__queue-container {
-    position: relative;
-    width: 1.5555555556rem;
-    height: 1.5555555556rem;
-    top: 0.3888888889rem;
-    margin: 0rem 0.2777777777rem 0rem -0.1111111111rem;
-    padding: 0rem;
-    box-shadow: none;
-}
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-left {
     filter: brightness(1.75) fxs-color-tint(${BZ_COLOR.production});
@@ -359,14 +340,14 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner.city-banner .city-banner__turn {
     position: relative;
-    margin: 0rem;
-    top: -1.2222222222rem;
+    margin: 0;
+    top: -1rem;
 }
 .bz-flags city-banner.city-banner .city-banner__turn-number {
     background-image: url("fs://game/town_turn-bg.png");
     background-size: 100% 100%;
     line-height: 1;
-    margin: 0rem;
+    margin: 0;
     padding: 0.8333333333rem 0.1111111111rem 0.1666666667rem;
     min-width: 1.6666666667rem;
 }
