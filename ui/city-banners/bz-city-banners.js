@@ -1,4 +1,5 @@
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
+import bzCityTooltip from '/bz-flag-corps/ui/tooltips/bz-city-tooltip.js';
 import CityBannerManager from '/base-standard/ui/city-banners/city-banner-manager.js';
 import PlayerColors from '/core/ui/utilities/utilities-color.js';
 
@@ -481,8 +482,8 @@ export class bzCityBanner {
         this.Root = this.component.Root;
         this.elements = this.component.elements;
         this.componentID = null;
-        this.city = null;
         this.location = null;
+        this.city = null;
         this.owner = null;
         this.suzerain = null;
         this.leader = null;
@@ -589,8 +590,8 @@ export class bzCityBanner {
     }
     beforeBuildBanner() {
         this.componentID = this.component.componentID;
-        this.city = this.component.city;
         this.location = this.component.location;
+        this.city = this.component.city;
         this.owner = Players.get(this.componentID.owner);
         this.component.realizePlayerColors();
     }
@@ -651,6 +652,7 @@ export class bzCityBanner {
         }
     }
     afterAffinityUpdate() {
+        bzCityTooltip.queueUpdate(this);
         this.realizePortrait();  // sets relationship info too
         if (this.owner?.isMinor && bzFlagCorpsOptions.banners) {
             const isNeutral = !this.isVassal && !this.isEnemy;
@@ -660,10 +662,12 @@ export class bzCityBanner {
         }
     }
     afterCapitalUpdate() {
+        bzCityTooltip.queueUpdate(this);
         // update capital star
         this.realizeIcon();
     }
     afterSetCityInfo(_data) {
+        bzCityTooltip.queueUpdate(this);
         this.realizeIcon();
         if (this.owner && !this.owner.isIndependent) {
             // improved text lighting
@@ -679,10 +683,12 @@ export class bzCityBanner {
         portrait.removeAttribute('data-tooltip-content');
     }
     afterSetFood(_turnsLeft, _current, _nextTarget) {
+        bzCityTooltip.queueUpdate(this);
         // const { growthQueueContainer, } = this.elements;
         // growthQueueContainer.removeAttribute('data-tooltip-content');
     }
     afterSetProduction(_data) {
+        bzCityTooltip.queueUpdate(this);
         // const { productionQueue, } = this.elements;
         // productionQueue.removeAttribute('data-tooltip-content');
     }
@@ -726,6 +732,7 @@ export class bzCityBanner {
         this.realizeIcon();
     }
     afterRealizeHappiness() {
+        bzCityTooltip.queueUpdate(this);
         // shift icons above damage bar
         if (this.owner) {
             const districts = Players.Districts.get(this.owner.id);
@@ -753,6 +760,7 @@ export class bzCityBanner {
         this.color2light = lightenColor(this.color2, 1/2);
     }
     afterRealizeReligion() {
+        bzCityTooltip.queueUpdate(this);
         const {
             urbanReligionSymbol,
             ruralReligionSymbol,
