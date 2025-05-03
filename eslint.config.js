@@ -37,6 +37,7 @@ export default [
                 MapPlotEffects: "readonly",
                 MapUnits: "readonly",
                 Players: "readonly",
+                ProductionKind: "readonly",
                 RevealedStates: "readonly",
                 RiverTypes: "readonly",
                 UI: "readonly",
