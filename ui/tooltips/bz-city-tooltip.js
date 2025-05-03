@@ -704,7 +704,7 @@ class bzCityTooltip {
         // render headings and notes
         this.renderTitleHeading(this.settlementType);
         const notes = [];
-        if (this.townFocus.note) notes.push(this.townFocus.note);
+        if (this.townFocus?.note) notes.push(this.townFocus.note);
         if (!this.isFreshWater) notes.push("LOC_BZ_PLOTKEY_NO_FRESHWATER");
         if (notes.length) {
             // note: extra div layer here to align bz-debug levels
