@@ -1,11 +1,9 @@
 // TODO: tooltips (mostly from Map Trix)
-// - owner & civ
 // - original owner
-// - town focus
-// - fresh water
 // - religion
 // - connected settlements
 // - city-state info
+// - suzerain?
 // - population growth
 // - build queue (all civs during autoplay)
 // - localization
@@ -288,22 +286,31 @@ function gatherMovementObstacles(mclass) {
 function getConnections(city) {
     const ids = city?.getConnectedCities();
     if (!ids) return null;
-    let towns = [];
-    let cities = [];
+    let settlements = [];
     for (const id of ids) {
         const conn = Cities.get(id);
-        if (!conn) {
-            console.warn(`bz-city-tooltip: stale connection=${JSON.stringify(id)}`);
-        } else if (conn.isTown) {
+        // ignore stale connections
+        if (conn) settlements.push(conn);
+    }
+    settlements.sort((a, b) => bzNameSort(a.name, b.name));
+    let cities = [];
+    let towns = [];
+    let focused = [];
+    let growing = [];
+    for (const conn of settlements) {
+        if (conn.isTown) {
             towns.push(conn);
+            if (conn.Growth?.growthType == GrowthTypes.EXPAND) {
+                growing.push(conn);
+            } else {
+                focused.push(conn);
+            }
         } else {
             cities.push(conn);
         }
     }
-    if (towns.length + cities.length == 0) return null;
-    cities.sort((a, b) => bzNameSort(a.name, b.name));
-    towns.sort((a, b) => bzNameSort(a.name, b.name));
-    return { cities, towns };
+    if (settlements.length == 0) return null;
+    return { settlements, cities, towns, focused, growing, };
 }
 function getConstructibles(loc, cclass) {
     const list = MapConstructibles.getHiddenFilteredConstructibles(loc.x, loc.y);
@@ -315,6 +322,20 @@ function getConstructibles(loc, cclass) {
         constructibles.push({ item, info });
     }
     return constructibles;
+}
+function getFigureWidth(size, digits=1) {
+    const nwidth = 0.6 * getFontSizeScalePx(size);
+    return Math.round(nwidth * digits);
+}
+function getFontSizeBasePx(size) {
+    return GlobalScaling.getFontSizePx(size);
+}
+function getFontSizeRem(size) {
+    const fpx = getFontSizeBasePx(size);
+    return GlobalScaling.pixelsToRem(fpx);
+}
+function getFontSizeScalePx(size) {
+    return getFontSizeRem(size) * GlobalScaling.currentScalePx;
 }
 function getReligionInfo(id) {
     // find a matching player religion, to get custom names
@@ -360,8 +381,11 @@ function getSpecialists(loc, city) {
 function getTownFocus(city) {
     const ptype = city.Growth?.projectType ?? null;
     const info = ptype && GameInfo.Projects.lookup(ptype);
-    const isGrowing = city.Growth?.growthType == GrowthTypes.EXPAND;
-    return { info, isGrowing, };
+    // TODO: what does this look like for cities (not towns)?
+    const isGrowing = !info || city.Growth?.growthType == GrowthTypes.EXPAND;
+    const name = info?.Name ?? "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH";
+    const icon = isGrowing ? "PROJECT_GROWTH" : info.ProjectType;
+    return { isGrowing, name, icon, info, };
 }
 function getVillageIcon(owner, age) {
     // get the minor civ type
@@ -429,10 +453,10 @@ class bzCityTooltip {
         this.isDistantLands = null;
         // ownership
         this.owner = null;
+        this.originalOwner = null;
         this.district = null;
         // settlement stats
         this.townFocus = null;
-        this.isGrowingTown = false;
         this.isFreshWater = null;
         this.religions = null;
         this.connections = null;
@@ -487,7 +511,6 @@ class bzCityTooltip {
         this.target = target;
         this.location = this.target?.location ?? null;
         this.city = this.target?.city ?? null;
-        console.warn(`TRIX TARGET=${this.target?.Root.tagName} LOC=${JSON.stringify(this.location)} CITY=${this.city?.name}`);
         this.updateQueued = false;
         return true;
     }
@@ -513,11 +536,11 @@ class bzCityTooltip {
         this.isDistantLands = null;
         // ownership
         this.owner = null;
+        this.originalOwner = null;
         this.district = null;
         // settlement stats
         this.settlementType = null;
         this.townFocus = null;
-        this.isGrowingTown = false;
         this.isFreshWater = null;
         this.religions = null;
         this.connections = null;
@@ -580,7 +603,6 @@ class bzCityTooltip {
         } else if (this.city.isTown) {
             const focus = getTownFocus(this.city);
             this.townFocus = focus.info;
-            this.isGrowingTown = focus.isGrowing;
             this.settlementType =
                 this.townFocus ? this.townFocus.Name :
                 "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH";
@@ -591,8 +613,12 @@ class bzCityTooltip {
         }
         // report fresh water supply
         this.isFreshWater = GameplayMap.isFreshWater(loc.x, loc.y);
-        // settlement
+        // settlement-specific stats (no villages)
         if (!this.city) return;
+        // original owner
+        if (this.city.originalOwner != this.city.owner) {
+            this.originalOwner = Players.get(this.city.originalOwner);
+        }
         // get religions (majority, urban, rural)
         if (this.age.AgeType == "AGE_EXPLORATION") {
             // but only during Exploration, when conversion is possible
@@ -742,7 +768,7 @@ class bzCityTooltip {
         const layout = document.createElement("div");
         layout.classList.value = "text-secondary font-title-sm uppercase mx-3 max-w-80";
         layout.setAttribute("data-l10n-id", text);
-        this.renderFlexDivider(layout, true, "mt-1\\.5");
+        this.renderFlexDivider(layout, false, "mt-1\\.5");
     }
     renderTitleHeading(title) {
         if (!title) return;
@@ -764,7 +790,7 @@ class bzCityTooltip {
         // render headings and notes
         this.renderTitleHeading(this.settlementType);
         const notes = [];
-        if (this.townFocus && this.isGrowingTown) {
+        if (this.townFocus?.isGrowing) {
             notes.push("LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH");
         }
         if (!this.isFreshWater) {
@@ -787,40 +813,59 @@ class bzCityTooltip {
     }
     renderConnections() {
         if (!this.connections) return;
+        const tabWidth = `${getFigureWidth('xs', 2)}px`;
+        const height = getFontSizeRem('xs') * 1.5;  // looser than leading
         this.renderTitleDivider("LOC_BZ_SETTLEMENT_CONNECTIONS");
         const tt = document.createElement("div");
-        tt.classList.value =
-            "self-center flex flex-wrap justify-center max-w-60 text-xs leading-snug";
-        for (const row of this.connections.cities) {
-            const ttName = document.createElement("div");
-            ttName.classList.value = "mx-1\\.5";
-            ttName.setAttribute('data-l10n-id', row.name);
-            tt.appendChild(ttName);
+        tt.classList.value = "flex justify-center text-xs leading-tight";
+        const rows = [];
+        const connections = [
+            ...this.connections.cities,
+            ...this.connections.growing,
+            ...this.connections.focused,
+        ];
+        for (const conn of connections) {
+            const row = document.createElement("div");
+            row.classList.value = "relative flex justify-start";
+            row.style.minHeight = `${height}rem`;
+            const focus = getTownFocus(conn);
+            // TODO: better city icon
+            const icon = document.createElement("div");
+            icon.classList.value = "relative bg-no-repeat";
+            icon.style.width = tabWidth;
+            const isize = conn.isTown ? height : 2/3*height;
+            const itop = (height - isize) / 2 - height/9;
+            icon.style.backgroundSize = `${isize}rem ${isize}rem`;
+            icon.style.backgroundPosition = "center top";
+            icon.style.top = `${itop}rem`;
+            icon.style.backgroundImage =
+                UI.getIconCSS(conn.isTown ? focus.icon : "YIELD_CITIES");
+            row.appendChild(icon);
+            const name = document.createElement("div");
+            name.classList.value = "max-w-36 mx-2 text-left";
+            name.setAttribute('data-l10n-id', conn.name);
+            row.appendChild(name);
+            const pop = document.createElement("div");
+            pop.classList.value = "text-right";
+            pop.style.width = tabWidth;
+            pop.setAttribute('data-l10n-id', conn.population.toFixed());
+            // row.appendChild(pop);
+            rows.push(row);
         }
-        for (const row of this.connections.towns) {
-            const ttName = document.createElement("div");
-            ttName.classList.value = "mr-1\\.5";
-            const focus = getTownFocus(row);
-            const icon =
-                focus.isGrowing ? "PROJECT_GROWTH" :
-                focus.info?.ProjectType ?? "PROJECT_GROWTH";
-            const name = `[icon:${icon}]${Locale.compose(row.name)}`;
-            ttName.setAttribute('data-l10n-id', name);
-            tt.appendChild(ttName);
+        const columns = [];
+        const half = Math.ceil(rows.length / 2);
+        columns.push(rows.slice(0, half));
+        if (half < rows.length) columns.push(rows.slice(half));
+        for (const column of columns) {
+            const col = document.createElement("div");
+            col.classList.value = "flex-col justify-start mx-1";
+            for (const row of column) col.appendChild(row);
+            tt.appendChild(col);
         }
         this.container.appendChild(tt);
     }
     renderOwnerInfo() {
         if (!this.owner || !Players.isAlive(this.owner.id)) return;
-        const loc = this.location;
-        // TODO: simplify this check? why is it here?
-        const filteredConstructibles = MapConstructibles.getHiddenFilteredConstructibles(loc.x, loc.y);
-        const constructibles = MapConstructibles.getConstructibles(loc.x, loc.y);
-        if (constructibles.length && !filteredConstructibles.length) {
-            console.warn(`bz-city-tooltip: skipping filtered constructibles`);
-            console.warn(`bz-city-tooltip: ${JSON.stringify(constructibles)}`);
-            return;
-        }
         const layout = document.createElement("div");
         layout.classList.value = "text-xs leading-snug text-center";
         const ownerName = this.getOwnerName(this.owner);
@@ -838,7 +883,16 @@ class bzCityTooltip {
         const ttCiv = document.createElement("div");
         ttCiv.setAttribute('data-l10n-id', civName);
         layout.appendChild(ttCiv);
+        // show original owner
+        if (this.originalOwner) {
+            const ttCiv = document.createElement("div");
+            const adjective = this.originalOwner.civilizationAdjective;
+            const text = Locale.compose("LOC_BZ_WAS_PREVIOUSLY", adjective);
+            ttCiv.setAttribute('data-l10n-id', text);
+            layout.appendChild(ttCiv);
+        }
         this.container.appendChild(layout);
+        // show city-state bonus
         if (this.owner.isMinor) {
             const bonusType = Game.CityStates.getBonusType(this.owner.id);
             const bonus = GameInfo.CityStateBonuses.find(b => b.$hash == bonusType);
@@ -1198,38 +1252,35 @@ class bzCityTooltip {
     }
     renderYields() {
         if (!this.totalYields) return;  // no yields to show
+        // set column width based on number of digits (at least three)
+        const numWidth = (n) => n.toFixed(0).length;
+        const digits = Math.max(3, ...this.yields.map(y => numWidth(y.value)));
         const tt = document.createElement('div');
-        tt.classList.value = "plot-tooltip__resourcesFlex mt-1\\.5";
+        tt.classList.value = "flex flex-wrap justify-center w-full mt-2";
         // one column per yield type
         for (const column of this.yields) {
-            tt.appendChild(this.yieldColumn(column));
+            tt.appendChild(this.yieldColumn(column, digits));
         }
-        // set column width based on number of digits (at least two)
-        const numWidth = (n) => n.toFixed(0).length;
-        const maxWidth = Math.max(2, ...this.yields.map(y => numWidth(y.value)));
-        const yieldWidth = 1 + maxWidth / 3;  // width in rem
-        tt.style.setProperty("--yield-width", `${yieldWidth}rem`);
         this.container.appendChild(tt);
     }
-    yieldColumn(col) {
-        const ttIndividualYieldFlex = document.createElement("div");
-        ttIndividualYieldFlex.classList.add("plot-tooltip__IndividualYieldFlex");
+    yieldColumn(col, digits) {
+        const tt = document.createElement("div");
+        tt.classList.value = "flex-col justify-start";
         const ariaLabel = `${Locale.toNumber(col.value)} ${Locale.compose(col.name)}`;
-        ttIndividualYieldFlex.ariaLabel = ariaLabel;
+        tt.ariaLabel = ariaLabel;
         const yieldIconCSS = UI.getIconCSS(col.type, "YIELD");
-        const yieldIconShadow = document.createElement("div");
-        yieldIconShadow.classList.add("plot-tooltip__IndividualYieldIcons-Shadow");
-        yieldIconShadow.style.backgroundImage = yieldIconCSS;
-        ttIndividualYieldFlex.appendChild(yieldIconShadow);
         const yieldIcon = document.createElement("div");
-        yieldIcon.classList.add("plot-tooltip__IndividualYieldIcons");
+        yieldIcon.classList.value = "size-6 bg-contain bg-no-repeat self-center";
+        yieldIcon.style.filter = "drop-shadow(0 0.0555555556rem 0.0555555556rem black)";
         yieldIcon.style.backgroundImage = yieldIconCSS;
-        yieldIconShadow.appendChild(yieldIcon);
-        const ttIndividualYieldValues = document.createElement("div");
-        ttIndividualYieldValues.classList.add("plot-tooltip__IndividualYieldValues", "font-body");
-        ttIndividualYieldValues.textContent = col.value.toFixed(0);
-        ttIndividualYieldFlex.appendChild(ttIndividualYieldValues);
-        return ttIndividualYieldFlex;
+        tt.appendChild(yieldIcon);
+        const yieldValue = document.createElement("div");
+        yieldValue.classList.value =
+            "w-auto text-center font-body-xs font-bold leading-6 mx-1";
+        yieldValue.style.width = `${getFigureWidth('xs', digits)}px`;
+        yieldValue.textContent = col.value.toFixed(0);
+        tt.appendChild(yieldValue);
+        return tt;
     }
     setWarningCursor() {
         // highlight enemy territory & units with a red cursor
