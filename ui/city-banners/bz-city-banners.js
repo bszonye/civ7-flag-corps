@@ -689,8 +689,8 @@ export class bzCityBanner {
     }
     afterSetProduction(_data) {
         bzCityTooltip.queueUpdate(this);
-        // const { productionQueue, } = this.elements;
-        // productionQueue.removeAttribute('data-tooltip-content');
+        const { productionQueue, } = this.elements;
+        productionQueue.removeAttribute('data-tooltip-content');
     }
     setRelationshipInfo() {
         this.player = Players.get(GameContext.localObserverID);

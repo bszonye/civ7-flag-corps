@@ -16,7 +16,7 @@ const BZ_HEAD_STYLE = [
     filter: drop-shadow(0 1rem 1rem #000c);
 }
 .bz-city-tooltip .img-tooltip-bg {
-    background-image: linear-gradient(to bottom, rgba(35, 37, 43, 0.90) 0%, rgba(18, 21, 31, 0.90) 100%);
+    background-image: linear-gradient(to bottom, rgba(35, 37, 43, 0.875) 0%, rgba(18, 21, 31, 0.875) 100%);
 }
 .tooltip.bz-city-tooltip .tooltip__content {
     padding-top: 0.5555555556rem;
@@ -123,35 +123,6 @@ function dotJoin(list, dot=BZ_DOT_DIVIDER) {
 function dotJoinLocale(list, dot=BZ_DOT_DIVIDER) {
     return dotJoin(list.map(s => s && Locale.compose(s)), dot);
 }
-function getConnections(city) {
-    const ids = city?.getConnectedCities();
-    if (!ids) return null;
-    let settlements = [];
-    for (const id of ids) {
-        const conn = Cities.get(id);
-        // ignore stale connections
-        if (conn) settlements.push(conn);
-    }
-    settlements.sort((a, b) => bzNameSort(a.name, b.name));
-    let cities = [];
-    let towns = [];
-    let focused = [];
-    let growing = [];
-    for (const conn of settlements) {
-        if (conn.isTown) {
-            towns.push(conn);
-            if (conn.Growth?.growthType == GrowthTypes.EXPAND) {
-                growing.push(conn);
-            } else {
-                focused.push(conn);
-            }
-        } else {
-            cities.push(conn);
-        }
-    }
-    if (settlements.length == 0) return null;
-    return { settlements, cities, towns, focused, growing, };
-}
 function getConstructibles(loc, cclass) {
     const list = MapConstructibles.getHiddenFilteredConstructibles(loc.x, loc.y);
     const items = list.map(id => Constructibles.getByComponentID(id));
@@ -183,34 +154,19 @@ function getFontSizeScalePx(size) {
 }
 function getReligionInfo(id) {
     // find a matching player religion, to get custom names
-    let religion = GameInfo.Religions.lookup(id);
-    const icon = `[icon:${religion.ReligionType}]`;
-    let name = religion.Name;
+    const info = GameInfo.Religions.lookup(id);
+    if (!info) return null;
     // find custom religion name, if any
-    for (const founder of Players.getEverAlive()) {
-        if (founder.Religion?.getReligionType() != id) continue;
-        name = founder.Religion.getReligionName();
-        break;
+    const customName = (info) => {
+        for (const founder of Players.getEverAlive()) {
+            if (founder.Religion?.getReligionType() != id) continue;
+            return founder.Religion.getReligionName();
+        }
+        return info.Name;
     }
-    return { name, icon };
-}
-function getReligions(city) {
-    const religion = city?.Religion;
-    if (!religion) return null;
-    const list = [];
-    if (religion.majorityReligion != -1) {
-        const info = getReligionInfo(religion.majorityReligion);
-        list.push(Locale.compose("LOC_BZ_RELIGION_MAJORITY", info.icon, info.name));
-    }
-    if (religion.urbanReligion != religion.majorityReligion) {
-        const info = getReligionInfo(religion.urbanReligion);
-        list.push(Locale.compose("LOC_BZ_RELIGION_URBAN", info.icon, info.name));
-    }
-    if (religion.ruralReligion != religion.majorityReligion) {
-        const info = getReligionInfo(religion.ruralReligion);
-        list.push(Locale.compose("LOC_BZ_RELIGION_RURAL", info.icon, info.name));
-    }
-    return list.length ? list : null;
+    const name = customName(info);
+    const icon = info.ReligionType;
+    return { name, icon, info, };
 }
 function getTownFocus(city) {
     const ptype = city.Growth?.projectType ?? null;
@@ -260,6 +216,7 @@ class bzCityTooltip {
         this.observer = Players.get(this.observerID);
         this.playerID = GameContext.localPlayerID;
         this.player = Players.get(this.playerID);
+        this.isDebug = UI.isDebugPlotInfoVisible();
         // world
         this.age = null;
         // ownership
@@ -269,10 +226,10 @@ class bzCityTooltip {
         // settlement stats
         this.townFocus = null;
         this.isFreshWater = null;
-        this.religions = null;
+        this.religion = null;
         this.connections = null;
-        this.growth = null;
-        this.queue = null;
+        this.population = null;
+        this.production = null;
         // yields
         this.yields = [];
         this.totalYields = 0;
@@ -321,6 +278,7 @@ class bzCityTooltip {
         this.observer = Players.get(this.observerID);
         this.playerID = GameContext.localPlayerID;
         this.player = Players.get(this.playerID);
+        this.isDebug = UI.isDebugPlotInfoVisible();
         // world
         this.age = null;
         // ownership
@@ -331,10 +289,10 @@ class bzCityTooltip {
         this.settlementType = null;
         this.townFocus = null;
         this.isFreshWater = null;
-        this.religions = null;
+        this.religion = null;
         this.connections = null;
-        this.growth = null;
-        this.queue = null;
+        this.population = null;
+        this.production = null;
         // yields
         this.yields = [];
         this.totalYields = 0;
@@ -352,16 +310,19 @@ class bzCityTooltip {
         this.observerID = GameContext.localObserverID;
         this.observer = Players.get(this.observerID);
         this.modelSettlement();
-        this.modelGrowth();
-        this.modelQueue();
+        this.modelConnections();
+        this.modelPopulation();
+        this.modelProduction();
         this.modelYields();
     }
     render() {
         this.renderSettlement();
         this.renderConnections();
-        this.renderGrowth();
-        this.renderQueue();
-        this.renderYields();
+        this.renderPopulation();
+        this.renderProduction();
+        // only show yields in autoplay or debug mode
+        // TODO: make this a config option
+        if (!this.player || this.isDebug) this.renderYields();
     }
     // data modeling methods
     modelSettlement() {
@@ -395,21 +356,64 @@ class bzCityTooltip {
         if (this.city.originalOwner != this.city.owner) {
             this.originalOwner = Players.get(this.city.originalOwner);
         }
-        // get religions (majority, urban, rural)
-        if (this.age.AgeType == "AGE_EXPLORATION") {
-            // but only during Exploration, when conversion is possible
-            // (plus custom names stop working in the Modern Age)
-            this.religions = getReligions(this.city);
-        }
-        // get connected settlements
-        this.connections = getConnections(this.city);
     }
-    modelGrowth() {
+    modelConnections() {
         if (!this.city) return;
-        const _growth = this.city.Growth;
-        // TODO
+        const ids = this.city.getConnectedCities();
+        if (!ids) return;
+        let settlements = [];
+        for (const id of ids) {
+            const conn = Cities.get(id);
+            // ignore stale connections
+            if (conn) settlements.push(conn);
+        }
+        settlements.sort((a, b) => bzNameSort(a.name, b.name));
+        let cities = [];
+        let towns = [];
+        let focused = [];
+        let growing = [];
+        for (const conn of settlements) {
+            if (conn.isTown) {
+                towns.push(conn);
+                if (conn.Growth?.growthType == GrowthTypes.EXPAND) {
+                    growing.push(conn);
+                } else {
+                    focused.push(conn);
+                }
+            } else {
+                cities.push(conn);
+            }
+        }
+        if (settlements.length == 0) return;
+        this.connections = { settlements, cities, towns, focused, growing, };
     }
-    modelQueue() {
+    modelPopulation() {
+        if (!this.city) return;
+        // population
+        const urban = this.city.urbanPopulation ?? 0;
+        const rural = this.city.ruralPopulation ?? 0;
+        const specialists = this.city.Workers.getNumWorkers(false) ?? 0;
+        const pop = { urban, rural, specialists, };
+        const net = this.city.Yields.getNetYield(YieldTypes.YIELD_FOOD);
+        // food
+        const current = this.city.Growth?.currentFood ?? -1;
+        const threshold = this.city.Growth?.getNextGrowthFoodThreshold().value ?? -1;
+        const turns = this.city.Growth?.turnsUntilGrowth ?? -1;
+        const food = { current, threshold, net, turns, };
+        // religion
+        const religion = { majority: null, urban: null, rural: null, };
+        if (this.city.Religion) {
+            const info = this.city.Religion;
+            religion.majority = getReligionInfo(info.majorityReligion);
+            religion.urban = getReligionInfo(info.urbanReligion);
+            religion.rural = getReligionInfo(info.ruralReligion);
+        }
+        console.warn(`TRIX POPS=${JSON.stringify(pop)}`);
+        console.warn(`TRIX FOOD=${JSON.stringify(food)}`);
+        console.warn(`TRIX RLGN=${JSON.stringify(religion)}`);
+        this.population = { pop, food, religion, };
+    }
+    modelProduction() {
         if (!this.city) return;
         const queue = [];
         for (const item of this.city.BuildQueue.getQueue()) {
@@ -426,7 +430,7 @@ class bzCityTooltip {
             const q = { name, kind, type, info, turnsLeft, progress, };
             queue.push(q);
         }
-        this.queue = queue.length ? queue : null;
+        if (queue.length) this.production = queue;
     }
     modelYields() {
         this.yields = [];
@@ -444,38 +448,18 @@ class bzCityTooltip {
             }
         });
     }
-    renderFlexDivider(center, lines, ...style) {
+    renderTitleDivider(text) {
+        this.renderTitleHeading(text, "mt-1\\.5");
+    }
+    renderTitleHeading(text, ...style) {
+        if (!text) return;
         const layout = document.createElement("div");
-        layout.classList.value = "flex-auto flex justify-between items-center -mx-6";
+        layout.classList.value = "text-secondary font-title-sm uppercase leading-snug text-center";
         if (style.length) layout.classList.add(...style);
-        this.container.appendChild(layout);
-        // left frame
-        const lineLeft = document.createElement("div");
-        lineLeft.classList.value = "flex-auto h-0\\.5 min-w-6 ml-1\\.5";
-        if (lines) lineLeft.style.setProperty("background-image", `linear-gradient(to left, ${BZ_COLOR.bronze}, ${BZ_COLOR.bronze}00)`);
-        layout.appendChild(lineLeft);
-        // content
-        layout.appendChild(center);
-        // right frame
-        const lineRight = document.createElement("div");
-        lineRight.classList.value = "flex-auto h-0\\.5 min-w-6 mr-1\\.5";
-        if (lines) lineRight.style.setProperty("background-image", `linear-gradient(to right, ${BZ_COLOR.bronze}, ${BZ_COLOR.bronze}00)`);
-        layout.appendChild(lineRight);
-    }
-    renderTitleDivider(text=BZ_DOT_DIVIDER) {
-        const layout = document.createElement("div");
-        layout.classList.value = "text-secondary font-title-sm uppercase mx-3 max-w-80";
-        layout.setAttribute("data-l10n-id", text);
-        this.renderFlexDivider(layout, false, "mt-1\\.5");
-    }
-    renderTitleHeading(title) {
-        if (!title) return;
-        const ttTitle = document.createElement("div");
-        ttTitle.classList.value = "text-secondary font-title-sm uppercase leading-snug text-center";
         const ttText = document.createElement("div");
-        ttText.setAttribute('data-l10n-id', title);
-        ttTitle.appendChild(ttText);
-        this.container.appendChild(ttTitle);
+        ttText.setAttribute('data-l10n-id', text);
+        layout.appendChild(ttText);
+        this.container.appendChild(layout);
     }
     renderSettlement() {
         if (!this.owner) return;
@@ -586,10 +570,10 @@ class bzCityTooltip {
     }
     renderConnections() {
         if (!this.connections) return;
-        const height = getFontSizeRem('xs') * 1.5;  // looser than leading
+        const height = getFontSizeRem('xs') * 1.5;
         this.renderTitleDivider("LOC_BZ_SETTLEMENT_CONNECTIONS");
         const tt = document.createElement("div");
-        tt.classList.value = "flex justify-center text-xs leading-tight";
+        tt.classList.value = "flex justify-center text-xs leading-normal";
         const rows = [];
         const connections = [
             ...this.connections.cities,
@@ -606,10 +590,8 @@ class bzCityTooltip {
             icon.classList.value = "relative bg-no-repeat";
             icon.style.width = `${height}rem`;
             const isize = conn.isTown ? height : 2/3*height;
-            const itop = (height - isize) / 2 - 1/9;
             icon.style.backgroundSize = `${isize}rem ${isize}rem`;
-            icon.style.backgroundPosition = "center top";
-            icon.style.top = `${itop}rem`;
+            icon.style.backgroundPosition = "center";
             icon.style.backgroundImage =
                 UI.getIconCSS(conn.isTown ? focus.icon : "YIELD_CITIES");
             row.appendChild(icon);
@@ -620,7 +602,7 @@ class bzCityTooltip {
             rows.push(row);
         }
         const columns = [];
-        const half = rows.length < 6 ? rows.length : Math.ceil(rows.length / 2);
+        const half = rows.length < 5 ? rows.length : Math.ceil(rows.length / 2);
         columns.push(rows.slice(0, half));
         if (half < rows.length) columns.push(rows.slice(half));
         for (const column of columns) {
@@ -631,28 +613,27 @@ class bzCityTooltip {
         }
         this.container.appendChild(tt);
     }
-    renderGrowth() {
-        if (!this.growth) return;
+    renderPopulation() {
+        if (!this.population) return;
         this.renderTitleDivider("LOC_UI_CITY_STATUS_POPULATION_TITLE");
         const _rural = "LOC_UI_CITY_STATUS_RURAL_POPULATION";
         const _urban = "LOC_UI_CITY_STATUS_URBAN_POPULATION";
         const _special = "LOC_UI_SPECIALISTS_SUBTITLE";
         // TODO
     }
-    renderQueue() {
-        if (!this.queue) return;
+    renderProduction() {
+        if (!this.production) return;
         // only allowed for local player, autoplay, or debug
-        const debug = UI.isDebugPlotInfoVisible();
-        if (this.player && this.owner.id != this.playerID && !debug) return;
+        if (this.player && this.owner.id != this.playerID && !this.isDebug) return;
         this.renderTitleDivider("LOC_UI_PRODUCTION_TITLE");
         const height = getFontSizeRem('xs') * 1.5;
         const tt = document.createElement("div");
-        tt.classList.value = "flex justify-center text-xs leading-normal -mt-1";
+        tt.classList.value = "flex justify-center text-xs leading-normal";
         const col = document.createElement("div");
         col.classList.value = "flex-col justify-start mx-1";
-        const tdigits = getDigits(this.queue.map(i => i.turnsLeft.toFixed()));
+        const tdigits = getDigits(this.production.map(i => i.turnsLeft.toFixed()));
         const twidth = `${getFigureWidth('xs', tdigits)}px`;
-        for (const [i, item] of this.queue.entries()) {
+        for (const [i, item] of this.production.entries()) {
             const row = document.createElement("div");
             row.classList.value = "flex-shrink flex justify-start";
             row.style.minHeight = `${height}rem`;
