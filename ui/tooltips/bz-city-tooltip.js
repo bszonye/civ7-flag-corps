@@ -299,11 +299,12 @@ function getSpecialists(loc, city) {
 function getTownFocus(city) {
     const ptype = city.Growth?.projectType ?? null;
     const info = ptype && GameInfo.Projects.lookup(ptype);
-    // TODO: what does this look like for cities (not towns)?
     const isGrowing = !info || city.Growth?.growthType == GrowthTypes.EXPAND;
-    const name = info?.Name ?? "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH";
+    const growth = "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH";
+    const name = info?.Name ?? growth;
+    const note = isGrowing && name != growth ? growth : null;
     const icon = isGrowing ? "PROJECT_GROWTH" : info.ProjectType;
-    return { isGrowing, name, icon, info, };
+    return { isGrowing, name, note, icon, info, };
 }
 function getVillageIcon(owner, age) {
     // get the minor civ type
@@ -703,12 +704,8 @@ class bzCityTooltip {
         // render headings and notes
         this.renderTitleHeading(this.settlementType);
         const notes = [];
-        if (this.townFocus?.isGrowing) {
-            notes.push("LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH");
-        }
-        if (!this.isFreshWater) {
-            notes.push("LOC_BZ_PLOTKEY_NO_FRESHWATER");
-        }
+        if (this.townFocus.note) notes.push(this.townFocus.note);
+        if (!this.isFreshWater) notes.push("LOC_BZ_PLOTKEY_NO_FRESHWATER");
         if (notes.length) {
             // note: extra div layer here to align bz-debug levels
             const tt = document.createElement("div");
