@@ -64,8 +64,6 @@ const BZ_DOT_DIVIDER = Locale.compose("LOC_PLOT_DIVIDER_DOT");
 // custom & adapted icons
 const BZ_ICON_SIZE = 12;
 const BZ_ICON_DISCOVERY = "url('blp:tech_cartography')";
-const BZ_ICON_EMPTY_SLOT = "BUILDING_OPEN";
-const BZ_ICON_FRAME = "url('hud_sub_circle_bk')";
 const BZ_ICON_TOTAL_RURAL = "CITY_RURAL";  // total yield (rural)
 const BZ_ICON_TOTAL_URBAN = "CITY_URBAN";  // total yield (urban)
 const BZ_ICON_VILLAGE_TYPES = {  // by city-state type and age
@@ -89,20 +87,6 @@ const BZ_ICON_VILLAGE_TYPES = {  // by city-state type and age
         "IMPROVEMENT_MONASTERY",
         "IMPROVEMENT_INSTITUTE",
     ],
-};
-const BZ_ICON_TYPES = {
-    "IMPROVEMENT_MEGALITH": ["CULTURAL"],
-    "IMPROVEMENT_STONE_HEAD": ["CULTURAL"],
-    "IMPROVEMENT_OPEN_AIR_MUSEUM": ["CULTURAL"],
-    "IMPROVEMENT_SOUQ": ["ECONOMIC"],
-    "IMPROVEMENT_TRADING_FACTORY": ["ECONOMIC"],
-    "IMPROVEMENT_ENTREPOT": ["ECONOMIC"],
-    "IMPROVEMENT_HILLFORT": ["MILITARISTIC"],
-    "IMPROVEMENT_KASBAH": ["MILITARISTIC"],
-    "IMPROVEMENT_SHORE_BATTERY": ["MILITARISTIC"],
-    "IMPROVEMENT_ZIGGURAT": ["SCIENTIFIC"],
-    "IMPROVEMENT_MONASTERY": ["SCIENTIFIC"],
-    "IMPROVEMENT_INSTITUTE": ["SCIENTIFIC"],
 };
 
 // color palette
@@ -180,78 +164,12 @@ const BZ_TYPE_COLOR = {
     "YIELD_PRODUCTION": BZ_COLOR.production,  // brown
     "YIELD_SCIENCE": BZ_COLOR.science,  // blue
 }
-const BZ_TYPE_SORT = {
-    [BZ_COLOR.bronze]: 0,  // neutral
-    [BZ_COLOR.food]: 1,  // green
-    [BZ_COLOR.production]: 2,  // brown
-    [BZ_COLOR.militaristic]: 3,  // red (city-state)
-    [BZ_COLOR.gold]: 4,  // yellow
-    [BZ_COLOR.economic]: 5,  // yellow (city-state)
-    [BZ_COLOR.science]: 6,  // blue
-    [BZ_COLOR.scientific]: 7,  // blue (city-state)
-    [BZ_COLOR.culture]: 8,  // violet
-    [BZ_COLOR.cultural]: 9,  // purple (city-state)
-    [BZ_COLOR.happiness]: 10,  // orange
-    [BZ_COLOR.diplomacy]: 11,  // teal
-    undefined: 12,
-}
-const bzTypeSort = (a, b) => {
-    const asort = BZ_TYPE_SORT[a?.substring(0, 7)] ?? BZ_TYPE_SORT[undefined];
-    const bsort = BZ_TYPE_SORT[b?.substring(0, 7)] ?? BZ_TYPE_SORT[undefined];
-    return asort - bsort;
-}
 const bzNameSort = (a, b) => {
     const aname = Locale.compose(a).toUpperCase();
     const bname = Locale.compose(b).toUpperCase();
     return aname.localeCompare(bname);
 }
 
-function baseYields(info) {
-    if (!info) return null;
-    const yieldTypes = GameInfo.Constructible_YieldChanges
-        .filter(yc => yc.ConstructibleType == info.ConstructibleType)
-        .map(yc => yc.YieldType);
-    const yieldSet = new Set(yieldTypes);
-    return [...yieldSet];
-}
-function bonusYields(info) {
-    if (!info) return null;
-    const findYieldChange = (at) => GameInfo.Adjacency_YieldChanges
-        .find(yc => yc.ID == at.YieldChangeId);
-    const yieldTypes = GameInfo.Constructible_Adjacencies
-        .filter(at => at.ConstructibleType == info.ConstructibleType)
-        .filter(at => !at.RequiresActivation)
-        .map(at => findYieldChange(at).YieldType);
-    const yieldSet = new Set(yieldTypes);
-    return [...yieldSet];
-}
-function constructibleColors(info) {
-    if (!info) return null;
-    const colorize = (list) => list.map(type => BZ_TYPE_COLOR[type]);
-    if (info.ConstructibleClass == "IMPROVEMENT") {
-        const types = BZ_ICON_TYPES[info.ConstructibleType];
-        return types && colorize(types).sort(bzTypeSort);
-    }
-    const base = colorize(baseYields(info)).sort(bzTypeSort);
-    const bonus = colorize(bonusYields(info)).sort(bzTypeSort);
-    const ageless = BZ_TYPE_COLOR[undefined];
-    if (info.ConstructibleClass == "WONDER") return [base.at(0) ?? ageless];
-    if (!base.length && !bonus.length) return null;  // walls
-    if (!base.length) return bonus;  // no current examples of this
-    // warehouse & infrastructure buildings: darken the base yield
-    if (!bonus.length) return [base.at(-1) + "c0", ageless];
-    // when possible, select different colors
-    const cbase = base.at(-1);  // favor influence & happiness yields
-    const cbonus = bonus.at(-1);
-    if (cbase == cbonus) {
-        if (bonus.length != 1) {
-            return [cbase, bonus.at(0)];  // Mosque, Manigramam, Casa Consistorial
-        } else if (base.length != 1) {
-            return [base.at(0), cbonus];  // no examples of this
-        }
-    }
-    return [cbase, cbonus];
-}
 function dotJoin(list, dot=BZ_DOT_DIVIDER) {
     // join text with dots after removing empty elements
     return list.filter(e => e).join("&nbsp;" + dot + " ");
@@ -418,12 +336,6 @@ function setBannerStyle(element, style=BZ_ALERT.danger, ...classes) {
     element.classList.add("bz-banner", ...classes);
     setStyle(element, style);
 }
-function setCapsuleStyle(element, style, ...classes) {
-    if (!style) return;
-    element.classList.add("px-2", "rounded-full");
-    if (classes.length) element.classList.add(...classes);
-    setStyle(element, style);
-}
 class bzCityTooltip {
     constructor() {
         // tooltip target
@@ -441,6 +353,8 @@ class bzCityTooltip {
         // point-of-view info
         this.observerID = GameContext.localObserverID;
         this.observer = Players.get(this.observerID);
+        this.playerID = GameContext.localPlayerID;
+        this.player = Players.get(this.playerID);
         // selection-dependent info
         this.obstacles = gatherMovementObstacles("UNIT_MOVEMENT_CLASS_FOOT");
         // world
@@ -524,6 +438,8 @@ class bzCityTooltip {
         // point-of-view info
         this.observerID = GameContext.localObserverID;
         this.observer = Players.get(this.observerID);
+        this.playerID = GameContext.localPlayerID;
+        this.player = Players.get(this.playerID);
         // selection-dependent info
         this.obstacles = gatherMovementObstacles("UNIT_MOVEMENT_CLASS_FOOT");
         // world
@@ -578,9 +494,8 @@ class bzCityTooltip {
     render() {
         this.renderSettlement();
         this.renderConnections();
-        // TODO: connections
-        // TODO: growth
-        // TODO: queue
+        this.renderGrowth();
+        this.renderQueue();
         this.renderYields();
     }
     // data modeling methods
@@ -602,10 +517,8 @@ class bzCityTooltip {
             this.settlementType = "LOC_BZ_SETTLEMENT_CITY_STATE";
         } else if (this.city.isTown) {
             const focus = getTownFocus(this.city);
-            this.townFocus = focus.info;
-            this.settlementType =
-                this.townFocus ? this.townFocus.Name :
-                "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH";
+            this.townFocus = focus;
+            this.settlementType = this.townFocus.name;
         } else if (this.city.isCapital) {
             this.settlementType = "LOC_CAPITAL_SELECT_PROMOTION_CAPITAL";
         } else {
@@ -811,59 +724,6 @@ class bzCityTooltip {
         // owner info
         this.renderOwnerInfo();
     }
-    renderConnections() {
-        if (!this.connections) return;
-        const tabWidth = `${getFigureWidth('xs', 2)}px`;
-        const height = getFontSizeRem('xs') * 1.5;  // looser than leading
-        this.renderTitleDivider("LOC_BZ_SETTLEMENT_CONNECTIONS");
-        const tt = document.createElement("div");
-        tt.classList.value = "flex justify-center text-xs leading-tight";
-        const rows = [];
-        const connections = [
-            ...this.connections.cities,
-            ...this.connections.growing,
-            ...this.connections.focused,
-        ];
-        for (const conn of connections) {
-            const row = document.createElement("div");
-            row.classList.value = "relative flex justify-start";
-            row.style.minHeight = `${height}rem`;
-            const focus = getTownFocus(conn);
-            // TODO: better city icon
-            const icon = document.createElement("div");
-            icon.classList.value = "relative bg-no-repeat";
-            icon.style.width = tabWidth;
-            const isize = conn.isTown ? height : 2/3*height;
-            const itop = (height - isize) / 2 - height/9;
-            icon.style.backgroundSize = `${isize}rem ${isize}rem`;
-            icon.style.backgroundPosition = "center top";
-            icon.style.top = `${itop}rem`;
-            icon.style.backgroundImage =
-                UI.getIconCSS(conn.isTown ? focus.icon : "YIELD_CITIES");
-            row.appendChild(icon);
-            const name = document.createElement("div");
-            name.classList.value = "max-w-36 mx-2 text-left";
-            name.setAttribute('data-l10n-id', conn.name);
-            row.appendChild(name);
-            const pop = document.createElement("div");
-            pop.classList.value = "text-right";
-            pop.style.width = tabWidth;
-            pop.setAttribute('data-l10n-id', conn.population.toFixed());
-            // row.appendChild(pop);
-            rows.push(row);
-        }
-        const columns = [];
-        const half = Math.ceil(rows.length / 2);
-        columns.push(rows.slice(0, half));
-        if (half < rows.length) columns.push(rows.slice(half));
-        for (const column of columns) {
-            const col = document.createElement("div");
-            col.classList.value = "flex-col justify-start mx-1";
-            for (const row of column) col.appendChild(row);
-            tt.appendChild(col);
-        }
-        this.container.appendChild(tt);
-    }
     renderOwnerInfo() {
         if (!this.owner || !Players.isAlive(this.owner.id)) return;
         const layout = document.createElement("div");
@@ -949,208 +809,64 @@ class bzCityTooltip {
         const type = owner.Diplomacy.getRelationshipLevelName(this.observerID);
         return { type, isEnemy: false };
     }
-    renderHexSection() {
-        switch (this.district?.type) {
-            case DistrictTypes.CITY_CENTER:
-            case DistrictTypes.URBAN:
-                this.renderUrbanSection();
-                break;
-            case DistrictTypes.RURAL:
-            case DistrictTypes.WILDERNESS:
-            default:
-                this.renderRuralSection();
-                break;
-            case DistrictTypes.WONDER:
-                this.renderWonderSection();
-                break;
+    renderConnections() {
+        if (!this.connections) return;
+        const height = getFontSizeRem('xs') * 1.5;  // looser than leading
+        this.renderTitleDivider("LOC_BZ_SETTLEMENT_CONNECTIONS");
+        const tt = document.createElement("div");
+        tt.classList.value = "flex justify-center text-xs leading-tight";
+        const rows = [];
+        const connections = [
+            ...this.connections.cities,
+            ...this.connections.growing,
+            ...this.connections.focused,
+        ];
+        for (const conn of connections) {
+            const row = document.createElement("div");
+            row.classList.value = "relative flex justify-start";
+            row.style.minHeight = `${height}rem`;
+            const focus = getTownFocus(conn);
+            // TODO: better city icon
+            const icon = document.createElement("div");
+            icon.classList.value = "relative bg-no-repeat";
+            icon.style.width = `${height}rem`;
+            const isize = conn.isTown ? height : 2/3*height;
+            const itop = (height - isize) / 2 - 1/9;
+            icon.style.backgroundSize = `${isize}rem ${isize}rem`;
+            icon.style.backgroundPosition = "center top";
+            icon.style.top = `${itop}rem`;
+            icon.style.backgroundImage =
+                UI.getIconCSS(conn.isTown ? focus.icon : "YIELD_CITIES");
+            row.appendChild(icon);
+            const name = document.createElement("div");
+            name.classList.value = "max-w-36 mx-1 text-left";
+            name.setAttribute('data-l10n-id', conn.name);
+            row.appendChild(name);
+            rows.push(row);
         }
+        const columns = [];
+        const half = rows.length < 4 ? rows.length : Math.ceil(rows.length / 2);
+        columns.push(rows.slice(0, half));
+        if (half < rows.length) columns.push(rows.slice(half));
+        for (const column of columns) {
+            const col = document.createElement("div");
+            col.classList.value = "flex-col justify-start mx-1";
+            for (const row of column) col.appendChild(row);
+            tt.appendChild(col);
+        }
+        this.container.appendChild(tt);
     }
-    renderUrbanSection() {
-        const quarterOK = this.buildings.reduce((a, b) =>
-            a + (b.isCurrent ? b.isLarge ? 2 : 1 : 0), 0);
-        let hexName = this.city.name;
-        let hexSubhead;
-        let hexRules;
-        // set name & description
-        if (quarterOK >= 2) {
-            const unique = this.buildings[0].uniqueTrait;
-            if (this.buildings.every(b => b.uniqueTrait = unique)) {
-                const uq = GameInfo.UniqueQuarters.find(e => e.TraitType == unique);
-                hexName = uq.Name;
-                // UQs don't have .Tooltip but most have parallel
-                // LOC_QUARTER_XXX_DESCRIPTION and
-                // LOC_QUARTER_XXX_TOOLTIP localization strings
-                const tooltip = uq.Description.replace("_DESCRIPTION", "_TOOLTIP");
-                hexRules = Locale.keyExists(tooltip) ? tooltip : uq.Description;
-            } else {
-                hexName = "LOC_DISTRICT_BZ_URBAN_QUARTER";
-            }
-        } else if (this.district.type == DistrictTypes.CITY_CENTER) {
-            const owner = Players.get(this.city.owner);
-            if (owner.isMinor) {
-                hexName = "LOC_DISTRICT_BZ_CITY_STATE";
-                const bonusType = Game.CityStates.getBonusType(owner.id);
-                const bonus = GameInfo.CityStateBonuses.find(b => b.$hash == bonusType);
-                if (bonus) {
-                    hexSubhead = bonus.Name;
-                    hexRules = bonus.Description;  // .Tooltip doesn't exist
-                }
-            } else if (this.city.isTown) {
-                // rename "City Center" to "Town Center" in towns
-                hexName = "LOC_DISTRICT_BZ_TOWN_CENTER";
-            }
-        } else if (this.buildings.length == 0) {
-            // urban tile with canceled production
-            hexName = "LOC_DISTRICT_BZ_URBAN_VACANT";
-        } else {
-            hexName = "LOC_DISTRICT_BZ_URBAN_DISTRICT";
-        }
-        // title bar
-        this.renderTitleDivider(Locale.compose(hexName));
-        this.renderDistrictDefense(this.location);
-        // panel interior
-        // show rules for city-states and unique quarters
-        if (hexRules) {
-            const title = "font-title uppercase text-xs leading-snug";
-            if (hexSubhead) this.renderRules([hexSubhead], null, title);
-            this.renderRules([hexRules], "w-60 mb-1");
-        }
-        // constructibles
-        this.renderConstructibles();
-        // report specialists
-        if (this.specialists) {
-            const text = Locale.compose("LOC_DISTRICT_BZ_SPECIALISTS",
-                this.specialists.workers, this.specialists.maximum);
-            this.renderRules([text], "w-full mt-1");
-        }
-        // bottom bar
-        this.renderUrbanDivider();
+    renderGrowth() {
+        this.renderTitleDivider("LOC_UI_CITY_STATUS_POPULATION_TITLE");
+        const _rural = "LOC_UI_CITY_STATUS_RURAL_POPULATION";
+        const _urban = "LOC_UI_CITY_STATUS_URBAN_POPULATION";
+        const _special = "LOC_UI_SPECIALISTS_SUBTITLE";
+        // TODO
     }
-    renderRuralSection() {
-        let hexName;
-        let hexSubtitle;
-        let hexRules = [];
-        let hexIcon = this.improvement?.icon;
-        let resourceIcon;
-        // set name & description
-        if (this.improvement?.districtName) {
-            // village or discovery
-            hexName = this.improvement?.districtName;
-        } else if (this.feature?.Tooltip) {
-            // natural wonder
-            hexName = this.feature.Name;
-            hexRules.push(this.feature.Tooltip);
-        } else if (this.resource) {
-            // resource
-            hexName = this.resource.Name;
-            const rctype = this.resource.ResourceClassType;
-            const rc = rctype && GameInfo.ResourceClasses.lookup(rctype);
-            if (rc?.Name) {
-                let rcname = rc.Name + "_BZ";
-                hexSubtitle = Locale.keyExists(rcname) ? rcname : rc.Name;
-            }
-            hexRules.push(this.resource.Tooltip);
-            if (this.isDistantLands &&
-                this.resource.ResourceClassType == "RESOURCECLASS_TREASURE") {
-                // also show treasure fleet rules
-                hexRules.push("LOC_CAN_CREATE_TREASURE_FLEET");
-            }
-            resourceIcon = this.resource.ResourceType;
-        } else if (this.district?.type) {
-            // rural
-            hexName = GameInfo.Districts.lookup(this.district?.type).Name;
-        } else if (this.city && this.freeConstructible) {
-            // claimed but undeveloped
-            hexName = "LOC_PLOT_TOOLTIP_UNIMPROVED";
-        }
-        // avoid useless section headings
-        if (!this.improvement && !this.totalYields) return;
-        // title bar
-        if (hexName) this.renderTitleDivider(Locale.compose(hexName));
-        // optional description
-        if (hexRules.length) {
-            const title = "text-2xs leading-none mb-1";
-            if (hexSubtitle) this.renderRules([hexSubtitle], null, title);
-            this.renderRules(hexRules, "w-60", "text-xs leading-snug mb-1");
-        }
-        // constructibles
-        this.renderConstructibles();
-        // bottom bar
-        if (hexIcon || resourceIcon) {
-            const style = [hexIcon == BZ_ICON_DISCOVERY ? "-my-2" : "-my-1"];
-            const icon = { isSquare: true, style };
-            if (hexIcon) {
-                icon.icon = hexIcon;
-                icon.overlay = resourceIcon;
-                icon.oversize = 8;
-                icon.isTurned = true;
-                icon.colors = BZ_ICON_TYPES[hexIcon]?.map(type => BZ_TYPE_COLOR[type]);
-            } else {
-                icon.icon = resourceIcon;
-            }
-            this.renderIconDivider(icon, "mt-2");
-        }
-    }
-    renderWonderSection() {
-        if (!this.wonder) return;
-        const info = this.wonder.info;
-        this.renderTitleDivider(Locale.compose(info.Name));
-        let rulesStyle = "w-60";
-        const notes = this.wonder.notes;
-        if (notes.length) {
-            const ttState = document.createElement("div");
-            ttState.classList.value = "text-2xs leading-none text-center";
-            ttState.innerHTML = dotJoinLocale(notes);
-            this.container.appendChild(ttState);
-            rulesStyle = "w-60 mt-1";
-        }
-        const rules = info.Description;
-        if (rules) this.renderRules([rules], rulesStyle);
-        const colors = constructibleColors(this.wonder.info);
-        const icon = {
-            icon: info.ConstructibleType,
-            isSquare: true,
-            ringsize: 11.5,
-            colors,
-            glow: this.wonder.isCurrent,
-            collapse: false,
-            style: ["-my-0\\.5"],
-        };
-        this.renderIconDivider(icon, "mt-1");
-    }
-    // lay out a column of constructibles and their construction notes
-    renderConstructibles() {
-        if (!this.constructibles.length && !this.freeConstructible) return;
-        const ttList = document.createElement("div");
-        ttList.classList.value = "text-xs leading-snug text-center";
-        for (const c of this.constructibles) {
-            const ttConstructible = document.createElement("div");
-            const ttName = document.createElement("div");
-            ttName.classList.value = "text-accent-2 font-title uppercase";
-            ttName.setAttribute("data-l10n-id", c.info.Name);
-            ttConstructible.appendChild(ttName);
-            const notes = dotJoinLocale(c.notes);
-            if (notes) {
-                const ttState = document.createElement("div");
-                ttState.classList.value = "text-2xs mb-0\\.5";
-                if (c.isDamaged) {
-                    setCapsuleStyle(ttState, BZ_ALERT.caution);
-                } else {
-                    ttState.classList.add("leading-none");
-                }
-                ttState.innerHTML = notes;
-                ttConstructible.appendChild(ttState);
-            }
-            ttList.appendChild(ttConstructible);
-        }
-        // expansion type for undeveloped & upgraded tiles
-        if (this.freeConstructible) {
-            const tt = document.createElement("div");
-            if (this.constructibles.length) tt.classList.value = "text-2xs mt-1";
-            tt.setAttribute("data-l10n-id", this.freeConstructible.text);
-            ttList.appendChild(tt);
-        }
-        this.container.appendChild(ttList);
+    renderQueue() {
+        // TODO: only allowed for local player + autoplay
+        this.renderTitleDivider("LOC_UI_PRODUCTION_TITLE");
+        // TODO
     }
     // lay out paragraphs of rules text
     renderRules(text, listStyle=null, itemStyle=null) {
@@ -1166,89 +882,6 @@ class bzCityTooltip {
             ttText.appendChild(ttItem);
         }
         this.container.appendChild(ttText);
-    }
-    renderDistrictDefense() {
-        if (!this.district) return;
-        // occupation status
-        if (this.district.owner != this.district.controllingPlayer) {
-            const conqueror = Players.get(this.district.controllingPlayer);
-            const conquerorName = this.getCivName(conqueror, true);
-            const conquerorText = Locale.compose("{1_Term} {2_Subject}", "LOC_PLOT_TOOLTIP_CONQUEROR", conquerorName);
-            const tt = document.createElement("div");
-            tt.classList.value = "text-xs leading-snug mb-1 py-1";
-            setBannerStyle(tt, BZ_ALERT.conqueror);
-            tt.innerHTML = conquerorText;
-            this.container.appendChild(tt);
-        }
-        // district health
-        const loc = this.location;
-        const info = [];
-        const ownerID = GameplayMap.getOwner(loc.x, loc.y);
-        const ownerDistricts = Players.Districts.get(ownerID);
-        if (!ownerDistricts) return;
-        // This type is unresolved, is it meant to be number instead?
-        const currentHealth = ownerDistricts.getDistrictHealth(loc);
-        const maxHealth = ownerDistricts.getDistrictMaxHealth(loc);
-        const isUnderSiege = ownerDistricts.getDistrictIsBesieged(loc);
-        if (currentHealth != maxHealth) {
-            // under siege or healing
-            const ttStatus = document.createElement("div");
-            ttStatus.setAttribute("data-l10n-id", isUnderSiege ?
-                "LOC_PLOT_TOOLTIP_UNDER_SIEGE" : "LOC_PLOT_TOOLTIP_HEALING_DISTRICT");
-            info.push(ttStatus);
-            // current health
-            const ttHealth = document.createElement("div");
-            setStyle(ttHealth, { color: BZ_COLOR.caution });
-            ttHealth.innerHTML = currentHealth + '/' + maxHealth;
-            info.push(ttHealth);
-        } else if (currentHealth) {
-            const ttHealth = document.createElement("div");
-            ttHealth.innerHTML = currentHealth + '/' + maxHealth;
-            info.push(ttHealth);
-        }
-        if (info.length) {
-            const ttDefense = document.createElement("div");
-            ttDefense.classList.value = "text-xs leading-snug text-center mb-1";
-            const style = currentHealth != maxHealth ? BZ_ALERT.danger : BZ_ALERT.note;
-            setBannerStyle(ttDefense, style, "py-1");
-            for (const row of info) ttDefense.appendChild(row);
-            this.container.appendChild(ttDefense);
-        }
-    }
-    renderIconDivider(info, ...style) {
-        // icon divider with optional overlay
-        if (info.icon.search(/blp:tech_/) != -1) {
-            // tech icons need a frame
-            info.size = 10;
-            info.underlay = BZ_ICON_FRAME;
-            info.undersize = 14;
-            info.undershift = { x: -0.25, y: 0.25 };
-            info.ringsize = 12;
-        }
-        const layout = document.createElement("div");
-        layout.classList.value = "flex relative mx-2";
-        this.renderIcon(layout, info);
-        this.renderFlexDivider(layout, false, ...style);
-    }
-    renderUrbanDivider() {
-        // there are at least two building slots (unless one is large)
-        const slots = [...this.buildings];
-        if (slots.length < 2 && !this.buildings[0]?.isLarge)
-            slots.push(...[null, null].slice(this.buildings.length));
-        // render the icons
-        const layout = document.createElement("div");
-        layout.classList.value = "flex relative mx-2";
-        for (const slot of slots) {
-            // if the building has more than one yield type, like the
-            // Palace, use one type for the ring and one for the glow
-            const icon = slot?.info.ConstructibleType ?? BZ_ICON_EMPTY_SLOT;
-            const colors = constructibleColors(slot?.info);
-            const info = {
-                icon, colors, glow: slot?.isCurrent, collapse: false, style: ["-my-1"],
-            };
-            this.renderIcon(layout, info);
-        }
-        this.renderFlexDivider(layout, false, "mt-1");
     }
     renderYields() {
         if (!this.totalYields) return;  // no yields to show
