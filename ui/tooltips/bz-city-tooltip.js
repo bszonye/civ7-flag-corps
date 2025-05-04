@@ -179,7 +179,8 @@ function getFontSizeRem(size) {
     return GlobalScaling.pixelsToRem(fpx);
 }
 function getFontSizeScalePx(size) {
-    return getFontSizeRem(size) * GlobalScaling.currentScalePx;
+    if (typeof size === "string") size = getFontSizeRem(size);
+    return size * GlobalScaling.currentScalePx;
 }
 function getReligionInfo(id) {
     // find a matching player religion, to get custom names
@@ -284,7 +285,6 @@ class bzCityTooltip {
         if (target == this.target && subtarget == this.subtarget &&
             !this.updateQueued) return false;
         // set target, location, and city
-        console.warn(`TRIX SUBTARGET=${subtarget}`);
         this.target = target;
         this.subtarget = subtarget;
         this.location = this.target?.location ?? null;
@@ -773,30 +773,33 @@ class bzCityTooltip {
         // TODO: use a fixed size instead of "xs"
         // TODO: no bold numbers
         const digits = getDigits(this.yields.map(y => y.value.toFixed()), 2.5);
-        const width = `${getFigureWidth('xs', digits)}px`;
+        const size = 0.8888888889;
+        const fontSize = `${size}rem`;
+        const width = `${getFigureWidth(size, digits)}px`;
         const tt = document.createElement('div');
         tt.classList.value = "flex flex-wrap justify-center w-full mt-2";
         // one column per yield type
         for (const column of this.yields) {
-            tt.appendChild(this.yieldColumn(column, width));
+            tt.appendChild(this.yieldColumn(column, fontSize, width));
         }
         this.container.appendChild(tt);
     }
-    yieldColumn(col, width) {
+    yieldColumn(col, fontSize, width) {
         const tt = document.createElement("div");
-        tt.classList.value = "flex-col justify-start";
+        tt.classList.value = "flex-col justify-start font-body";
         const ariaLabel = `${Locale.toNumber(col.value)} ${Locale.compose(col.name)}`;
         tt.ariaLabel = ariaLabel;
-        const icon = document.createElement("div");
-        icon.classList.value = "size-6 bg-contain bg-no-repeat shadow self-center";
-        icon.style.backgroundImage = UI.getIconCSS(col.type, "YIELD");
+        const size = '1.3333333333rem';
+        const margin = "mx-0\\.5";
+        const iconCSS = UI.getIconCSS(col.type, "YIELD");
+        const icon = docIcon(iconCSS, size, size, "self-center", "shadow", margin);
         tt.appendChild(icon);
-        const yieldValue = document.createElement("div");
-        yieldValue.classList.value =
-            "w-auto text-center font-body-xs font-bold leading-6 mx-0\\.5";
-        yieldValue.style.width = width;
-        yieldValue.textContent = col.value.toFixed(0);
-        tt.appendChild(yieldValue);
+        const value = docText(col.value.toFixed(), "self-center text-center");
+        value.classList.add(margin);
+        value.style.fontSize = fontSize;
+        value.style.leading = size;
+        value.style.width = width;
+        tt.appendChild(value);
         return tt;
     }
     setWarningCursor() {
