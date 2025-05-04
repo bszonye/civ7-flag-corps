@@ -301,6 +301,9 @@ const BZ_HEAD_STYLE = [
     padding: 0;
     box-shadow: none;
 }
+.bz-flags city-banner.city-banner--city-other .city-banner__queue-container {
+    top: 1.2777777778rem;
+}
 .bz-flags .city-banner .dan-tooltip {
     filter: drop-shadow(0 0.0555555556rem 0.1111111111rem #0006);
 }
@@ -320,6 +323,9 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-left {
     filter: brightness(2.00) fxs-color-tint(${BZ_COLOR.production});
+}
+.bz-flags .city-banner.city-banner--city-other .queue-production {
+    display: flex;
 }
 `,  //       4 .TURN flex flex-col justify-end align-center self-center w-8 mt-0\.5 pointer-events-none
     //         5 .TURN-NUMBER font-base-xs text-white text-center w-full bg-cover bg-center bg-no-repeat
@@ -593,6 +599,7 @@ export class bzCityBanner {
         this.location = this.component.location;
         this.city = this.component.city;
         this.owner = Players.get(this.componentID.owner);
+        this.player = Players.get(GameContext.localObserverID);
         this.component.realizePlayerColors();
     }
     realizeIcon() {
@@ -691,9 +698,16 @@ export class bzCityBanner {
         bzCityTooltip.queueUpdate(this);
         const { productionQueue, } = this.elements;
         productionQueue.removeAttribute('data-tooltip-content');
+        // in single-player mode, hide other players' queues
+        if (this.player && this.owner) {
+            // check the actual player ID, not the observer
+            const playerID = GameContext.localPlayerID;
+            const isOwner = playerID == -1 || playerID == this.owner.id;
+            const isDebug = UI.isDebugPlotInfoVisible();
+            if (!isOwner && !isDebug) productionQueue.style.display = 'none';
+        }
     }
     setRelationshipInfo() {
-        this.player = Players.get(GameContext.localObserverID);
         if (this.owner?.Influence?.hasSuzerain) {
             this.suzerain = Players.get(this.owner.Influence.getSuzerain());
         }
