@@ -19,17 +19,14 @@ const BZ_HEAD_STYLE = [
     background-image: linear-gradient(to bottom, rgba(35, 37, 43, 0.875) 0%, rgba(18, 21, 31, 0.875) 100%);
 }
 .tooltip.bz-city-tooltip .tooltip__content {
-    padding-top: 0.5555555556rem;
-    padding-bottom: 0.5555555556rem;
-    padding-left: 0.8333333333rem;
-    padding-right: 0.8333333333rem;
+    padding: 0.5555555556rem;
 }
 `,  // full-width banners: enemies and warnings
 `
 .bz-city-tooltip .bz-banner {
     text-align: center;
-    margin-left: -0.8333333333rem;
-    margin-right: -0.8333333333rem;
+    margin-left: -0.5555555556rem;
+    margin-right: -0.5555555556rem;
 }
 `,
 // centers blocks of rules text with max-w-60 equivalent
@@ -137,10 +134,12 @@ function getConstructibles(loc, cclass) {
 function getDigits(list, min=0) {
     return Math.max(min, ...list.map(n => n.length));
 }
-
 function getFigureWidth(size, digits=1) {
     const nwidth = 0.6 * getFontSizeScalePx(size);
     return Math.round(nwidth * digits);
+}
+function getFontHeight(size, leading) {
+    return Math.round(leading * getFontSizeScalePx(size));
 }
 function getFontSizeBasePx(size) {
     return GlobalScaling.getFontSizePx(size);
@@ -570,7 +569,7 @@ class bzCityTooltip {
     }
     renderConnections() {
         if (!this.connections) return;
-        const height = getFontSizeRem('xs') * 1.5;
+        const height = getFontHeight('xs', 1.5);
         this.renderTitleDivider("LOC_BZ_SETTLEMENT_CONNECTIONS");
         const tt = document.createElement("div");
         tt.classList.value = "flex justify-center text-xs leading-normal";
@@ -583,14 +582,14 @@ class bzCityTooltip {
         for (const conn of connections) {
             const row = document.createElement("div");
             row.classList.value = "relative flex justify-start";
-            row.style.minHeight = `${height}rem`;
+            row.style.minHeight = `${height}px`;
             const focus = getTownFocus(conn);
-            // TODO: better city icon
             const icon = document.createElement("div");
             icon.classList.value = "relative bg-no-repeat";
-            icon.style.width = `${height}rem`;
-            const isize = conn.isTown ? height : 2/3*height;
-            icon.style.backgroundSize = `${isize}rem ${isize}rem`;
+            icon.style.width = `${height}px`;
+            console.warn(`TRIX W=${height}`);
+            const isize = conn.isTown ? height : Math.round(2/3*height);
+            icon.style.backgroundSize = `${isize}px ${isize}px`;
             icon.style.backgroundPosition = "center";
             icon.style.backgroundImage =
                 UI.getIconCSS(conn.isTown ? focus.icon : "YIELD_CITIES");
@@ -626,41 +625,50 @@ class bzCityTooltip {
         // only allowed for local player, autoplay, or debug
         if (this.player && this.owner.id != this.playerID && !this.isDebug) return;
         this.renderTitleDivider("LOC_UI_PRODUCTION_TITLE");
-        const height = getFontSizeRem('xs') * 1.5;
-        const tt = document.createElement("div");
-        tt.classList.value = "flex justify-center text-xs leading-normal";
+        const isTable = this.production.length != 1;
+        const height = getFontHeight('xs', 1.5);
         const col = document.createElement("div");
-        col.classList.value = "flex-col justify-start mx-1";
+        col.classList.value = "flex-col justify-start text-xs leading-normal";
         const tdigits = getDigits(this.production.map(i => i.turnsLeft.toFixed()));
         const twidth = `${getFigureWidth('xs', tdigits)}px`;
         for (const [i, item] of this.production.entries()) {
             const row = document.createElement("div");
-            row.classList.value = "flex-shrink flex justify-start";
-            row.style.minHeight = `${height}rem`;
-            row.classList.add("pl-2", "pr-0\\.5", "mr-1");
-            if (i % 2) {
+            row.classList.value = "flex-shrink flex justify-start px-1";
+            row.style.minHeight = `${height}px`;
+            if (isTable && !(i % 2)) {
                 row.classList.add("rounded-xl");
-                row.style.backgroundColor = `${BZ_COLOR.production}66`;
+                row.style.backgroundColor = `${BZ_COLOR.production}80`;
             }
             const name = document.createElement("div");
             name.classList.value = "text-left flex-auto";
+            if (isTable) name.classList.add("mx-1");
             name.setAttribute('data-l10n-id', item.name);
             row.appendChild(name);
             const turns = document.createElement("div");
-            turns.classList.value = "text-right ml-2";
+            turns.classList.value = "text-right mx-1";
             turns.style.width = twidth;
             turns.textContent = item.turnsLeft.toFixed();
             row.appendChild(turns);
             const timer = document.createElement("div");
-            timer.classList.value = "relative bg-contain bg-no-repeat -mr-0\\.5";
+            timer.classList.value = "relative bg-contain bg-no-repeat -mx-1";
             timer.style.backgroundImage = "url('hud_turn-timer')";
-            timer.style.height = `${height}rem`;
-            timer.style.width = `${height}rem`;
+            timer.style.height = `${height}px`;
+            timer.style.width = `${height}px`;
             row.appendChild(timer);
             col.appendChild(row);
         }
-        tt.append(col);
-        this.container.appendChild(tt);
+        // use the full tooltip width for multi-row tables
+        if (isTable) {
+            // at the top level, the table expands to full width
+            this.container.appendChild(col);
+        } else {
+            // an extra flex wrapper inhibits expansion
+            // TODO: why does this work?
+            const tt = document.createElement("div");
+            tt.classList.value = "flex justify-center";
+            tt.append(col);
+            this.container.appendChild(tt);
+        }
     }
     // lay out paragraphs of rules text
     renderRules(text, listStyle=null, itemStyle=null) {

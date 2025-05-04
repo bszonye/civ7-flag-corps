@@ -319,7 +319,7 @@ const BZ_HEAD_STYLE = [
 }
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-left {
-    filter: brightness(1.75) fxs-color-tint(${BZ_COLOR.production});
+    filter: brightness(2.00) fxs-color-tint(${BZ_COLOR.production});
 }
 `,  //       4 .TURN flex flex-col justify-end align-center self-center w-8 mt-0\.5 pointer-events-none
     //         5 .TURN-NUMBER font-base-xs text-white text-center w-full bg-cover bg-center bg-no-repeat
