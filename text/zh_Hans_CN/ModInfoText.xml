@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <LocalizedText>
+        <Row Tag="LOC_MOD_BZ_FLAG_CORPS_NAME" Language="zh_Hans_CN">
+            <Text>Flag Corps</Text>
+        </Row>
+        <Row Tag="LOC_MOD_BZ_FLAG_CORPS_DESCRIPTION" Language="zh_Hans_CN">
+            <Text>更好的横幅和旗帜</Text>
+        </Row>
+    </LocalizedText>
+</Database>
