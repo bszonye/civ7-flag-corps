@@ -301,7 +301,8 @@ const BZ_HEAD_STYLE = [
     padding: 0;
     box-shadow: none;
 }
-.bz-flags city-banner.city-banner--city-other .city-banner__queue-container {
+.bz-flags .city-banner.city-banner--city-other .city-banner__queue-container {
+    /* TODO: why is this 1.1111111111rem too high? */
     top: 1.2777777778rem;
 }
 .bz-flags .city-banner .dan-tooltip {
