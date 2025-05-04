@@ -477,7 +477,7 @@ class bzCityTooltip {
     renderTitleHeading(text, ...style) {
         if (!text) return;
         const layout = document.createElement("div");
-        layout.classList.value = "text-secondary font-title-sm uppercase leading-snug text-center";
+        layout.classList.value = "text-secondary font-title-sm uppercase leading-none text-center mb-1";
         if (style.length) layout.classList.add(...style);
         const ttText = document.createElement("div");
         ttText.setAttribute('data-l10n-id', text);
