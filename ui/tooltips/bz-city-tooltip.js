@@ -666,10 +666,10 @@ class bzCityTooltip {
                 "self-center flex text-xs leading-normal px-1 rounded-2xl mb-1";
             row.style.backgroundColor = `${BZ_COLOR.food}55`;
             row.style.minHeight = size;
-            row.appendChild(docIcon("YIELD_FOOD", size, small, "-mx-0\\.5"));
+            row.appendChild(docIcon("YIELD_FOOD", size, small, "-mx-1"));
             const current = Locale.compose("LOC_BZ_GROUPED_DIGITS", food.current);
             const threshold = Locale.compose("LOC_BZ_GROUPED_DIGITS", food.threshold);
-            const progress = `${current}/${threshold}`;
+            const progress = `${current} / ${threshold}`;
             row.appendChild(docText(progress, "text-left flex-auto mx-1"));
             row.appendChild(docText('•'));
             row.appendChild(docText(food.turns.toFixed(), "text-right mx-1"));
