@@ -5,6 +5,12 @@
 // - localization
 import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 
+var bzTarget;
+(function (bzTarget) {
+        bzTarget[bzTarget["GROWTH"] = '.city-banner__population-container'] = "GROWTH";
+        bzTarget[bzTarget["PRODUCTION"] = '.city-banner__queue-container'] = "PRODUCTION";
+})(bzTarget || (bzTarget = {}));
+
 // additional CSS definitions
 const BZ_HEAD_STYLE = [
 `
@@ -225,6 +231,7 @@ class bzCityTooltip {
         // tooltip target
         this.updateQueued = false;
         this.target = null;
+        this.subtarget = null;
         this.location = null;
         this.city = null;
         // coordinates
@@ -268,17 +275,18 @@ class bzCityTooltip {
     }
     getHTML() { return this.tooltip; }
     isUpdateNeeded(target) {
-        // ignore elements with their own tooltips, if set
-        const growth = target?.closest('.city-banner__population-container');
-        if (growth?.getAttribute('data-tooltip-content')) target = null;
-        const queue = target?.closest('.city-banner__queue-container');
-        if (queue?.getAttribute('data-tooltip-content')) target = null;
-        // get target component, if possible
-        const banner = target?.closest('city-banner');
+        // first check for a subtarget
+        const sub = [ bzTarget.GROWTH, bzTarget.PRODUCTION ];
+        const subtarget = sub.find(t => target.closest(t)) ?? null;
+        // get main target, if possible
+        const banner = target.closest('city-banner');
         target = banner?.bzComponent ?? null;
-        if (target == this.target && !this.updateQueued) return false;
+        if (target == this.target && subtarget == this.subtarget &&
+            !this.updateQueued) return false;
         // set target, location, and city
+        console.warn(`TRIX SUBTARGET=${subtarget}`);
         this.target = target;
+        this.subtarget = subtarget;
         this.location = this.target?.location ?? null;
         this.city = this.target?.city ?? null;
         this.updateQueued = false;
@@ -332,6 +340,8 @@ class bzCityTooltip {
         this.modelYields();
     }
     render() {
+        if (this.subtarget == bzTarget.GROWTH) return this.renderGrowth();
+        if (this.subtarget == bzTarget.PRODUCTION) return this.renderProduction();
         this.renderSettlement();
         this.renderConnections();
         this.renderGrowth();
@@ -461,8 +471,8 @@ class bzCityTooltip {
             }
         });
     }
-    renderTitleDivider(text) {
-        this.renderTitleHeading(text, "mt-1\\.5");
+    renderTitleDivider(text, head) {
+        this.renderTitleHeading(text, head ? undefined : "mt-1\\.5");
     }
     renderTitleHeading(text, ...style) {
         if (!text) return;
@@ -630,7 +640,7 @@ class bzCityTooltip {
         // LOC_UI_CITY_GROWTH_TITLE = City Growth
         // LOC_UI_TOWN_GROWTH_TITLE = Town Growth
         // LOC_UI_CITY_STATUS_POPULATION_TITLE = Population
-        this.renderTitleDivider("LOC_UI_FOOD_CHOOSER_TITLE");
+        this.renderTitleDivider("LOC_UI_FOOD_CHOOSER_TITLE", this.subtarget);
         const { food, pop, religion, } = this.growth;
         const layout = [
             {
@@ -657,7 +667,7 @@ class bzCityTooltip {
         if (food.isGrowing) {
             const row = document.createElement("div");
             row.classList.value =
-                "self-center flex text-xs leading-normal px-1 rounded-2xl";
+                "self-center flex text-xs leading-normal px-1 rounded-2xl mb-1";
             row.style.backgroundColor = `${BZ_COLOR.food}55`;
             row.style.minHeight = size;
             row.appendChild(docIcon("YIELD_FOOD", size, small, "-mx-0\\.5"));
@@ -688,7 +698,8 @@ class bzCityTooltip {
         if (!this.production) return;
         // only allowed for local player, autoplay, or debug
         if (this.player && this.owner.id != this.playerID && !this.isDebug) return;
-        this.renderTitleDivider("LOC_UI_PRODUCTION_TITLE");
+        this.renderTitleDivider("LOC_UI_PRODUCTION_TITLE", this.subtarget);
+        const single = this.production.length == 1;
         const height = getFontHeight('xs', 1.5);
         const size = `${height}px`;
         const digits = getDigits(this.production.map(i => i.turnsLeft.toFixed()));
@@ -703,7 +714,7 @@ class bzCityTooltip {
             name.classList.add("mx-1");  // wider spacing
             name.setAttribute('data-l10n-id', item.name);
             row.appendChild(name);
-            if (this.production.length == 1) row.appendChild(docText('•'));
+            if (single) row.appendChild(docText('•'));
             const turns = document.createElement("div");
             turns.classList.value = "text-right mx-1";
             turns.style.width = dwidth;
@@ -712,23 +723,23 @@ class bzCityTooltip {
             row.appendChild(docTimer(size, size));
             rows.push(row);
         }
-        this.renderTable(rows, `${BZ_COLOR.production}55`);
+        const color = single ? null : `${BZ_COLOR.production}55`;
+        this.renderTable(rows, color, single);
     }
     // display formatted rows as a stripy table
-    renderTable(rows, color, collapse=true) {
-        if (rows.length != 1) collapse=false;
+    renderTable(rows, color, narrow=false) {
         const table = document.createElement("div");
         table.classList.value = "flex-table justify-start text-xs leading-normal";
         // collect rows into the table
         for (const [i, row] of rows.entries()) {
             // add stripes to multi-row tables
-            if (!(i % 2)) {
+            if (color && !(i % 2)) {
                 row.classList.add("rounded-2xl");
                 row.style.backgroundColor = color;
             }
             table.appendChild(row);
         }
-        if (collapse) {
+        if (narrow) {
             // optionally prevent single-row tables from
             // expanding to the full width of the tooltip
             // TODO: why does this work?
