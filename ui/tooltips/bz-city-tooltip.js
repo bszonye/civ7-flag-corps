@@ -8,6 +8,8 @@ var bzTarget;
         bzTarget[bzTarget["PRODUCTION"] = '.city-banner__queue-container'] = "PRODUCTION";
 })(bzTarget || (bzTarget = {}));
 
+const BZ_PADDING = '0.5555555556rem';
+
 // additional CSS definitions
 const BZ_HEAD_STYLE = [
 `
@@ -21,7 +23,7 @@ const BZ_HEAD_STYLE = [
     background-image: linear-gradient(to bottom, rgba(35, 37, 43, 0.875) 0%, rgba(18, 21, 31, 0.875) 100%);
 }
 .tooltip.bz-city-tooltip .tooltip__content {
-    padding: 0.5555555556rem;
+    padding: ${BZ_PADDING};
 }
 .bz-city-tooltip .shadow {
     filter: drop-shadow(0 0.0555555556rem 0.0555555556rem black);
@@ -30,8 +32,10 @@ const BZ_HEAD_STYLE = [
 `
 .bz-city-tooltip .bz-banner {
     text-align: center;
-    margin-left: -0.5555555556rem;
-    margin-right: -0.5555555556rem;
+    margin-left: -${BZ_PADDING};
+    margin-right: -${BZ_PADDING};
+    padding-left: ${BZ_PADDING};
+    padding-right: ${BZ_PADDING};
 }
 `,
 // centers blocks of rules text
