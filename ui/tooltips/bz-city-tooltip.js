@@ -1,8 +1,5 @@
-// TODO: tooltips (mostly from Map Trix)
-// - compact progress tooltips
-// - suzerain?
-// - population growth
-// - localization
+// TODO: config option to show yields
+// TODO: localization
 import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 
 var bzTarget;
@@ -347,7 +344,6 @@ class bzCityTooltip {
         this.renderGrowth();
         this.renderProduction();
         // only show yields in autoplay or debug mode
-        // TODO: make this a config option
         if (!this.player || this.isDebug) this.renderYields();
     }
     // data modeling methods
@@ -490,7 +486,7 @@ class bzCityTooltip {
         this.renderTitleHeading(this.settlementType);
         const notes = [];
         if (this.townFocus?.note) notes.push(this.townFocus.note);
-        if (!this.isFreshWater) notes.push("LOC_BZ_PLOTKEY_NO_FRESHWATER");
+        if (!this.isFreshWater) notes.push("LOC_BZ_SETTLEMENT_NO_FRESHWATER");
         if (notes.length) {
             // note: extra div layer here to align bz-debug levels
             const tt = document.createElement("div");
@@ -770,8 +766,6 @@ class bzCityTooltip {
     renderYields() {
         if (!this.totalYields) return;  // no yields to show
         // set column width based on number of digits (at least three)
-        // TODO: use a fixed size instead of "xs"
-        // TODO: no bold numbers
         const digits = getDigits(this.yields.map(y => y.value.toFixed()), 2.5);
         const size = 0.8888888889;
         const fontSize = `${size}rem`;
