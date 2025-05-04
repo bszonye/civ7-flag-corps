@@ -1,8 +1,7 @@
 // TODO: tooltips (mostly from Map Trix)
-// - religion
+// - compact progress tooltips
 // - suzerain?
 // - population growth
-// - build queue (all civs during autoplay)
 // - localization
 import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 
@@ -128,8 +127,15 @@ function docIcon(image, size, resize, ...style) {
         image.startsWith("url(") ? image : UI.getIconCSS(image);
     return icon;
 }
-function docTimer(size, resize) {
-    return docIcon(BZ_TIMER_ICON, size, resize, "-mx-1");
+function docText(text, style) {
+    const e = document.createElement("div");
+    if (style) e.classList.value = style;
+    e.setAttribute('data-l10n-id', text);
+    return e;
+}
+function docTimer(size, resize, ...style) {
+    if (!style.length) style = ["-mx-1"];
+    return docIcon(BZ_TIMER_ICON, size, resize, ...style);
 }
 function dotJoin(list, dot=BZ_DOT_DIVIDER) {
     // join text with dots after removing empty elements
@@ -651,16 +657,16 @@ class bzCityTooltip {
         if (food.isGrowing) {
             const row = document.createElement("div");
             row.classList.value =
-                "self-center flex justify-start text-xs leading-normal mb-1\\.5";
+                "self-center flex text-xs leading-normal px-1 rounded-2xl";
+            row.style.backgroundColor = `${BZ_COLOR.food}55`;
             row.style.minHeight = size;
-            row.appendChild(docIcon("YIELD_FOOD", size, small, "-mx-1"));
+            row.appendChild(docIcon("YIELD_FOOD", size, small, "-mx-0\\.5"));
             const current = Locale.compose("LOC_BZ_GROUPED_DIGITS", food.current);
             const threshold = Locale.compose("LOC_BZ_GROUPED_DIGITS", food.threshold);
-            const turns = food.turns.toFixed();
-            const progress = document.createElement("div");
-            progress.classList.value = "text-left flex-auto mx-1";
-            progress.textContent = `${current}/${threshold} • ${turns}`;
-            row.appendChild(progress);
+            const progress = `${current}/${threshold}`;
+            row.appendChild(docText(progress, "text-left flex-auto mx-1"));
+            row.appendChild(docText('•'));
+            row.appendChild(docText(food.turns.toFixed(), "text-right mx-1"));
             row.appendChild(docTimer(size, size));
             this.container.appendChild(row);
         }
@@ -670,18 +676,13 @@ class bzCityTooltip {
             row.classList.value = "flex justify-start px-1";
             row.style.minHeight = size;
             row.appendChild(docIcon(item.icon, size, small, "-mx-1"));
-            const label = document.createElement("div");
-            label.classList.value = "text-left flex-auto mx-1";
-            label.setAttribute('data-l10n-id', item.label);
-            row.appendChild(label);
-            const value = document.createElement("div");
-            value.classList.value = "text-right mx-1";
+            row.appendChild(docText(item.label, "text-left flex-auto mx-2"));
+            const value = docText(item.value.toFixed(), "text-right");
             value.style.width = dwidth;
-            value.textContent = item.value.toFixed();
             row.appendChild(value);
             rows.push(row);
         }
-        this.renderTable(rows, `${BZ_COLOR.food}55`);
+        this.renderTable(rows);
     }
     renderProduction() {
         if (!this.production) return;
@@ -702,6 +703,7 @@ class bzCityTooltip {
             name.classList.add("mx-1");  // wider spacing
             name.setAttribute('data-l10n-id', item.name);
             row.appendChild(name);
+            if (this.production.length == 1) row.appendChild(docText('•'));
             const turns = document.createElement("div");
             turns.classList.value = "text-right mx-1";
             turns.style.width = dwidth;
@@ -720,7 +722,7 @@ class bzCityTooltip {
         // collect rows into the table
         for (const [i, row] of rows.entries()) {
             // add stripes to multi-row tables
-            if (!collapse && !(i % 2)) {
+            if (!(i % 2)) {
                 row.classList.add("rounded-2xl");
                 row.style.backgroundColor = color;
             }

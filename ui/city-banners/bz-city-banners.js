@@ -695,11 +695,13 @@ export class bzCityBanner {
     }
     afterSetFood(_turnsLeft, _current, _nextTarget) {
         bzCityTooltip.queueUpdate(this);
-        // const { growthQueueContainer, } = this.elements;
-        // growthQueueContainer.removeAttribute('data-tooltip-content');
+        // hide default tooltip
+        const { growthQueueContainer, } = this.elements;
+        growthQueueContainer.removeAttribute('data-tooltip-content');
     }
     afterSetProduction(_data) {
         bzCityTooltip.queueUpdate(this);
+        // hide default tooltip
         const { productionQueue, } = this.elements;
         productionQueue.removeAttribute('data-tooltip-content');
         // in single-player mode, hide other players' queues
