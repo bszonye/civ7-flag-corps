@@ -31,12 +31,13 @@ known interactions:
   installed, Flag Corps manages unit flags.
 
 ## localization
-the mod is language-independent during play.
-only the menu screens (Mods and Options) contain localized text.
-
 supported languages:
 
+- German (translated by Chr1Z93)
+- Italian (translated by leonardfactory)
 - Korean (translated by Hotsolidinfill)
 - Russian (translated by Webrok)
+- Simplified Chinese (translated by v480615)
+- Traditional Chinese (translated by v480615)
 
-thank you both for your help!
+thank you all for your help!

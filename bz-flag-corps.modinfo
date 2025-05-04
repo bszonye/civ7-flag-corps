@@ -51,15 +51,23 @@
                 </UIScripts>
                 <UpdateText>
                     <Item>text/en_us/InGameText.xml</Item>
+                    <Item locale="de_DE">text/de_DE/InGameText.xml</Item>
+                    <Item locale="it_IT">text/it_IT/InGameText.xml</Item>
                     <Item locale="ko_KR">text/ko_KR/InGameText.xml</Item>
                     <Item locale="ru_RU">text/ru_RU/InGameText.xml</Item>
+                    <Item locale="zh_Hans_CN">text/zh_Hans_CN/InGameText.xml</Item>
+                    <Item locale="zh_Hant_HK">text/zh_Hant_HK/InGameText.xml</Item>
                 </UpdateText>
             </Actions>
         </ActionGroup>
     </ActionGroups>
     <LocalizedText>
         <File>text/en_us/ModInfoText.xml</File>
+        <File>text/de_DE/ModInfoText.xml</File>
+        <File>text/it_IT/ModInfoText.xml</File>
         <File>text/ko_KR/ModInfoText.xml</File>
         <File>text/ru_RU/ModInfoText.xml</File>
+        <File>text/zh_Hans_CN/ModInfoText.xml</File>
+        <File>text/zh_Hant_HK/ModInfoText.xml</File>
     </LocalizedText>
 </Mod>
