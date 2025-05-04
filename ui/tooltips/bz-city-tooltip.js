@@ -21,6 +21,9 @@ const BZ_HEAD_STYLE = [
 .tooltip.bz-city-tooltip .tooltip__content {
     padding: 0.5555555556rem;
 }
+.bz-city-tooltip .shadow {
+    filter: drop-shadow(0 0.0555555556rem 0.0555555556rem black);
+}
 `,  // full-width banners: enemies and warnings
 `
 .bz-city-tooltip .bz-banner {
@@ -29,7 +32,7 @@ const BZ_HEAD_STYLE = [
     margin-right: -0.5555555556rem;
 }
 `,
-// centers blocks of rules text with max-w-60 equivalent
+// centers blocks of rules text
 // IMPORTANT: Locale.stylize wraps text in an extra <p> element when it
 // contains icons, which interferes with text-align and max-width.  the
 // result also changes with single-line vs multi-line text.  these rules
@@ -55,8 +58,7 @@ BZ_HEAD_STYLE.map(style => {
 const BZ_DOT_DIVIDER = Locale.compose("LOC_PLOT_DIVIDER_DOT");
 
 // custom & adapted icons
-const BZ_ICON_TOTAL_RURAL = "CITY_RURAL";  // total yield (rural)
-const BZ_ICON_TOTAL_URBAN = "CITY_URBAN";  // total yield (urban)
+const BZ_TIMER_ICON = "url('hud_turn-timer')";
 
 // color palette
 const BZ_COLOR = {
@@ -113,6 +115,22 @@ const bzNameSort = (a, b) => {
     return aname.localeCompare(bname);
 }
 
+function docIcon(image, size, resize, ...style) {
+    // create an icon to fit size (with optional image resizing)
+    const icon = document.createElement("div");
+    icon.classList.value = "relative bg-contain bg-no-repeat shadow";
+    if (style.length) icon.classList.add(...style);
+    icon.style.height = size;
+    icon.style.width = size;
+    if (resize && resize != size) icon.style.backgroundSize = `${resize} ${resize}`;
+    icon.style.backgroundPosition = "center";
+    icon.style.backgroundImage =
+        image.startsWith("url(") ? image : UI.getIconCSS(image);
+    return icon;
+}
+function docTimer(size, resize) {
+    return docIcon(BZ_TIMER_ICON, size, resize, "-mx-1");
+}
 function dotJoin(list, dot=BZ_DOT_DIVIDER) {
     // join text with dots after removing empty elements
     return list.filter(e => e).join("&nbsp;" + dot + " ");
@@ -180,7 +198,7 @@ function getTownFocus(city) {
 const BZ_PRELOADED_ICONS = {};
 function preloadIcon(icon, context) {
     if (!icon) return;
-    const url = icon.startsWith("url(")  ? icon : UI.getIcon(icon, context);
+    const url = icon.startsWith("url(") ? icon : UI.getIcon(icon, context);
     const name = url.replace(/url|[(\042\047)]/g, '');  // \042\047 = quotation marks
     if (!name || name in BZ_PRELOADED_ICONS) return;
     BZ_PRELOADED_ICONS[name] = true;
@@ -216,8 +234,6 @@ class bzCityTooltip {
         this.playerID = GameContext.localPlayerID;
         this.player = Players.get(this.playerID);
         this.isDebug = UI.isDebugPlotInfoVisible();
-        // world
-        this.age = null;
         // ownership
         this.owner = null;
         this.ownerRelationship = null;
@@ -227,7 +243,7 @@ class bzCityTooltip {
         this.isFreshWater = null;
         this.religion = null;
         this.connections = null;
-        this.population = null;
+        this.growth = null;
         this.production = null;
         // yields
         this.yields = [];
@@ -236,9 +252,6 @@ class bzCityTooltip {
             for (const y of GameInfo.Yields) {
                 // Controls.preloadImage(url, 'plot-tooltip');
                 preloadIcon(`${y.YieldType}`, "YIELD");
-            }
-            for (const y of [BZ_ICON_TOTAL_RURAL, BZ_ICON_TOTAL_URBAN]) {
-                preloadIcon(y, "YIELD");
             }
         });
     }
@@ -278,8 +291,6 @@ class bzCityTooltip {
         this.playerID = GameContext.localPlayerID;
         this.player = Players.get(this.playerID);
         this.isDebug = UI.isDebugPlotInfoVisible();
-        // world
-        this.age = null;
         // ownership
         this.owner = null;
         this.ownerRelationship = null;
@@ -290,7 +301,7 @@ class bzCityTooltip {
         this.isFreshWater = null;
         this.religion = null;
         this.connections = null;
-        this.population = null;
+        this.growth = null;
         this.production = null;
         // yields
         this.yields = [];
@@ -310,14 +321,14 @@ class bzCityTooltip {
         this.observer = Players.get(this.observerID);
         this.modelSettlement();
         this.modelConnections();
-        this.modelPopulation();
+        this.modelGrowth();
         this.modelProduction();
         this.modelYields();
     }
     render() {
         this.renderSettlement();
         this.renderConnections();
-        this.renderPopulation();
+        this.renderGrowth();
         this.renderProduction();
         // only show yields in autoplay or debug mode
         // TODO: make this a config option
@@ -327,7 +338,6 @@ class bzCityTooltip {
     modelSettlement() {
         // owner, civ, city
         const loc = this.location;
-        this.age = GameInfo.Ages.lookup(Game.age);
         const ownerID = GameplayMap.getOwner(loc.x, loc.y);
         this.owner = Players.get(ownerID);
         this.ownerRelationship = this.getCivRelationship(this.owner);
@@ -386,19 +396,20 @@ class bzCityTooltip {
         if (settlements.length == 0) return;
         this.connections = { settlements, cities, towns, focused, growing, };
     }
-    modelPopulation() {
+    modelGrowth() {
         if (!this.city) return;
+        // food
+        const isGrowing = this.city.Growth?.growthType == GrowthTypes.EXPAND;
+        const current = this.city.Growth?.currentFood ?? -1;
+        const threshold = this.city.Growth?.getNextGrowthFoodThreshold().value ?? -1;
+        const net = this.city.Yields.getNetYield(YieldTypes.YIELD_FOOD);
+        const turns = this.city.Growth?.turnsUntilGrowth ?? -1;
+        const food = { isGrowing, current, threshold, net, turns, };
         // population
         const urban = this.city.urbanPopulation ?? 0;
         const rural = this.city.ruralPopulation ?? 0;
         const specialists = this.city.Workers.getNumWorkers(false) ?? 0;
         const pop = { urban, rural, specialists, };
-        const net = this.city.Yields.getNetYield(YieldTypes.YIELD_FOOD);
-        // food
-        const current = this.city.Growth?.currentFood ?? -1;
-        const threshold = this.city.Growth?.getNextGrowthFoodThreshold().value ?? -1;
-        const turns = this.city.Growth?.turnsUntilGrowth ?? -1;
-        const food = { current, threshold, net, turns, };
         // religion
         const religion = { majority: null, urban: null, rural: null, };
         if (this.city.Religion) {
@@ -407,10 +418,7 @@ class bzCityTooltip {
             religion.urban = getReligionInfo(info.urbanReligion);
             religion.rural = getReligionInfo(info.ruralReligion);
         }
-        console.warn(`TRIX POPS=${JSON.stringify(pop)}`);
-        console.warn(`TRIX FOOD=${JSON.stringify(food)}`);
-        console.warn(`TRIX RLGN=${JSON.stringify(religion)}`);
-        this.population = { pop, food, religion, };
+        this.growth = { food, pop, religion, };
     }
     modelProduction() {
         if (!this.city) return;
@@ -517,7 +525,7 @@ class bzCityTooltip {
             if (bonus) {
                 const title = "font-title uppercase text-xs leading-snug";
                 this.renderRules([bonus.Name], "w-full mt-1", title);
-                this.renderRules([bonus.Description], "w-60");
+                this.renderRules([bonus.Description], "w-48");
             }
         }
     }
@@ -570,6 +578,8 @@ class bzCityTooltip {
     renderConnections() {
         if (!this.connections) return;
         const height = getFontHeight('xs', 1.5);
+        const size = `${height}px`;
+        const small = `${Math.round(2/3*height)}px`;
         this.renderTitleDivider("LOC_BZ_SETTLEMENT_CONNECTIONS");
         const tt = document.createElement("div");
         tt.classList.value = "flex justify-center text-xs leading-normal";
@@ -582,18 +592,13 @@ class bzCityTooltip {
         for (const conn of connections) {
             const row = document.createElement("div");
             row.classList.value = "relative flex justify-start";
-            row.style.minHeight = `${height}px`;
-            const focus = getTownFocus(conn);
-            const icon = document.createElement("div");
-            icon.classList.value = "relative bg-no-repeat";
-            icon.style.width = `${height}px`;
-            console.warn(`TRIX W=${height}`);
-            const isize = conn.isTown ? height : Math.round(2/3*height);
-            icon.style.backgroundSize = `${isize}px ${isize}px`;
-            icon.style.backgroundPosition = "center";
-            icon.style.backgroundImage =
-                UI.getIconCSS(conn.isTown ? focus.icon : "YIELD_CITIES");
-            row.appendChild(icon);
+            row.style.minHeight = size;
+            if (conn.isTown) {
+                const focus = getTownFocus(conn);
+                row.appendChild(docIcon(focus.icon, size, size));
+            } else {
+                row.appendChild(docIcon("YIELD_CITIES", size, small));
+            }
             const name = document.createElement("div");
             name.classList.value = "max-w-36 mx-1 text-left";
             name.setAttribute('data-l10n-id', conn.name);
@@ -612,63 +617,127 @@ class bzCityTooltip {
         }
         this.container.appendChild(tt);
     }
-    renderPopulation() {
-        if (!this.population) return;
-        this.renderTitleDivider("LOC_UI_CITY_STATUS_POPULATION_TITLE");
-        const _rural = "LOC_UI_CITY_STATUS_RURAL_POPULATION";
-        const _urban = "LOC_UI_CITY_STATUS_URBAN_POPULATION";
-        const _special = "LOC_UI_SPECIALISTS_SUBTITLE";
-        // TODO
+    renderGrowth() {
+        if (!this.growth) return;
+        // alternate titles:
+        // LOC_UI_FOOD_CHOOSER_TITLE = Growth
+        // LOC_UI_CITY_GROWTH_TITLE = City Growth
+        // LOC_UI_TOWN_GROWTH_TITLE = Town Growth
+        // LOC_UI_CITY_STATUS_POPULATION_TITLE = Population
+        this.renderTitleDivider("LOC_UI_FOOD_CHOOSER_TITLE");
+        const { food, pop, religion, } = this.growth;
+        const layout = [
+            {
+                icon: religion.urban?.icon ?? "CITY_URBAN",
+                label: "LOC_UI_CITY_STATUS_URBAN_POPULATION",
+                value: pop.urban,
+            },
+            {
+                icon: religion.rural?.icon ?? "CITY_RURAL",
+                label: "LOC_UI_CITY_STATUS_RURAL_POPULATION",
+                value: pop.rural,
+            },
+            {
+                icon: "CITY_SPECIAL_BASE",
+                label: "LOC_UI_SPECIALISTS_SUBTITLE",
+                value: pop.specialists,
+            },
+        ];
+        const height = getFontHeight('xs', 1.5);
+        const size = `${height}px`;
+        const small = `${Math.round(5/6*height)}px`;
+        const digits = getDigits(layout.map(i => i.value.toFixed()));
+        const dwidth = `${getFigureWidth('xs', digits)}px`;
+        if (food.isGrowing) {
+            const row = document.createElement("div");
+            row.classList.value =
+                "self-center flex justify-start text-xs leading-normal mb-1\\.5";
+            row.style.minHeight = size;
+            row.appendChild(docIcon("YIELD_FOOD", size, small, "-mx-1"));
+            const current = Locale.compose("LOC_BZ_GROUPED_DIGITS", food.current);
+            const threshold = Locale.compose("LOC_BZ_GROUPED_DIGITS", food.threshold);
+            const turns = food.turns.toFixed();
+            const progress = document.createElement("div");
+            progress.classList.value = "text-left flex-auto mx-1";
+            progress.textContent = `${current}/${threshold} • ${turns}`;
+            row.appendChild(progress);
+            row.appendChild(docTimer(size, size));
+            this.container.appendChild(row);
+        }
+        const rows = [];
+        for (const item of layout) {
+            const row = document.createElement("div");
+            row.classList.value = "flex justify-start px-1";
+            row.style.minHeight = size;
+            row.appendChild(docIcon(item.icon, size, small, "-mx-1"));
+            const label = document.createElement("div");
+            label.classList.value = "text-left flex-auto mx-1";
+            label.setAttribute('data-l10n-id', item.label);
+            row.appendChild(label);
+            const value = document.createElement("div");
+            value.classList.value = "text-right mx-1";
+            value.style.width = dwidth;
+            value.textContent = item.value.toFixed();
+            row.appendChild(value);
+            rows.push(row);
+        }
+        this.renderTable(rows, `${BZ_COLOR.food}55`);
     }
     renderProduction() {
         if (!this.production) return;
         // only allowed for local player, autoplay, or debug
         if (this.player && this.owner.id != this.playerID && !this.isDebug) return;
         this.renderTitleDivider("LOC_UI_PRODUCTION_TITLE");
-        const isTable = this.production.length != 1;
         const height = getFontHeight('xs', 1.5);
-        const col = document.createElement("div");
-        col.classList.value = "flex-col justify-start text-xs leading-normal";
-        const tdigits = getDigits(this.production.map(i => i.turnsLeft.toFixed()));
-        const twidth = `${getFigureWidth('xs', tdigits)}px`;
-        for (const [i, item] of this.production.entries()) {
+        const size = `${height}px`;
+        const digits = getDigits(this.production.map(i => i.turnsLeft.toFixed()));
+        const dwidth = `${getFigureWidth('xs', digits)}px`;
+        const rows = [];
+        for (const item of this.production) {
             const row = document.createElement("div");
-            row.classList.value = "flex-shrink flex justify-start px-1";
-            row.style.minHeight = `${height}px`;
-            if (isTable && !(i % 2)) {
-                row.classList.add("rounded-xl");
-                row.style.backgroundColor = `${BZ_COLOR.production}80`;
-            }
+            row.classList.value = "flex justify-start px-1";
+            row.style.minHeight = size;
             const name = document.createElement("div");
             name.classList.value = "text-left flex-auto";
-            if (isTable) name.classList.add("mx-1");
+            name.classList.add("mx-1");  // wider spacing
             name.setAttribute('data-l10n-id', item.name);
             row.appendChild(name);
             const turns = document.createElement("div");
             turns.classList.value = "text-right mx-1";
-            turns.style.width = twidth;
+            turns.style.width = dwidth;
             turns.textContent = item.turnsLeft.toFixed();
             row.appendChild(turns);
-            const timer = document.createElement("div");
-            timer.classList.value = "relative bg-contain bg-no-repeat -mx-1";
-            timer.style.backgroundImage = "url('hud_turn-timer')";
-            timer.style.height = `${height}px`;
-            timer.style.width = `${height}px`;
-            row.appendChild(timer);
-            col.appendChild(row);
+            row.appendChild(docTimer(size, size));
+            rows.push(row);
         }
-        // use the full tooltip width for multi-row tables
-        if (isTable) {
-            // at the top level, the table expands to full width
-            this.container.appendChild(col);
-        } else {
-            // an extra flex wrapper inhibits expansion
+        this.renderTable(rows, `${BZ_COLOR.production}55`);
+    }
+    // display formatted rows as a stripy table
+    renderTable(rows, color, collapse=true) {
+        if (rows.length != 1) collapse=false;
+        const table = document.createElement("div");
+        table.classList.value = "flex-table justify-start text-xs leading-normal";
+        // collect rows into the table
+        for (const [i, row] of rows.entries()) {
+            // add stripes to multi-row tables
+            if (!collapse && !(i % 2)) {
+                row.classList.add("rounded-2xl");
+                row.style.backgroundColor = color;
+            }
+            table.appendChild(row);
+        }
+        if (collapse) {
+            // optionally prevent single-row tables from
+            // expanding to the full width of the tooltip
             // TODO: why does this work?
             const tt = document.createElement("div");
             tt.classList.value = "flex justify-center";
-            tt.append(col);
+            tt.append(table);
             this.container.appendChild(tt);
+            return;
         }
+        // full-width table
+        this.container.appendChild(table);
     }
     // lay out paragraphs of rules text
     renderRules(text, listStyle=null, itemStyle=null) {
@@ -688,6 +757,8 @@ class bzCityTooltip {
     renderYields() {
         if (!this.totalYields) return;  // no yields to show
         // set column width based on number of digits (at least three)
+        // TODO: use a fixed size instead of "xs"
+        // TODO: no bold numbers
         const digits = getDigits(this.yields.map(y => y.value.toFixed()), 2.5);
         const width = `${getFigureWidth('xs', digits)}px`;
         const tt = document.createElement('div');
@@ -703,12 +774,10 @@ class bzCityTooltip {
         tt.classList.value = "flex-col justify-start";
         const ariaLabel = `${Locale.toNumber(col.value)} ${Locale.compose(col.name)}`;
         tt.ariaLabel = ariaLabel;
-        const yieldIconCSS = UI.getIconCSS(col.type, "YIELD");
-        const yieldIcon = document.createElement("div");
-        yieldIcon.classList.value = "size-6 bg-contain bg-no-repeat self-center";
-        yieldIcon.style.filter = "drop-shadow(0 0.0555555556rem 0.0555555556rem black)";
-        yieldIcon.style.backgroundImage = yieldIconCSS;
-        tt.appendChild(yieldIcon);
+        const icon = document.createElement("div");
+        icon.classList.value = "size-6 bg-contain bg-no-repeat shadow self-center";
+        icon.style.backgroundImage = UI.getIconCSS(col.type, "YIELD");
+        tt.appendChild(icon);
         const yieldValue = document.createElement("div");
         yieldValue.classList.value =
             "w-auto text-center font-body-xs font-bold leading-6 mx-0\\.5";

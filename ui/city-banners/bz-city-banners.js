@@ -328,6 +328,9 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--city-other .queue-production {
     display: flex;
 }
+.bz-flags .city-banner.city-banner--city-other .queue-production.queue-none {
+    display: none;
+}
 `,  //       4 .TURN flex flex-col justify-end align-center self-center w-8 mt-0\.5 pointer-events-none
     //         5 .TURN-NUMBER font-base-xs text-white text-center w-full bg-cover bg-center bg-no-repeat
 `
