@@ -472,7 +472,7 @@ class bzCityTooltip {
         });
     }
     renderTitleDivider(text, head) {
-        this.renderTitleHeading(text, head ? undefined : "mt-2");
+        this.renderTitleHeading(text, head ? undefined : "mt-1\\.5");
     }
     renderTitleHeading(text, ...style) {
         if (!text) return;
