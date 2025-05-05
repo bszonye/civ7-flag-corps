@@ -1,3 +1,4 @@
+// TODO: recalculate metrics during update
 // TODO: config option to show yields
 import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 
@@ -87,11 +88,7 @@ const bzNameSort = (a, b) => {
 const BASE_FONT_SIZE = 18;
 const BZ_PADDING = 0.6666666667;
 const BZ_BORDER_WIDTH = 0.1111111111;
-
 let metrics = getFontMetrics();
-console.warn(`TRIX B ${metrics.body.size.scale}+${metrics.body.leading.scale} = ${metrics.body.spacing.px} = ${metrics.body.spacing.css} r=${metrics.body.ratio.toFixed(3)}`);
-console.warn(`TRIX T ${metrics.table.size.scale}+${metrics.table.leading.scale} = ${metrics.table.spacing.px} = ${metrics.table.spacing.css} r=${metrics.table.ratio.toFixed(3)}`);
-console.warn(`TRIX H ${metrics.head.size.scale}+${metrics.head.leading.scale} = ${metrics.head.spacing.px} = ${metrics.head.spacing.css} r=${metrics.head.ratio.toFixed(3)}`);
 
 function getFontMetrics() {
     const sizes = (rem) => {
@@ -101,25 +98,28 @@ function getFontMetrics() {
         const px = `${scale}px`;
         return { rem, css, base, scale, px, };
     }
+    // global metrics
+    const padding = sizes(BZ_PADDING);
+    const halfpad = sizes(BZ_PADDING/2);
+    // font metrics
     const metrics = (name, ratio) => {
         const rem = typeof name === "string" ?
             getFontSizeBasePx(name) / BASE_FONT_SIZE : name;
-        console.warn(`TRIX ${rem}`);
         const size = sizes(rem);  // font size
         const spacing = sizes(size.rem * ratio);  // line height
         const leading = sizes(spacing.rem - size.rem);  // interline spacing
-        const margin = sizes(BZ_PADDING/2 - leading.rem/2);
+        const margin = sizes(halfpad.rem - leading.rem/2);
         const figure = sizes(0.6 * size.rem);  // figure width
         return { size, spacing, leading, margin, figure, ratio, };
     }
     const body = metrics('xs', 1.25);
+    const rules = metrics('xs', 1.5);  // is this needed?
     const table = metrics('xs', 1.5);
     const yields = metrics(8/9, 1.5);
-    const head = metrics('sm', 1.25);
-    return { body, table, yields, head, };
+    const head = metrics('sm', 1.5);
+    return { body, rules, table, yields, head, padding, halfpad, };
 }
 const remBorderRadius = BZ_BORDER_WIDTH + BZ_PADDING + metrics.table.spacing.rem / 2;
-console.warn(`TRIX BORDER=${remBorderRadius}`);
 
 // additional CSS definitions
 const BZ_HEAD_STYLE = [
@@ -192,6 +192,21 @@ function docIcon(image, size, resize, ...style) {
     icon.style.backgroundImage =
         image.startsWith("url(") ? image : UI.getIconCSS(image);
     return icon;
+}
+function docRules(text, itemStyle=null) {
+    // create a paragraph of rules text
+    // text with icons is squirrelly, only format it at top level!
+    const tt = document.createElement("div");
+    tt.style.widthPERCENT = 100;
+    tt.classList.add("bz-rules-list");
+    for (const item of text) {
+        const row = document.createElement("div");
+        row.classList.value = itemStyle ?? "text-xs";
+        row.classList.add("bz-rules-item");
+        row.setAttribute("data-l10n-id", item);
+        tt.appendChild(row);
+    }
+    return tt;
 }
 function docText(text, style) {
     const e = document.createElement("div");
@@ -595,16 +610,22 @@ class bzCityTooltip {
             ttCiv.setAttribute('data-l10n-id', text);
             layout.appendChild(ttCiv);
         }
+        layout.style.marginBottom = metrics.body.margin.css;
         this.container.appendChild(layout);
         // show city-state bonus
         if (this.owner.isMinor) {
             const bonusType = Game.CityStates.getBonusType(this.owner.id);
             const bonus = GameInfo.CityStateBonuses.find(b => b.$hash == bonusType);
             if (bonus) {
-                const spacing = metrics.table.ratio;  // TODO
-                const title = "text-secondary font-title-xs uppercase";
-                this.renderRules([bonus.Name], "w-full mt-1", title, spacing);
-                this.renderRules([bonus.Description], "w-48", null, spacing);
+                const title = docRules([bonus.Name]);
+                title.classList.add("text-secondary", "font-title", "uppercase");
+                title.style.lineHeight = metrics.body.ratio;
+                title.style.marginTop = metrics.body.margin.css;
+                const rules = docRules([bonus.Description]);
+                rules.style.width = '12rem';
+                rules.style.marginBottom = metrics.rules.margin.css;
+                this.container.append(title);
+                this.container.append(rules);
             }
         }
     }
@@ -694,6 +715,7 @@ class bzCityTooltip {
             for (const row of column) col.appendChild(row);
             tt.appendChild(col);
         }
+        tt.style.marginBottom = metrics.table.margin.css;
         this.container.appendChild(tt);
     }
     renderGrowth() {
@@ -793,6 +815,8 @@ class bzCityTooltip {
     renderTable(rows, color, narrow=false) {
         const table = document.createElement("div");
         table.classList.value = "flex-table justify-start text-xs";
+        // set bottom margin (ignoring leading)
+        table.style.marginBottom = metrics.halfpad.css;
         // collect rows into the table
         for (const [i, row] of rows.entries()) {
             // add stripes to multi-row tables
@@ -815,28 +839,11 @@ class bzCityTooltip {
         // full-width table
         this.container.appendChild(table);
     }
-    // lay out paragraphs of rules text
-    renderRules(text, listStyle=null, itemStyle=null, spacing=null) {
-        // text with icons is squirrelly, only format it at top level!
-        const ttText = document.createElement("div");
-        ttText.classList.value = listStyle ?? "w-full";
-        ttText.classList.add("bz-rules-list");
-        if (spacing) ttText.style.lineHeight = spacing;
-        for (const item of text) {
-            const ttItem = document.createElement("div");
-            ttItem.classList.value = itemStyle ?? "text-xs";
-            ttItem.classList.add("bz-rules-item");
-            ttItem.setAttribute("data-l10n-id", item);
-            ttText.appendChild(ttItem);
-        }
-        this.container.appendChild(ttText);
-    }
     renderYields() {
         if (!this.totalYields) return;  // no yields to show
         // set column width based on number of digits (at least three)
         const digits = getDigits(this.yields.map(y => y.value.toFixed()), 2);
         const width = `${digits * metrics.yields.figure.scale + 1}px`;
-        console.warn(`TRIX YIELDS ${metrics.yields.size.css} ${width}`);
         const tt = document.createElement('div');
         tt.classList.value = "flex flex-wrap justify-center w-full mt-2";
         // one column per yield type
