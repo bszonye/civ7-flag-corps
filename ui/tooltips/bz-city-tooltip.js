@@ -85,9 +85,13 @@ const bzNameSort = (a, b) => {
 
 // box metrics (for initialization, tooltip can update)
 const BASE_FONT_SIZE = 18;
+const BZ_PADDING = 0.6666666667;
+const BZ_BORDER_WIDTH = 0.1111111111;
+
 let metrics = getFontMetrics();
 console.warn(`TRIX B ${metrics.body.size.scale}+${metrics.body.leading.scale} = ${metrics.body.spacing.px} = ${metrics.body.spacing.css} r=${metrics.body.ratio.toFixed(3)}`);
-console.warn(`TRIX R ${metrics.table.size.scale}+${metrics.table.leading.scale} = ${metrics.table.spacing.px} = ${metrics.table.spacing.css} r=${metrics.table.ratio.toFixed(3)}`);
+console.warn(`TRIX T ${metrics.table.size.scale}+${metrics.table.leading.scale} = ${metrics.table.spacing.px} = ${metrics.table.spacing.css} r=${metrics.table.ratio.toFixed(3)}`);
+console.warn(`TRIX H ${metrics.head.size.scale}+${metrics.head.leading.scale} = ${metrics.head.spacing.px} = ${metrics.head.spacing.css} r=${metrics.head.ratio.toFixed(3)}`);
 
 function getFontMetrics() {
     const sizes = (rem) => {
@@ -101,20 +105,19 @@ function getFontMetrics() {
         const rem = typeof name === "string" ?
             getFontSizeBasePx(name) / BASE_FONT_SIZE : name;
         console.warn(`TRIX ${rem}`);
-        const size = sizes(rem);
-        const spacing = sizes(size.rem * ratio);
-        const leading = sizes(spacing.rem - size.rem);
-        const figure = sizes(0.6 * size.rem);
-        return { size, spacing, leading, figure, ratio, };
+        const size = sizes(rem);  // font size
+        const spacing = sizes(size.rem * ratio);  // line height
+        const leading = sizes(spacing.rem - size.rem);  // interline spacing
+        const margin = sizes(BZ_PADDING/2 - leading.rem/2);
+        const figure = sizes(0.6 * size.rem);  // figure width
+        return { size, spacing, leading, margin, figure, ratio, };
     }
     const body = metrics('xs', 1.25);
     const table = metrics('xs', 1.5);
     const yields = metrics(8/9, 1.5);
-    return { body, table, yields, };
+    const head = metrics('sm', 1.25);
+    return { body, table, yields, head, };
 }
-
-const BZ_PADDING = 0.6666666667;
-const BZ_BORDER_WIDTH = 0.1111111111;
 const remBorderRadius = BZ_BORDER_WIDTH + BZ_PADDING + metrics.table.spacing.rem / 2;
 console.warn(`TRIX BORDER=${remBorderRadius}`);
 
@@ -183,7 +186,8 @@ function docIcon(image, size, resize, ...style) {
     if (style.length) icon.classList.add(...style);
     icon.style.height = size;
     icon.style.width = size;
-    if (resize && resize != size) icon.style.backgroundSize = `${resize} ${resize}`;
+    // note: this sets image width and auto height
+    if (resize && resize != size) icon.style.backgroundSize = resize;
     icon.style.backgroundPosition = "center";
     icon.style.backgroundImage =
         image.startsWith("url(") ? image : UI.getIconCSS(image);
@@ -530,14 +534,13 @@ class bzCityTooltip {
             }
         });
     }
-    renderTitleDivider(text, head) {
-        this.renderTitleHeading(text, head ? undefined : "mt-1\\.5");
-    }
     renderTitleHeading(text, ...style) {
         if (!text) return;
         const layout = document.createElement("div");
         layout.classList.value = "text-secondary font-title-sm uppercase text-center";
         if (style.length) layout.classList.add(...style);
+        layout.style.lineHeight = metrics.head.ratio;
+        layout.style.marginTop = metrics.head.margin.css;
         const ttText = document.createElement("div");
         ttText.setAttribute('data-l10n-id', text);
         layout.appendChild(ttText);
@@ -656,7 +659,7 @@ class bzCityTooltip {
         const height = getFontHeight('xs', 1.5);
         const size = `${height}px`;
         const small = `${Math.round(2/3*height)}px`;
-        this.renderTitleDivider("LOC_BZ_SETTLEMENT_CONNECTIONS");
+        this.renderTitleHeading("LOC_BZ_SETTLEMENT_CONNECTIONS");
         const tt = document.createElement("div");
         tt.classList.value = "flex justify-center text-xs";
         const rows = [];
@@ -700,7 +703,7 @@ class bzCityTooltip {
         // LOC_UI_CITY_GROWTH_TITLE = City Growth
         // LOC_UI_TOWN_GROWTH_TITLE = Town Growth
         // LOC_UI_CITY_STATUS_POPULATION_TITLE = Population
-        this.renderTitleDivider("LOC_UI_FOOD_CHOOSER_TITLE", this.subtarget);
+        this.renderTitleHeading("LOC_UI_FOOD_CHOOSER_TITLE");
         const { food, pop, religion, } = this.growth;
         const layout = [
             {
@@ -758,7 +761,7 @@ class bzCityTooltip {
         if (!this.production) return;
         // only allowed for local player, autoplay, or debug
         if (this.player && this.owner.id != this.playerID && !this.isDebug) return;
-        this.renderTitleDivider("LOC_UI_PRODUCTION_TITLE", this.subtarget);
+        this.renderTitleHeading("LOC_UI_PRODUCTION_TITLE");
         const single = this.production.length == 1;
         const height = getFontHeight('xs', 1.5);
         const size = `${height}px`;
