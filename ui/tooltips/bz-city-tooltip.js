@@ -1,5 +1,4 @@
 // TODO: config option to show yields
-// TODO: localization
 import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 
 var bzTarget;
@@ -13,11 +12,6 @@ const BZ_DOT_DIVIDER = Locale.compose("LOC_PLOT_DIVIDER_DOT");
 
 // custom & adapted icons
 const BZ_TIMER_ICON = "url('hud_turn-timer')";
-
-// box padding
-const BZ_PADDING = '0.5555555556rem';
-const BZ_PADDING_SM = `0.3888888889rem`;  // reduced for leading
-const BZ_PADDING_XS = `0.4444444444rem`;  // reduced for leading
 
 // color palette
 const BZ_COLOR = {
@@ -89,14 +83,51 @@ const bzNameSort = (a, b) => {
     return aname.localeCompare(bname);
 }
 
+// box metrics (for initialization, tooltip can update)
+const BASE_FONT_SIZE = 18;
+let metrics = getFontMetrics();
+console.warn(`TRIX B ${metrics.body.size.scale}+${metrics.body.leading.scale} = ${metrics.body.spacing.px} = ${metrics.body.spacing.css} r=${metrics.body.ratio.toFixed(3)}`);
+console.warn(`TRIX R ${metrics.table.size.scale}+${metrics.table.leading.scale} = ${metrics.table.spacing.px} = ${metrics.table.spacing.css} r=${metrics.table.ratio.toFixed(3)}`);
+
+function getFontMetrics() {
+    const sizes = (rem) => {
+        const css = `${rem.toFixed(10)}rem`;
+        const base = Math.round(rem * BASE_FONT_SIZE);
+        const scale = Math.round(rem * GlobalScaling.currentScalePx);
+        const px = `${scale}px`;
+        return { rem, css, base, scale, px, };
+    }
+    const metrics = (name, ratio) => {
+        const rem = typeof name === "string" ?
+            getFontSizeBasePx(name) / BASE_FONT_SIZE : name;
+        console.warn(`TRIX ${rem}`);
+        const size = sizes(rem);
+        const spacing = sizes(size.rem * ratio);
+        const leading = sizes(spacing.rem - size.rem);
+        const figure = sizes(0.6 * size.rem);
+        return { size, spacing, leading, figure, ratio, };
+    }
+    const body = metrics('xs', 1.25);
+    const table = metrics('xs', 1.5);
+    const yields = metrics(8/9, 1.5);
+    return { body, table, yields, };
+}
+
+const BZ_PADDING = 0.6666666667;
+const BZ_BORDER_WIDTH = 0.1111111111;
+const remBorderRadius = BZ_BORDER_WIDTH + BZ_PADDING + metrics.table.spacing.rem / 2;
+console.warn(`TRIX BORDER=${remBorderRadius}`);
+
 // additional CSS definitions
 const BZ_HEAD_STYLE = [
+// 1. #TOOLTIP-ROOT.NEW-TOOLTIP--ROOT absolute max-w-96 p-3 img-tooltip-border img-tooltip-bg pointer-events-none break-words [z-index: 99]
+//    2. #TOOLTIP-ROOT-CONTENT relative font-body text-xs
 `
 .tooltip.bz-city-tooltip .tooltip__content {
-    padding: ${BZ_PADDING_SM} ${BZ_PADDING} ${BZ_PADDING_XS};
+    padding: ${BZ_PADDING/2}rem ${BZ_PADDING}rem ${BZ_PADDING/2}rem;
 }
 .bz-city-tooltip .img-tooltip-border {
-    border-radius: 0.6666666667rem;
+    border-radius: ${remBorderRadius}rem;
     border-image-source: none;
     border-width: 0.1111111111rem;
     border-style: solid;
@@ -117,10 +148,10 @@ const BZ_HEAD_STYLE = [
 `
 .bz-city-tooltip .bz-banner {
     text-align: center;
-    margin-left: -${BZ_PADDING};
-    margin-right: -${BZ_PADDING};
-    padding-left: ${BZ_PADDING};
-    padding-right: ${BZ_PADDING};
+    margin-left: -${BZ_PADDING}rem;
+    margin-right: -${BZ_PADDING}rem;
+    padding-left: ${BZ_PADDING}rem;
+    padding-right: ${BZ_PADDING}rem;
 }
 `,
 // centers blocks of rules text
@@ -265,6 +296,7 @@ class bzCityTooltip {
         // document root
         this.tooltip = document.createElement('fxs-tooltip');
         this.tooltip.classList.value = "bz-tooltip bz-city-tooltip max-w-96";
+        this.tooltip.style.lineHeight = metrics.table.ratio;  // TODO
         this.container = document.createElement('div');
         this.tooltip.appendChild(this.container);
         // point-of-view info
@@ -365,8 +397,11 @@ class bzCityTooltip {
         this.modelYields();
     }
     render() {
+        // TODO: update component styles from metrics
+        // render subtarget tooltips, if needed
         if (this.subtarget == bzTarget.GROWTH) return this.renderGrowth();
         if (this.subtarget == bzTarget.PRODUCTION) return this.renderProduction();
+        // render main tooltip
         this.renderSettlement();
         this.renderConnections();
         this.renderGrowth();
@@ -501,7 +536,7 @@ class bzCityTooltip {
     renderTitleHeading(text, ...style) {
         if (!text) return;
         const layout = document.createElement("div");
-        layout.classList.value = "text-secondary font-title-sm uppercase leading-snug text-center";
+        layout.classList.value = "text-secondary font-title-sm uppercase text-center";
         if (style.length) layout.classList.add(...style);
         const ttText = document.createElement("div");
         ttText.setAttribute('data-l10n-id', text);
@@ -518,7 +553,7 @@ class bzCityTooltip {
         if (notes.length) {
             // note: extra div layer here to align bz-debug levels
             const tt = document.createElement("div");
-            tt.classList.value = "text-xs leading-snug text-center mb-1";
+            tt.classList.value = "text-xs text-center mb-1";
             const ttSubhead = document.createElement("div");
             const ttNote = document.createElement("div");
             ttNote.classList.value = "text-2xs leading-none mb-0\\.5";
@@ -533,7 +568,7 @@ class bzCityTooltip {
     renderOwnerInfo() {
         if (!this.owner || !Players.isAlive(this.owner.id)) return;
         const layout = document.createElement("div");
-        layout.classList.value = "text-xs leading-snug text-center";
+        layout.classList.value = "text-xs text-center leading-tight";
         const ownerName = this.getOwnerName(this.owner);
         const relType = Locale.compose(this.ownerRelationship.type ?? "");
         const civName = this.getCivName(this.owner, true);
@@ -563,9 +598,10 @@ class bzCityTooltip {
             const bonusType = Game.CityStates.getBonusType(this.owner.id);
             const bonus = GameInfo.CityStateBonuses.find(b => b.$hash == bonusType);
             if (bonus) {
-                const title = "font-title uppercase text-xs leading-snug";
-                this.renderRules([bonus.Name], "w-full mt-1", title);
-                this.renderRules([bonus.Description], "w-48");
+                const spacing = metrics.table.ratio;  // TODO
+                const title = "text-secondary font-title-xs uppercase";
+                this.renderRules([bonus.Name], "w-full mt-1", title, spacing);
+                this.renderRules([bonus.Description], "w-48", null, spacing);
             }
         }
     }
@@ -622,7 +658,7 @@ class bzCityTooltip {
         const small = `${Math.round(2/3*height)}px`;
         this.renderTitleDivider("LOC_BZ_SETTLEMENT_CONNECTIONS");
         const tt = document.createElement("div");
-        tt.classList.value = "flex justify-center text-xs leading-normal";
+        tt.classList.value = "flex justify-center text-xs";
         const rows = [];
         const connections = [
             ...this.connections.cities,
@@ -632,7 +668,7 @@ class bzCityTooltip {
         for (const conn of connections) {
             const row = document.createElement("div");
             row.classList.value = "relative flex justify-start";
-            row.style.minHeight = size;
+            row.style.minHeight = row.style.lineHeight = size;
             if (conn.isTown) {
                 const focus = getTownFocus(conn);
                 row.appendChild(docIcon(focus.icon, size, size));
@@ -691,7 +727,7 @@ class bzCityTooltip {
         if (food.isGrowing) {
             const row = document.createElement("div");
             row.classList.value =
-                "self-center flex text-xs leading-normal px-1 rounded-2xl mb-1";
+                "self-center flex text-xs px-1 rounded-2xl mb-1";
             row.style.backgroundColor = `${BZ_COLOR.food}55`;
             row.style.minHeight = size;
             row.appendChild(docIcon("YIELD_FOOD", size, small, "-mx-1"));
@@ -753,7 +789,7 @@ class bzCityTooltip {
     // display formatted rows as a stripy table
     renderTable(rows, color, narrow=false) {
         const table = document.createElement("div");
-        table.classList.value = "flex-table justify-start text-xs leading-normal";
+        table.classList.value = "flex-table justify-start text-xs";
         // collect rows into the table
         for (const [i, row] of rows.entries()) {
             // add stripes to multi-row tables
@@ -777,14 +813,15 @@ class bzCityTooltip {
         this.container.appendChild(table);
     }
     // lay out paragraphs of rules text
-    renderRules(text, listStyle=null, itemStyle=null) {
+    renderRules(text, listStyle=null, itemStyle=null, spacing=null) {
         // text with icons is squirrelly, only format it at top level!
         const ttText = document.createElement("div");
         ttText.classList.value = listStyle ?? "w-full";
         ttText.classList.add("bz-rules-list");
+        if (spacing) ttText.style.lineHeight = spacing;
         for (const item of text) {
             const ttItem = document.createElement("div");
-            ttItem.classList.value = itemStyle ?? "text-xs leading-snug";
+            ttItem.classList.value = itemStyle ?? "text-xs";
             ttItem.classList.add("bz-rules-item");
             ttItem.setAttribute("data-l10n-id", item);
             ttText.appendChild(ttItem);
@@ -794,32 +831,31 @@ class bzCityTooltip {
     renderYields() {
         if (!this.totalYields) return;  // no yields to show
         // set column width based on number of digits (at least three)
-        const digits = getDigits(this.yields.map(y => y.value.toFixed()), 2.5);
-        const size = 0.8888888889;
-        const fontSize = `${size}rem`;
-        const width = `${getFigureWidth(size, digits)}px`;
+        const digits = getDigits(this.yields.map(y => y.value.toFixed()), 2);
+        const width = `${digits * metrics.yields.figure.scale + 1}px`;
+        console.warn(`TRIX YIELDS ${metrics.yields.size.css} ${width}`);
         const tt = document.createElement('div');
         tt.classList.value = "flex flex-wrap justify-center w-full mt-2";
         // one column per yield type
         for (const column of this.yields) {
-            tt.appendChild(this.yieldColumn(column, fontSize, width));
+            tt.appendChild(this.yieldColumn(column, width));
         }
         this.container.appendChild(tt);
     }
-    yieldColumn(col, fontSize, width) {
+    yieldColumn(col, width) {
         const tt = document.createElement("div");
         tt.classList.value = "flex-col justify-start font-body";
         const ariaLabel = `${Locale.toNumber(col.value)} ${Locale.compose(col.name)}`;
         tt.ariaLabel = ariaLabel;
-        const size = '1.3333333333rem';
-        const margin = "mx-0\\.5";
+        const size = metrics.yields.spacing.css;
         const iconCSS = UI.getIconCSS(col.type, "YIELD");
-        const icon = docIcon(iconCSS, size, size, "self-center", "shadow", margin);
+        const icon = docIcon(iconCSS, size, size, "self-center", "shadow");
+        icon.style.marginLeft = icon.style.marginRight = '0.1666666667rem';
         tt.appendChild(icon);
         const value = docText(col.value.toFixed(), "self-center text-center");
-        value.classList.add(margin);
-        value.style.fontSize = fontSize;
-        value.style.leading = size;
+        value.style.marginLeft = value.style.marginRight = '0.1111111111rem';
+        value.style.fontSize = metrics.yields.size.css;
+        value.style.lineHeight = metrics.yields.spacing.css;
         value.style.width = width;
         tt.appendChild(value);
         return tt;
