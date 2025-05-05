@@ -292,6 +292,8 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .dan-tooltip,
 .bz-flags city-banner.city-banner .city-banner__queue-container {
     position: relative;
+    align-items: center;
+    justify-content: center;
     top: 0.1666666667rem;
     left: 0;
     width: 1.5555555556rem;

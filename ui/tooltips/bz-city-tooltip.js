@@ -8,25 +8,110 @@ var bzTarget;
         bzTarget[bzTarget["PRODUCTION"] = '.city-banner__queue-container'] = "PRODUCTION";
 })(bzTarget || (bzTarget = {}));
 
+// horizontal list separator
+const BZ_DOT_DIVIDER = Locale.compose("LOC_PLOT_DIVIDER_DOT");
+
+// custom & adapted icons
+const BZ_TIMER_ICON = "url('hud_turn-timer')";
+
+// box padding
 const BZ_PADDING = '0.5555555556rem';
+const BZ_PADDING_SM = `0.3888888889rem`;  // reduced for leading
+const BZ_PADDING_XS = `0.4444444444rem`;  // reduced for leading
+
+// color palette
+const BZ_COLOR = {
+    // game colors
+    silver: "#4c5366",  // = primary
+    bronze: "#e5d2ac",  // = secondary
+    primary: "#4c5366",
+    primary1: "#8d97a6",
+    primary2: "#4c5366",
+    primary3: "#333640",
+    primary4: "#23252b",
+    primary5: "#12151f",
+    secondary: "#e5d2ac",
+    secondary1: "#e5d2ac",
+    secondary2: "#8c7e62",
+    secondary3: "#4c473d",
+    accent: "#616266",
+    accent1: "#e5e5e5",
+    accent2: "#c2c4cc",
+    accent3: "#9da0a6",
+    accent4: "#85878c",
+    accent5: "#616266",
+    accent6: "#05070d",
+    // bronze shades
+    bronze1: "#f9ecd2",
+    bronze2: "#e5d2ac",  // = secondary1
+    bronze3: "#c7b28a",
+    bronze4: "#a99670",
+    bronze5: "#8c7e62",  // = secondary 2
+    bronze6: "#4c473d",  // = secondary 3
+    // alert colors
+    black: "#000000",
+    danger: "#af1b1c99",  // danger = militaristic 60% opacity
+    caution: "#cea92f",  // caution = healthbar-medium
+    note: "#ff800033",  // note = orange 20% opacity
+    // geographic colors
+    hill: "#a9967066",  // Rough terrain = dark bronze 40% opacity
+    vegetated: "#aaff0033",  // Vegetated features = green 20% opacity
+    wet: "#55aaff66",  // Wet features = teal 40% opacity
+    road: "#f9ecd2cc",  // Roads & Railroads = pale bronze 80% opacity
+    // yield types
+    food: "#80b34d",        //  90° 40 50 green
+    production: "#a33d29",  //  10° 60 40 red
+    gold: "#f6ce55",        //  45° 90 65 yellow
+    science: "#6ca6e0",     // 210° 65 65 cyan
+    culture: "#5c5cd6",     // 240° 60 60 violet
+    happiness: "#f5993d",   //  30° 90 60 orange
+    diplomacy: "#afb7cf",   // 225° 25 75 gray
+    // independent power types
+    militaristic: "#af1b1c",
+    scientific: "#4d7c96",
+    economic: "#ffd553",
+    cultural: "#892bb3",
+};
+const BZ_ALERT = {
+    primary: { "background-color": BZ_COLOR.primary },
+    secondary: { "background-color": BZ_COLOR.secondary, "color": BZ_COLOR.black },
+    black: { "background-color": BZ_COLOR.black },
+    danger: { "background-color": BZ_COLOR.danger },
+    enemy: { "background-color": BZ_COLOR.danger },
+    conqueror: { "background-color": BZ_COLOR.danger, "color": BZ_COLOR.caution },
+    caution: { "background-color": BZ_COLOR.caution, "color": BZ_COLOR.black },
+    note: { "background-color": BZ_COLOR.note },
+    DEBUG: { "background-color": "#80808080" },
+}
+const bzNameSort = (a, b) => {
+    const aname = Locale.compose(a).toUpperCase();
+    const bname = Locale.compose(b).toUpperCase();
+    return aname.localeCompare(bname);
+}
 
 // additional CSS definitions
 const BZ_HEAD_STYLE = [
 `
+.tooltip.bz-city-tooltip .tooltip__content {
+    padding: ${BZ_PADDING_SM} ${BZ_PADDING} ${BZ_PADDING_XS};
+}
 .bz-city-tooltip .img-tooltip-border {
     border-radius: 0.6666666667rem;
     border-image-source: none;
-    border: 0.1111111111rem solid #8C7E62;
+    border-width: 0.1111111111rem;
+    border-style: solid;
+    border-color: ${BZ_COLOR.bronze3} ${BZ_COLOR.bronze4};
     filter: drop-shadow(0 1rem 1rem #000c);
 }
 .bz-city-tooltip .img-tooltip-bg {
     background-image: linear-gradient(to bottom, rgba(35, 37, 43, 0.875) 0%, rgba(18, 21, 31, 0.875) 100%);
 }
-.tooltip.bz-city-tooltip .tooltip__content {
-    padding: ${BZ_PADDING};
-}
 .bz-city-tooltip .shadow {
     filter: drop-shadow(0 0.0555555556rem 0.0555555556rem black);
+}
+.bz-city-tooltip .text-secondary {
+    fxs-font-gradient-color: ${BZ_COLOR.bronze1};
+    color: ${BZ_COLOR.bronze2};
 }
 `,  // full-width banners: enemies and warnings
 `
@@ -59,67 +144,6 @@ BZ_HEAD_STYLE.map(style => {
     e.textContent = style;
     document.head.appendChild(e);
 });
-
-// horizontal list separator
-const BZ_DOT_DIVIDER = Locale.compose("LOC_PLOT_DIVIDER_DOT");
-
-// custom & adapted icons
-const BZ_TIMER_ICON = "url('hud_turn-timer')";
-
-// color palette
-const BZ_COLOR = {
-    // game colors
-    silver: "#4c5366",  // = primary
-    bronze: "#e5d2ac",  // = secondary
-    primary: "#4c5366",
-    secondary: "#e5d2ac",
-    accent: "#616266",
-    accent1: "#e5e5e5",
-    accent2: "#c2c4cc",
-    accent3: "#9da0a6",
-    accent4: "#85878c",
-    accent5: "#616266",
-    accent6: "#05070d",
-    // alert colors
-    black: "#000000",
-    danger: "#af1b1c99",  // danger = militaristic 60% opacity
-    caution: "#cea92f",  // caution = healthbar-medium
-    note: "#ff800033",  // note = orange 20% opacity
-    // geographic colors
-    hill: "#ff800033",  // Rough terrain = orange 20% opacity
-    vegetated: "#aaff0033",  // Vegetated features = green 20% opacity
-    wet: "#55aaff66",  // Wet features = teal 60% opacity
-    road: "#e5d2accc",  // Roads & Railroads = bronze 80% opacity
-    // yield types
-    food: "#80b34d",        //  90° 40 50 green
-    production: "#a33d29",  //  10° 60 40 red
-    gold: "#f6ce55",        //  45° 90 65 yellow
-    science: "#6ca6e0",     // 210° 65 65 cyan
-    culture: "#5c5cd6",     // 240° 60 60 violet
-    happiness: "#f5993d",   //  30° 90 60 orange
-    diplomacy: "#afb7cf",   // 225° 25 75 gray
-    // independent power types
-    militaristic: "#af1b1c",
-    scientific: "#4d7c96",
-    economic: "#ffd553",
-    cultural: "#892bb3",
-};
-const BZ_ALERT = {
-    primary: { "background-color": BZ_COLOR.primary },
-    secondary: { "background-color": BZ_COLOR.secondary, "color": BZ_COLOR.black },
-    black: { "background-color": BZ_COLOR.black },
-    danger: { "background-color": BZ_COLOR.danger },
-    enemy: { "background-color": BZ_COLOR.danger },
-    conqueror: { "background-color": BZ_COLOR.danger, "color": BZ_COLOR.caution },
-    caution: { "background-color": BZ_COLOR.caution, "color": BZ_COLOR.black },
-    note: { "background-color": BZ_COLOR.note },
-    DEBUG: { "background-color": "#80808080" },
-}
-const bzNameSort = (a, b) => {
-    const aname = Locale.compose(a).toUpperCase();
-    const bname = Locale.compose(b).toUpperCase();
-    return aname.localeCompare(bname);
-}
 
 function docIcon(image, size, resize, ...style) {
     // create an icon to fit size (with optional image resizing)
@@ -477,7 +501,7 @@ class bzCityTooltip {
     renderTitleHeading(text, ...style) {
         if (!text) return;
         const layout = document.createElement("div");
-        layout.classList.value = "text-secondary font-title-sm uppercase leading-snug text-center mx-1";
+        layout.classList.value = "text-secondary font-title-sm uppercase leading-snug text-center";
         if (style.length) layout.classList.add(...style);
         const ttText = document.createElement("div");
         ttText.setAttribute('data-l10n-id', text);
