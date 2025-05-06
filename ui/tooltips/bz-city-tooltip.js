@@ -86,6 +86,7 @@ const bzNameSort = (a, b) => {
 
 // box metrics (for initialization, tooltip can update)
 const BASE_FONT_SIZE = 18;
+const BZ_FONT_SPACING = 1.5;
 const BZ_PADDING = 0.6666666667;
 const BZ_MARGIN = BZ_PADDING / 2;
 const BZ_BORDER = 0.1111111111;
@@ -224,7 +225,7 @@ function getFontMetrics() {
     padding.y = sizes(padding.rem - margin.rem);  // room for end block margins
     const border = sizes(BZ_BORDER);
     // font metrics
-    const metrics = (name, ratio) => {
+    const font = (name, ratio=BZ_FONT_SPACING) => {
         const rem = typeof name === "string" ?
             getFontSizeBasePx(name) / BASE_FONT_SIZE : name;
         const size = sizes(rem);  // font size
@@ -236,17 +237,18 @@ function getFontMetrics() {
         const digits = (n) => sizes(n * figure.rem, Math.ceil);
         return { size, ratio, spacing, leading, margin, radius, figure, digits, };
     }
-    const body = metrics('xs', 1.25);
-    const rules = metrics('xs', 1.5);  // is this needed?
-    const table = metrics('xs', 1.5);
-    const yields = metrics(8/9, 1.5);
-    const head = metrics('sm', 1.5);
+    const body = font('xs', 1.25);
+    const rules = font('xs');  // is this needed?
+    const table = font('xs');
+    const yields = font(8/9);
+    const head = font('sm');
     const radius = sizes(2/3 * padding.rem);  // TODO: fine-tuning
     radius.content = sizes(radius.rem);
     radius.tooltip = sizes(radius.rem + border.rem);
     // minimum end banner height to avoid radius glitches
     const bumper = sizes(Math.max(table.spacing.rem, 2*radius.rem));
     return {
+        sizes, font,
         padding, margin, border,
         body, rules, table, yields, head,
         radius, bumper,
@@ -328,7 +330,7 @@ class bzCityTooltip {
         // document root
         this.tooltip = document.createElement('fxs-tooltip');
         this.tooltip.classList.value = "bz-tooltip bz-city-tooltip max-w-96";
-        this.tooltip.style.lineHeight = metrics.table.ratio;  // TODO
+        this.tooltip.style.lineHeight = metrics.table.ratio;
         this.container = document.createElement('div');
         this.tooltip.appendChild(this.container);
         // point-of-view info
@@ -373,6 +375,7 @@ class bzCityTooltip {
         target = banner?.bzComponent ?? null;
         if (target == this.target && subtarget == this.subtarget &&
             !this.updateQueued) return false;
+        console.warn(`TRIX UPDATE NEEDED`);
         // set target, location, and city
         this.target = target;
         this.subtarget = subtarget;
@@ -412,6 +415,7 @@ class bzCityTooltip {
     }
     update() {
         if (!this.target) return;
+        console.warn(`TRIX UPDATE`);
         this.plotIndex = GameplayMap.getIndexFromLocation(this.location);
         this.model();
         this.render();
@@ -428,8 +432,20 @@ class bzCityTooltip {
         this.modelProduction();
         this.modelYields();
     }
+    dumpTree(root, max=3, d=0) {
+        if (max <= d) return;
+        console.warn(`TRIX ${d} ${root.tagName} . ${root.classList?.value}`);
+        for (let child = root.firstChild; child; child = child.nextSibling) {
+            this.dumpTree(child, max, d + 1);
+        }
+    }
     render() {
-        // TODO: update component styles from metrics
+        console.warn(`TRIX RENDER`);
+        // this.dumpTree(this.tooltip);
+        metrics = getFontMetrics();
+        const border = this.tooltip.querySelector('.img-tooltip-border');
+        console.warn(`TRIX BORDER ${border?.tagName} .= ${border?.classList.value}`);
+        if (border) border.borderRadius = metrics.radius.tooltip.css;
         // render subtarget tooltips, if needed
         if (this.subtarget == bzTarget.GROWTH) return this.renderGrowth();
         if (this.subtarget == bzTarget.PRODUCTION) return this.renderProduction();
@@ -829,7 +845,6 @@ class bzCityTooltip {
         const table = document.createElement("div");
         table.classList.value = "flex-table justify-start text-xs";
         // set bottom margin (ignoring leading)
-        // TODO: only ignore leading for colored rows
         table.style.marginBottom = metrics.margin.css;
         // collect rows into the table
         for (const [i, row] of rows.entries()) {
