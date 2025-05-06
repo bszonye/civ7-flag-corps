@@ -236,7 +236,8 @@ function getFontMetrics() {
         const size = sizes(rem);  // font size
         const spacing = sizes(size.rem * ratio);  // line height
         const leading = sizes(spacing.rem - size.rem);  // interline spacing
-        const margin = sizes(BZ_MARGIN - leading.rem / 2);
+        leading.half = sizes(leading.rem / 2);
+        const margin = sizes(BZ_MARGIN - leading.half.rem);
         const radius = sizes(spacing.rem / 2);
         const figure = sizes(0.6 * size.rem, Math.ceil);  // figure width
         const digits = (n) => sizes(n * figure.rem, Math.ceil);
@@ -571,11 +572,10 @@ class bzCityTooltip {
             }
         });
     }
-    renderTitleHeading(text, ...style) {
+    renderTitleHeading(text) {
         if (!text) return;
         const layout = document.createElement("div");
         layout.classList.value = "text-secondary font-title-sm uppercase text-center";
-        if (style.length) layout.classList.add(...style);
         layout.style.lineHeight = metrics.head.ratio;
         layout.style.marginTop = metrics.head.margin.css;
         const ttText = document.createElement("div");
