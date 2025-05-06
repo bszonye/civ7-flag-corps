@@ -87,6 +87,7 @@ const bzNameSort = (a, b) => {
 // box metrics (for initialization, tooltip can update)
 const BASE_FONT_SIZE = 18;
 const BZ_PADDING = 0.6666666667;
+const BZ_MARGIN = BZ_PADDING/3;
 const BZ_BORDER_WIDTH = 0.1111111111;
 let metrics = getFontMetrics();
 
@@ -100,7 +101,7 @@ function getFontMetrics() {
     }
     // global metrics
     const padding = sizes(BZ_PADDING);
-    const halfpad = sizes(BZ_PADDING/2);
+    const margin = sizes(BZ_MARGIN);  // top & bottom of each block
     // font metrics
     const metrics = (name, ratio) => {
         const rem = typeof name === "string" ?
@@ -108,7 +109,7 @@ function getFontMetrics() {
         const size = sizes(rem);  // font size
         const spacing = sizes(size.rem * ratio);  // line height
         const leading = sizes(spacing.rem - size.rem);  // interline spacing
-        const margin = sizes(halfpad.rem - leading.rem/2);
+        const margin = sizes(BZ_MARGIN - leading.rem/2);
         const figure = sizes(0.6 * size.rem);  // figure width
         return { size, spacing, leading, margin, figure, ratio, };
     }
@@ -117,7 +118,7 @@ function getFontMetrics() {
     const table = metrics('xs', 1.5);
     const yields = metrics(8/9, 1.5);
     const head = metrics('sm', 1.5);
-    return { body, rules, table, yields, head, padding, halfpad, };
+    return { body, rules, table, yields, head, padding, margin, };
 }
 const remBorderRadius = BZ_BORDER_WIDTH + BZ_PADDING + metrics.table.spacing.rem / 2;
 
@@ -127,7 +128,7 @@ const BZ_HEAD_STYLE = [
 //    2. #TOOLTIP-ROOT-CONTENT relative font-body text-xs
 `
 .tooltip.bz-city-tooltip .tooltip__content {
-    padding: ${BZ_PADDING/2}rem ${BZ_PADDING}rem ${BZ_PADDING/2}rem;
+    padding: ${BZ_PADDING - BZ_MARGIN}rem ${BZ_PADDING}rem;
 }
 .bz-city-tooltip .img-tooltip-border {
     border-radius: ${remBorderRadius}rem;
@@ -816,7 +817,7 @@ class bzCityTooltip {
         const table = document.createElement("div");
         table.classList.value = "flex-table justify-start text-xs";
         // set bottom margin (ignoring leading)
-        table.style.marginBottom = metrics.halfpad.css;
+        table.style.marginBottom = metrics.margin.css;
         // collect rows into the table
         for (const [i, row] of rows.entries()) {
             // add stripes to multi-row tables
