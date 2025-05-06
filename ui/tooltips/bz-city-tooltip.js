@@ -247,7 +247,7 @@ function getFontMetrics() {
     const rules = font('xs');  // is this needed?
     const table = font('xs');
     const yields = font(8/9);
-    const head = font('sm');
+    const head = font('sm', 1.25);
     const radius = sizes(2/3 * padding.rem);  // TODO: fine-tuning
     radius.content = sizes(radius.rem);
     radius.tooltip = sizes(radius.rem + border.rem);
@@ -767,6 +767,7 @@ class bzCityTooltip {
                 "self-center flex text-xs px-1 rounded-2xl mb-1";
             row.style.backgroundColor = `${BZ_COLOR.food}55`;
             row.style.minHeight = size;
+            row.style.marginTop = metrics.body.leading.half.css;
             row.appendChild(docIcon("YIELD_FOOD", size, small, "-mx-1"));
             const current = Locale.compose("LOC_BZ_GROUPED_DIGITS", food.current);
             const threshold = Locale.compose("LOC_BZ_GROUPED_DIGITS", food.threshold);
