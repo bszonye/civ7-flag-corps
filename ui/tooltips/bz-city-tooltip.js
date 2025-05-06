@@ -375,7 +375,6 @@ class bzCityTooltip {
         target = banner?.bzComponent ?? null;
         if (target == this.target && subtarget == this.subtarget &&
             !this.updateQueued) return false;
-        console.warn(`TRIX UPDATE NEEDED`);
         // set target, location, and city
         this.target = target;
         this.subtarget = subtarget;
@@ -415,7 +414,6 @@ class bzCityTooltip {
     }
     update() {
         if (!this.target) return;
-        console.warn(`TRIX UPDATE`);
         this.plotIndex = GameplayMap.getIndexFromLocation(this.location);
         this.model();
         this.render();
@@ -432,19 +430,9 @@ class bzCityTooltip {
         this.modelProduction();
         this.modelYields();
     }
-    dumpTree(root, max=3, d=0) {
-        if (max <= d) return;
-        console.warn(`TRIX ${d} ${root.tagName} . ${root.classList?.value}`);
-        for (let child = root.firstChild; child; child = child.nextSibling) {
-            this.dumpTree(child, max, d + 1);
-        }
-    }
     render() {
-        console.warn(`TRIX RENDER`);
-        // this.dumpTree(this.tooltip);
         metrics = getFontMetrics();
         const border = this.tooltip.querySelector('.img-tooltip-border');
-        console.warn(`TRIX BORDER ${border?.tagName} .= ${border?.classList.value}`);
         if (border) border.borderRadius = metrics.radius.tooltip.css;
         // render subtarget tooltips, if needed
         if (this.subtarget == bzTarget.GROWTH) return this.renderGrowth();
