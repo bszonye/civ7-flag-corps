@@ -589,6 +589,7 @@ class bzCityTooltip {
         // render headings and notes
         this.renderTitleHeading(this.settlementType);
         const notes = [];
+        // TODO: are these notes actually useful?
         if (this.townFocus?.note) notes.push(this.townFocus.note);
         if (!this.isFreshWater) notes.push("LOC_BZ_SETTLEMENT_NO_FRESHWATER");
         if (notes.length) {
