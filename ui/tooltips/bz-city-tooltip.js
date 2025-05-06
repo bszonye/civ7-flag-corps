@@ -468,6 +468,10 @@ class bzCityTooltip {
         const ownerID = GameplayMap.getOwner(loc.x, loc.y);
         this.owner = Players.get(ownerID);
         this.relationship = this.getCivRelationship(this.owner);
+        // original owner
+        if (this.city && this.city.originalOwner != this.city.owner) {
+            this.originalOwner = Players.get(this.city.originalOwner);
+        }
         // settlement type
         if (this.owner.isIndependent) {
             // village or encampment
@@ -486,12 +490,6 @@ class bzCityTooltip {
         }
         // report fresh water supply
         this.isFreshWater = GameplayMap.isFreshWater(loc.x, loc.y);
-        // settlement-specific stats (no villages)
-        if (!this.city) return;
-        // original owner
-        if (this.city.originalOwner != this.city.owner) {
-            this.originalOwner = Players.get(this.city.originalOwner);
-        }
     }
     modelConnections() {
         if (!this.city) return;
