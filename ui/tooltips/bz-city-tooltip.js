@@ -69,12 +69,12 @@ const BZ_COLOR = {
 };
 const BZ_ALERT = {
     primary: { "background-color": BZ_COLOR.primary },
-    secondary: { "background-color": BZ_COLOR.secondary, "color": BZ_COLOR.black },
+    secondary: { "background-color": BZ_COLOR.secondary, color: BZ_COLOR.black },
     black: { "background-color": BZ_COLOR.black },
     danger: { "background-color": BZ_COLOR.danger },
     enemy: { "background-color": BZ_COLOR.danger },
-    conqueror: { "background-color": BZ_COLOR.danger, "color": BZ_COLOR.caution },
-    caution: { "background-color": BZ_COLOR.caution, "color": BZ_COLOR.black },
+    conqueror: { "background-color": BZ_COLOR.danger, color: BZ_COLOR.caution },
+    caution: { "background-color": BZ_COLOR.caution, color: BZ_COLOR.black },
     note: { "background-color": BZ_COLOR.note },
     DEBUG: { "background-color": "#80808080" },
 }
@@ -109,7 +109,7 @@ const BZ_HEAD_STYLE = [
     filter: drop-shadow(0 1rem 1rem #000c);
 }
 .bz-city-tooltip .img-tooltip-bg {
-    background-image: linear-gradient(to bottom, rgba(35, 37, 43, 0.875) 0%, rgba(18, 21, 31, 0.875) 100%);
+    background-image: linear-gradient(to bottom, ${BZ_COLOR.primary4}cc 0%, ${BZ_COLOR.primary5}cc 100%);
 }
 .bz-city-tooltip .shadow {
     filter: drop-shadow(0 0.0555555556rem 0.0555555556rem black);
@@ -117,15 +117,6 @@ const BZ_HEAD_STYLE = [
 .bz-city-tooltip .text-secondary {
     fxs-font-gradient-color: ${BZ_COLOR.bronze1};
     color: ${BZ_COLOR.bronze2};
-}
-`,  // full-width banners: enemies and warnings
-`
-.bz-city-tooltip .bz-banner {
-    text-align: center;
-    margin-left: -${metrics.padding.x.css};
-    margin-right: -${metrics.padding.x.css};
-    padding-left: ${metrics.padding.x.css};
-    padding-right: ${metrics.padding.x.css};
 }
 `,
 // centers blocks of rules text
@@ -150,6 +141,29 @@ BZ_HEAD_STYLE.map(style => {
     document.head.appendChild(e);
 });
 
+function docBanner(text, style) {
+    // create a banner
+    const banner = document.createElement("div");
+    setStyle(banner, style);
+    // extend banner to full width
+    banner.style.paddingLeft = banner.style.paddingRight = metrics.padding.x.css;
+    banner.style.marginLeft = banner.style.marginRight = `-${metrics.padding.x.css}`;
+    // center content vertically and horizontally
+    banner.style.display = 'flex';
+    banner.style.flexDirection = 'column';
+    banner.style.justifyContent = 'center';
+    banner.style.alignItems = 'center';
+    banner.style.textAlign = 'center';
+    // make sure the banner is tall enough for end bumpers
+    banner.style.minHeight = metrics.bumper.css;
+    // set the text
+    for (const item of text) {
+        const row = document.createElement("div");
+        row.setAttribute("data-l10n-id", item);
+        banner.appendChild(row);
+    }
+    return banner;
+}
 function docIcon(image, size, resize, ...style) {
     // create an icon to fit size (with optional image resizing)
     const icon = document.createElement("div");
@@ -310,12 +324,12 @@ function preloadIcon(icon, context) {
 function setStyle(element, style) {
     if (!element || !style) return;
     for (const [property, value] of Object.entries(style)) {
-        element.style.setProperty(property, value);
+        if (property == "classList") {
+            element.classList.add(...value.split(/\s+/));
+        } else {
+            element.style.setProperty(property, value);
+        }
     }
-}
-function setBannerStyle(element, style=BZ_ALERT.danger, ...classes) {
-    element.classList.add("bz-banner", ...classes);
-    setStyle(element, style);
 }
 class bzCityTooltip {
     constructor() {
@@ -332,6 +346,7 @@ class bzCityTooltip {
         this.tooltip.classList.value = "bz-tooltip bz-city-tooltip max-w-96";
         this.tooltip.style.lineHeight = metrics.table.ratio;
         this.container = document.createElement('div');
+        this.container.classList.value = "relative font-body text-xs";
         this.tooltip.appendChild(this.container);
         // point-of-view info
         this.observerID = GameContext.localObserverID;
@@ -341,7 +356,7 @@ class bzCityTooltip {
         this.isDebug = UI.isDebugPlotInfoVisible();
         // ownership
         this.owner = null;
-        this.ownerRelationship = null;
+        this.relationship = null;
         this.originalOwner = null;
         // settlement stats
         this.townFocus = null;
@@ -398,7 +413,7 @@ class bzCityTooltip {
         this.isDebug = UI.isDebugPlotInfoVisible();
         // ownership
         this.owner = null;
-        this.ownerRelationship = null;
+        this.relationship = null;
         this.originalOwner = null;
         // settlement stats
         this.settlementType = null;
@@ -431,6 +446,7 @@ class bzCityTooltip {
         this.modelYields();
     }
     render() {
+        // update metrics
         metrics = getFontMetrics();
         const border = this.tooltip.querySelector('.img-tooltip-border');
         if (border) border.borderRadius = metrics.radius.tooltip.css;
@@ -451,7 +467,7 @@ class bzCityTooltip {
         const loc = this.location;
         const ownerID = GameplayMap.getOwner(loc.x, loc.y);
         this.owner = Players.get(ownerID);
-        this.ownerRelationship = this.getCivRelationship(this.owner);
+        this.relationship = this.getCivRelationship(this.owner);
         // settlement type
         if (this.owner.isIndependent) {
             // village or encampment
@@ -602,33 +618,24 @@ class bzCityTooltip {
     }
     renderOwnerInfo() {
         if (!this.owner || !Players.isAlive(this.owner.id)) return;
-        const layout = document.createElement("div");
-        layout.classList.value = "text-xs text-center leading-tight";
+        const rows = [];
+        // show name, relationship, and civ
         const ownerName = this.getOwnerName(this.owner);
-        const relType = Locale.compose(this.ownerRelationship.type ?? "");
-        const civName = this.getCivName(this.owner, true);
-        // highlight enemy players
-        if (this.ownerRelationship?.isEnemy) {
-            setBannerStyle(layout, BZ_ALERT.enemy, "py-1");
-        }
-        // show name & relationship
-        const ttPlayer = document.createElement("div");
-        ttPlayer.innerHTML = dotJoin([ownerName, relType]);
-        layout.appendChild(ttPlayer);
-        // show full civ name
-        const ttCiv = document.createElement("div");
-        ttCiv.setAttribute('data-l10n-id', civName);
-        layout.appendChild(ttCiv);
+        const relType = Locale.compose(this.relationship.type ?? "");
+        rows.push(dotJoin([ownerName, relType]));
+        rows.push(this.getCivName(this.owner, true));  // full name
         // show original owner
         if (this.originalOwner) {
-            const ttCiv = document.createElement("div");
             const adjective = this.originalOwner.civilizationAdjective;
             const text = Locale.compose("LOC_BZ_WAS_PREVIOUSLY", adjective);
-            ttCiv.setAttribute('data-l10n-id', text);
-            layout.appendChild(ttCiv);
+            rows.push(text);
         }
-        layout.style.marginBottom = metrics.body.margin.css;
-        this.container.appendChild(layout);
+        const style = this.relationship?.isEnemy ?
+            { ...BZ_ALERT.danger, classList: "py-1" } : null;
+        const banner = docBanner(rows, style);
+        banner.style.lineHeight = metrics.body.ratio;
+        banner.style.marginBottom = metrics.body.margin.css;
+        this.container.appendChild(banner);
         // show city-state bonus
         if (this.owner.isMinor) {
             const bonusType = Game.CityStates.getBonusType(this.owner.id);
@@ -892,12 +899,9 @@ class bzCityTooltip {
     setWarningCursor() {
         // highlight enemy territory & units with a red cursor
         if (UI.isCursorLocked()) return;
-        const isEnemy = this.ownerRelationship?.isEnemy ?? false;
-        if (isEnemy) {
-            UI.setCursorByType(UIHTMLCursorTypes.Enemy);
-        } else {
-            UI.setCursorByType(UIHTMLCursorTypes.Default);
-        }
+        const isEnemy = this.relationship?.isEnemy ?? false;
+        const cursor = isEnemy ? UIHTMLCursorTypes.Enemy : UIHTMLCursorTypes.Default;
+        UI.setCursorByType(cursor);
     }
 }
 
