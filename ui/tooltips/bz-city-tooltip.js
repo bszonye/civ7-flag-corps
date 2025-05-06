@@ -351,6 +351,7 @@ class bzCityTooltip {
         this.relationship = null;
         this.originalOwner = null;
         // settlement stats
+        this.settlementType = null;
         this.townFocus = null;
         this.isFreshWater = null;
         this.religion = null;
