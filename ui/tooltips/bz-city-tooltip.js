@@ -87,10 +87,9 @@ const bzNameSort = (a, b) => {
 // box metrics (for initialization, tooltip can update)
 const BASE_FONT_SIZE = 18;
 const BZ_PADDING = 0.6666666667;
-const BZ_MARGIN = BZ_PADDING/2;
-const BZ_BORDER_WIDTH = 0.1111111111;
+const BZ_MARGIN = BZ_PADDING / 2;
+const BZ_BORDER = 0.1111111111;
 let metrics = getFontMetrics();
-const remBorderRadius = BZ_BORDER_WIDTH + BZ_PADDING + metrics.table.spacing.rem / 2;
 
 // additional CSS definitions
 const BZ_HEAD_STYLE = [
@@ -98,10 +97,10 @@ const BZ_HEAD_STYLE = [
 //    2. #TOOLTIP-ROOT-CONTENT relative font-body text-xs
 `
 .tooltip.bz-city-tooltip .tooltip__content {
-    padding: ${BZ_PADDING - BZ_MARGIN}rem ${BZ_PADDING}rem;
+    padding: ${metrics.padding.y.css} ${metrics.padding.x.css};
 }
 .bz-city-tooltip .img-tooltip-border {
-    border-radius: ${remBorderRadius}rem;
+    border-radius: ${metrics.radius.tooltip.css};
     border-image-source: none;
     border-width: 0.1111111111rem;
     border-style: solid;
@@ -122,10 +121,10 @@ const BZ_HEAD_STYLE = [
 `
 .bz-city-tooltip .bz-banner {
     text-align: center;
-    margin-left: -${BZ_PADDING}rem;
-    margin-right: -${BZ_PADDING}rem;
-    padding-left: ${BZ_PADDING}rem;
-    padding-right: ${BZ_PADDING}rem;
+    margin-left: -${metrics.padding.x.css};
+    margin-right: -${metrics.padding.x.css};
+    padding-left: ${metrics.padding.x.css};
+    padding-right: ${metrics.padding.x.css};
 }
 `,
 // centers blocks of rules text
@@ -221,6 +220,9 @@ function getFontMetrics() {
     // global metrics
     const padding = sizes(BZ_PADDING);
     const margin = sizes(BZ_MARGIN);  // top & bottom of each block
+    padding.x = sizes(padding.rem);
+    padding.y = sizes(padding.rem - margin.rem);  // room for end block margins
+    const border = sizes(BZ_BORDER);
     // font metrics
     const metrics = (name, ratio) => {
         const rem = typeof name === "string" ?
@@ -228,17 +230,27 @@ function getFontMetrics() {
         const size = sizes(rem);  // font size
         const spacing = sizes(size.rem * ratio);  // line height
         const leading = sizes(spacing.rem - size.rem);  // interline spacing
-        const margin = sizes(BZ_MARGIN - leading.rem/2);
+        const margin = sizes(BZ_MARGIN - leading.rem / 2);
+        const radius = sizes(spacing.rem / 2);
         const figure = sizes(0.6 * size.rem, Math.ceil);  // figure width
         const digits = (n) => sizes(n * figure.rem, Math.ceil);
-        return { size, spacing, leading, margin, figure, digits, ratio, };
+        return { size, ratio, spacing, leading, margin, radius, figure, digits, };
     }
     const body = metrics('xs', 1.25);
     const rules = metrics('xs', 1.5);  // is this needed?
     const table = metrics('xs', 1.5);
     const yields = metrics(8/9, 1.5);
     const head = metrics('sm', 1.5);
-    return { body, rules, table, yields, head, padding, margin, };
+    const radius = sizes(2/3 * padding.rem);  // TODO: fine-tuning
+    radius.content = sizes(radius.rem);
+    radius.tooltip = sizes(radius.rem + border.rem);
+    // minimum end banner height to avoid radius glitches
+    const bumper = sizes(Math.max(table.spacing.rem, 2*radius.rem));
+    return {
+        padding, margin, border,
+        body, rules, table, yields, head,
+        radius, bumper,
+    };
 }
 function getFigureWidth(size, digits=1) {
     const nwidth = 0.6 * getFontSizeScalePx(size);
@@ -817,6 +829,7 @@ class bzCityTooltip {
         const table = document.createElement("div");
         table.classList.value = "flex-table justify-start text-xs";
         // set bottom margin (ignoring leading)
+        // TODO: only ignore leading for colored rows
         table.style.marginBottom = metrics.margin.css;
         // collect rows into the table
         for (const [i, row] of rows.entries()) {
