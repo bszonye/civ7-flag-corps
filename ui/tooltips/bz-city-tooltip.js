@@ -118,17 +118,8 @@ const BZ_HEAD_STYLE = [
     fxs-font-gradient-color: ${BZ_COLOR.bronze1};
     color: ${BZ_COLOR.bronze2};
 }
-`,
-// centers blocks of rules text
-// IMPORTANT: Locale.stylize wraps text in an extra <p> element when it
-// contains icons, which interferes with text-align and max-width.  the
-// result also changes with single-line vs multi-line text.  these rules
-// apply the properties in the correct order & scope to work with all
-// combinations (with/without icons, single/multiple lines).
+`,  // enables consistent centering of text with font icons
 `
-.bz-tooltip .bz-rules-list {
-    text-align: center;
-}
 .bz-tooltip .bz-rules-item,
 .bz-tooltip .bz-rules-item p {
     width: 100%;
@@ -178,15 +169,15 @@ function docIcon(image, size, resize, ...style) {
         image.startsWith("url(") ? image : UI.getIconCSS(image);
     return icon;
 }
-function docRules(text, itemStyle=null) {
+function docRules(text, style=null) {
     // create a paragraph of rules text
-    // text with icons is squirrelly, only format it at top level!
+    // font icons are squirrely!  only center them at top level
     const tt = document.createElement("div");
+    tt.style.textAlign = 'center';
     tt.style.widthPERCENT = 100;
-    tt.classList.add("bz-rules-list");
     for (const item of text) {
         const row = document.createElement("div");
-        row.classList.value = itemStyle ?? "text-xs";
+        if (style) row.classList.value = style;
         row.classList.add("bz-rules-item");
         row.setAttribute("data-l10n-id", item);
         tt.appendChild(row);
@@ -639,14 +630,13 @@ class bzCityTooltip {
             const bonusType = Game.CityStates.getBonusType(this.owner.id);
             const bonus = GameInfo.CityStateBonuses.find(b => b.$hash == bonusType);
             if (bonus) {
-                const title = docRules([bonus.Name]);
-                title.classList.add("text-secondary", "font-title", "uppercase");
-                title.style.lineHeight = metrics.body.ratio;
-                title.style.marginTop = metrics.body.margin.css;
-                const rules = docRules([bonus.Description]);
+                const rules = docRules([bonus.Name, bonus.Description]);
+                rules.style.marginTop = metrics.body.margin.css;
                 rules.style.width = '12rem';
                 rules.style.marginBottom = metrics.rules.margin.css;
-                this.container.append(title);
+                const title = rules.children[0];
+                title.classList.add("text-secondary", "font-title", "uppercase");
+                title.style.lineHeight = metrics.body.ratio;
                 this.container.append(rules);
             }
         }
