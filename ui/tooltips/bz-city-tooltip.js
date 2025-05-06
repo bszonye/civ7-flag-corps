@@ -87,39 +87,9 @@ const bzNameSort = (a, b) => {
 // box metrics (for initialization, tooltip can update)
 const BASE_FONT_SIZE = 18;
 const BZ_PADDING = 0.6666666667;
-const BZ_MARGIN = BZ_PADDING/3;
+const BZ_MARGIN = BZ_PADDING/2;
 const BZ_BORDER_WIDTH = 0.1111111111;
 let metrics = getFontMetrics();
-
-function getFontMetrics() {
-    const sizes = (rem) => {
-        const css = `${rem.toFixed(10)}rem`;
-        const base = Math.round(rem * BASE_FONT_SIZE);
-        const scale = Math.round(rem * GlobalScaling.currentScalePx);
-        const px = `${scale}px`;
-        return { rem, css, base, scale, px, };
-    }
-    // global metrics
-    const padding = sizes(BZ_PADDING);
-    const margin = sizes(BZ_MARGIN);  // top & bottom of each block
-    // font metrics
-    const metrics = (name, ratio) => {
-        const rem = typeof name === "string" ?
-            getFontSizeBasePx(name) / BASE_FONT_SIZE : name;
-        const size = sizes(rem);  // font size
-        const spacing = sizes(size.rem * ratio);  // line height
-        const leading = sizes(spacing.rem - size.rem);  // interline spacing
-        const margin = sizes(BZ_MARGIN - leading.rem/2);
-        const figure = sizes(0.6 * size.rem);  // figure width
-        return { size, spacing, leading, margin, figure, ratio, };
-    }
-    const body = metrics('xs', 1.25);
-    const rules = metrics('xs', 1.5);  // is this needed?
-    const table = metrics('xs', 1.5);
-    const yields = metrics(8/9, 1.5);
-    const head = metrics('sm', 1.5);
-    return { body, rules, table, yields, head, padding, margin, };
-}
 const remBorderRadius = BZ_BORDER_WIDTH + BZ_PADDING + metrics.table.spacing.rem / 2;
 
 // additional CSS definitions
@@ -239,6 +209,36 @@ function getConstructibles(loc, cclass) {
 }
 function getDigits(list, min=0) {
     return Math.max(min, ...list.map(n => n.length));
+}
+function getFontMetrics() {
+    const sizes = (rem, round=Math.round) => {
+        const css = `${rem.toFixed(10)}rem`;
+        const base = round(rem * BASE_FONT_SIZE);
+        const scale = round(rem * GlobalScaling.currentScalePx);
+        const px = `${scale}px`;
+        return { rem, css, base, scale, px, };
+    }
+    // global metrics
+    const padding = sizes(BZ_PADDING);
+    const margin = sizes(BZ_MARGIN);  // top & bottom of each block
+    // font metrics
+    const metrics = (name, ratio) => {
+        const rem = typeof name === "string" ?
+            getFontSizeBasePx(name) / BASE_FONT_SIZE : name;
+        const size = sizes(rem);  // font size
+        const spacing = sizes(size.rem * ratio);  // line height
+        const leading = sizes(spacing.rem - size.rem);  // interline spacing
+        const margin = sizes(BZ_MARGIN - leading.rem/2);
+        const figure = sizes(0.6 * size.rem, Math.ceil);  // figure width
+        const digits = (n) => sizes(n * figure.rem, Math.ceil);
+        return { size, spacing, leading, margin, figure, digits, ratio, };
+    }
+    const body = metrics('xs', 1.25);
+    const rules = metrics('xs', 1.5);  // is this needed?
+    const table = metrics('xs', 1.5);
+    const yields = metrics(8/9, 1.5);
+    const head = metrics('sm', 1.5);
+    return { body, rules, table, yields, head, padding, margin, };
 }
 function getFigureWidth(size, digits=1) {
     const nwidth = 0.6 * getFontSizeScalePx(size);
@@ -844,13 +844,17 @@ class bzCityTooltip {
         if (!this.totalYields) return;  // no yields to show
         // set column width based on number of digits (at least three)
         const digits = getDigits(this.yields.map(y => y.value.toFixed()), 2);
-        const width = `${digits * metrics.yields.figure.scale + 1}px`;
+        const width = metrics.yields.digits(digits).css;
         const tt = document.createElement('div');
-        tt.classList.value = "flex flex-wrap justify-center w-full mt-2";
+        tt.classList.value = "self-center flex flex-wrap justify-center w-full";
         // one column per yield type
-        for (const column of this.yields) {
-            tt.appendChild(this.yieldColumn(column, width));
+        for (const [i, column] of this.yields.entries()) {
+            const y = this.yieldColumn(column, width);
+            if (i) y.style.marginLeft = '0.3333333333rem';  // all but first column
+            tt.appendChild(y);
         }
+        tt.style.marginTop = metrics.yields.margin.css;
+        tt.style.marginBottom = metrics.yields.margin.css;
         this.container.appendChild(tt);
     }
     yieldColumn(col, width) {
@@ -861,10 +865,8 @@ class bzCityTooltip {
         const size = metrics.yields.spacing.css;
         const iconCSS = UI.getIconCSS(col.type, "YIELD");
         const icon = docIcon(iconCSS, size, size, "self-center", "shadow");
-        icon.style.marginLeft = icon.style.marginRight = '0.1666666667rem';
         tt.appendChild(icon);
         const value = docText(col.value.toFixed(), "self-center text-center");
-        value.style.marginLeft = value.style.marginRight = '0.1111111111rem';
         value.style.fontSize = metrics.yields.size.css;
         value.style.lineHeight = metrics.yields.spacing.css;
         value.style.width = width;
