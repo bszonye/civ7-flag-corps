@@ -231,18 +231,18 @@ function getFontMetrics() {
     padding.banner = sizes(padding.rem / 3);  // extra padding for banners
     const border = sizes(BZ_BORDER);
     // font metrics
-    const font = (name, ratio=BZ_FONT_SPACING) => {
+    const font = (name, ratio=BZ_FONT_SPACING, cratio=3/4) => {
         const rem = typeof name === "string" ?
             getFontSizeBasePx(name) / BASE_FONT_SIZE : name;
         const size = sizes(rem);  // font size
+        const cap = sizes(size.rem * cratio);  // cap height
         const spacing = sizes(size.rem * ratio);  // line height
         const leading = sizes(spacing.rem - size.rem);  // interline spacing
         leading.half = sizes(leading.rem / 2);
-        const margin = sizes(BZ_MARGIN - leading.half.rem);
-        const radius = sizes(spacing.rem / 2);
+        const margin = sizes(BZ_MARGIN - (spacing.rem - cap.rem) / 2);
         const figure = sizes(0.6 * size.rem, Math.ceil);  // figure width
         const digits = (n) => sizes(n * figure.rem, Math.ceil);
-        return { size, ratio, spacing, leading, margin, radius, figure, digits, };
+        return { size, ratio, cap, spacing, leading, margin, figure, digits, };
     }
     const head = font('sm', 1.25);
     const body = font('xs', 1.25);
