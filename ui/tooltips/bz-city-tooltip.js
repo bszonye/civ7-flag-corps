@@ -132,10 +132,10 @@ BZ_HEAD_STYLE.map(style => {
     document.head.appendChild(e);
 });
 
-function docBanner(text, style) {
+function docBanner(text, style, padding) {
     // create a banner
     const banner = document.createElement("div");
-    setStyle(banner, style);
+    setStyle(banner, style, padding);
     // extend banner to full width
     banner.style.paddingLeft = banner.style.paddingRight = metrics.padding.x.css;
     banner.style.marginLeft = banner.style.marginRight = `-${metrics.padding.x.css}`;
@@ -228,6 +228,7 @@ function getFontMetrics() {
     const margin = sizes(BZ_MARGIN);  // top & bottom of each block
     padding.x = sizes(padding.rem);
     padding.y = sizes(padding.rem - margin.rem);  // room for end block margins
+    padding.banner = sizes(margin.rem / 2);  // extra padding for banners
     const border = sizes(BZ_BORDER);
     // font metrics
     const font = (name, ratio=BZ_FONT_SPACING) => {
@@ -313,7 +314,7 @@ function preloadIcon(icon, context) {
     BZ_PRELOADED_ICONS[name] = true;
     Controls.preloadImage(name, 'plot-tooltip');
 }
-function setStyle(element, style) {
+function setStyle(element, style, padding) {
     if (!element || !style) return;
     for (const [property, value] of Object.entries(style)) {
         if (property == "classList") {
@@ -322,6 +323,8 @@ function setStyle(element, style) {
             element.style.setProperty(property, value);
         }
     }
+    console.warn(`TRIX PADDING=${padding}`);
+    element.style.paddingTop = element.style.paddingBottom = padding;
 }
 class bzCityTooltip {
     constructor() {
@@ -597,15 +600,22 @@ class bzCityTooltip {
         rows.push(this.getCivName(this.owner, true));  // full name
         // show original owner
         if (this.originalOwner) {
-            const adjective = this.originalOwner.civilizationAdjective;
-            const text = Locale.compose("LOC_BZ_WAS_PREVIOUSLY", adjective);
+            const was = this.originalOwner.civilizationName;
+            const text = Locale.compose("LOC_BZ_WAS_PREVIOUSLY", was);
             rows.push(text);
         }
-        const style = this.relationship?.isEnemy ?
-            { ...BZ_ALERT.danger, classList: "py-1" } : null;
-        const banner = docBanner(rows, style);
+        const isEnemy = this.relationship?.isEnemy ?? false;
+        const style = isEnemy ? BZ_ALERT.danger : null;
+        const banner = docBanner(rows, style, metrics.padding.banner.css);
         banner.style.lineHeight = metrics.body.ratio;
         banner.style.marginBottom = metrics.body.margin.css;
+        if (isEnemy && !this.growth && !this.production) {
+            // bottom bumper rounding
+            banner.style.paddingBottom = metrics.margin.css;
+            banner.style.marginBottom = `-${metrics.padding.y.css}`;
+            const radius = metrics.radius.css;
+            banner.style.borderRadius = `0 0 ${radius} ${radius}`;
+        }
         this.container.appendChild(banner);
         // show city-state bonus
         if (this.owner.isMinor) {
