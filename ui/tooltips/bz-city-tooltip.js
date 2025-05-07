@@ -299,10 +299,10 @@ function getTownFocus(city) {
     const info = ptype && GameInfo.Projects.lookup(ptype);
     const isGrowing = !info || city.Growth?.growthType == GrowthTypes.EXPAND;
     const growth = "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH";
-    const name = info?.Name ?? growth;
-    const note = isGrowing && name != growth ? growth : null;
+    const name = info?.Name ?? growth;  // locked type
+    const current = isGrowing ? growth : name;  // chosen focus
     const icon = isGrowing ? "PROJECT_GROWTH" : info.ProjectType;
-    return { isGrowing, name, note, icon, info, };
+    return { isGrowing, name, current, icon, info, };
 }
 const BZ_PRELOADED_ICONS = {};
 function preloadIcon(icon, context) {
@@ -585,30 +585,10 @@ class bzCityTooltip {
         this.container.appendChild(layout);
     }
     renderSettlement() {
-        if (!this.owner) return;
-        // render headings and notes
-        this.renderTitleHeading(this.settlementType);
-        const notes = [];
-        // TODO: are these notes actually useful?
-        if (this.townFocus?.note) notes.push(this.townFocus.note);
-        if (!this.isFreshWater) notes.push("LOC_BZ_SETTLEMENT_NO_FRESHWATER");
-        if (notes.length) {
-            // note: extra div layer here to align bz-debug levels
-            const tt = document.createElement("div");
-            tt.classList.value = "text-xs text-center mb-1";
-            const ttSubhead = document.createElement("div");
-            const ttNote = document.createElement("div");
-            ttNote.classList.value = "text-2xs leading-none mb-0\\.5";
-            ttNote.setAttribute('data-l10n-id', dotJoinLocale(notes));
-            ttSubhead.appendChild(ttNote);
-            tt.appendChild(ttSubhead);
-            this.container.appendChild(tt);
-        }
-        // owner info
-        this.renderOwnerInfo();
-    }
-    renderOwnerInfo() {
+        // note: discoveries are owned by non-living "World" player
         if (!this.owner || !Players.isAlive(this.owner.id)) return;
+        this.renderTitleHeading(this.settlementType);
+        // owner info
         const rows = [];
         // show name, relationship, and civ
         const ownerName = this.getOwnerName(this.owner);
@@ -733,6 +713,7 @@ class bzCityTooltip {
         this.container.appendChild(tt);
     }
     renderGrowth() {
+        // TODO: show Fresh Water status in here?
         if (!this.growth) return;
         // alternate titles:
         // LOC_UI_FOOD_CHOOSER_TITLE = Growth
