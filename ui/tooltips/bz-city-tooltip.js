@@ -244,11 +244,12 @@ function getFontMetrics() {
         const digits = (n) => sizes(n * figure.rem, Math.ceil);
         return { size, ratio, spacing, leading, margin, radius, figure, digits, };
     }
+    const head = font('sm', 1.25);
     const body = font('xs', 1.25);
+    const note = font('2xs', 1);
     const rules = font('xs');  // is this needed?
     const table = font('xs');
     const yields = font(8/9);
-    const head = font('sm', 1.25);
     const radius = sizes(2/3 * padding.rem);  // TODO: fine-tuning
     radius.content = sizes(radius.rem);
     radius.tooltip = sizes(radius.rem + border.rem);
@@ -257,7 +258,7 @@ function getFontMetrics() {
     return {
         sizes, font,
         padding, margin, border,
-        body, rules, table, yields, head,
+        head, body, note, rules, table, yields,
         radius, bumper,
     };
 }
