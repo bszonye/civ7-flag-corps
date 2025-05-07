@@ -324,7 +324,6 @@ function setStyle(element, style, padding) {
             element.style.setProperty(property, value);
         }
     }
-    console.warn(`TRIX PADDING=${padding}`);
     element.style.paddingTop = element.style.paddingBottom = padding;
 }
 class bzCityTooltip {
