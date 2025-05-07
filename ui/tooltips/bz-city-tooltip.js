@@ -228,7 +228,7 @@ function getFontMetrics() {
     const margin = sizes(BZ_MARGIN);  // top & bottom of each block
     padding.x = sizes(padding.rem);
     padding.y = sizes(padding.rem - margin.rem);  // room for end block margins
-    padding.banner = sizes(margin.rem / 2);  // extra padding for banners
+    padding.banner = sizes(padding.rem / 3);  // extra padding for banners
     const border = sizes(BZ_BORDER);
     // font metrics
     const font = (name, ratio=BZ_FONT_SPACING) => {
