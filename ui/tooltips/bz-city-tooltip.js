@@ -611,7 +611,7 @@ class bzCityTooltip {
         banner.style.marginBottom = metrics.body.margin.css;
         if (isEnemy && !this.growth && !this.production) {
             // bottom bumper rounding
-            banner.style.paddingBottom = metrics.margin.css;
+            banner.style.paddingBottom = metrics.margin.css;  // a little extra
             banner.style.marginBottom = `-${metrics.padding.y.css}`;
             const radius = metrics.radius.css;
             banner.style.borderRadius = `0 0 ${radius} ${radius}`;
