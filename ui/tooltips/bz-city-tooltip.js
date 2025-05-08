@@ -248,8 +248,9 @@ function getFontMetrics() {
         const cap = sizes(size.rem * cratio);  // cap height
         const spacing = sizes(size.rem * ratio);  // line height
         const leading = sizes(spacing.rem - size.rem);  // interline spacing
-        leading.half = sizes(leading.rem / 2);
-        const margin = sizes(BZ_MARGIN - (spacing.rem - cap.rem) / 2);
+        leading.half = sizes(leading.rem / 2);  // half-leading
+        leading.internal = sizes((spacing.rem - cap.rem) / 2);  // space above caps
+        const margin = sizes(BZ_MARGIN - leading.internal.rem);
         const figure = sizes(0.6 * size.rem, Math.ceil);  // figure width
         const digits = (n) => sizes(n * figure.rem, Math.ceil);
         return { size, ratio, cap, spacing, leading, margin, figure, digits, };
