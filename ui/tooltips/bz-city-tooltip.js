@@ -90,6 +90,7 @@ const BZ_FONT_SPACING = 1.5;
 const BZ_PADDING = 0.6666666667;
 const BZ_MARGIN = BZ_PADDING / 2;
 const BZ_BORDER = 0.1111111111;
+const BZ_RULES_WIDTH = 13.3333333333;
 let metrics = getFontMetrics();
 
 // additional CSS definitions
@@ -173,8 +174,9 @@ function docRules(text, style=null) {
     // create a paragraph of rules text
     // font icons are squirrely!  only center them at top level
     const tt = document.createElement("div");
+    tt.style.alignSelf = 'center';
     tt.style.textAlign = 'center';
-    tt.style.widthPERCENT = 100;
+    tt.style.width = metrics.rules.width.css;
     for (const item of text) {
         const row = document.createElement("div");
         if (style) row.classList.value = style;
@@ -248,6 +250,7 @@ function getFontMetrics() {
     const body = font('xs', 1.25);
     const note = font('2xs', 1);
     const rules = font('xs');  // is this needed?
+    rules.width = sizes(BZ_RULES_WIDTH);
     const table = font('xs');
     const yields = font(8/9);
     const radius = sizes(2/3 * padding.rem);  // TODO: fine-tuning
@@ -624,7 +627,6 @@ class bzCityTooltip {
             if (bonus) {
                 const rules = docRules([bonus.Name, bonus.Description]);
                 rules.style.marginTop = metrics.body.margin.css;
-                rules.style.width = '12rem';
                 rules.style.marginBottom = metrics.rules.margin.css;
                 const title = rules.children[0];
                 title.classList.add("text-secondary", "font-title", "uppercase");
