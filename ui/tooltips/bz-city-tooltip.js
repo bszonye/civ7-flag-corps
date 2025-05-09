@@ -801,15 +801,13 @@ class bzCityTooltip {
             row.appendChild(docTimer(size, size));
             rows.push(row);
         }
-        const color = single ? null : `${BZ_COLOR.production}55`;
+        const color = `${BZ_COLOR.production}55`;
         this.renderTable(rows, color, single);
     }
     // display formatted rows as a stripy table
     renderTable(rows, color, narrow=false) {
         const table = document.createElement("div");
         table.classList.value = "flex-table justify-start text-xs";
-        // set bottom margin (ignoring leading)
-        table.style.marginBottom = metrics.margin.css;
         // collect rows into the table
         for (const [i, row] of rows.entries()) {
             // add stripes to multi-row tables
@@ -825,11 +823,14 @@ class bzCityTooltip {
             // TODO: why does this work?
             const tt = document.createElement("div");
             tt.classList.value = "flex justify-center";
+            tt.style.marginBottom = 0;
             tt.append(table);
+            tt.style.marginBottom = metrics.margin.css;
             this.container.appendChild(tt);
             return;
         }
         // full-width table
+        table.style.marginBottom = metrics.margin.css;
         this.container.appendChild(table);
     }
     renderYields() {
