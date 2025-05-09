@@ -208,9 +208,6 @@ function dotJoin(list, dot=BZ_DOT_DIVIDER) {
     // join text with dots after removing empty elements
     return list.filter(e => e).join("&nbsp;" + dot + " ");
 }
-function dotJoinLocale(list, dot=BZ_DOT_DIVIDER) {
-    return dotJoin(list.map(s => s && Locale.compose(s)), dot);
-}
 function getConstructibles(loc, cclass) {
     const list = MapConstructibles.getHiddenFilteredConstructibles(loc.x, loc.y);
     const items = list.map(id => Constructibles.getByComponentID(id));
@@ -243,7 +240,7 @@ function getFontMetrics() {
     // font metrics
     const font = (name, ratio=BZ_FONT_SPACING, cratio=3/4) => {
         const rem = typeof name === "string" ?
-            getFontSizeBasePx(name) / BASE_FONT_SIZE : name;
+            GlobalScaling.getFontSizePx(name) / BASE_FONT_SIZE : name;
         const size = sizes(rem);  // font size
         const cap = sizes(size.rem * cratio);  // cap height
         const spacing = sizes(size.rem * ratio);  // line height
@@ -273,24 +270,6 @@ function getFontMetrics() {
         head, body, note, rules, table, yields,
         radius, bumper,
     };
-}
-function getFigureWidth(size, digits=1) {
-    const nwidth = 0.6 * getFontSizeScalePx(size);
-    return Math.round(nwidth * digits);
-}
-function getFontHeight(size, leading) {
-    return Math.round(leading * getFontSizeScalePx(size));
-}
-function getFontSizeBasePx(size) {
-    return GlobalScaling.getFontSizePx(size);
-}
-function getFontSizeRem(size) {
-    const fpx = getFontSizeBasePx(size);
-    return GlobalScaling.pixelsToRem(fpx);
-}
-function getFontSizeScalePx(size) {
-    if (typeof size === "string") size = getFontSizeRem(size);
-    return size * GlobalScaling.currentScalePx;
 }
 function getReligionInfo(id) {
     // find a matching player religion, to get custom names
@@ -692,9 +671,8 @@ class bzCityTooltip {
     }
     renderConnections() {
         if (!this.connections) return;
-        const height = getFontHeight('xs', 1.5);
-        const size = `${height}px`;
-        const small = `${Math.round(2/3*height)}px`;
+        const size = metrics.table.spacing.css;
+        const small = metrics.sizes(2/3 * metrics.table.spacing.rem).css;
         this.renderTitleHeading("LOC_BZ_SETTLEMENT_CONNECTIONS");
         const tt = document.createElement("div");
         tt.classList.value = "flex justify-center text-xs";
@@ -760,11 +738,10 @@ class bzCityTooltip {
                 value: pop.specialists,
             },
         ];
-        const height = getFontHeight('xs', 1.5);
-        const size = `${height}px`;
-        const small = `${Math.round(5/6*height)}px`;
+        const size = metrics.table.spacing.css;
+        const small = metrics.sizes(5/6 * metrics.table.spacing.rem).css;
         const digits = getDigits(layout.map(i => i.value.toFixed()));
-        const dwidth = `${getFigureWidth('xs', digits)}px`;
+        const dwidth = metrics.table.digits(digits).css;
         if (food.isGrowing) {
             const row = document.createElement("div");
             row.classList.value =
@@ -802,10 +779,9 @@ class bzCityTooltip {
         if (this.player && this.owner.id != this.playerID && !this.isDebug) return;
         this.renderTitleHeading("LOC_UI_PRODUCTION_TITLE");
         const single = this.production.length == 1;
-        const height = getFontHeight('xs', 1.5);
-        const size = `${height}px`;
+        const size = metrics.table.spacing.css;
         const digits = getDigits(this.production.map(i => i.turnsLeft.toFixed()));
-        const dwidth = `${getFigureWidth('xs', digits)}px`;
+        const dwidth = metrics.table.digits(digits).css;
         const rows = [];
         for (const item of this.production) {
             const row = document.createElement("div");
