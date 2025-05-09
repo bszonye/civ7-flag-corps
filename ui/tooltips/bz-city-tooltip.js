@@ -1,4 +1,3 @@
-// TODO: recalculate metrics during update
 // TODO: config option to show yields
 import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 
@@ -259,7 +258,7 @@ function getFontMetrics() {
     rules.width = sizes(BZ_RULES_WIDTH);
     const table = font('xs');
     const yields = font(8/9);
-    const radius = sizes(2/3 * padding.rem);  // TODO: fine-tuning
+    const radius = sizes(2/3 * padding.rem);
     radius.content = sizes(radius.rem);
     radius.tooltip = sizes(radius.rem + border.rem);
     // minimum end banner height to avoid radius glitches
@@ -712,7 +711,6 @@ class bzCityTooltip {
         this.container.appendChild(tt);
     }
     renderGrowth() {
-        // TODO: show Fresh Water status in here?
         if (!this.growth) return;
         // alternate titles:
         // LOC_UI_FOOD_CHOOSER_TITLE = Growth
