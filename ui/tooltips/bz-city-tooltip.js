@@ -118,12 +118,9 @@ const BZ_HEAD_STYLE = [
     fxs-font-gradient-color: ${BZ_COLOR.bronze1};
     color: ${BZ_COLOR.bronze2};
 }
-`,  // enables consistent centering of text with font icons
+`,  // helps center blocks of rules text (see docRules)
 `
-.bz-tooltip .bz-list-item,
-.bz-tooltip .bz-list-item p {
-    width: 100%;
-}
+.bz-tooltip .bz-list-item p { width: 100%; }
 `,
 ];
 BZ_HEAD_STYLE.map(style => {
@@ -171,7 +168,7 @@ function docIcon(image, size, resize, ...style) {
 }
 function docList(text, style=null, size=metrics.body) {
     // create a paragraph of rules text
-    // note: very finicky! test any changes thoroughly
+    // note: very finicky! test changes thoroughly (see docRules)
     const wrap = document.createElement("div");
     wrap.style.display = 'flex';
     wrap.style.alignSelf = 'center';
@@ -191,8 +188,18 @@ function docList(text, style=null, size=metrics.body) {
     wrap.appendChild(list);
     return wrap;
 }
-function docRules(text, style=null, size=metrics.rules) {
-    return docList(text, style, size);
+function docRules(text, style=null) {
+    // IMPORTANT:
+    // Locale.stylize wraps text in an extra <p> element when it
+    // contains styling, which interferes with text-align and max-width.
+    // the result also changes with single- vs multi-line text.  this 
+    // function and docList set up flex boxes and style properties to
+    // center text with all combinations (with/without styling and
+    // wrapped/unwrapped text).
+    const isPlain = !text.some(t => Locale.stylize(t).includes('<fxs-font-icon'));
+    const list = docList(text, style, metrics.rules);
+    if (isPlain) list.style.lineHeight = metrics.body.ratio;
+    return list;
 }
 function docText(text, style) {
     const e = document.createElement("div");
@@ -614,8 +621,8 @@ class bzCityTooltip {
             const bonus = GameInfo.CityStateBonuses.find(b => b.$hash == bonusType);
             if (bonus) {
                 const rules = docRules([bonus.Name, bonus.Description]);
-                rules.style.marginTop = metrics.body.margin.css;
-                rules.style.marginBottom = metrics.rules.margin.css;
+                rules.style.marginTop = rules.style.marginBottom =
+                    metrics.body.margin.css;
                 const title = rules.firstChild.firstChild;
                 title.classList.add("text-secondary", "font-title", "uppercase");
                 title.style.lineHeight = metrics.body.ratio;
