@@ -618,7 +618,7 @@ class bzCityTooltip {
                 const title = rules.children[0];
                 title.classList.add("text-secondary", "font-title", "uppercase");
                 title.style.lineHeight = metrics.body.ratio;
-                this.container.append(rules);
+                this.container.appendChild(rules);
             }
         }
     }
@@ -821,9 +821,8 @@ class bzCityTooltip {
             // TODO: why does this work?
             const tt = document.createElement("div");
             tt.classList.value = "flex justify-center";
-            tt.style.marginBottom = 0;
-            tt.append(table);
             tt.style.marginBottom = metrics.margin.css;
+            tt.appendChild(table);
             this.container.appendChild(tt);
             return;
         }
