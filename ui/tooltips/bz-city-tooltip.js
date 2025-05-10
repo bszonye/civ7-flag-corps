@@ -312,11 +312,12 @@ function getTownFocus(city) {
     const ptype = city.Growth?.projectType ?? null;
     const info = ptype && GameInfo.Projects.lookup(ptype);
     const isGrowing = !info || city.Growth?.growthType == GrowthTypes.EXPAND;
+    const town = "LOC_CAPITAL_SELECT_PROMOTION_NONE";
     const growth = "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH";
-    const name = info?.Name ?? growth;  // locked type
-    const current = isGrowing ? growth : name;  // chosen focus
+    const name = info?.Name ?? town;
+    const note = isGrowing && name != growth ? growth : null;
     const icon = isGrowing ? "PROJECT_GROWTH" : info.ProjectType;
-    return { isGrowing, name, current, icon, info, };
+    return { isGrowing, name, note, icon, info, };
 }
 const BZ_PRELOADED_ICONS = {};
 function preloadIcon(icon, context) {
