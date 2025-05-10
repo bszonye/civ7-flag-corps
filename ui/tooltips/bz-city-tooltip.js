@@ -42,6 +42,8 @@ const BZ_COLOR = {
     bronze4: "#a99670",
     bronze5: "#8c7e62",  // = secondary 2
     bronze6: "#4c473d",  // = secondary 3
+    // rules background
+    rules: "#8c7e6233",
     // alert colors
     black: "#000000",
     danger: "#af1b1c99",  // danger = militaristic 60% opacity
@@ -192,7 +194,7 @@ function docList(text, style=null, size=metrics.body) {
     wrap.appendChild(list);
     return wrap;
 }
-function docRules(text, style=null) {
+function docRules(text, style=null, bg=BZ_COLOR.rules) {
     // IMPORTANT:
     // Locale.stylize wraps text in an extra <p> element when it
     // contains styling, which interferes with text-align and max-width.
@@ -203,6 +205,14 @@ function docRules(text, style=null) {
     const isPlain = !text.some(t => Locale.stylize(t).includes('<fxs-font-icon'));
     const list = docList(text, style, metrics.rules);
     if (isPlain) list.style.lineHeight = metrics.body.ratio;
+    if (bg) {
+        list.style.paddingTop = list.style.paddingBottom =
+            list.style.paddingLeft = list.style.paddingRight =
+            metrics.padding.banner.css;
+        list.style.backgroundColor = bg;
+        list.style.borderRadius = metrics.radius.css;
+        list.style.marginBottom = metrics.padding.banner.css;
+    }
     return list;
 }
 function docText(text, style) {
@@ -626,7 +636,7 @@ class bzCityTooltip {
             if (bonus) {
                 const rules = docRules([bonus.Name, bonus.Description]);
                 rules.style.marginTop = rules.style.marginBottom =
-                    metrics.body.margin.css;
+                    metrics.margin.css;
                 const title = rules.firstChild.firstChild;
                 title.classList.add("text-secondary", "font-title", "uppercase");
                 title.style.lineHeight = metrics.body.ratio;
