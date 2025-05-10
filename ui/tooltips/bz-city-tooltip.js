@@ -7,8 +7,10 @@ var bzTarget;
         bzTarget[bzTarget["PRODUCTION"] = '.city-banner__queue-container'] = "PRODUCTION";
 })(bzTarget || (bzTarget = {}));
 
-// horizontal list separator
+// horizontal list separator (spaced in all locales except zh)
 const BZ_DOT_DIVIDER = Locale.compose("LOC_PLOT_DIVIDER_DOT");
+const BZ_DOT_JOINER = Locale.getCurrentDisplayLocale().startsWith('zh_') ?
+    BZ_DOT_DIVIDER : `&nbsp;${BZ_DOT_DIVIDER} `;
 
 // custom & adapted icons
 const BZ_TIMER_ICON = "url('hud_turn-timer')";
@@ -225,9 +227,11 @@ function docTimer(size, resize, ...style) {
     if (!style.length) style = ["-mx-1"];
     return docIcon(BZ_TIMER_ICON, size, resize, ...style);
 }
-function dotJoin(list, dot=BZ_DOT_DIVIDER) {
-    // join text with dots after removing empty elements
-    return list.filter(e => e).join("&nbsp;" + dot + " ");
+function dotJoin(list) {
+    return joinLocale(list, BZ_DOT_JOINER);
+}
+function joinLocale(list, divider=" ") {
+    return list.map(s => s && Locale.compose(s)).filter(e => e).join(divider);
 }
 function getConstructibles(loc, cclass) {
     const list = MapConstructibles.getHiddenFilteredConstructibles(loc.x, loc.y);
@@ -608,8 +612,7 @@ class bzCityTooltip {
         const rows = [];
         // show name, relationship, and civ
         const ownerName = this.getOwnerName(this.owner);
-        const relType = Locale.compose(this.relationship.type ?? "");
-        rows.push(dotJoin([ownerName, relType]));
+        rows.push(dotJoin([ownerName, this.relationship.type]));
         rows.push(this.getCivName(this.owner, true));  // full name
         // show original owner
         if (this.originalOwner) {
