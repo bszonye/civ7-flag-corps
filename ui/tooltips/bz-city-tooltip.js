@@ -816,8 +816,7 @@ class bzCityTooltip {
             table.appendChild(row);
         }
         if (narrow) {
-            // optionally prevent single-row tables from
-            // expanding to the full width of the tooltip
+            // optionally prevent table from expanding to full width
             // TODO: why does this work?
             const tt = document.createElement("div");
             tt.classList.value = "flex justify-center";
