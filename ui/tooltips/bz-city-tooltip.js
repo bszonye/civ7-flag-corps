@@ -146,9 +146,13 @@ function docBanner(text, style, padding) {
     banner.style.minHeight = metrics.bumper.css;
     // set the text
     for (const item of text) {
-        const row = document.createElement("div");
-        row.setAttribute("data-l10n-id", item);
-        banner.appendChild(row);
+        if (typeof item === "object") {
+            banner.appendChild(item);
+        } else {
+            const row = document.createElement("div");
+            row.setAttribute("data-l10n-id", item);
+            banner.appendChild(row);
+        }
     }
     return banner;
 }
