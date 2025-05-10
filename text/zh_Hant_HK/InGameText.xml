@@ -19,14 +19,8 @@
         <Replace Tag="LOC_BZ_SETTLEMENT_CONNECTIONS" Language="zh_Hant_HK">
             <Text>連接定居點</Text>
         </Replace>
-        <Replace Tag="LOC_BZ_SETTLEMENT_NO_FRESHWATER" Language="zh_Hant_HK">
-            <Text>無淡水</Text>
-        </Replace>
         <Replace Tag="LOC_BZ_WAS_PREVIOUSLY" Language="zh_Hant_HK">
             <Text>(原為 {1_name})</Text>
-        </Replace>
-        <Replace Tag="LOC_BZ_WAS_ICON_PREVIOUSLY" Language="zh_Hant_HK">
-            <Text>(原為 {1_icon} {2_name})</Text>
         </Replace>
     </LocalizedText>
 </Database>

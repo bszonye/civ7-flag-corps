@@ -19,14 +19,8 @@
         <Replace Tag="LOC_BZ_SETTLEMENT_CONNECTIONS" Language="de_DE">
             <Text>Verbindungen</Text>
         </Replace>
-        <Replace Tag="LOC_BZ_SETTLEMENT_NO_FRESHWATER" Language="de_DE">
-            <Text>Kein Süßwasser</Text>
-        </Replace>
         <Replace Tag="LOC_BZ_WAS_PREVIOUSLY" Language="de_DE">
             <Text>(War {1_name})</Text>
-        </Replace>
-        <Replace Tag="LOC_BZ_WAS_ICON_PREVIOUSLY" Language="de_DE">
-            <Text>(War {1_icon} {2_name})</Text>
         </Replace>
     </LocalizedText>
 </Database>

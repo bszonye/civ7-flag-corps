@@ -19,14 +19,8 @@
         <Replace Tag="LOC_BZ_SETTLEMENT_CONNECTIONS">
             <Text>Connections</Text>
         </Replace>
-        <Replace Tag="LOC_BZ_SETTLEMENT_NO_FRESHWATER">
-            <Text>No Fresh Water</Text>
-        </Replace>
         <Replace Tag="LOC_BZ_WAS_PREVIOUSLY">
             <Text>(Was {1_name})</Text>
-        </Replace>
-        <Replace Tag="LOC_BZ_WAS_ICON_PREVIOUSLY">
-            <Text>(Was {1_icon} {2_name})</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS">
             <Text>Flag Corps • restyle city banners</Text>
