@@ -89,7 +89,7 @@ const BZ_FONT_SPACING = 1.5;
 const BZ_PADDING = 0.6666666667;
 const BZ_MARGIN = BZ_PADDING / 2;
 const BZ_BORDER = 0.1111111111;
-const BZ_RULES_WIDTH = 13.3333333333;
+const BZ_RULES_WIDTH = 12;
 let metrics = getFontMetrics();
 
 // additional CSS definitions
@@ -169,29 +169,30 @@ function docIcon(image, size, resize, ...style) {
         image.startsWith("url(") ? image : UI.getIconCSS(image);
     return icon;
 }
-function docList(text, style=null) {
-    // create a list of plain text (use docRules for font icons)
-    const tt = document.createElement("div");
-    tt.style.position = 'relative';
-    tt.style.alignSelf = 'center';
-    tt.style.textAlign = 'center';
-    tt.style.lineHeight = metrics.body.ratio;
+function docList(text, style=null, size=metrics.body) {
+    // create a paragraph of rules text
+    // note: very finicky! test any changes thoroughly
+    const wrap = document.createElement("div");
+    wrap.style.display = 'flex';
+    wrap.style.alignSelf = 'center';
+    wrap.style.textAlign = 'center';
+    wrap.style.lineHeight = size.ratio;
+    const list = document.createElement("div");
+    list.style.display = 'flex';
+    list.style.flexDirection = 'column';
+    if (size.width) list.style.maxWidth = size.width.css;
     for (const item of text) {
         const row = document.createElement("div");
         if (style) row.classList.value = style;
         row.classList.add("bz-list-item");
         row.setAttribute("data-l10n-id", item);
-        tt.appendChild(row);
+        list.appendChild(row);
     }
-    return tt;
+    wrap.appendChild(list);
+    return wrap;
 }
-function docRules(text, style=null) {
-    // create a paragraph of rules text
-    // font icons are squirrely!  only center them at top level
-    const tt = docList(text, style);
-    tt.style.lineHeight = metrics.rules.ratio;
-    tt.style.width = metrics.rules.width.css;
-    return tt;
+function docRules(text, style=null, size=metrics.rules) {
+    return docList(text, style, size);
 }
 function docText(text, style) {
     const e = document.createElement("div");
@@ -615,7 +616,7 @@ class bzCityTooltip {
                 const rules = docRules([bonus.Name, bonus.Description]);
                 rules.style.marginTop = metrics.body.margin.css;
                 rules.style.marginBottom = metrics.rules.margin.css;
-                const title = rules.children[0];
+                const title = rules.firstChild.firstChild;
                 title.classList.add("text-secondary", "font-title", "uppercase");
                 title.style.lineHeight = metrics.body.ratio;
                 this.container.appendChild(rules);
