@@ -723,27 +723,25 @@ class bzCityTooltip {
             {
                 icon: religion.urban?.icon ?? "CITY_URBAN",
                 label: "LOC_UI_CITY_STATUS_URBAN_POPULATION",
-                value: pop.urban,
+                value: pop.urban.toFixed(),
             },
             {
                 icon: religion.rural?.icon ?? "CITY_RURAL",
                 label: "LOC_UI_CITY_STATUS_RURAL_POPULATION",
-                value: pop.rural,
+                value: pop.rural.toFixed(),
             },
             {
                 icon: "CITY_SPECIAL_BASE",
                 label: "LOC_UI_SPECIALISTS_SUBTITLE",
-                value: pop.specialists,
+                value: pop.specialists.toFixed(),
             },
         ];
         const size = metrics.table.spacing.css;
         const small = metrics.sizes(5/6 * metrics.table.spacing.rem).css;
-        const digits = getDigits(layout.map(i => i.value.toFixed()));
-        const dwidth = metrics.table.digits(digits).css;
         if (food.isGrowing) {
             const row = document.createElement("div");
             row.classList.value =
-                "self-center flex text-xs px-1 rounded-2xl mb-1";
+                "self-center flex text-xs px-1 rounded-2xl mb-1 -mx-0\\.5";
             row.style.backgroundColor = `${BZ_COLOR.food}55`;
             row.style.minHeight = size;
             row.style.marginTop = metrics.body.leading.half.css;
@@ -757,19 +755,20 @@ class bzCityTooltip {
             row.appendChild(docTimer(size, size));
             this.container.appendChild(row);
         }
-        const rows = [];
+        const table = document.createElement("div");
+        table.classList.value = "flex-table justify-start text-xs";
+        table.style.marginBottom = metrics.table.margin.css;
         for (const item of layout) {
             const row = document.createElement("div");
-            row.classList.value = "flex justify-start px-1";
+            row.classList.value = "flex justify-start";
             row.style.minHeight = size;
-            row.appendChild(docIcon(item.icon, size, small, "-mx-1"));
-            row.appendChild(docText(item.label, "text-left flex-auto mx-2"));
-            const value = docText(item.value.toFixed(), "text-right");
-            value.style.width = dwidth;
+            row.appendChild(docIcon(item.icon, size, small, "-mx-0\\.5"));
+            row.appendChild(docText(item.label, "text-left flex-auto ml-1\\.5"));
+            const value = docText(item.value, "ml-2 text-right");
             row.appendChild(value);
-            rows.push(row);
+            table.appendChild(row);
         }
-        this.renderTable(rows);
+        this.container.appendChild(table);
     }
     renderProduction() {
         if (!this.production) return;
@@ -780,11 +779,16 @@ class bzCityTooltip {
         const size = metrics.table.spacing.css;
         const digits = getDigits(this.production.map(i => i.turnsLeft.toFixed()));
         const dwidth = metrics.table.digits(digits).css;
-        const rows = [];
-        for (const item of this.production) {
+        const table = document.createElement("div");
+        table.classList.value = "flex-table justify-start text-xs";
+        for (const [i, item] of this.production.entries()) {
             const row = document.createElement("div");
-            row.classList.value = "flex justify-start px-1";
+            row.classList.value = "flex justify-start px-1 -mx-0\\.5";
             row.style.minHeight = size;
+            if (!(i % 2)) {
+                row.classList.add("rounded-2xl");
+                row.style.backgroundColor = `${BZ_COLOR.production}55`;
+            }
             const name = document.createElement("div");
             name.classList.value = "text-left flex-auto";
             name.classList.add("mx-1");  // wider spacing
@@ -797,37 +801,21 @@ class bzCityTooltip {
             turns.textContent = item.turnsLeft.toFixed();
             row.appendChild(turns);
             row.appendChild(docTimer(size, size));
-            rows.push(row);
-        }
-        const color = `${BZ_COLOR.production}55`;
-        this.renderTable(rows, color, single);
-    }
-    // display formatted rows as a stripy table
-    renderTable(rows, color, narrow=false) {
-        const table = document.createElement("div");
-        table.classList.value = "flex-table justify-start text-xs";
-        // collect rows into the table
-        for (const [i, row] of rows.entries()) {
-            // add stripes to multi-row tables
-            if (color && !(i % 2)) {
-                row.classList.add("rounded-2xl");
-                row.style.backgroundColor = color;
-            }
             table.appendChild(row);
         }
-        if (narrow) {
-            // optionally prevent table from expanding to full width
+        if (single) {
+            // wrap table to keep it from expanding to full width
             // TODO: why does this work?
             const tt = document.createElement("div");
             tt.classList.value = "flex justify-center";
             tt.style.marginBottom = metrics.margin.css;
             tt.appendChild(table);
             this.container.appendChild(tt);
-            return;
+        } else {
+            // full-width table
+            table.style.marginBottom = metrics.margin.css;
+            this.container.appendChild(table);
         }
-        // full-width table
-        table.style.marginBottom = metrics.margin.css;
-        this.container.appendChild(table);
     }
     renderYields() {
         if (!this.totalYields) return;  // no yields to show
