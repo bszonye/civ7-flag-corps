@@ -17,11 +17,11 @@ const BZ_HEAD_STYLE = [
 }
 `,
 `
-.bz-flags-no-shadow .unit-flag__healthbar-container {
-    top: 0.1111111111rem;
+.bz-flags.bz-flags-no-shadow .unit-flag__healthbar-container {
+    top: 0.2222222222rem;
 }
 .bz-flags .unit-flag__healthbar-container {
-    top: 0.1944444444rem;
+    top: 0.1666666667rem;
 }
 .bz-flags .unit-flag__healthbar {
     height: 0.5555555556rem;
