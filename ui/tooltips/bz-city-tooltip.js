@@ -207,13 +207,13 @@ function docRules(text, style=null, bg=BZ_COLOR.rules) {
     // function and docList set up flex boxes and style properties to
     // center text with all combinations (with/without styling and
     // wrapped/unwrapped text).
-    const isPlain = !text.some(t => Locale.stylize(t).includes('<fxs-font-icon'));
+    const size = !text.some(t => Locale.stylize(t).includes('<fxs-font-icon')) ?
+        metrics.body : metrics.rules;
     const list = docList(text, style, metrics.rules);
-    if (isPlain) list.style.lineHeight = metrics.body.ratio;
+    list.style.lineHeight = size.ratio;
     if (bg) {
-        list.style.paddingTop = list.style.paddingBottom =
-            list.style.paddingLeft = list.style.paddingRight =
-            metrics.padding.banner.px;
+        list.style.paddingTop = list.style.paddingBottom = size.margin.px;
+        list.style.paddingLeft = list.style.paddingRight = metrics.padding.banner.px;
         list.style.backgroundColor = bg;
         list.style.borderRadius = metrics.radius.css;
         list.style.marginBottom = metrics.padding.banner.px;
