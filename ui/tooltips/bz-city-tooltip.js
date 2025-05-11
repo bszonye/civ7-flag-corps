@@ -13,7 +13,10 @@ const BZ_DOT_JOINER = Locale.getCurrentDisplayLocale().startsWith('zh_') ?
     BZ_DOT_DIVIDER : `&nbsp;${BZ_DOT_DIVIDER} `;
 
 // custom & adapted icons
-const BZ_TIMER_ICON = "url('hud_turn-timer')";
+const BZ_ICON_RURAL = "CITY_RURAL";  // urban population/yield
+const BZ_ICON_URBAN = "CITY_URBAN";  // rural population/yield
+const BZ_ICON_SPECIAL = "CITY_SPECIAL_BASE";  // specialists
+const BZ_ICON_TIMER = "url('hud_turn-timer')";
 
 // color palette
 const BZ_COLOR = {
@@ -225,7 +228,7 @@ function docText(text, style) {
 }
 function docTimer(size, resize, ...style) {
     if (!style.length) style = ["-mx-1"];
-    return docIcon(BZ_TIMER_ICON, size, resize, ...style);
+    return docIcon(BZ_ICON_TIMER, size, resize, ...style);
 }
 function dotJoin(list) {
     return localeJoin(list, BZ_DOT_JOINER);
@@ -351,8 +354,6 @@ class bzCityTooltip {
         this.subtarget = null;
         this.location = null;
         this.city = null;
-        // coordinates
-        this.plotIndex = null;
         // document root
         this.tooltip = document.createElement('fxs-tooltip');
         this.tooltip.classList.value = "bz-tooltip bz-city-tooltip max-w-96";
@@ -373,8 +374,6 @@ class bzCityTooltip {
         // settlement stats
         this.settlementType = null;
         this.townFocus = null;
-        this.isFreshWater = null;
-        this.religion = null;
         this.connections = null;
         this.growth = null;
         this.production = null;
@@ -386,6 +385,10 @@ class bzCityTooltip {
                 // Controls.preloadImage(url, 'plot-tooltip');
                 preloadIcon(`${y.YieldType}`, "YIELD");
             }
+            const icons = [
+                BZ_ICON_RURAL, BZ_ICON_URBAN, BZ_ICON_SPECIAL, BZ_ICON_TIMER,
+            ];
+            for (const y of icons) preloadIcon(y);
         });
     }
     static get instance() { return bzCityTooltip._instance; }
@@ -415,7 +418,6 @@ class bzCityTooltip {
         return (!this.target);
     }
     reset() {
-        this.plotIndex = null;
         // document root
         this.container.innerHTML = '';
         // point-of-view info
@@ -431,8 +433,6 @@ class bzCityTooltip {
         // settlement stats
         this.settlementType = null;
         this.townFocus = null;
-        this.isFreshWater = null;
-        this.religion = null;
         this.connections = null;
         this.growth = null;
         this.production = null;
@@ -442,10 +442,8 @@ class bzCityTooltip {
     }
     update() {
         if (!this.target) return;
-        this.plotIndex = GameplayMap.getIndexFromLocation(this.location);
         this.model();
         this.render();
-        UI.setPlotLocation(this.location.x, this.location.y, this.plotIndex);
         this.setWarningCursor(this.location);
     }
     model() {
@@ -501,8 +499,6 @@ class bzCityTooltip {
         } else {
             this.settlementType = "LOC_CAPITAL_SELECT_PROMOTION_CITY";
         }
-        // report fresh water supply
-        this.isFreshWater = GameplayMap.isFreshWater(loc.x, loc.y);
     }
     modelConnections() {
         if (!this.city) return;
@@ -747,17 +743,17 @@ class bzCityTooltip {
         const { food, pop, religion, } = this.growth;
         const layout = [
             {
-                icon: religion.urban?.icon ?? "CITY_URBAN",
+                icon: religion.urban?.icon ?? BZ_ICON_URBAN,
                 label: "LOC_UI_CITY_STATUS_URBAN_POPULATION",
                 value: pop.urban.toFixed(),
             },
             {
-                icon: religion.rural?.icon ?? "CITY_RURAL",
+                icon: religion.rural?.icon ?? BZ_ICON_RURAL,
                 label: "LOC_UI_CITY_STATUS_RURAL_POPULATION",
                 value: pop.rural.toFixed(),
             },
             {
-                icon: "CITY_SPECIAL_BASE",
+                icon: BZ_ICON_SPECIAL,
                 label: "LOC_UI_SPECIALISTS_SUBTITLE",
                 value: pop.specialists.toFixed(),
             },
