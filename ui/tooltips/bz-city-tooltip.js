@@ -228,9 +228,9 @@ function docTimer(size, resize, ...style) {
     return docIcon(BZ_TIMER_ICON, size, resize, ...style);
 }
 function dotJoin(list) {
-    return joinLocale(list, BZ_DOT_JOINER);
+    return localeJoin(list, BZ_DOT_JOINER);
 }
-function joinLocale(list, divider=" ") {
+function localeJoin(list, divider=" ") {
     return list.map(s => s && Locale.compose(s)).filter(e => e).join(divider);
 }
 function getConstructibles(loc, cclass) {
