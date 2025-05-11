@@ -210,10 +210,10 @@ function docRules(text, style=null, bg=BZ_COLOR.rules) {
     if (bg) {
         list.style.paddingTop = list.style.paddingBottom =
             list.style.paddingLeft = list.style.paddingRight =
-            metrics.padding.banner.css;
+            metrics.padding.banner.px;
         list.style.backgroundColor = bg;
         list.style.borderRadius = metrics.radius.css;
-        list.style.marginBottom = metrics.padding.banner.css;
+        list.style.marginBottom = metrics.padding.banner.px;
     }
     return list;
 }
@@ -598,7 +598,7 @@ class bzCityTooltip {
         const layout = document.createElement("div");
         layout.classList.value = "text-secondary font-title-sm uppercase text-center";
         layout.style.lineHeight = metrics.head.ratio;
-        layout.style.marginTop = metrics.head.margin.css;
+        layout.style.marginTop = metrics.head.margin.px;
         const ttText = document.createElement("div");
         ttText.setAttribute('data-l10n-id', text);
         layout.appendChild(ttText);
@@ -622,12 +622,12 @@ class bzCityTooltip {
         }
         const isEnemy = this.relationship?.isEnemy ?? false;
         const style = isEnemy ? BZ_ALERT.danger : null;
-        const banner = docBanner(rows, style, metrics.padding.banner.css);
+        const banner = docBanner(rows, style, metrics.padding.banner.px);
         banner.style.lineHeight = metrics.body.ratio;
-        banner.style.marginBottom = metrics.body.margin.css;
+        banner.style.marginBottom = metrics.body.margin.px;
         if (isEnemy && !this.growth && !this.production) {
             // bottom bumper rounding
-            banner.style.paddingBottom = metrics.margin.css;  // a little extra
+            banner.style.paddingBottom = metrics.margin.px;  // a little extra
             banner.style.marginBottom = `-${metrics.padding.y.css}`;
             const radius = metrics.radius.css;
             banner.style.borderRadius = `0 0 ${radius} ${radius}`;
@@ -640,7 +640,7 @@ class bzCityTooltip {
             if (bonus) {
                 const rules = docRules([bonus.Name, bonus.Description]);
                 rules.style.marginTop = rules.style.marginBottom =
-                    metrics.margin.css;
+                    metrics.margin.px;
                 const title = rules.firstChild.firstChild;
                 title.classList.add("text-secondary", "font-title", "uppercase");
                 title.style.lineHeight = metrics.body.ratio;
@@ -733,7 +733,7 @@ class bzCityTooltip {
             for (const row of column) col.appendChild(row);
             tt.appendChild(col);
         }
-        tt.style.marginBottom = metrics.table.margin.css;
+        tt.style.marginBottom = metrics.table.margin.px;
         this.container.appendChild(tt);
     }
     renderGrowth() {
@@ -770,7 +770,7 @@ class bzCityTooltip {
                 "self-center flex text-xs px-1 rounded-2xl mb-1 -mx-0\\.5";
             row.style.backgroundColor = `${BZ_COLOR.food}55`;
             row.style.minHeight = size;
-            row.style.marginTop = metrics.body.leading.half.css;
+            row.style.marginTop = metrics.body.leading.half.px;
             row.appendChild(docIcon("YIELD_FOOD", size, small, "-mx-1"));
             const current = Locale.compose("LOC_BZ_GROUPED_DIGITS", food.current);
             const threshold = Locale.compose("LOC_BZ_GROUPED_DIGITS", food.threshold);
@@ -783,7 +783,7 @@ class bzCityTooltip {
         }
         const table = document.createElement("div");
         table.classList.value = "flex-table justify-start text-xs";
-        table.style.marginBottom = metrics.table.margin.css;
+        table.style.marginBottom = metrics.table.margin.px;
         for (const item of layout) {
             const row = document.createElement("div");
             row.classList.value = "flex justify-start";
@@ -834,12 +834,12 @@ class bzCityTooltip {
             // TODO: why does this work?
             const tt = document.createElement("div");
             tt.classList.value = "flex justify-center";
-            tt.style.marginBottom = metrics.margin.css;
+            tt.style.marginBottom = metrics.margin.px;
             tt.appendChild(table);
             this.container.appendChild(tt);
         } else {
             // full-width table
-            table.style.marginBottom = metrics.margin.css;
+            table.style.marginBottom = metrics.margin.px;
             this.container.appendChild(table);
         }
     }
@@ -856,8 +856,8 @@ class bzCityTooltip {
             if (i) y.style.marginLeft = '0.3333333333rem';  // all but first column
             tt.appendChild(y);
         }
-        tt.style.marginTop = metrics.yields.margin.css;
-        tt.style.marginBottom = metrics.yields.margin.css;
+        tt.style.marginTop = metrics.yields.margin.px;
+        tt.style.marginBottom = metrics.yields.margin.px;
         this.container.appendChild(tt);
     }
     yieldColumn(col, width) {
