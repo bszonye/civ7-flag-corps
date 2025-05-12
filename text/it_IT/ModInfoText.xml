@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <LocalizedText>
+        <Row Tag="LOC_MOD_BZ_FLAG_CORPS_NAME" Language="it_IT">
+            <Text>Flag Corps</Text>
+        </Row>
+        <Row Tag="LOC_MOD_BZ_FLAG_CORPS_DESCRIPTION" Language="it_IT">
+            <Text>Strumenti migliori stendardi e bandiere</Text>
+        </Row>
+    </LocalizedText>
+</Database>

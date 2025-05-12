@@ -1,9 +1,9 @@
-# Flag Corps 2.1.0
+# Flag Corps 3.0.0
 better banners and flags
 
 ## improves city banner design
-- town banners show their current focus
-- city banners include a civilization icon
+- tooltips with connection, growth, and production info
+- town focus and civilization icons
 - more readable lighting effects for text and icons
 - better integration of health bars and timers
 - more consistent layout from one settlement to another
@@ -14,7 +14,7 @@ better banners and flags
 
 ## fixes and customizes game features
 - city banners show changes from resource reallocation (like happiness)
-- unit health bars adjusted to show damage more accurately
+- unit & district health bars adjusted to show damage more accurately
 - city leader portraits react to alliances, war, and unhappiness
 - neutral city-states have a neutral allegiance ring (not red)
 - religion icons merged unless urban and rural religion differ
@@ -31,12 +31,13 @@ known interactions:
   installed, Flag Corps manages unit flags.
 
 ## localization
-the mod is language-independent during play.
-only the menu screens (Mods and Options) contain localized text.
-
 supported languages:
 
+- German (translated by Chr1Z93)
+- Italian (translated by leonardfactory)
 - Korean (translated by Hotsolidinfill)
 - Russian (translated by Webrok)
+- Simplified Chinese (translated by v480615)
+- Traditional Chinese (translated by v480615)
 
-thank you both for your help!
+thank you all for your help!

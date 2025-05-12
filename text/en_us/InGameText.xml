@@ -1,24 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Database>
     <EnglishText>
-        <Row Tag="LOC_OPTIONS_BZ_CITY_BANNERS">
+        <Replace Tag="LOC_BZ_GROUPED_DIGITS">
+            <Text>{1_amount: number #,###;-#,###}</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_GROUPED_MODIFIER">
+            <Text>{1_amount: number +#,###;-#,###}</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_PEOPLE_NAME">
+            <Text>{1_name} People</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_RELATIONSHIP_TRIBUTARY">
+            <Text>Tributary</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_SETTLEMENT_CITY_STATE">
+            <Text>City-State</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_SETTLEMENT_CONNECTIONS">
+            <Text>Connections</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_WAS_PREVIOUSLY">
+            <Text>(Was {1_name})</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS">
             <Text>Flag Corps • restyle city banners</Text>
-        </Row>
-        <Row Tag="LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION">
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION">
             <Text>Updates city and town banners with a cleaner, more consistent style.</Text>
-        </Row>
-        <Row Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS">
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS">
             <Text>Flag Corps • remove leader heads</Text>
-        </Row>
-        <Row Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS_DESCRIPTION">
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS_DESCRIPTION">
             <Text>Removes the leader portraits from city banners.</Text>
-        </Row>
-        <Row Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW">
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW">
             <Text>Flag Corps • remove black “shadow” from unit flags</Text>
-        </Row>
-        <Row Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION">
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION">
             <Text>Removes the heavy black outline from friendly and neutral unit flags.</Text>
-        </Row>
+        </Replace>
         <Replace Tag="LOC_OPTIONS_GROUP_BZ_MODS">
             <Text>trixie's mods</Text>
         </Replace>

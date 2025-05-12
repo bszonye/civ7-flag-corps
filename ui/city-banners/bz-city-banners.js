@@ -1,12 +1,5 @@
-// TODO: tooltips (mostly from Map Trix)
-// - owner & civ
-// - town focus
-// - fresh water
-// - religion
-// - connected settlements
-// - population growth
-// - build queue
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
+import bzCityTooltip from '/bz-flag-corps/ui/tooltips/bz-city-tooltip.js';
 import CityBannerManager from '/base-standard/ui/city-banners/city-banner-manager.js';
 import PlayerColors from '/core/ui/utilities/utilities-color.js';
 
@@ -157,7 +150,8 @@ const BZ_HEAD_STYLE = [
     //       4 .PORTRAIT-IMG absolute -left-2 -right-2 -top-1 bottom-0 bg-cover bg-center bg-no-repeat pointer-events-none
 `
 .bz-flags city-banner.city-banner .city-banner__portrait {
-    margin: -0.25rem 0 -0.25rem -0.2777777778rem;
+    margin: -0.2777777778rem;
+    margin-right: 0;
     top: -0.1111111111rem;
     left: 0.1666666667rem;
     width: 1.7777777778rem;
@@ -178,7 +172,7 @@ const BZ_HEAD_STYLE = [
     background-image: url("fs://game/town_portrait-frame.png");
 }
 .bz-flags .city-banner__portrait-img {
-    top: 0.0277777778rem;
+    top: 0.0555555556rem;
     left: 0rem;
     width: 1.7777777778rem;  /* 64x90 */
     height: 2.5rem;
@@ -202,7 +196,7 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner.city-banner .city-banner__capital-star {
     background-image: url("blp:icon-capital.png");
-    margin: 0.2222222222rem -0.1666666667rem 0 0;
+    margin: 0.2222222222rem -0.3333333333rem 0 0;
 }
 .bz-flags .city-banner.city-banner--village .city-banner__capital-star {
     display: none;
@@ -212,7 +206,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__name.city-banner__icons-below-name,
 .bz-flags city-banner.city-banner .city-banner__name {
     position: relative;
-    margin: 0.3333333333rem 0 0 0;
+    margin-top: 0.3333333333rem;
     padding: 0 0.3333333333rem;
     letter-spacing: 0.0555555556rem;
     font-weight: bold;
@@ -249,7 +243,7 @@ const BZ_HEAD_STYLE = [
     position: relative;
     height: 1rem;
     width: 1rem;
-    margin: 0 0.0277777778rem;
+    margin: 0 0.0555555556rem;
 }
 .bz-flags city-banner.city-banner .city-banner__status.hidden {
     display: none;
@@ -259,9 +253,7 @@ const BZ_HEAD_STYLE = [
     position: relative;
     margin: 0;
     border: none;
-    border-radius: 50%;
-    box-shadow: 0 0.0555555556rem 0.1666666667rem 0.0833333333rem ${BZ_COLOR.shadow},
-                0 0.0555555556rem 0.5rem 0 ${BZ_COLOR.shadow} inset;
+    filter: drop-shadow(0 0.0555555556rem 0.1111111111rem black);
 }
 .bz-flags city-banner.city-banner .city-banner__status-icon {
     background-size: 125%;
@@ -275,7 +267,7 @@ const BZ_HEAD_STYLE = [
     background-color: #f0f8;
 }
 .bz-flags city-banner.city-banner .city-banner__religion-symbol-bg {
-    margin: 0 0.0277777778rem;
+    margin: 0 0.0555555556rem;
 }
 .bz-flags city-banner.city-banner .city-banner__religion-symbol {
     width: 1rem;
@@ -288,93 +280,74 @@ const BZ_HEAD_STYLE = [
     //         5 .POPULATION-NUMBER font-body-xs text-white top-0 w-full text-center pointer-events-auto
     //       4 .TURN flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative
     //         5 .TURN-NUMBER font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat
+    //     3 .DAN-TOOLTIP items-center justify-center w-8 h-6 -mt-2 -mr-1 pointer-events-auto dan-tooltip hidden
+    //       4 FXS-RING-METER.DAN-TOOLTIP items-center justify-center w-8 h-6 -mt-2 -mr-1 pointer-events-auto dan-tooltip
+    //       4 .TURN city-banner__turn flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative
+    //         5 .TURN-NUMBER -banner__turn-number font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat hidden
+    //     3 .QUEUE-CONTAINER queue-production queue-none justify-center w-8 h-6 -mt-2 flex-col align-center
+    //       4 FXS-RING-METER.RING.PRODUCTION-RING bg-cover bg-center flex size-9 self-center align-center
+    //         5 .QUEUE-IMG queue-production size-4 self-center
 `
-.bz-flags city-banner.city-banner div.city-banner__population-container {
+.bz-flags city-banner.city-banner .city-banner__population-container,
+.bz-flags city-banner.city-banner .dan-tooltip,
+.bz-flags city-banner.city-banner .city-banner__queue-container {
     position: relative;
+    align-items: center;
+    justify-content: center;
+    top: 0.1666666667rem;
+    left: 0;
     width: 1.5555555556rem;
     height: 1.5555555556rem;
-    top: 0.4166666667rem;
-    margin: 0rem 0.1111111111rem 0rem 0.1666666667rem;
-    padding: 0rem;
+    margin-top: 0;
+    margin-right: 0.1111111111rem;
+    padding: 0;
     box-shadow: none;
 }
+.bz-flags .city-banner.city-banner--city-other .city-banner__queue-container {
+    /* TODO: why is this 1.1111111111rem too high? */
+    top: 1.2777777778rem;
+}
+.bz-flags .city-banner .dan-tooltip {
+    filter: drop-shadow(0 0.0555555556rem 0.1111111111rem #0006);
+}
 .bz-flags city-banner.city-banner .city-banner__ring {
-    background-image: url("fs://game/hud_sub_circle_bk.png");
-    position: relative;
-    width: 2rem;
-    height: 2rem;
     line-height: 2rem;
-    margin: 0rem;
-    z-index: 2;
-    /* position for F1rstDan's connections ring */
-    top: -0.2222222222rem;
-    left: -0.0277777778rem;
+    margin: 0;
+    z-index: 1;
 }
 .bz-flags city-banner.city-banner .city-banner__population-ring,
 .bz-flags city-banner.city-banner .city-banner__production-ring {
-    /* position for base-game rings */
     background-position: -0.0277777778rem 0.0277777778rem;
-    left: 0;
-    top: -0.25rem;
-}
-.bz-flags .city-banner__ring .fxs-ring-meter__ring-right,
-.bz-flags .city-banner__ring .fxs-ring-meter__ring-left {
-    background-image: url("fs://game/hud_small-progress_bar.png");
-    background-size: cover;
 }
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-left {
     filter: brightness(1.75) fxs-color-tint(${BZ_COLOR.food});
 }
-`,  //     compatibility with F1rstDan's Cool UI:
-    //     3 .DAN-TOOLTIP items-center justify-center w-8 h-6 -mt-2 -mr-1 pointer-events-auto dan-tooltip hidden
-    //       4 FXS-RING-METER.DAN-TOOLTIP items-center justify-center w-8 h-6 -mt-2 -mr-1 pointer-events-auto dan-tooltip
-    //       4 .TURN city-banner__turn flex flex-col justify-end align-center self-center top-0\.5 pointer-events-none relative
-    //         5 .TURN-NUMBER -banner__turn-number font-base-2xs text-white text-center w-full bg-cover bg-center bg-no-repeat hidden
-`
-.bz-flags .city-banner div.dan-tooltip {
-    position: relative;
-    width: 1.5555555556rem;
-    height: 1.5555555556rem;
-    top: 0.3888888889rem;
-    margin: 0rem 0.1111111111rem 0rem 0.1111111111rem;
-    padding: 0rem;
-    border-radius: 0.7777777778rem;
-    box-shadow: 0 0.0555555556rem 0.3333333333rem 0.1111111111rem #0006;
-}
-`,  //     3 .QUEUE-CONTAINER queue-production queue-none justify-center w-8 h-6 -mt-2 flex-col align-center
-    //       4 FXS-RING-METER.RING.PRODUCTION-RING bg-cover bg-center flex size-9 self-center align-center
-    //         5 .QUEUE-IMG queue-production size-4 self-center
-`
-.bz-flags city-banner.city-banner .city-banner__queue-container {
-    position: relative;
-    width: 1.5555555556rem;
-    height: 1.5555555556rem;
-    top: 0.4166666667rem;
-    margin: 0rem 0.2777777777rem 0rem -0.1111111111rem;
-    padding: 0rem;
-    box-shadow: none;
-}
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-left {
-    filter: brightness(1.75) fxs-color-tint(${BZ_COLOR.production});
+    filter: brightness(2.00) fxs-color-tint(${BZ_COLOR.production});
+}
+.bz-flags .city-banner.city-banner--city-other .queue-production {
+    display: flex;
+}
+.bz-flags .city-banner.city-banner--city-other .queue-production.queue-none {
+    display: none;
 }
 `,  //       4 .TURN flex flex-col justify-end align-center self-center w-8 mt-0\.5 pointer-events-none
     //         5 .TURN-NUMBER font-base-xs text-white text-center w-full bg-cover bg-center bg-no-repeat
 `
 .bz-flags city-banner.city-banner .city-banner__turn {
     position: relative;
-    margin: 0rem;
-    top: -1.2222222222rem;
+    margin: 0;
+    top: -1rem;
 }
 .bz-flags city-banner.city-banner .city-banner__turn-number {
     background-image: url("fs://game/town_turn-bg.png");
     background-size: 100% 100%;
     line-height: 1;
-    margin: 0rem;
+    margin: 0;
     padding: 0.8333333333rem 0.1111111111rem 0.1666666667rem;
     min-width: 1.6666666667rem;
-    z-index: 1;
 }
 `,  //     3 .CITY-STATE-CONTAINER justify-center
     //       4 .CITY-STATE-TYPE size-7 self-center align-center justify-center
@@ -394,7 +367,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner > fxs-hslot {
     position: absolute;
     margin: 0rem;
-    top: -2.75rem;
+    top: -2.72222222222rem;
     height: 2.6666666667rem;
     display: flex;
     justify-content: center;
@@ -521,8 +494,8 @@ export class bzCityBanner {
         this.Root = this.component.Root;
         this.elements = this.component.elements;
         this.componentID = null;
-        this.city = null;
         this.location = null;
+        this.city = null;
         this.owner = null;
         this.suzerain = null;
         this.leader = null;
@@ -571,6 +544,22 @@ export class bzCityBanner {
             const after_rv = afterSetCityInfo.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
+        // afterSetFood
+        const afterSetFood = this.afterSetFood;
+        const setFood = proto.setFood;
+        proto.setFood = function(...args) {
+            const c_rv = setFood.apply(this, args);
+            const after_rv = afterSetFood.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
+        }
+        // afterSetProduction
+        const afterSetProduction = this.afterSetProduction;
+        const setProduction = proto.setProduction;
+        proto.setProduction = function(...args) {
+            const c_rv = setProduction.apply(this, args);
+            const after_rv = afterSetProduction.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
+        }
         // afterRealizeBuilds
         const afterRealizeBuilds = this.afterRealizeBuilds;
         const realizeBuilds = proto.realizeBuilds;
@@ -613,9 +602,10 @@ export class bzCityBanner {
     }
     beforeBuildBanner() {
         this.componentID = this.component.componentID;
-        this.city = this.component.city;
         this.location = this.component.location;
+        this.city = this.component.city;
         this.owner = Players.get(this.componentID.owner);
+        this.player = Players.get(GameContext.localObserverID);
         this.component.realizePlayerColors();
     }
     realizeIcon() {
@@ -675,6 +665,7 @@ export class bzCityBanner {
         }
     }
     afterAffinityUpdate() {
+        bzCityTooltip.queueUpdate(this);
         this.realizePortrait();  // sets relationship info too
         if (this.owner?.isMinor && bzFlagCorpsOptions.banners) {
             const isNeutral = !this.isVassal && !this.isEnemy;
@@ -684,10 +675,12 @@ export class bzCityBanner {
         }
     }
     afterCapitalUpdate() {
+        bzCityTooltip.queueUpdate(this);
         // update capital star
         this.realizeIcon();
     }
     afterSetCityInfo(_data) {
+        bzCityTooltip.queueUpdate(this);
         this.realizeIcon();
         if (this.owner && !this.owner.isIndependent) {
             // improved text lighting
@@ -696,9 +689,33 @@ export class bzCityBanner {
             const lightSpect = `${BZ_LIGHT_SHAPE} ${this.color1light}`;
             cityName.style.textShadow = `${shadowSpec}, ${lightSpect}`;
         }
+        this.Root.bzComponent = this;
+        this.Root.setAttribute('data-tooltip-style', 'bz-city-tooltip');
+        const { container, portrait, } = this.elements;
+        container.removeAttribute('data-tooltip-content');
+        portrait.removeAttribute('data-tooltip-content');
+    }
+    afterSetFood(_turnsLeft, _current, _nextTarget) {
+        bzCityTooltip.queueUpdate(this);
+        // hide default tooltip
+        const { growthQueueContainer, } = this.elements;
+        growthQueueContainer.removeAttribute('data-tooltip-content');
+    }
+    afterSetProduction(_data) {
+        bzCityTooltip.queueUpdate(this);
+        // hide default tooltip
+        const { productionQueue, } = this.elements;
+        productionQueue.removeAttribute('data-tooltip-content');
+        // in single-player mode, hide other players' queues
+        if (this.player && this.owner) {
+            // check the actual player ID, not the observer
+            const playerID = GameContext.localPlayerID;
+            const isOwner = playerID == -1 || playerID == this.owner.id;
+            const isDebug = UI.isDebugPlotInfoVisible();
+            if (!isOwner && !isDebug) productionQueue.style.display = 'none';
+        }
     }
     setRelationshipInfo() {
-        this.player = Players.get(GameContext.localObserverID);
         if (this.owner?.Influence?.hasSuzerain) {
             this.suzerain = Players.get(this.owner.Influence.getSuzerain());
         }
@@ -737,6 +754,7 @@ export class bzCityBanner {
         this.realizeIcon();
     }
     afterRealizeHappiness() {
+        bzCityTooltip.queueUpdate(this);
         // shift icons above damage bar
         if (this.owner) {
             const districts = Players.Districts.get(this.owner.id);
@@ -764,6 +782,7 @@ export class bzCityBanner {
         this.color2light = lightenColor(this.color2, 1/2);
     }
     afterRealizeReligion() {
+        bzCityTooltip.queueUpdate(this);
         const {
             urbanReligionSymbol,
             ruralReligionSymbol,
