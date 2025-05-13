@@ -778,7 +778,7 @@ class bzCityTooltip {
             this.container.appendChild(row);
         }
         const table = document.createElement("div");
-        table.classList.value = "flex-table justify-start text-xs";
+        table.classList.value = "flex-col justify-start text-xs";
         table.style.marginBottom = metrics.table.margin.px;
         for (const item of layout) {
             const row = document.createElement("div");
@@ -802,7 +802,7 @@ class bzCityTooltip {
         const digits = getDigits(this.production.map(i => i.turnsLeft.toFixed()));
         const dwidth = metrics.table.digits(digits).css;
         const table = document.createElement("div");
-        table.classList.value = "flex-table justify-start text-xs";
+        table.classList.value = "flex-col justify-start text-xs";
         for (const [i, item] of this.production.entries()) {
             const row = document.createElement("div");
             row.classList.value = "flex justify-start px-1 -mx-0\\.5";
