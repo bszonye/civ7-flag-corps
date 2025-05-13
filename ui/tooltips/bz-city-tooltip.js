@@ -7,11 +7,6 @@ var bzTarget;
         bzTarget[bzTarget["PRODUCTION"] = '.city-banner__queue-container'] = "PRODUCTION";
 })(bzTarget || (bzTarget = {}));
 
-// horizontal list separator (spaced in all locales except zh)
-const BZ_DOT_DIVIDER = Locale.compose("LOC_PLOT_DIVIDER_DOT");
-const BZ_DOT_JOINER = Locale.getCurrentDisplayLocale().startsWith('zh_') ?
-    BZ_DOT_DIVIDER : `&nbsp;${BZ_DOT_DIVIDER} `;
-
 // custom & adapted icons
 const BZ_ICON_RURAL = "CITY_RURAL";  // urban population/yield
 const BZ_ICON_URBAN = "CITY_URBAN";  // rural population/yield
@@ -98,6 +93,10 @@ const BZ_MARGIN = BZ_PADDING / 2;
 const BZ_BORDER = 0.1111111111;
 const BZ_RULES_WIDTH = 12;
 let metrics = getFontMetrics();
+
+// horizontal list separator (spaced in non-ideographic locales)
+const BZ_DOT_DIVIDER = Locale.compose("LOC_PLOT_DIVIDER_DOT");
+const BZ_DOT_JOINER = metrics.isIdeographic ?  BZ_DOT_DIVIDER : `&nbsp;${BZ_DOT_DIVIDER} `;
 
 // additional CSS definitions
 const BZ_HEAD_STYLE = [
@@ -292,11 +291,12 @@ function getFontMetrics() {
     radius.tooltip = sizes(radius.rem + border.rem);
     // minimum end banner height to avoid radius glitches
     const bumper = sizes(Math.max(table.spacing.rem, 2*radius.rem));
+    const isIdeographic = Locale.getCurrentDisplayLocale().startsWith('zh_');
     return {
         sizes, font,
         padding, margin, border,
         head, body, note, rules, table, yields,
-        radius, bumper,
+        radius, bumper, isIdeographic,
     };
 }
 function getReligionInfo(id) {
