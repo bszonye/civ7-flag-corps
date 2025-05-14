@@ -615,7 +615,7 @@ export class bzCityBanner {
         if (!this.owner || this.owner.isIndependent) return;
         const { capitalIndicator, } = this.elements;
         let icon = "";
-        let filter = [];
+        const filter = [];
         const tint = `fxs-color-tint(${this.color2})`;
         const shadow = `drop-shadow(${BZ_SHADOW_SHAPE} ${this.color1dark})`;
         const light = `drop-shadow(${BZ_LIGHT_SHAPE} ${this.color1light})`;

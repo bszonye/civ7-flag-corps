@@ -505,17 +505,17 @@ class bzCityTooltip {
         if (!this.city) return;
         const ids = this.city.getConnectedCities();
         if (!ids) return;
-        let settlements = [];
+        const settlements = [];
         for (const id of ids) {
             const conn = Cities.get(id);
             // ignore stale connections
             if (conn) settlements.push(conn);
         }
         settlements.sort((a, b) => bzNameSort(a.name, b.name));
-        let cities = [];
-        let towns = [];
-        let focused = [];
-        let growing = [];
+        const cities = [];
+        const towns = [];
+        const focused = [];
+        const growing = [];
         for (const conn of settlements) {
             if (conn.isTown) {
                 towns.push(conn);
