@@ -7,11 +7,6 @@ var bzTarget;
         bzTarget[bzTarget["PRODUCTION"] = '.city-banner__queue-container'] = "PRODUCTION";
 })(bzTarget || (bzTarget = {}));
 
-// horizontal list separator (spaced in all locales except zh)
-const BZ_DOT_DIVIDER = Locale.compose("LOC_PLOT_DIVIDER_DOT");
-const BZ_DOT_JOINER = Locale.getCurrentDisplayLocale().startsWith('zh_') ?
-    BZ_DOT_DIVIDER : `&nbsp;${BZ_DOT_DIVIDER} `;
-
 // custom & adapted icons
 const BZ_ICON_RURAL = "CITY_RURAL";  // urban population/yield
 const BZ_ICON_URBAN = "CITY_URBAN";  // rural population/yield
@@ -98,6 +93,11 @@ const BZ_MARGIN = BZ_PADDING / 2;
 const BZ_BORDER = 0.1111111111;
 const BZ_RULES_WIDTH = 12;
 let metrics = getFontMetrics();
+
+// horizontal list separator (spaced in non-ideographic locales)
+const BZ_DOT_DIVIDER = Locale.compose("LOC_PLOT_DIVIDER_DOT");
+const BZ_DOT_JOINER = metrics.isIdeographic ?
+    BZ_DOT_DIVIDER : `&nbsp;${BZ_DOT_DIVIDER} `;
 
 // additional CSS definitions
 const BZ_HEAD_STYLE = [
@@ -292,11 +292,12 @@ function getFontMetrics() {
     radius.tooltip = sizes(radius.rem + border.rem);
     // minimum end banner height to avoid radius glitches
     const bumper = sizes(Math.max(table.spacing.rem, 2*radius.rem));
+    const isIdeographic = Locale.getCurrentDisplayLocale().startsWith('zh_');
     return {
         sizes, font,
         padding, margin, border,
         head, body, note, rules, table, yields,
-        radius, bumper,
+        radius, bumper, isIdeographic,
     };
 }
 function getReligionInfo(id) {
@@ -504,17 +505,17 @@ class bzCityTooltip {
         if (!this.city) return;
         const ids = this.city.getConnectedCities();
         if (!ids) return;
-        let settlements = [];
+        const settlements = [];
         for (const id of ids) {
             const conn = Cities.get(id);
             // ignore stale connections
             if (conn) settlements.push(conn);
         }
         settlements.sort((a, b) => bzNameSort(a.name, b.name));
-        let cities = [];
-        let towns = [];
-        let focused = [];
-        let growing = [];
+        const cities = [];
+        const towns = [];
+        const focused = [];
+        const growing = [];
         for (const conn of settlements) {
             if (conn.isTown) {
                 towns.push(conn);
@@ -778,7 +779,7 @@ class bzCityTooltip {
             this.container.appendChild(row);
         }
         const table = document.createElement("div");
-        table.classList.value = "flex-table justify-start text-xs";
+        table.classList.value = "flex-col justify-start text-xs";
         table.style.marginBottom = metrics.table.margin.px;
         for (const item of layout) {
             const row = document.createElement("div");
@@ -802,7 +803,7 @@ class bzCityTooltip {
         const digits = getDigits(this.production.map(i => i.turnsLeft.toFixed()));
         const dwidth = metrics.table.digits(digits).css;
         const table = document.createElement("div");
-        table.classList.value = "flex-table justify-start text-xs";
+        table.classList.value = "flex-col justify-start text-xs";
         for (const [i, item] of this.production.entries()) {
             const row = document.createElement("div");
             row.classList.value = "flex justify-start px-1 -mx-0\\.5";
