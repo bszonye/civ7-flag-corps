@@ -321,11 +321,11 @@ const BZ_HEAD_STYLE = [
 }
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-left {
-    filter: brightness(1.75) fxs-color-tint(${BZ_COLOR.food});
+    filter: brightness(1.667) fxs-color-tint(${BZ_COLOR.food});
 }
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-left {
-    filter: brightness(2.00) fxs-color-tint(${BZ_COLOR.production});
+    filter: brightness(1.889) fxs-color-tint(${BZ_COLOR.production});
 }
 .bz-flags .city-banner.city-banner--city-other .queue-production {
     display: flex;
@@ -615,7 +615,7 @@ export class bzCityBanner {
         if (!this.owner || this.owner.isIndependent) return;
         const { capitalIndicator, } = this.elements;
         let icon = "";
-        let filter = [];
+        const filter = [];
         const tint = `fxs-color-tint(${this.color2})`;
         const shadow = `drop-shadow(${BZ_SHADOW_SHAPE} ${this.color1dark})`;
         const light = `drop-shadow(${BZ_LIGHT_SHAPE} ${this.color1light})`;
