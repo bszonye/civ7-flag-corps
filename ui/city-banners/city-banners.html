@@ -20,15 +20,17 @@
 				<p class="city-banner__name font-title-base uppercase"></p>
 			</fxs-hslot>
 			<fxs-hslot class="city-banner__status-religion">
-				<div class="city-banner__status flex justify-center align-center opacity-100">
+				<div class="city-banner__status flex justify-center align-center opacity-100 pointer-events-auto">
 					<div class="city-banner__status-background h-full w-full absolute"></div>
 					<div class="city-banner__status-icon absolute w-full h-full bg-no-repeat"></div>
 				</div>
 				<fxs-hslot class="city-banner__religion self-center">
-					<div class="city-banner__religion-symbol-bg">
+					<div class="city-banner__religion-symbol-bg pointer-events-auto"
+						 data-tooltip-content="LOC_DISTRICT_URBAN_NAME">
 						<div class="city-banner__religion-symbol bg-contain bg-no-repeat bg-center"></div>
 					</div>
-					<div class="city-banner__religion-symbol-bg religion-bg--right">
+					<div class="city-banner__religion-symbol-bg pointer-events-auto religion-bg--right"
+						 data-tooltip-content="LOC_DISTRICT_RURAL_NAME">
 						<div
 							 class="city-banner__religion-symbol  bg-contain bg-no-repeat bg-center religion-symbol--right">
 						</div>

@@ -126,10 +126,6 @@
 			display: flex;
 		}
 
-		.city-banner__status {
-			display: none;
-		}
-
 		.city-banner__turn {
 			top: pixels(2);
 		}
@@ -317,17 +313,20 @@
 	}
 
 	&.city-banner--citystate {
+		top: pixels(-72);
+
 		.city-banner__container {
-			margin-top: pixels(28);
+			margin-top: pixels(20);
 		}
 
 		.city-banner__center {
 			width: pixels(44);
 			height: pixels(72);
+			top: pixels(12);
 		}
 
 		.city-banner__portrait {
-			top: pixels(6);
+			top: pixels(-3);
 			width: pixels(20);
 			height: pixels(32);
 			display: flex;
@@ -340,27 +339,28 @@
 		}
 
 		.city-banner__city-state-container {
-			margin-top: pixels(-1);
+			margin-top: pixels(2);
 			margin-left: pixels(4);
 			margin-right: pixels(2);
 		}
 
 		.city-banner__name-container {
-			margin-top: pixels(-13);
+			margin-top: pixels(34);
 			color: black;
 		}
 
 		.city-banner__stretch {
-			top: pixels(12);
+			top: pixels(24);
 			height: pixels(72);
 		}
 
 		.city-banner__stretch-bg {
 			border-image-source: url('fs://game/city_pill.png');
+			fxs-border-image-tint: white;
 		}
 
-		.city-banner__stretch-bg {
-			fxs-border-image-tint: white;
+		.city-banner__turn {
+			top: pixels(2);
 		}
 
 		.city-banner__city-state-ring {
@@ -371,14 +371,10 @@
 
 		.city-banner__city-state-type {
 			display: flex;
-		}
-
-		.city-banner__stretch-bg {
-			fxs-border-image-tint: var(--player-color-secondary);
+			margin-top: 0;
 		}
 
 		.city-banner__name {
-			margin-top: pixels(5);
 			text-shadow: none;
 		}
 

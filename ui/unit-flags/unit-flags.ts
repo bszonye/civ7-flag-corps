@@ -87,7 +87,7 @@ export class GenericUnitFlag extends Component implements UnitFlagType {
 		}
 
 		const unitFlagContainer = document.createElement('div');
-		unitFlagContainer.classList.add('unit-flag__container', 'absolute', '-top-6', '-left-6', 'pointer-events-auto', 'flex', 'flex-col', 'justify-center', 'items-center', 'w-12', 'h-12');
+		unitFlagContainer.classList.add('unit-flag__container', 'absolute', '-top-4', '-left-6', 'pointer-events-auto', 'flex', 'flex-col', 'justify-center', 'items-center', 'w-12', 'h-12');
 		this.unitContainer = unitFlagContainer;
 		this.unitContainer.style.left = '0';
 
@@ -417,7 +417,7 @@ export class GenericUnitFlag extends Component implements UnitFlagType {
 
 	private makeWorldAnchor(componentID: ComponentID) {
 		this.destroyWorldAnchor();
-		const height: number = 40.0;
+		const height: number = 30.0;
 		const worldAnchor = WorldAnchors.RegisterUnitAnchor(componentID, height);
 
 		if (worldAnchor !== null && worldAnchor >= 0) {

@@ -75,7 +75,7 @@ export class GenericUnitFlag extends Component {
             playerColorSec = UI.Player.getSecondaryColorValueAsString(this.componentID.owner);
         }
         const unitFlagContainer = document.createElement('div');
-        unitFlagContainer.classList.add('unit-flag__container', 'absolute', '-top-6', '-left-6', 'pointer-events-auto', 'flex', 'flex-col', 'justify-center', 'items-center', 'w-12', 'h-12');
+        unitFlagContainer.classList.add('unit-flag__container', 'absolute', '-top-4', '-left-6', 'pointer-events-auto', 'flex', 'flex-col', 'justify-center', 'items-center', 'w-12', 'h-12');
         this.unitContainer = unitFlagContainer;
         this.unitContainer.style.left = '0';
         const unitFlagShadow = document.createElement('div');
@@ -347,7 +347,7 @@ export class GenericUnitFlag extends Component {
     }
     makeWorldAnchor(componentID) {
         this.destroyWorldAnchor();
-        const height = 40.0;
+        const height = 30.0;
         const worldAnchor = WorldAnchors.RegisterUnitAnchor(componentID, height);
         if (worldAnchor !== null && worldAnchor >= 0) {
             this.Root.setAttribute('data-bind-style-transform2d', `{{UnitAnchors.offsetTransforms[${worldAnchor}].value}}`);

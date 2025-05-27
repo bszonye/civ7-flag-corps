@@ -566,7 +566,9 @@ export class CityBannerComponent extends FxsActivatable implements CityBanner {
 				// there's a majority religion, so use that icon
 				const icon: string = UI.getIconCSS(religion.ReligionType, "RELIGION");
 				this.elements.urbanReligionSymbol.style.backgroundImage = icon;
-				this.elements.ruralReligionSymbol.style.backgroundImage = icon;
+				this.elements.ruralReligionSymbol.classList.add("hidden");
+				this.elements.ruralReligionSymbolBackground.classList.add("hidden");
+				this.elements.urbanReligionSymbolBackground.setAttribute("data-tooltip-content", religion.Name);
 				this.elements.cityName.classList.add("city-banner__icons-below-name");
 				this.Root.classList.add('city-banner--has-religion');
 			} else {
@@ -577,15 +579,18 @@ export class CityBannerComponent extends FxsActivatable implements CityBanner {
 					this.elements.urbanReligionSymbol.style.backgroundImage = icon;
 					this.elements.cityName.classList.add("city-banner__icons-below-name");
 					this.Root.classList.add('city-banner--has-religion');
+					this.elements.urbanReligionSymbolBackground.setAttribute("data-tooltip-content", Locale.stylize("LOC_DISTRICT_URBAN_NAME") + "[N]" + Locale.stylize(urbanReligion.Name));
 				}
 
 				const ruralReligion: ReligionDefinition | undefined = GameInfo.Religions.find(t => t.$hash == this.city?.Religion?.ruralReligion);
 				if (ruralReligion) {
 					const icon: string = UI.getIconCSS(ruralReligion.ReligionType, "RELIGION");
 					this.elements.ruralReligionSymbol.style.backgroundImage = icon;
-					this.elements.ruralReligionSymbolBackground.style.filter = "fxs-color-tint(red)";
+					this.elements.ruralReligionSymbol.classList.remove("hidden");
+					this.elements.ruralReligionSymbolBackground.classList.remove("hidden");
 					this.elements.cityName.classList.add("city-banner__icons-below-name");
 					this.Root.classList.add('city-banner--has-religion');
+					this.elements.ruralReligionSymbolBackground.setAttribute("data-tooltip-content", Locale.stylize("LOC_DISTRICT_RURAL_NAME") + "[N]" + Locale.stylize(ruralReligion.Name));
 				}
 			}
 		} else {
@@ -643,10 +648,13 @@ export class CityBannerComponent extends FxsActivatable implements CityBanner {
 			}
 
 			let happinessStatus = CityStatusType.happy;
+			this.elements.statusIcon.setAttribute("data-tooltip-content", "LOC_UI_CITY_DETAILS_HAPPY");
 			if (happiness < 0) {
 				happinessStatus = CityStatusType.unhappy;
+				this.elements.statusIcon.setAttribute("data-tooltip-content", "LOC_UI_CITY_DETAILS_UNHAPPY");
 			} else if (happiness < -10) {
 				happinessStatus = CityStatusType.angry;
+				this.elements.statusIcon.setAttribute("data-tooltip-content", "LOC_UI_CITY_DETAILS_ANGRY");
 			}
 
 			if (this.city.isInfected) {

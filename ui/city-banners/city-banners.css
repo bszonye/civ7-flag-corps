@@ -92,9 +92,6 @@
 	height: 2rem;
 	display: flex;
 }
-.city-banner.city-banner--city-other .city-banner__status {
-	display: none;
-}
 .city-banner.city-banner--city-other .city-banner__turn {
 	top: 0.1111111111rem;
 }
@@ -231,15 +228,19 @@
 	display: flex;
 	fxs-border-image-tint: white;
 }
+.city-banner.city-banner--citystate {
+	top: -4rem;
+}
 .city-banner.city-banner--citystate .city-banner__container {
-	margin-top: 1.5555555556rem;
+	margin-top: 1.1111111111rem;
 }
 .city-banner.city-banner--citystate .city-banner__center {
 	width: 2.4444444444rem;
 	height: 4rem;
+	top: 0.6666666667rem;
 }
 .city-banner.city-banner--citystate .city-banner__portrait {
-	top: 0.3333333333rem;
+	top: -0.1666666667rem;
 	width: 1.1111111111rem;
 	height: 1.7777777778rem;
 	display: flex;
@@ -250,23 +251,24 @@
 	mask-image: url("fs://game/core/ui/themes/default/img/city_banners/mask_citybanner_big-village-center.png");
 }
 .city-banner.city-banner--citystate .city-banner__city-state-container {
-	margin-top: -0.0555555556rem;
+	margin-top: 0.1111111111rem;
 	margin-left: 0.2222222222rem;
 	margin-right: 0.1111111111rem;
 }
 .city-banner.city-banner--citystate .city-banner__name-container {
-	margin-top: -0.7222222222rem;
+	margin-top: 1.8888888889rem;
 	color: black;
 }
 .city-banner.city-banner--citystate .city-banner__stretch {
-	top: 0.6666666667rem;
+	top: 1.3333333333rem;
 	height: 4rem;
 }
 .city-banner.city-banner--citystate .city-banner__stretch-bg {
 	border-image-source: url("fs://game/city_pill.png");
-}
-.city-banner.city-banner--citystate .city-banner__stretch-bg {
 	fxs-border-image-tint: white;
+}
+.city-banner.city-banner--citystate .city-banner__turn {
+	top: 0.1111111111rem;
 }
 .city-banner.city-banner--citystate .city-banner__city-state-ring {
 	border-image-slice: 60 24 2 24 fill;
@@ -275,12 +277,9 @@
 }
 .city-banner.city-banner--citystate .city-banner__city-state-type {
 	display: flex;
-}
-.city-banner.city-banner--citystate .city-banner__stretch-bg {
-	fxs-border-image-tint: var(--player-color-secondary);
+	margin-top: 0;
 }
 .city-banner.city-banner--citystate .city-banner__name {
-	margin-top: 0.2777777778rem;
 	text-shadow: none;
 }
 .city-banner.city-banner--citystate .city-banner__ring {

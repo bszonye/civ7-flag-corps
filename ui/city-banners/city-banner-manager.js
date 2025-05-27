@@ -346,7 +346,6 @@ class CityBannerManager extends Component {
     onCityNameChanged(data) {
         const cityBanner = this.banners.get(ComponentID.toBitfield(data.cityID));
         if (cityBanner == undefined) {
-            console.error("A city name changed but no associated banner was found. cid: ", ComponentID.toLogString(data.cityID));
             return;
         }
         cityBanner.queueNameUpdate();
@@ -354,7 +353,6 @@ class CityBannerManager extends Component {
     onCityGovernmentLevelChanged(data) {
         const cityBanner = this.banners.get(ComponentID.toBitfield(data.cityID));
         if (cityBanner == undefined) {
-            console.error("A city changed government levels but no associated banner was found. cid: ", ComponentID.toLogString(data.cityID));
             return;
         }
         // Convert
@@ -365,7 +363,6 @@ class CityBannerManager extends Component {
     onCityRemovedFromMap(data) {
         const cityBanner = this.banners.get(ComponentID.toBitfield(data.cityID));
         if (cityBanner == undefined) {
-            console.error("A city was removed from the map but no associated banner was found. cid: ", ComponentID.toLogString(data.cityID));
             return;
         }
         cityBanner.remove();
@@ -391,7 +388,6 @@ class CityBannerManager extends Component {
         // synthesize a full component ID: for city-states only the owner field is significant.
         const cityBanner = this.banners.get(ComponentID.toBitfield(ComponentID.make(data.cityState, 1, 65536)));
         if (cityBanner == undefined) {
-            console.error("A city-states's bonus changed but no associated banner was found. player id: ", data.cityState);
             return;
         }
         // this does a full refresh of the banner, so it works for what we need
@@ -418,7 +414,6 @@ class CityBannerManager extends Component {
     removeChildFromTracking(child) {
         const key = child.getKey();
         if (!this.banners.has(key)) {
-            console.error("Attempt to remove a city banner from the manager for tracking but none exists with that key. banner: " + child.getDebugString());
             return;
         }
         this.banners.delete(key);
@@ -660,4 +655,5 @@ Controls.define('city-banners', {
     description: 'City Banners',
     requires: ['city-banner']
 });
+
 //# sourceMappingURL=file:///base-standard/ui/city-banners/city-banner-manager.js.map
