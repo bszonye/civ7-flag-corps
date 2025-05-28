@@ -587,14 +587,6 @@ export class bzCityBanner {
             const after_rv = afterRealizePlayerColors.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
-        // afterRealizeReligion
-        const afterRealizeReligion = this.afterRealizeReligion;
-        const realizeReligion = proto.realizeReligion;
-        proto.realizeReligion = function(...args) {
-            const c_rv = realizeReligion.apply(this, args);
-            const after_rv = afterRealizeReligion.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
-        }
     }
     patchStyles(banner) {
         const { growthQueueTurns, productionQueueTurns } = banner.elements;
@@ -780,20 +772,6 @@ export class bzCityBanner {
         this.color2dark = darkenColor(this.color2, 2/3);
         this.color1light = lightenColor(this.color1, 1/2);
         this.color2light = lightenColor(this.color2, 1/2);
-    }
-    afterRealizeReligion() {
-        bzCityTooltip.queueUpdate(this);
-        const {
-            urbanReligionSymbol,
-            ruralReligionSymbol,
-            ruralReligionSymbolBackground,
-        } = this.elements;
-        // hide rural religion if it matches urban religion
-        const majority =
-            urbanReligionSymbol.style.backgroundImage ==
-            ruralReligionSymbol.style.backgroundImage;
-        ruralReligionSymbolBackground.classList.toggle('hidden', majority);
-        ruralReligionSymbolBackground.style.filter = "";  // undo red tint
     }
     beforeAttach() { }
     afterAttach() { }
