@@ -194,6 +194,9 @@ const BZ_HEAD_STYLE = [
     //       4 FXS-HSLOT
     //         5 .CAPITAL-STAR w-8 h-8 bg-cover bg-no-repeat hidden
 `
+.city-banner.city-banner--citystate .city-banner__capital-star {
+    margin-top: -0.0555555556rem;
+}
 .bz-flags city-banner.city-banner .city-banner__capital-star {
     background-image: url("blp:icon-capital.png");
     margin: 0.2222222222rem -0.3333333333rem 0 0;
@@ -584,14 +587,6 @@ export class bzCityBanner {
             const after_rv = afterRealizePlayerColors.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
-        // afterRealizeReligion
-        const afterRealizeReligion = this.afterRealizeReligion;
-        const realizeReligion = proto.realizeReligion;
-        proto.realizeReligion = function(...args) {
-            const c_rv = realizeReligion.apply(this, args);
-            const after_rv = afterRealizeReligion.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
-        }
     }
     patchStyles(banner) {
         const { growthQueueTurns, productionQueueTurns } = banner.elements;
@@ -769,9 +764,6 @@ export class bzCityBanner {
         const showUnrest = this.city?.Happiness?.hasUnrest && !this.city.isBeingRazed;
         this.Root.classList.toggle("city-banner--unrest", showUnrest);
         this.realizePortrait();
-        // hide status/happiness for non-player banners
-        // base game attempts this, but it's broken
-        this.elements.statusContainer.classList.toggle("hidden", this.leader.id != this.player?.id);
     }
     afterRealizePlayerColors() {
         this.color1 = this.Root.style.getPropertyValue('--player-color-primary');
@@ -780,20 +772,6 @@ export class bzCityBanner {
         this.color2dark = darkenColor(this.color2, 2/3);
         this.color1light = lightenColor(this.color1, 1/2);
         this.color2light = lightenColor(this.color2, 1/2);
-    }
-    afterRealizeReligion() {
-        bzCityTooltip.queueUpdate(this);
-        const {
-            urbanReligionSymbol,
-            ruralReligionSymbol,
-            ruralReligionSymbolBackground,
-        } = this.elements;
-        // hide rural religion if it matches urban religion
-        const majority =
-            urbanReligionSymbol.style.backgroundImage ==
-            ruralReligionSymbol.style.backgroundImage;
-        ruralReligionSymbolBackground.classList.toggle('hidden', majority);
-        ruralReligionSymbolBackground.style.filter = "";  // undo red tint
     }
     beforeAttach() { }
     afterAttach() { }
