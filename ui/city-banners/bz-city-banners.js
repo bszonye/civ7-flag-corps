@@ -772,9 +772,6 @@ export class bzCityBanner {
         const showUnrest = this.city?.Happiness?.hasUnrest && !this.city.isBeingRazed;
         this.Root.classList.toggle("city-banner--unrest", showUnrest);
         this.realizePortrait();
-        // hide status/happiness for non-player banners
-        // base game attempts this, but it's broken
-        this.elements.statusContainer.classList.toggle("hidden", this.leader.id != this.player?.id);
     }
     afterRealizePlayerColors() {
         this.color1 = this.Root.style.getPropertyValue('--player-color-primary');
