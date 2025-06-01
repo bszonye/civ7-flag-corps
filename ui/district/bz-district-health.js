@@ -96,7 +96,7 @@ export class bzDistrictHealthBar {
     afterUpdateDistrictHealth(value) {
         if (!this.progressBar || !this.progressInk) return;
         const healthAmt = parseFloat(value);
-        const MAX = 92/100 * 100;  // ink/healthbar = 92/100 pixels
+        const MAX = 94/100 * 100;  // ink/healthbar = 94/100 pixels
         this.progressInk.style.widthPERCENT = healthAmt * MAX;
     }
     beforeAttach() { }
