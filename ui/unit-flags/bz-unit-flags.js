@@ -1,6 +1,5 @@
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
 import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
-import { utils } from '/core/ui/graph-layout/utils.js';
 import { Layout } from '/core/ui/utilities/utilities-layout.js';
 import { UnitFlagManager } from '/base-standard/ui/unit-flags/unit-flag-manager.js';
 import { GenericUnitFlag } from '/base-standard/ui/unit-flags/unit-flags.js';
@@ -128,27 +127,6 @@ GenericUnitFlag.prototype.getRelationship = function() {
 }
 GenericUnitFlag.prototype.realizeAffinity =
     IndependentPowersUnitFlag.prototype.realizeAffinity;
-// fix unit health bars
-function bzFixUnitHealth() {
-    if (this.unitHealthBarInner) {
-        const health = this.unit?.Health ?? 1.0;
-        const damage = (health.maxDamage - health.damage) / health.maxDamage;
-        const MAX = 24/28 * 100;  // inner/healthbar = 24/28 pixels
-        this.unitHealthBarInner.style.widthPERCENT = utils.clamp(damage, 0, 1) * MAX;
-    }
-}
-GenericUnitFlag.prototype.bzFixUnitHealth = bzFixUnitHealth;
-IndependentPowersUnitFlag.prototype.bzFixUnitHealth = bzFixUnitHealth;
-const GUFrealizeUnitHealth = GenericUnitFlag.prototype.realizeUnitHealth;
-GenericUnitFlag.prototype.realizeUnitHealth = function(...args) {
-    GUFrealizeUnitHealth.apply(this, args);
-    this.bzFixUnitHealth();
-}
-const IUFrealizeUnitHealth = IndependentPowersUnitFlag.prototype.realizeUnitHealth;
-IndependentPowersUnitFlag.prototype.realizeUnitHealth = function(...args) {
-    IUFrealizeUnitHealth.apply(this, args);
-    this.bzFixUnitHealth();
-}
 // undo conflicting patches
 function checkUnitPosition(unit) {
     UnitFlagManager.instance.recalculateFlagOffsets(unit.location);
