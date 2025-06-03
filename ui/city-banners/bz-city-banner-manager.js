@@ -10,6 +10,7 @@ export class bzCityBannerManager {
         this.cityRazingStartedListener = this.onCityRazingStarted.bind(this);
         this.districtDamageChangedListener = this.onDistrictDamageChanged.bind(this);
         this.playerResourceChangedListener = this.onPlayerResourceChanged.bind(this);
+        this.playerTurnListener = this.onPlayerTurn.bind(this);
     }
     patchPrototypes(component) {
         const c_prototype = Object.getPrototypeOf(component);
@@ -17,17 +18,28 @@ export class bzCityBannerManager {
     }
     beforeAttach() { }
     afterAttach() {
+        engine.on('PlayerTurnActivated', this.playerTurnListener);
         engine.on('CityRazingStarted', this.cityRazingStartedListener);
         engine.on('DistrictDamageChanged', this.districtDamageChangedListener);
         engine.on('PlayerResourceChanged', this.playerResourceChangedListener);
     }
     beforeDetach() {
+        engine.off('PlayerTurnActivated', this.playerTurnListener);
         engine.off('CityRazingStarted', this.cityRazingStartedListener);
         engine.off('DistrictDamageChanged', this.districtDamageChangedListener);
         engine.off('PlayerResourceChanged', this.playerResourceChangedListener);
     }
     afterDetach() { }
     onAttributeChanged(_name, _prev, _next) { }
+    onPlayerTurn(data) {
+        console.warn(`TRIX UPDATE ${JSON.stringify(data)}`);
+        this.banners.forEach((banner, _key) => {
+            if (banner.city && banner.componentID.owner == data.player) {
+                console.warn(`TRIX BANNER ${JSON.stringify(banner.city)}`);
+                banner.queueBuildsUpdate();
+            }
+        });
+    }
     onCityRazingStarted(data) {
         const cityBanner = this.banners.get(ComponentID.toBitfield(data.cityID));
         if (cityBanner == undefined) {
@@ -48,7 +60,9 @@ export class bzCityBannerManager {
     onPlayerResourceChanged(data) {
         // resource changes can affect food, production, happiness
         this.banners.forEach((banner, _key) => {
-            if (banner.componentID.owner == data.player) banner.queueBuildsUpdate();
+            if (banner.city && banner.componentID.owner == data.player) {
+                banner.queueBuildsUpdate();
+            }
         });
     }
 }
