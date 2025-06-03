@@ -9,7 +9,7 @@ export class bzCityBannerManager {
         this.patchPrototypes(this.component);
         this.cityRazingStartedListener = this.onCityRazingStarted.bind(this);
         this.districtDamageChangedListener = this.onDistrictDamageChanged.bind(this);
-        this.playerResourceChangedListener = this.onPlayerResourceChanged.bind(this);
+        this.playerUpdateListener = this.onPlayerUpdate.bind(this);
     }
     patchPrototypes(component) {
         const c_prototype = Object.getPrototypeOf(component);
@@ -19,12 +19,14 @@ export class bzCityBannerManager {
     afterAttach() {
         engine.on('CityRazingStarted', this.cityRazingStartedListener);
         engine.on('DistrictDamageChanged', this.districtDamageChangedListener);
-        engine.on('PlayerResourceChanged', this.playerResourceChangedListener);
+        engine.on('PlayerResourceChanged', this.playerUpdateListener);
+        engine.on('PlayerTurnActivated', this.playerUpdateListener);
     }
     beforeDetach() {
         engine.off('CityRazingStarted', this.cityRazingStartedListener);
         engine.off('DistrictDamageChanged', this.districtDamageChangedListener);
-        engine.off('PlayerResourceChanged', this.playerResourceChangedListener);
+        engine.off('PlayerResourceChanged', this.playerUpdateListener);
+        engine.off('PlayerTurnActivated', this.playerUpdateListener);
     }
     afterDetach() { }
     onAttributeChanged(_name, _prev, _next) { }
@@ -45,10 +47,13 @@ export class bzCityBannerManager {
         }
         cityBanner.queueBuildsUpdate();
     }
-    onPlayerResourceChanged(data) {
-        // resource changes can affect food, production, happiness
+    onPlayerUpdate(data) {
+        // update all player banners when player data changes
+        // (at the start of each turn and after resource allocation)
         this.banners.forEach((banner, _key) => {
-            if (banner.componentID.owner == data.player) banner.queueBuildsUpdate();
+            if (banner.city && banner.componentID.owner == data.player) {
+                banner.queueBuildsUpdate();
+            }
         });
     }
 }
