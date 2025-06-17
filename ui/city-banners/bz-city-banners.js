@@ -55,6 +55,15 @@ const BZ_LIGHT_SHAPE = "-0.0277777778rem -0.0555555556rem 0.0555555556rem";
 const BZ_LIGHT_SPEC = `${BZ_LIGHT_SHAPE} ${BZ_COLOR.light}`;
 
 const BZ_HEAD_STYLE = [
+// diplo-ribbon: remove color distortion and soften shadows
+`
+.bz-flags .diplo-ribbon__front-banner {
+    fxs-border-image-tint: var(--player-color-primary);
+}
+.bz-flags .diplo-ribbon__front-banner-shadow {
+    fxs-border-image-tint: #0008;
+}
+`,
 // 0. CITY-BANNER -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
 `
 .bz-flags city-banner.city-banner {
