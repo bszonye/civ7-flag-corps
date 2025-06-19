@@ -136,7 +136,7 @@ const BZ_HEAD_STYLE = [
     fxs-border-image-tint: var(--player-color-primary);
 }
 .bz-flags .city-banner.city-banner--village .city-banner__stretch-bg {
-    fxs-border-image-tint: #161623;
+    fxs-border-image-tint: black;
 }
 `,  //   2 FXS-HSLOT.NAME-CONTAINER relative flex justify-between
 `
