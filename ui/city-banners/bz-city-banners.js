@@ -61,7 +61,7 @@ const BZ_HEAD_STYLE = [
     fxs-border-image-tint: var(--player-color-primary);
 }
 .bz-flags .diplo-ribbon__front-banner-shadow {
-    fxs-border-image-tint: #000a;
+    fxs-border-image-tint: #0008;
 }
 `,
 // 0. CITY-BANNER -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
