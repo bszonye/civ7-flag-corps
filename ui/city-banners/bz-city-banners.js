@@ -121,7 +121,7 @@ const BZ_HEAD_STYLE = [
     fxs-border-image-tint: transparent;
 }
 .bz-flags .city-banner.city-banner--village .city-banner__city-state-ring {
-    fxs-border-image-tint: var(--player-color-primary);
+    fxs-border-image-tint: white;
 }
 `,  //     3 .STRETCH-BG absolute inset-0 pointer-events-none
 `
@@ -136,7 +136,7 @@ const BZ_HEAD_STYLE = [
     fxs-border-image-tint: var(--player-color-primary);
 }
 .bz-flags .city-banner.city-banner--village .city-banner__stretch-bg {
-    fxs-border-image-tint: var(--player-color-secondary);
+    fxs-border-image-tint: #161623;
 }
 `,  //   2 FXS-HSLOT.NAME-CONTAINER relative flex justify-between
 `
@@ -151,7 +151,7 @@ const BZ_HEAD_STYLE = [
     color: var(--player-color-secondary);
 }
 .bz-flags .city-banner.city-banner--village .city-banner__name-container {
-    color: var(--player-color-primary);
+    color: white;
 }
 `,  //     3 .PORTRAIT relative pointer-events-auto flex
     //       4 .PORTRAIT-BG1 absolute inset-0 bg-center bg-cover bg-no-repeat
