@@ -5,7 +5,7 @@
  */
 
 import CityBannerManager from '/base-standard/ui/city-banners/city-banner-manager.js';
-import DiplomacyManager from '/base-standard/ui/diplomacy/diplomacy-manager.js';
+import { RaiseDiplomacyEvent } from '/base-standard/ui/diplomacy/diplomacy-events.js';
 import { BannerData, BannerType, CityBanner, CityStatusType, BANNER_INVALID_LOCATION } from '/base-standard/ui/city-banners/banner-support.js';
 import { Icon } from '/core/ui/utilities/utilities-image.js';
 import { MustGetElement } from '/core/ui/utilities/utilities-dom.js';
@@ -210,7 +210,7 @@ export class CityBannerComponent extends FxsActivatable implements CityBanner {
 				if (!Game.Diplomacy.hasMet(GameContext.localPlayerID, this.componentID.owner)) {
 					return;
 				}
-				DiplomacyManager.raiseDiplomacyHub(this.componentID.owner);
+				window.dispatchEvent(new RaiseDiplomacyEvent(this.componentID.owner));
 			}
 		}
 	}
@@ -240,7 +240,7 @@ export class CityBannerComponent extends FxsActivatable implements CityBanner {
 	}
 
 	private makeWorldAnchor(location: float2) {
-		this._worldAnchorHandle = WorldAnchors.RegisterFixedWorldAnchor(location, BANNER_ANCHOR_OFFSET);
+		this._worldAnchorHandle = WorldAnchors.RegisterFixedWorldAnchor(location, BANNER_ANCHOR_OFFSET, PlacementMode.TERRAIN);
 		if (this._worldAnchorHandle !== null && this._worldAnchorHandle >= 0) {
 			this.Root.setAttribute('data-bind-style-transform2d', `{{FixedWorldAnchors.offsetTransforms[${this._worldAnchorHandle}].value}}`);
 			this.Root.setAttribute('data-bind-style-opacity', `{{FixedWorldAnchors.visibleValues[${this._worldAnchorHandle}]}}`);
