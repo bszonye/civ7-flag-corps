@@ -43,6 +43,8 @@ export class CityBannerComponent extends FxsActivatable {
             ruralReligionSymbolBackground: '.city-banner__religion-symbol-bg.religion-bg--right',
             statusContainer: '.city-banner__status',
             statusIcon: '.city-banner__status-icon',
+            tradeNetworkContainer: '.city-banner__trade-network',
+            tradeNetworkIcon: '.city-banner__trade-network-icon',
             portraitImg: '.city-banner__portrait-img',
             cityNameContainer: '.city-banner__name-container',
             cityName: '.city-banner__name',
@@ -67,6 +69,7 @@ export class CityBannerComponent extends FxsActivatable {
     doBuildsUpdate() {
         this.realizeBuilds();
         this.realizeHappiness();
+        this.realizeTradeNetwork();
         this.realizePopulation();
         this.realizeReligion();
         this.updateBuildsQueued = false;
@@ -347,6 +350,7 @@ export class CityBannerComponent extends FxsActivatable {
         if (bannerType == BannerType.village) {
             this.affinityUpdate();
         }
+        this.realizeTradeNetwork();
         this.realizePlayerColors();
         this.realizeCivHeraldry(civSymbol);
         this.updateConqueredIcon();
@@ -477,12 +481,22 @@ export class CityBannerComponent extends FxsActivatable {
             // check for a majority religion in this city
             const religion = GameInfo.Religions.find(t => t.$hash == this.city?.Religion?.majorityReligion);
             if (religion) {
+                const playerLib = Players.get(Game.Religion.getPlayerFromReligion(religion.ReligionType));
+                if (!playerLib) {
+                    console.error(`city-banners.ts: realizeReligion - null player library found for religion type ${religion.ReligionType}`);
+                    return;
+                }
+                const playerRel = playerLib.Religion;
+                if (!playerRel) {
+                    console.error(`city-banners.ts: realizeReligion - undefined player religion library for player id ${playerLib.id}`);
+                    return;
+                }
                 // there's a majority religion, so use that icon
                 const icon = UI.getIconCSS(religion.ReligionType, "RELIGION");
                 this.elements.urbanReligionSymbol.style.backgroundImage = icon;
                 this.elements.ruralReligionSymbol.classList.add("hidden");
                 this.elements.ruralReligionSymbolBackground.classList.add("hidden");
-                this.elements.urbanReligionSymbolBackground.setAttribute("data-tooltip-content", religion.Name);
+                this.elements.urbanReligionSymbolBackground.setAttribute("data-tooltip-content", playerRel.getReligionName());
                 this.elements.cityName.classList.add("city-banner__icons-below-name");
                 this.Root.classList.add('city-banner--has-religion');
             }
@@ -490,21 +504,41 @@ export class CityBannerComponent extends FxsActivatable {
                 // no majority, check if urban or rural religions exist
                 const urbanReligion = GameInfo.Religions.find(t => t.$hash == this.city?.Religion?.urbanReligion);
                 if (urbanReligion) {
+                    const urbanReligionPlayerLib = Players.get(Game.Religion.getPlayerFromReligion(urbanReligion.ReligionType));
+                    if (!urbanReligionPlayerLib) {
+                        console.error(`city-banners.ts: realizeReligion - null player library found for urban religion type ${urbanReligion.ReligionType}`);
+                        return;
+                    }
+                    const urbanPlayerRel = urbanReligionPlayerLib.Religion;
+                    if (!urbanPlayerRel) {
+                        console.error(`city-banners.ts: realizeReligion - undefined player urban religion library for player id ${urbanReligionPlayerLib.id}`);
+                        return;
+                    }
                     const icon = UI.getIconCSS(urbanReligion.ReligionType, "RELIGION");
                     this.elements.urbanReligionSymbol.style.backgroundImage = icon;
                     this.elements.cityName.classList.add("city-banner__icons-below-name");
                     this.Root.classList.add('city-banner--has-religion');
-                    this.elements.urbanReligionSymbolBackground.setAttribute("data-tooltip-content", Locale.stylize("LOC_DISTRICT_URBAN_NAME") + "[N]" + Locale.stylize(urbanReligion.Name));
+                    this.elements.urbanReligionSymbolBackground.setAttribute("data-tooltip-content", Locale.stylize("LOC_DISTRICT_URBAN_NAME") + "[N]" + Locale.stylize(urbanPlayerRel.getReligionName()));
                 }
                 const ruralReligion = GameInfo.Religions.find(t => t.$hash == this.city?.Religion?.ruralReligion);
                 if (ruralReligion) {
+                    const ruralReligionPlayerLib = Players.get(Game.Religion.getPlayerFromReligion(ruralReligion.ReligionType));
+                    if (!ruralReligionPlayerLib) {
+                        console.error(`city-banners.ts: realizeReligion - null player library found for rural religion type ${ruralReligion.ReligionType}`);
+                        return;
+                    }
+                    const ruralPlayerRel = ruralReligionPlayerLib.Religion;
+                    if (!ruralPlayerRel) {
+                        console.error(`city-banners.ts: realizeReligion - undefined player rural religion library for player id ${ruralReligionPlayerLib.id}`);
+                        return;
+                    }
                     const icon = UI.getIconCSS(ruralReligion.ReligionType, "RELIGION");
                     this.elements.ruralReligionSymbol.style.backgroundImage = icon;
                     this.elements.ruralReligionSymbol.classList.remove("hidden");
                     this.elements.ruralReligionSymbolBackground.classList.remove("hidden");
                     this.elements.cityName.classList.add("city-banner__icons-below-name");
                     this.Root.classList.add('city-banner--has-religion');
-                    this.elements.ruralReligionSymbolBackground.setAttribute("data-tooltip-content", Locale.stylize("LOC_DISTRICT_RURAL_NAME") + "[N]" + Locale.stylize(ruralReligion.Name));
+                    this.elements.ruralReligionSymbolBackground.setAttribute("data-tooltip-content", Locale.stylize("LOC_DISTRICT_RURAL_NAME") + "[N]" + Locale.stylize(ruralPlayerRel.getReligionName()));
                 }
             }
         }
@@ -550,6 +584,21 @@ export class CityBannerComponent extends FxsActivatable {
             console.error("City Banner missing city object when production changed. cid: ", ComponentID.toLogString(this.componentID));
         }
     }
+    realizeTradeNetwork() {
+        if (this.city && this.city.Trade) {
+            const isInNetwork = this.city.Trade.isInTradeNetwork();
+            const isLocalPlayerCity = this.city.owner === GameContext.localObserverID;
+            this.elements.tradeNetworkIcon.classList.toggle("city-banner__trade-network--hidden", !isLocalPlayerCity || isInNetwork);
+            if (!isInNetwork) {
+                // attach tooltip
+                const tooltipText = `${Locale.compose('LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED')} ${Locale.compose('LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED_DESCRIPTION')}`;
+                this.elements.tradeNetworkIcon.setAttribute("data-tooltip-content", tooltipText);
+            }
+        }
+        else {
+            this.elements.tradeNetworkIcon.classList.toggle("city-banner__trade-network--hidden", true);
+        }
+    }
     realizeHappiness() {
         if (this.city) {
             const happiness = this.city.Yields?.getYield(YieldTypes.YIELD_HAPPINESS);
@@ -569,6 +618,7 @@ export class CityBannerComponent extends FxsActivatable {
             }
             if (this.city.isInfected) {
                 happinessStatus = CityStatusType.plague;
+                this.elements.statusIcon.setAttribute("data-tooltip-content", "LOC_UI_CITY_DETAILS_INFECTED");
             }
             const icon = UI.getIconURL(happinessStatus, "YIELD");
             this.elements.statusIcon.style.backgroundImage = `url('${icon}')`;

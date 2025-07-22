@@ -465,6 +465,21 @@
 	background-position: center center;
 }
 
+.city-banner__trade-network {
+	height: 1rem;
+	width: 1rem;
+	position: relative;
+}
+.city-banner__trade-network .city-banner__trade-network--hidden {
+	opacity: 0;
+}
+
+.city-banner__trade-network-icon {
+	background-image: url("fs://game/trade_broken.png");
+	background-size: 125%;
+	background-position: center center;
+}
+
 .city-banner__ring {
 	background-image: url("fs://game/hud_sub_circle_bk.png");
 	margin-right: -0.2222222222rem;
