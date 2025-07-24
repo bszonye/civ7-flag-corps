@@ -812,7 +812,6 @@ export class bzCityBanner {
     afterRealizeTradeNetwork() {
         const disconnected = this.city?.Trade && !this.city.Trade.isInTradeNetwork();
         const hidden = !disconnected || this.isRival();
-        console.warn(`TRIX DISCO ${hidden}`);
         this.elements.tradeNetworkContainer.classList.toggle("hidden", hidden);
     }
     beforeAttach() { }
