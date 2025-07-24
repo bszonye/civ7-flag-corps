@@ -241,6 +241,9 @@ const BZ_HEAD_STYLE = [
     //             7 .RELIGION-SYMBOL bg-contain bg-no-repeat bg-center
     //           6 .RELIGION-SYMBOL-BG religion-bg--right
     //             7 .RELIGION-SYMBOL bg-contain bg-no-repeat bg-center religion-symbol--right
+    //          5 .TRADE-NETWORK flex justify-center align-center opacity-100 pointer-events-auto
+    //            6 .TRADE-NETWORK-BACKGROUND h-full w-full absolute
+    //            6 .TRADE-NETWORK-ICON absolute w-full h-full bg-no-repeat
 `
 .bz-flags city-banner.city-banner .city-banner__status-religion {
     position: absolute;
@@ -261,7 +264,8 @@ const BZ_HEAD_STYLE = [
     display: none;
 }
 .bz-flags city-banner.city-banner .city-banner__status-background,
-.bz-flags city-banner.city-banner .city-banner__religion-symbol-bg {
+.bz-flags city-banner.city-banner .city-banner__religion-symbol-bg,
+.bz-flags city-banner.city-banner .city-banner__trade-network-background {
     position: relative;
     margin: 0;
     border: none;
@@ -286,7 +290,19 @@ const BZ_HEAD_STYLE = [
     height: 1rem;
     margin: 0;
 }
-
+.bz-flags .city-banner__trade-network {
+    margin: 0 0.0555555556rem;
+    height: 1rem;
+    width: 1rem;
+    position: relative;
+}
+.bz-flags .city-banner__trade-network-background {
+    border-radius: 50%;
+    background-color: #0008;
+}
+.bz-flags .city-banner__trade-network .city-banner__trade-network--hidden {
+    opacity: 1;
+}
 `,  //     3 .POPULATION-CONTAINER items-center justify-center w-6 h-6 -mt-2
     //       4 FXS-RING-METER.RING.POPULATION-RING bg-cover bg-center flex size-9 self-center align-center
     //         5 .POPULATION-NUMBER font-body-xs text-white top-0 w-full text-center pointer-events-auto
@@ -596,6 +612,14 @@ export class bzCityBanner {
             const after_rv = afterRealizePlayerColors.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
+        // afterRealizeTradeNetwork
+        const afterRealizeTradeNetwork = this.afterRealizeTradeNetwork;
+        const realizeTradeNetwork = proto.realizeTradeNetwork;
+        proto.realizeTradeNetwork = function(...args) {
+            const c_rv = realizeTradeNetwork.apply(this, args);
+            const after_rv = afterRealizeTradeNetwork.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
+        }
     }
     patchStyles(banner) {
         const { growthQueueTurns, productionQueueTurns } = banner.elements;
@@ -711,13 +735,16 @@ export class bzCityBanner {
         const { productionQueue, } = this.elements;
         productionQueue.removeAttribute('data-tooltip-content');
         // in single-player mode, hide other players' queues
-        if (this.player && this.owner) {
-            // check the actual player ID, not the observer
-            const playerID = GameContext.localPlayerID;
-            const isOwner = playerID == -1 || playerID == this.owner.id;
-            const isDebug = UI.isDebugPlotInfoVisible();
-            if (!isOwner && !isDebug) productionQueue.style.display = 'none';
-        }
+        if (this.isRival()) productionQueue.style.display = 'none';
+    }
+    isRival() {
+        // does this banner belong to a rival?
+        // used to hide private info like production queues
+        if (!this.player || !this.owner) return false;
+        if (UI.isDebugPlotInfoVisible()) return false;
+        // check the actual player ID, not the observer
+        const playerID = GameContext.localPlayerID;
+        return playerID != -1 && playerID != this.owner.id;
     }
     setRelationshipInfo() {
         if (this.owner?.Influence?.hasSuzerain) {
@@ -781,6 +808,12 @@ export class bzCityBanner {
         this.color2dark = darkenColor(this.color2, 2/3);
         this.color1light = lightenColor(this.color1, 1/2);
         this.color2light = lightenColor(this.color2, 1/2);
+    }
+    afterRealizeTradeNetwork() {
+        const disconnected = this.city?.Trade && !this.city.Trade.isInTradeNetwork();
+        const hidden = !disconnected || this.isRival();
+        console.warn(`TRIX DISCO ${hidden}`);
+        this.elements.tradeNetworkContainer.classList.toggle("hidden", hidden);
     }
     beforeAttach() { }
     afterAttach() { }
