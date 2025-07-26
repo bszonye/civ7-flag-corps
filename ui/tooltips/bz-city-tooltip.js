@@ -7,6 +7,7 @@ var bzTarget;
         bzTarget[bzTarget["PRODUCTION"] = '.city-banner__queue-container'] = "PRODUCTION";
         bzTarget[bzTarget["RELIGION"] = '.city-banner__religion-symbol-bg'] = "RELIGION";
         bzTarget[bzTarget["STATUS"] = '.city-banner__status-icon'] = "STATUS";
+        bzTarget[bzTarget["NETWORK"] = '.city-banner__trade-network'] = "NETWORK";
 })(bzTarget || (bzTarget = {}));
 
 // custom & adapted icons
@@ -403,7 +404,8 @@ class bzCityTooltip {
     isUpdateNeeded(target) {
         // first check for a subtarget
         const sub = [
-            bzTarget.GROWTH, bzTarget.PRODUCTION, bzTarget.RELIGION, bzTarget.STATUS,
+            bzTarget.GROWTH, bzTarget.PRODUCTION,
+            bzTarget.STATUS, bzTarget.RELIGION, bzTarget.NETWORK,
         ];
         const subtarget = sub.find(t => target.closest(t)) ?? null;
         // get main target, if possible
@@ -421,9 +423,10 @@ class bzCityTooltip {
     }
     isBlank() {
         if (!this.target) return true;
-        // hide the main tooltip over the status & religion icons
+        // hide the main tooltip over the status/religion/network icons
         if (this.subtarget == bzTarget.STATUS) return true;
         if (this.subtarget == bzTarget.RELIGION) return true;
+        if (this.subtarget == bzTarget.NETWORK) return true;
         return false;
     }
     reset() {
