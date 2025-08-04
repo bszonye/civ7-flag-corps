@@ -1,4 +1,4 @@
-# Flag Corps 3.1.1
+# Flag Corps 3.1.2
 better banners and flags
 
 ## improves city banner design
