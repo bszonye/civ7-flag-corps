@@ -43,11 +43,11 @@ const BZ_COLOR = {
     // relationship ring colors
     friendly: "#e5d2ac",
     hostile: "#af1b1c",
-    neutral: "#e0b96c",    // 40°  65 65 deep bronze
+    neutral: "#afb7cf",     // 225°  25 75 gray
     // highlight & shadow colors
-    light: "#fff6e5cc",      // 40° 100 95 pale bronze
+    light: "#fff6e5cc",     //  40° 100 95 pale bronze
     shadow: "#00000080",
-    progress: "#e0b96c",    // 40°  65 65 deep bronze
+    progress: "#e0b96c",    //  40°  65 65 deep bronze
 };
 const BZ_SHADOW_SHAPE = "0.0277777778rem 0.0555555556rem 0.0555555556rem";
 const BZ_SHADOW_SPEC = `${BZ_SHADOW_SHAPE} ${BZ_COLOR.black}`;
@@ -98,7 +98,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__city-state-border {
     fxs-border-image-tint: transparent;
 }
-.bz-flags .city-banner.city-banner--citystate .city-banner__city-state-border {
+.bz-flags .city-banner.city-banner--neutral .city-banner__city-state-border {
     fxs-border-image-tint: ${BZ_COLOR.neutral};
 }
 .bz-flags .city-banner.city-banner--friendly .city-banner__city-state-border {
@@ -695,7 +695,7 @@ export class bzCityBanner {
     afterAffinityUpdate() {
         bzCityTooltip.queueUpdate(this);
         this.realizePortrait();  // sets relationship info too
-        if (this.owner?.isMinor && bzFlagCorpsOptions.banners) {
+        if (!this.owner?.isMajor && bzFlagCorpsOptions.banners) {
             const isNeutral = !this.isVassal && !this.isEnemy;
             this.Root.classList.toggle("city-banner--friendly", this.isVassal);
             this.Root.classList.toggle("city-banner--hostile", this.isEnemy);
