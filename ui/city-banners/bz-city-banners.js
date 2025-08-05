@@ -98,7 +98,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__city-state-border {
     fxs-border-image-tint: transparent;
 }
-.bz-flags .city-banner.city-banner--neutral .city-banner__city-state-border {
+.bz-flags .city-banner.city-banner--citystate .city-banner__city-state-border {
     fxs-border-image-tint: ${BZ_COLOR.neutral};
 }
 .bz-flags .city-banner.city-banner--friendly .city-banner__city-state-border {
