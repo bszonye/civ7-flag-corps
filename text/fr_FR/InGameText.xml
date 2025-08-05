@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <LocalizedText>
+        <Replace Tag="LOC_BZ_GROUPED_DIGITS" Language="fr_FR">
+            <Text>{1_amount: number #,###;-#,###}</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_GROUPED_MODIFIER" Language="fr_FR">
+            <Text>{1_amount: number +#,###;-#,###}</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_PEOPLE_NAME" Language="fr_FR">
+            <Text>{1_name} People</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_RELATIONSHIP_TRIBUTARY" Language="fr_FR">
+            <Text>Tributary</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_SETTLEMENT_CITY_STATE" Language="fr_FR">
+            <Text>City-State</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_SETTLEMENT_CONNECTIONS" Language="fr_FR">
+            <Text>Connections</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_WAS_PREVIOUSLY" Language="fr_FR">
+            <Text>(Was {1_name})</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS" Language="fr_FR">
+            <Text>Flag Corps • restyle city banners</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION" Language="fr_FR">
+            <Text>Updates city and town banners with a cleaner, more consistent style.</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS" Language="fr_FR">
+            <Text>Flag Corps • remove leader heads</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS_DESCRIPTION" Language="fr_FR">
+            <Text>Removes the leader portraits from city banners.</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW" Language="fr_FR">
+            <Text>Flag Corps • remove black “shadow” from unit flags</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION" Language="fr_FR">
+            <Text>Removes the heavy black outline from friendly and neutral unit flags.</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_GROUP_BZ_MODS" Language="fr_FR">
+            <Text>trixie's mods</Text>
+        </Replace>
+    </LocalizedText>
+</Database>
