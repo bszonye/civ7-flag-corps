@@ -722,6 +722,8 @@ export class bzCityBanner {
         const { container, portrait, } = this.elements;
         container.removeAttribute('data-tooltip-content');
         portrait.removeAttribute('data-tooltip-content');
+        // set affinity rings for captured settlements
+        if (this.city && this.owner.isIndependent) this.component.affinityUpdate();
     }
     afterSetFood(_turnsLeft, _current, _nextTarget) {
         bzCityTooltip.queueUpdate(this);
@@ -759,7 +761,14 @@ export class bzCityBanner {
     realizePortrait() {
         this.setRelationshipInfo();
         // get angry!
-        if (!this.owner || this.owner.isIndependent) return;
+        if (!this.owner) return;
+        if (this.owner.isIndependent) {
+            // settlements captured by independents:
+            // replace the default leader head with the razing icon
+            const portrait = 'url("fs://game/icon_razed.png")';
+            this.elements.portraitIcon.style.backgroundImage = portrait;
+            return;
+        }
         const leaderType = GameInfo.Leaders.lookup(this.leader.leaderType);
         if (!leaderType) return;
         let context = "DEFAULT";
