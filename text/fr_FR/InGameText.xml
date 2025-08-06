@@ -35,7 +35,7 @@
             <Text>Supprime les portraits des dirigeants sur les bannières des villes.</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW" Language="fr_FR">
-            <Text>Flag Corps • supprimer « l'ombre » noire des drapeaux des unités</Text>
+            <Text>Flag Corps • supprimer l'ombre noire des drapeaux des unités</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION" Language="fr_FR">
             <Text>Supprime le contour noir épais des drapeaux des unités.</Text>

@@ -40,5 +40,8 @@
         <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION" Language ="de_DE">
             <Text>Entfernt den dicken schwarzen Umriss von Einheitenflaggen.</Text>
         </Replace>
+        <Replace Tag="LOC_OPTIONS_GROUP_BZ_MODS" Language="de_DE">
+            <Text>Trixies mods</Text>
+        </Replace>
     </LocalizedText>
 </Database>
