@@ -26,7 +26,7 @@
             <Text>Flag Corps • relooker les bannières des villes</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION" Language="fr_FR">
-            <Text>Les bannières des villes bénéficient d'un style plus élégant et cohérent.</Text>
+            <Text>Les bannières des villes adoptent un style plus élégant et cohérent.</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS" Language="fr_FR">
             <Text>Flag Corps • supprimer les têtes des dirigeants</Text>
