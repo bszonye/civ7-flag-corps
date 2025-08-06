@@ -760,15 +760,15 @@ export class bzCityBanner {
     }
     realizePortrait() {
         this.setRelationshipInfo();
-        // get angry!
         if (!this.owner) return;
         if (this.owner.isIndependent) {
             // settlements captured by independents:
-            // replace the default leader head with the razing icon
+            // replace the default leader head with flames
             const portrait = 'url("fs://game/icon_razed.png")';
             this.elements.portraitIcon.style.backgroundImage = portrait;
             return;
         }
+        // get angry!
         const leaderType = GameInfo.Leaders.lookup(this.leader.leaderType);
         if (!leaderType) return;
         let context = "DEFAULT";
