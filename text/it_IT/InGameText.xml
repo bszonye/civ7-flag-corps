@@ -26,7 +26,7 @@
             <Text>Flag Corps • restyling degli stendardi cittadini</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION" Language ="it_IT">
-            <Text>Gli standardi della città assumono uno stile più elegante e coerente</Text>
+            <Text>Gli standardi della città assumono uno stile più elegante e coerente.</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS" Language ="it_IT">
             <Text>Flag Corps • rimuovere le teste dei leader</Text>
