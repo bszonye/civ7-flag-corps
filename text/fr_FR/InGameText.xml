@@ -8,40 +8,40 @@
             <Text>{1_amount: number +#;-#}</Text>
         </Replace>
         <Replace Tag="LOC_BZ_PEOPLE_NAME" Language="fr_FR">
-            <Text>{1_name} People</Text>
+            <Text>Les gens de {1_name}</Text>
         </Replace>
         <Replace Tag="LOC_BZ_RELATIONSHIP_TRIBUTARY" Language="fr_FR">
-            <Text>Tributary</Text>
+            <Text>Tributaire</Text>
         </Replace>
         <Replace Tag="LOC_BZ_SETTLEMENT_CITY_STATE" Language="fr_FR">
-            <Text>City-State</Text>
+            <Text>Cité-État</Text>
         </Replace>
         <Replace Tag="LOC_BZ_SETTLEMENT_CONNECTIONS" Language="fr_FR">
-            <Text>Connections</Text>
+            <Text>Liaisons</Text>
         </Replace>
         <Replace Tag="LOC_BZ_WAS_PREVIOUSLY" Language="fr_FR">
-            <Text>(Was {1_name})</Text>
+            <Text>(Était {1_name})</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS" Language="fr_FR">
-            <Text>Flag Corps • restyle city banners</Text>
+            <Text>Flag Corps • relooker les bannières des villes</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION" Language="fr_FR">
-            <Text>Updates city and town banners with a cleaner, more consistent style.</Text>
+            <Text>Les bannières des villes bénéficient d'un style plus élégant et cohérent.</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS" Language="fr_FR">
-            <Text>Flag Corps • remove leader heads</Text>
+            <Text>Flag Corps • supprimer les têtes des dirigeants</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS_DESCRIPTION" Language="fr_FR">
-            <Text>Removes the leader portraits from city banners.</Text>
+            <Text>Supprime les portraits des dirigeants sur les bannières des villes.</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW" Language="fr_FR">
-            <Text>Flag Corps • remove black “shadow” from unit flags</Text>
+            <Text>Flag Corps • supprimer « l'ombre » noire des drapeaux des unités</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION" Language="fr_FR">
-            <Text>Removes the heavy black outline from friendly and neutral unit flags.</Text>
+            <Text>Supprime le contour noir épais des drapeaux des unités.</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_GROUP_BZ_MODS" Language="fr_FR">
-            <Text>trixie's mods</Text>
+            <Text>mods de Trixie</Text>
         </Replace>
     </LocalizedText>
 </Database>
