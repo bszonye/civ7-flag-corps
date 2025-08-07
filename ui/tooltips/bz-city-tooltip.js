@@ -497,9 +497,13 @@ class bzCityTooltip {
         }
         // settlement type
         if (this.owner.isIndependent) {
-            // village or encampment
-            const imp = getConstructibles(loc, "IMPROVEMENT").at(0);
-            this.settlementType = imp?.info.Name ?? null;
+            // village, encampement, or captured town
+            if (this.city) {
+                this.settlementType = "LOC_CAPITAL_SELECT_PROMOTION_NONE";
+            } else {
+                const imp = getConstructibles(loc, "IMPROVEMENT").at(0);
+                this.settlementType = imp?.info.Name ?? null;
+            }
         } else if (this.owner.isMinor) {
             this.settlementType = "LOC_BZ_SETTLEMENT_CITY_STATE";
         } else if (this.city.isTown) {

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <LocalizedText>
+        <Replace Tag="LOC_BZ_GROUPED_DIGITS" Language="fr_FR">
+            <Text>{1_amount: number #;-#}</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_GROUPED_MODIFIER" Language="fr_FR">
+            <Text>{1_amount: number +#;-#}</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_PEOPLE_NAME" Language="fr_FR">
+            <Text>Les gens de {1_name}</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_RELATIONSHIP_TRIBUTARY" Language="fr_FR">
+            <Text>Tributaire</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_SETTLEMENT_CITY_STATE" Language="fr_FR">
+            <Text>Cité-État</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_SETTLEMENT_CONNECTIONS" Language="fr_FR">
+            <Text>Liaisons</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_WAS_PREVIOUSLY" Language="fr_FR">
+            <Text>(Était {1_name})</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS" Language="fr_FR">
+            <Text>Flag Corps • relooker les bannières des villes</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION" Language="fr_FR">
+            <Text>Les bannières des villes adoptent un style plus élégant et cohérent.</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS" Language="fr_FR">
+            <Text>Flag Corps • supprimer les têtes des dirigeants</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS_DESCRIPTION" Language="fr_FR">
+            <Text>Supprime les portraits des dirigeants sur les bannières des villes.</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW" Language="fr_FR">
+            <Text>Flag Corps • supprimer l'ombre noire des drapeaux des unités</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION" Language="fr_FR">
+            <Text>Supprime le contour noir épais des drapeaux des unités.</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_GROUP_BZ_MODS" Language="fr_FR">
+            <Text>mods de Trixie</Text>
+        </Replace>
+    </LocalizedText>
+</Database>

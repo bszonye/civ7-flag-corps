@@ -22,5 +22,26 @@
         <Replace Tag="LOC_BZ_WAS_PREVIOUSLY" Language="zh_Hant_HK">
             <Text>(原為 {1_name})</Text>
         </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS" Language="zh_Hant_HK">
+            <Text>Flag Corps • 城市旗幟重製</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION" Language ="zh_Hant_HK">
+            <Text>城市旗幟的風格更加優雅一致。</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS" Language ="zh_Hant_HK">
+            <Text>Flag Corps • 移除領導人的肖像</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS_DESCRIPTION" Language ="zh_Hant_HK">
+            <Text>移除城市橫幅上的領袖肖像。</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW" Language ="zh_Hant_HK">
+            <Text>Flag Corps • 移除單位旗幟的黑影</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION" Language ="zh_Hant_HK">
+            <Text>移除單位旗幟上厚重的黑色輪廓。</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_GROUP_BZ_MODS" Language="zh_Hant_HK">
+            <Text>trixie 系列模組</Text>
+        </Replace>
     </LocalizedText>
 </Database>

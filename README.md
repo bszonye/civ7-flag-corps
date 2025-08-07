@@ -1,4 +1,4 @@
-# Flag Corps 3.1.1
+# Flag Corps 3.1.2
 better banners and flags
 
 ## improves city banner design
@@ -33,6 +33,7 @@ known interactions:
 ## localization
 supported languages:
 
+- French (translated by trixie)
 - German (translated by Chr1Z93)
 - Italian (translated by leonardfactory)
 - Korean (translated by Hotsolidinfill)

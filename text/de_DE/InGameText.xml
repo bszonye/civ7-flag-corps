@@ -22,5 +22,26 @@
         <Replace Tag="LOC_BZ_WAS_PREVIOUSLY" Language="de_DE">
             <Text>(War {1_name})</Text>
         </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS" Language="de_DE">
+            <Text>Flag Corps • gestaltet die Stadtbanner neu</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION" Language ="de_DE">
+            <Text>Die Stadtbanner nehmen einen eleganteren und einheitlicheren Stil an.</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS" Language ="de_DE">
+            <Text>Flag Corps • entfernt die Köpfe von Anführern</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS_DESCRIPTION" Language ="de_DE">
+            <Text>Entfernt die Porträts der Anführer von den Stadtbannern.</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW" Language ="de_DE">
+            <Text>Flag Corps • entfernt den schwarzen „Schatten“ von Einheitenflaggen</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION" Language ="de_DE">
+            <Text>Entfernt den dicken schwarzen Umriss von Einheitenflaggen.</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_GROUP_BZ_MODS" Language="de_DE">
+            <Text>Trixies mods</Text>
+        </Replace>
     </LocalizedText>
 </Database>
