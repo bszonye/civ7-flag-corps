@@ -1,7 +1,6 @@
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
 import bzCityTooltip from '/bz-flag-corps/ui/tooltips/bz-city-tooltip.js';
-import CityBannerManager from '/base-standard/ui/city-banners/city-banner-manager.js';
-import PlayerColors from '/core/ui/utilities/utilities-color.js';
+import { C as CityBannerManager } from '/base-standard/ui/city-banners/city-banner-manager.chunk.js';
 
 // color palette
 const BZ_COLOR = {
@@ -481,37 +480,51 @@ document.body.classList.toggle("bz-flags", bzFlagCorpsOptions.banners);
 // use the Map Trix debug hotkey instead
 // if (UI.isDebugPlotInfoVisible()) document.body.classList.add("bz-debug");
 
+const rgbRE = /^rgb\((\d+) *[ ,] *(\d+) *[ ,] *(\d+)(?: *[ ,] *(\d+))?\)$/i;
+function rgbFromString(color) {
+    const match = rgbRE.exec(color);
+    if (!match) {
+        console.error("rgbFromString: ${color} is not rgb(R,G,B)");
+        return { r: 0, g: 0, b: 0 };
+    }
+    const [r, g, b] = match.slice(1, 4).map(n => parseInt(n ?? 1));
+    return { r, g, b };
+}
+function rgbToString(srgb) {
+    return `rgb(${srgb.r}, ${srgb.g}, ${srgb.b})`;
+}
+
 function darkenColor(rgb, darkness) {
-    const srgb = PlayerColors.stringRGBtoRGB(rgb);
+    const srgb = rgbFromString(rgb);
     const min = Math.min(srgb.r, srgb.g, srgb.b);
     const max = Math.max(srgb.r, srgb.g, srgb.b);
     const dc = Math.round(max * darkness);
     const maxt = max - dc;
     const mint = Math.max(min - dc, 0);
     if (maxt == mint) {
-        return PlayerColors.SRGBtoString({ r: mint, g: mint, b: mint });
+        return rgbToString({ r: mint, g: mint, b: mint });
     }
     const scale = (maxt - mint) / (max - min);
     srgb.r = Math.round((srgb.r - min) * scale) + mint;
     srgb.g = Math.round((srgb.g - min) * scale) + mint;
     srgb.b = Math.round((srgb.b - min) * scale) + mint;
-    return PlayerColors.SRGBtoString(srgb);
+    return rgbToString(srgb);
 }
 function lightenColor(rgb, lightness) {
-    const srgb = PlayerColors.stringRGBtoRGB(rgb);
+    const srgb = rgbFromString(rgb);
     const min = Math.min(srgb.r, srgb.g, srgb.b);
     const max = Math.max(srgb.r, srgb.g, srgb.b);
     const dc = Math.round((255 - min) * lightness);
     const mint = min + dc;
     const maxt = Math.min(max + dc, 255);
     if (maxt == mint) {
-        return PlayerColors.SRGBtoString({ r: mint, g: mint, b: mint });
+        return rgbToString({ r: mint, g: mint, b: mint });
     }
     const scale = (maxt - mint) / (max - min);
     srgb.r = Math.round((srgb.r - min) * scale) + mint;
     srgb.g = Math.round((srgb.g - min) * scale) + mint;
     srgb.b = Math.round((srgb.b - min) * scale) + mint;
-    return PlayerColors.SRGBtoString(srgb);
+    return rgbToString(srgb);
 }
 
 export class bzCityBanner {

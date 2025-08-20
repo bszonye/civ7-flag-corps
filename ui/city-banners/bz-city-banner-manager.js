@@ -1,4 +1,4 @@
-import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
+import { C as ComponentID } from '/core/ui/utilities/utilities-component-id.chunk.js';
 export class bzCityBannerManager {
     static c_prototype;
     constructor(component) {
