@@ -1,7 +1,7 @@
 // TODO: realign district healthbars
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
-import { PlotCoord } from '/core/ui/utilities/utilities-plotcoord.js';
-import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
+import { P as PlotCoord } from '/core/ui/utilities/utilities-plotcoord.chunk.js';
+import { C as ComponentID } from '/core/ui/utilities/utilities-component-id.chunk.js';
 import DistrictHealthManager from '/base-standard/ui/district/district-health-manager.js';
 
 const BZ_HEAD_STYLE = [

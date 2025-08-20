@@ -1,6 +1,6 @@
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
-import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
-import { Layout } from '/core/ui/utilities/utilities-layout.js';
+import { C as ComponentID } from '/core/ui/utilities/utilities-component-id.chunk.js';
+import { L as Layout } from '/core/ui/utilities/utilities-layout.chunk.js';
 import { UnitFlagManager } from '/base-standard/ui/unit-flags/unit-flag-manager.js';
 import { GenericUnitFlag } from '/base-standard/ui/unit-flags/unit-flags.js';
 import { IndependentPowersUnitFlag } from '/base-standard/ui/unit-flags/unit-flags-independent-powers.js';
