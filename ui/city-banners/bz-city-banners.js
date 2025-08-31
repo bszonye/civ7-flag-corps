@@ -338,8 +338,9 @@ const BZ_HEAD_STYLE = [
     filter: drop-shadow(0 0.0555555556rem 0.1111111111rem #0006);
 }
 .bz-flags city-banner.city-banner .city-banner__ring {
+    background-image: url("hud_sub_circle_bk");
     line-height: 2rem;
-    margin: 0;
+    margin: 0.001px 0 0 0;
     z-index: 1;
 }
 .bz-flags city-banner.city-banner .city-banner__population-ring,
