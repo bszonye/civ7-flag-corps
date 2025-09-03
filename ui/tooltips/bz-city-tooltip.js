@@ -721,7 +721,7 @@ class bzCityTooltip {
         ];
         for (const conn of connections) {
             const row = document.createElement("div");
-            row.classList.value = "relative flex justify-start";
+            row.classList.value = "relative flex justify-start items-center";
             row.style.minHeight = row.style.lineHeight = size;
             if (conn.isTown) {
                 const focus = getTownFocus(conn);
@@ -730,7 +730,7 @@ class bzCityTooltip {
                 row.appendChild(docIcon("YIELD_CITIES", size, small));
             }
             const name = document.createElement("div");
-            name.classList.value = "max-w-36 mx-1 text-left";
+            name.classList.value = "max-w-36 mx-1 text-left font-fit-shrink";
             name.setAttribute('data-l10n-id', conn.name);
             row.appendChild(name);
             rows.push(row);
