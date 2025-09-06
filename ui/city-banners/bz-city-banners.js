@@ -728,8 +728,8 @@ export class bzCityBanner {
             // improved text lighting
             const { cityName, } = this.elements;
             const shadowSpec = `${BZ_SHADOW_SHAPE} ${this.color1dark}`;
-            const lightSpect = `${BZ_LIGHT_SHAPE} ${this.color1light}`;
-            cityName.style.textShadow = `${shadowSpec}, ${lightSpect}`;
+            const lightSpec = `${BZ_LIGHT_SHAPE} ${this.color1light}`;
+            cityName.style.textShadow = `${shadowSpec}, ${lightSpec}`;
         }
         this.Root.bzComponent = this;
         this.Root.setAttribute('data-tooltip-style', 'bz-city-tooltip');

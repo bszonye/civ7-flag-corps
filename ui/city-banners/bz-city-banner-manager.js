@@ -8,6 +8,7 @@ export class bzCityBannerManager {
         this.banners = this.component.banners;
         this.patchPrototypes(this.component);
         this.cityRazingStartedListener = this.onCityRazingStarted.bind(this);
+        this.diplomacyEventListener = this.onDiplomacyEvent.bind(this);
         this.districtDamageChangedListener = this.onDistrictDamageChanged.bind(this);
         this.playerUpdateListener = this.onPlayerUpdate.bind(this);
     }
@@ -18,12 +19,14 @@ export class bzCityBannerManager {
     beforeAttach() { }
     afterAttach() {
         engine.on('CityRazingStarted', this.cityRazingStartedListener);
+        engine.on('DiplomacyEventEnded', this.diplomacyEventListener);
         engine.on('DistrictDamageChanged', this.districtDamageChangedListener);
         engine.on('PlayerResourceChanged', this.playerUpdateListener);
         engine.on('PlayerTurnActivated', this.playerUpdateListener);
     }
     beforeDetach() {
         engine.off('CityRazingStarted', this.cityRazingStartedListener);
+        engine.off('DiplomacyEventEnded', this.diplomacyEventListener);
         engine.off('DistrictDamageChanged', this.districtDamageChangedListener);
         engine.off('PlayerResourceChanged', this.playerUpdateListener);
         engine.off('PlayerTurnActivated', this.playerUpdateListener);
@@ -38,6 +41,12 @@ export class bzCityBannerManager {
         }
         // will trigger a full update
         cityBanner.queueNameUpdate();
+    }
+    onDiplomacyEvent(_data) {
+        // update relationships after diplomacy events
+        this.banners.forEach((banner, _key) => {
+            banner.affinityUpdate();
+        });
     }
     onDistrictDamageChanged(data) {
         const cityBanner = this.banners.get(ComponentID.toBitfield(data.cityID));
