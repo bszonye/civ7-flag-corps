@@ -774,7 +774,7 @@ export class bzCityBanner {
     }
     realizePortrait() {
         this.setRelationshipInfo();
-        if (!this.owner) return;
+        if (!this.owner || !this.city) return;
         if (this.owner.isIndependent) {
             // settlements captured by independents:
             // replace the default leader head with flames
