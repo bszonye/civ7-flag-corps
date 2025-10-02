@@ -110,7 +110,7 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner.city-banner .city-banner__city-state-ring {
     display: flex;
-    border-image-source: url("fs://game/city_pill.png");
+    border-image-source: url("blp:city_pill.png");
     border-image-slice: 60 24 2 24 fill;
     border-image-outset: 0.2222222222rem 0.3888888889rem;
     border-image-width: 3.3333333333rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
@@ -125,7 +125,7 @@ const BZ_HEAD_STYLE = [
 `,  //     3 .STRETCH-BG absolute inset-0 pointer-events-none
 `
 .bz-flags city-banner.city-banner .city-banner__stretch-bg {
-    border-image-source: url("fs://game/town_pill.png");
+    border-image-source: url("blp:town_pill.png");
     border-image-slice: 60 24 2 24 fill;
     border-image-outset: 0rem 0.4444444444rem;
     border-image-width: 3.3333333333rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
@@ -170,14 +170,14 @@ const BZ_HEAD_STYLE = [
     width: 1.7777777778rem;
     height: 2.5rem;
     background-size: cover;
-    background-image: url("fs://game/town_portrait-hex.png");
+    background-image: url("blp:town_portrait-hex.png");
 }
 .bz-flags .city-banner__portrait-bg2 {
     top: 0.3333333333rem;
     width: 1.7777777778rem;
     height: 2.5rem;
     background-size: cover;
-    background-image: url("fs://game/town_portrait-frame.png");
+    background-image: url("blp:town_portrait-frame.png");
 }
 .bz-flags .city-banner__portrait-img {
     top: 0.0555555556rem;
@@ -370,7 +370,7 @@ const BZ_HEAD_STYLE = [
     top: -1rem;
 }
 .bz-flags city-banner.city-banner .city-banner__turn-number {
-    background-image: url("fs://game/town_turn-bg.png");
+    background-image: url("blp:town_turn-bg.png");
     background-size: 100% 100%;
     line-height: 1;
     margin: 0;
@@ -778,7 +778,7 @@ export class bzCityBanner {
         if (this.owner.isIndependent) {
             // settlements captured by independents:
             // replace the default leader head with flames
-            const portrait = 'url("fs://game/icon_razed.png")';
+            const portrait = 'url("blp:icon_razed.png")';
             this.elements.portraitIcon.style.backgroundImage = portrait;
             return;
         }
