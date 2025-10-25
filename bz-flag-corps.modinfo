@@ -26,7 +26,7 @@
             <Actions>
                 <UIScripts>
                     <Item>ui/options/bz-flag-corps-options.js</Item>
-                    <Item>ui/options/mod-options-decorator.js</Item>
+                    <Item>ui/options/mod-options.js</Item>
                 </UIScripts>
                 <UpdateText>
                     <Item>text/en_us/InGameText.xml</Item>
@@ -50,7 +50,7 @@
                     <Item>ui/city-banners/bz-city-banners.js</Item>
                     <Item>ui/district/bz-district-health.js</Item>
                     <Item>ui/options/bz-flag-corps-options.js</Item>
-                    <Item>ui/options/mod-options-decorator.js</Item>
+                    <Item>ui/options/mod-options.js</Item>
                     <Item>ui/tooltips/bz-city-tooltip.js</Item>
                     <Item>ui/unit-flags/bz-unit-flags.js</Item>
                 </UIScripts>
