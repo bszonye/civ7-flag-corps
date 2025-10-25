@@ -29,6 +29,7 @@ const bzFlagCorpsOptions = new class {
     save(optionID) {
         const value = Number(this.data[optionID]);
         ModOptions.save(this.modID, optionID, value);
+        window.dispatchEvent(new bzFlagCorpsOptionsEvent());
     }
     get banners() {
         this.data.banners ??= Boolean(this.load("banners"));
@@ -38,7 +39,6 @@ const bzFlagCorpsOptions = new class {
         this.data.banners = Boolean(flag);
         this.save("banners");
         document.body.classList.toggle("bz-flags", this.data.banners);
-        window.dispatchEvent(new bzFlagCorpsOptionsEvent());
     }
     get noHeads() {
         this.data.noHeads ??= Boolean(this.load("noHeads"));
@@ -47,7 +47,6 @@ const bzFlagCorpsOptions = new class {
     set noHeads(flag) {
         this.data.noHeads = Boolean(flag);
         this.save("noHeads");
-        window.dispatchEvent(new bzFlagCorpsOptionsEvent());
     }
     get noShadow() {
         this.data.noShadow ??= Boolean(this.load("noShadow"));
@@ -57,7 +56,6 @@ const bzFlagCorpsOptions = new class {
         this.data.noShadow = Boolean(flag);
         this.save("noShadow");
         document.body.classList.toggle("bz-flags-no-shadow", this.data.noShadow);
-        window.dispatchEvent(new bzFlagCorpsOptionsEvent());
     }
 };
 
