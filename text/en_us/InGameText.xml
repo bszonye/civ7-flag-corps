@@ -41,7 +41,7 @@
             <Text>Removes the heavy black outline from friendly and neutral unit flags.</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_GROUP_BZ_MODS">
-            <Text>trixie's mods</Text>
+            <Text>trixie’s mods</Text>
         </Replace>
     </EnglishText>
 </Database>
