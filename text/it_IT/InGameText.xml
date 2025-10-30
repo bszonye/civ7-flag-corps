@@ -35,7 +35,7 @@
             <Text>Rimuove i ritratti dei leader dagli stendardi delle città.</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW" Language ="it_IT">
-            <Text>Flag Corps • rimuovere l'ombra nera dalle bandiere delle unità</Text>
+            <Text>Flag Corps • rimuovere l’ombra nera dalle bandiere delle unità</Text>
         </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION" Language ="it_IT">
             <Text>Rimuove il pesante contorno nero dalle bandiere delle unità.</Text>
