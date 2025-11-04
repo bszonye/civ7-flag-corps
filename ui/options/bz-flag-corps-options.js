@@ -59,6 +59,15 @@ const bzFlagCorpsOptions = new class {
     }
 };
 
+// fix Options initialization
+Options.addInitCallback = function(callback) {
+    if (this.optionsReInitCallbacks.length && !this.optionsInitCallbacks.length) {
+        throw new Error("Options already initialized, cannot add init callback");
+    }
+    this.optionsInitCallbacks.push(callback);
+    this.optionsReInitCallbacks.push(callback);
+}
+
 Options.addInitCallback(() => {
     Options.addOption({
         category: CategoryType.Mods,
@@ -70,8 +79,6 @@ Options.addInitCallback(() => {
         label: "LOC_OPTIONS_BZ_CITY_BANNERS",
         description: "LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION",
     });
-});
-Options.addInitCallback(() => {
     Options.addOption({
         category: CategoryType.Mods,
         group: "bz_mods",
@@ -82,8 +89,6 @@ Options.addInitCallback(() => {
         label: "LOC_OPTIONS_BZ_FLAGS_NO_HEADS",
         description: "LOC_OPTIONS_BZ_FLAGS_NO_HEADS_DESCRIPTION",
     });
-});
-Options.addInitCallback(() => {
     Options.addOption({
         category: CategoryType.Mods,
         group: "bz_mods",
