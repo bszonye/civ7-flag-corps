@@ -1,8 +1,7 @@
 import '/core/ui/options/screen-options.js';  // make sure this loads first
 import { C as CategoryType, O as Options, a as OptionType } from '/core/ui/options/editors/index.chunk.js';
-import ModSettings from '/bz-flag-corps/ui/options/mod-options-decorator.js';
-
-const MOD_ID = "bz-flag-corps";
+// set up mod options tab
+import ModOptions from '/bz-flag-corps/ui/options/mod-options.js';
 
 export const bzFlagCorpsOptionsEventName = 'bz-flag-corps-options';
 class bzFlagCorpsOptionsEvent extends CustomEvent {
@@ -10,99 +9,93 @@ class bzFlagCorpsOptionsEvent extends CustomEvent {
         super(bzFlagCorpsOptionsEventName, { bubbles: false });
     }
 }
-const BZ_DEFAULT_OPTIONS = {
-    banners: true,
-    noHeads: false,
-    noShadow: false,
-};
 const bzFlagCorpsOptions = new class {
-    data = { ...BZ_DEFAULT_OPTIONS };
-    constructor() {
-        const modSettings = ModSettings.load(MOD_ID);
-        if (modSettings) this.data = modSettings;
+    modID = "bz-flag-corps";
+    defaults = {
+        banners: Number(true),
+        noHeads: Number(false),
+        noShadow: Number(false),
+    };
+    data = {};
+    load(optionID) {
+        const value = ModOptions.load(this.modID, optionID);
+        if (value == null) {
+            const value = this.defaults[optionID];
+            console.warn(`LOAD ${this.modID}.${optionID}=${value} (default)`);
+            return value;
+        }
+        return value;
     }
-    save() {
-        ModSettings.save(MOD_ID, this.data);
-        // sync optional styling
-        document.body.classList.toggle("bz-flags", this.banners);
-        document.body.classList.toggle("bz-flags-no-shadow", this.noShadow);
+    save(optionID) {
+        const value = Number(this.data[optionID]);
+        ModOptions.save(this.modID, optionID, value);
         window.dispatchEvent(new bzFlagCorpsOptionsEvent());
     }
     get banners() {
-        return this.data.banners ?? BZ_DEFAULT_OPTIONS.banners;
+        this.data.banners ??= Boolean(this.load("banners"));
+        return this.data.banners;
     }
     set banners(flag) {
-        this.data.banners = !!flag;
-        this.save();
+        this.data.banners = Boolean(flag);
+        this.save("banners");
+        document.body.classList.toggle("bz-flags", this.data.banners);
     }
     get noHeads() {
-        return this.data.noHeads ?? BZ_DEFAULT_OPTIONS.noHeads;
+        this.data.noHeads ??= Boolean(this.load("noHeads"));
+        return this.data.noHeads;
     }
     set noHeads(flag) {
-        this.data.noHeads = !!flag;
-        this.save();
+        this.data.noHeads = Boolean(flag);
+        this.save("noHeads");
     }
     get noShadow() {
-        return this.data.noShadow ?? BZ_DEFAULT_OPTIONS.noShadow;
+        this.data.noShadow ??= Boolean(this.load("noShadow"));
+        return this.data.noShadow;
     }
     set noShadow(flag) {
-        this.data.noShadow = !!flag;
-        this.save();
+        this.data.noShadow = Boolean(flag);
+        this.save("noShadow");
+        document.body.classList.toggle("bz-flags-no-shadow", this.data.noShadow);
     }
 };
-const onInitBanners = (info) => {
-    info.currentValue = bzFlagCorpsOptions.banners;
-};
-const onUpdateBanners = (_info, flag) => {
-    bzFlagCorpsOptions.banners = flag;
-};
+
+// fix Options initialization
+Options.addInitCallback = function(callback) {
+    if (this.optionsReInitCallbacks.length && !this.optionsInitCallbacks.length) {
+        throw new Error("Options already initialized, cannot add init callback");
+    }
+    this.optionsInitCallbacks.push(callback);
+    this.optionsReInitCallbacks.push(callback);
+}
+
 Options.addInitCallback(() => {
     Options.addOption({
         category: CategoryType.Mods,
-        // @ts-ignore
         group: "bz_mods",
         type: OptionType.Checkbox,
         id: "bz-city-banners",
-        initListener: onInitBanners,
-        updateListener: onUpdateBanners,
+        initListener: (info) => info.currentValue = bzFlagCorpsOptions.banners,
+        updateListener: (_info, value) => bzFlagCorpsOptions.banners = value,
         label: "LOC_OPTIONS_BZ_CITY_BANNERS",
         description: "LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION",
     });
-});
-const onInitNoHeads = (info) => {
-    info.currentValue = bzFlagCorpsOptions.noHeads;
-};
-const onUpdateNoHeads = (_info, flag) => {
-    bzFlagCorpsOptions.noHeads = flag;
-};
-Options.addInitCallback(() => {
     Options.addOption({
         category: CategoryType.Mods,
-        // @ts-ignore
         group: "bz_mods",
         type: OptionType.Checkbox,
         id: "bz-flags-no-heads",
-        initListener: onInitNoHeads,
-        updateListener: onUpdateNoHeads,
+        initListener: (info) => info.currentValue = bzFlagCorpsOptions.noHeads,
+        updateListener: (_info, value) => bzFlagCorpsOptions.noHeads = value,
         label: "LOC_OPTIONS_BZ_FLAGS_NO_HEADS",
         description: "LOC_OPTIONS_BZ_FLAGS_NO_HEADS_DESCRIPTION",
     });
-});
-const onInitNoShadow = (info) => {
-    info.currentValue = bzFlagCorpsOptions.noShadow;
-};
-const onUpdateNoShadow = (_info, flag) => {
-    bzFlagCorpsOptions.noShadow = flag;
-};
-Options.addInitCallback(() => {
     Options.addOption({
         category: CategoryType.Mods,
-        // @ts-ignore
         group: "bz_mods",
         type: OptionType.Checkbox,
         id: "bz-flags-no-shadow",
-        initListener: onInitNoShadow,
-        updateListener: onUpdateNoShadow,
+        initListener: (info) => info.currentValue = bzFlagCorpsOptions.noShadow,
+        updateListener: (_info, value) => bzFlagCorpsOptions.noShadow = value,
         label: "LOC_OPTIONS_BZ_FLAGS_NO_SHADOW",
         description: "LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION",
     });
