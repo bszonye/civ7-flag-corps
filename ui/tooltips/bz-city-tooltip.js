@@ -3,11 +3,8 @@ import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 
 var bzTarget;
 (function (bzTarget) {
-        bzTarget[bzTarget["GROWTH"] = '.city-banner__population-container'] = "GROWTH";
-        bzTarget[bzTarget["PRODUCTION"] = '.city-banner__queue-container'] = "PRODUCTION";
-        bzTarget[bzTarget["RELIGION"] = '.city-banner__religion-symbol-bg'] = "RELIGION";
-        bzTarget[bzTarget["STATUS"] = '.city-banner__status-icon'] = "STATUS";
-        bzTarget[bzTarget["NETWORK"] = '.city-banner__trade-network'] = "NETWORK";
+    bzTarget[bzTarget["GROWTH"] = '.city-banner__population-container'] = "GROWTH";
+    bzTarget[bzTarget["PRODUCTION"] = '.city-banner__queue-container'] = "PRODUCTION";
 })(bzTarget || (bzTarget = {}));
 
 // custom & adapted icons
@@ -356,7 +353,6 @@ class bzCityTooltip {
         this.updateQueued = false;
         this.target = null;
         this.subtarget = null;
-        this.location = null;
         this.city = null;
         // document root
         this.tooltip = document.createElement('fxs-tooltip');
@@ -405,28 +401,39 @@ class bzCityTooltip {
         // first check for a subtarget
         const sub = [
             bzTarget.GROWTH, bzTarget.PRODUCTION,
-            bzTarget.STATUS, bzTarget.RELIGION, bzTarget.NETWORK,
+            // bzTarget.STATUS, bzTarget.RELIGION, bzTarget.NETWORK,
         ];
         const subtarget = sub.find(t => target.closest(t)) ?? null;
         // get main target, if possible
-        const banner = target.closest('city-banner');
-        target = banner?.bzComponent ?? null;
-        if (target == this.target && subtarget == this.subtarget &&
+        const banner =
+            target.closest('[data-tooltip-content]') ??
+            target.closest('[data-tooltip-style="bz-city-tooltip"]');
+        if (banner?.component == this.target && subtarget == this.subtarget &&
             !this.updateQueued) return false;
         // set target, location, and city
-        this.target = target;
+        this.target = banner?.component ?? null;
         this.subtarget = subtarget;
-        this.location = this.target?.location ?? null;
-        this.city = this.target?.city ?? null;
+        if (this.target) {
+            this.city = this.target.city;
+            if (this.city == null) {
+                const owner = banner.getAttribute("data-city-owner");
+                const localId = banner.getAttribute("data-city-local-id");
+                if (owner && localId) {
+                    this.city = Cities.get({
+                        owner: JSON.parse(owner),
+                        id: JSON.parse(localId),
+                        type: 1,
+                    });
+                }
+            }
+        }
         this.updateQueued = false;
         return true;
     }
     isBlank() {
         if (!this.target) return true;
-        // hide the main tooltip over the status/religion/network icons
-        if (this.subtarget == bzTarget.STATUS) return true;
-        if (this.subtarget == bzTarget.RELIGION) return true;
-        if (this.subtarget == bzTarget.NETWORK) return true;
+        // hide the tooltip over elements with tooltip content
+        if (this.target.Root.getAttribute("data-tooltip-content")) return true;
         return false;
     }
     reset() {
@@ -456,7 +463,7 @@ class bzCityTooltip {
         if (!this.target) return;
         this.model();
         this.render();
-        this.setWarningCursor(this.location);
+        this.setWarningCursor(this.city.location);
     }
     model() {
         // update point-of-view info
@@ -487,7 +494,7 @@ class bzCityTooltip {
     // data modeling methods
     modelSettlement() {
         // owner, civ, city
-        const loc = this.location;
+        const loc = this.city.location;
         const ownerID = GameplayMap.getOwner(loc.x, loc.y);
         this.owner = Players.get(ownerID);
         this.relationship = this.getCivRelationship(this.owner);
@@ -730,7 +737,7 @@ class bzCityTooltip {
                 row.appendChild(docIcon("YIELD_CITIES", size, small));
             }
             const name = document.createElement("div");
-            name.classList.value = "max-w-36 mx-1 text-left font-fit-shrink";
+            name.classList.value = "max-w-36 mx-1 text-left font-fit-shrink overflow-hidden";
             name.setAttribute('data-l10n-id', conn.name);
             row.appendChild(name);
             rows.push(row);
