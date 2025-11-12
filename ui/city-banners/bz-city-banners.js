@@ -744,6 +744,8 @@ export class bzCityBanner {
         // hide default tooltip
         const { growthQueueContainer, } = this.elements;
         growthQueueContainer.removeAttribute('data-tooltip-content');
+        // add subtarget class
+        growthQueueContainer.classList.add("bz-city-growth");
     }
     afterSetProduction(_data) {
         bzCityTooltip.queueUpdate(this);
@@ -752,6 +754,8 @@ export class bzCityBanner {
         productionQueue.removeAttribute('data-tooltip-content');
         // in single-player mode, hide other players' queues
         if (this.isRival()) productionQueue.style.display = 'none';
+        // add subtarget class
+        productionQueue.classList.add("bz-city-queue");
     }
     isRival() {
         // does this banner belong to a rival?

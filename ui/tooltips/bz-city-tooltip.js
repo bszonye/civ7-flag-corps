@@ -3,8 +3,8 @@ import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 
 var bzTarget;
 (function (bzTarget) {
-    bzTarget[bzTarget["GROWTH"] = '.city-banner__population-container'] = "GROWTH";
-    bzTarget[bzTarget["PRODUCTION"] = '.city-banner__queue-container'] = "PRODUCTION";
+    bzTarget[bzTarget["GROWTH"] = '.bz-city-growth'] = "GROWTH";
+    bzTarget[bzTarget["PRODUCTION"] = '.bz-city-queue'] = "PRODUCTION";
 })(bzTarget || (bzTarget = {}));
 
 // custom & adapted icons
@@ -399,10 +399,7 @@ class bzCityTooltip {
     getHTML() { return this.tooltip; }
     isUpdateNeeded(target) {
         // first check for a subtarget
-        const sub = [
-            bzTarget.GROWTH, bzTarget.PRODUCTION,
-            // bzTarget.STATUS, bzTarget.RELIGION, bzTarget.NETWORK,
-        ];
+        const sub = [bzTarget.GROWTH, bzTarget.PRODUCTION];
         const subtarget = sub.find(t => target.closest(t)) ?? null;
         // get main target, if possible
         const banner =
