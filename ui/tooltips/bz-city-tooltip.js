@@ -429,6 +429,7 @@ class bzCityTooltip {
         if (!this.target) return true;
         // hide the tooltip over elements with tooltip content
         if (this.target.Root.getAttribute("data-tooltip-content")) return true;
+        if (this.subtarget == bzTarget.PRODUCTION) return this.city.BuildQueue.isEmpty;
         return false;
     }
     reset() {
