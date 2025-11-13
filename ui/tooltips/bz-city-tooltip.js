@@ -733,7 +733,7 @@ class bzCityTooltip {
                 row.appendChild(docIcon("YIELD_CITIES", size, small));
             }
             const name = document.createElement("div");
-            name.classList.value = "max-w-36 mx-1 text-left font-fit-shrink overflow-hidden";
+            name.classList.value = "max-w-36 mx-1 text-left font-fit-shrink truncate";
             name.setAttribute('data-l10n-id', conn.name);
             row.appendChild(name);
             rows.push(row);
