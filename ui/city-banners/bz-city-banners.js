@@ -656,7 +656,7 @@ export class bzCityBanner {
         if (!this.city) return;
         if (!this.owner || this.owner.isIndependent) return;
         const { capitalIndicator, } = this.elements;
-        let icon = "";
+        let icon = null;
         const filter = [];
         const tint = `fxs-color-tint(${this.color2})`;
         const shadow = `drop-shadow(${BZ_SHADOW_SHAPE} ${this.color1dark})`;
@@ -681,13 +681,13 @@ export class bzCityBanner {
             filter.push(tint, shadow, light);
         } else if (bzFlagCorpsOptions.banners) {
             // town focus
-            if (this.city.Growth?.growthType == GrowthTypes.EXPAND) {
-                icon = UI.getIconCSS("PROJECT_GROWTH");
-            } else {
-                const ptype = this.city.Growth?.projectType ?? null;
-                const focus = ptype && GameInfo.Projects.lookup(ptype);
-                icon = UI.getIconCSS(focus?.ProjectType ?? "PROJECT_GROWTH");
-            }
+            const isGrowing = this.city.Growth?.growthType == GrowthTypes.EXPAND;
+            const ptype = this.city.Growth?.projectType ?? null;
+            const focus = ptype && GameInfo.Projects.lookup(ptype);
+            if (isGrowing) icon = UI.getIconCSS("PROJECT_GROWTH");
+            if (focus) icon ??= UI.getIconCSS(focus.ProjectType);
+            // show locked focus with brown leaf icon
+            if (focus && isGrowing) filter.push("sepia(1) brightness(1.2) saturate(2)");
             filter.push(shadow, light);
         }
         capitalIndicator.style.backgroundImage = icon;
