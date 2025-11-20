@@ -127,28 +127,3 @@ GenericUnitFlag.prototype.getRelationship = function() {
 }
 GenericUnitFlag.prototype.realizeAffinity =
     IndependentPowersUnitFlag.prototype.realizeAffinity;
-// undo conflicting patches
-function checkUnitPosition(unit) {
-    UnitFlagManager.instance.recalculateFlagOffsets(unit.location);
-}
-function updateTop(position, total) {
-    const offset = position - ((total - 1) / 2) - 0.5;
-    if (this.unitContainer) {
-        if (this.flagOffset != offset) {
-            this.flagOffset = offset;
-            this.unitContainer.style.left = Layout.pixels(offset * 32);
-        }
-    }
-}
-// dynamically import the conflicting mods
-const conflicts = [
-    "/sukritacts_simple_ui_adjustments/ui/unit-flags/suk-unit-flags.js",
-];
-const promises = conflicts.map(mod => import(mod));
-Promise.allSettled(promises).then((mods) => {
-    if (!mods.some(mod => mod.status == "fulfilled")) return;  // no conflicts
-    GenericUnitFlag.prototype.checkUnitPosition = checkUnitPosition;
-    GenericUnitFlag.prototype.updateTop = updateTop;
-    IndependentPowersUnitFlag.prototype.checkUnitPosition = checkUnitPosition;
-    IndependentPowersUnitFlag.prototype.updateTop = updateTop;
-});
