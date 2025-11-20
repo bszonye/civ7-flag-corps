@@ -34,6 +34,14 @@ const BZ_COLOR = {
     culture: "#5c5cd6",     // 240°  60 60 violet
     happiness: "#f5993d",   //  30°  90 60 orange
     diplomacy: "#afb7cf",   // 225°  25 75 gray
+    // yields adjusted to L70+ for contrast
+    food70: "#80b34d",        // unchanged  L71
+    production70: "#e87b64",  // #a33d29 => L70
+    gold70: "#f6ce55",        // unchanged  L86
+    science70: "#6ca6e0",     // unchanged  L71
+    culture70: "#8d92f9",     // #5c5cd6 => L70
+    happiness70: "#f5993d",   // unchanged  L76
+    diplomacy70: "#afb7cf",   // unchanged  L78
     // independent power types
     militaristic: "#af1b1c",
     scientific: "#4d7c96",
@@ -54,13 +62,34 @@ const BZ_LIGHT_SHAPE = "-0.0277777778rem -0.0555555556rem 0.0555555556rem";
 const BZ_LIGHT_SPEC = `${BZ_LIGHT_SHAPE} ${BZ_COLOR.light}`;
 
 const BZ_HEAD_STYLE = [
-// diplo-ribbon: remove color distortion and soften shadows
+// diplo-ribbon: improve banner and yield colors
 `
 .bz-flags .diplo-ribbon__front-banner {
     fxs-border-image-tint: var(--player-color-primary);
 }
 .bz-flags .diplo-ribbon__front-banner-shadow {
     fxs-border-image-tint: #0008;
+}
+.text-yield-food {
+    color: ${BZ_COLOR.food70};
+}
+.text-yield-production {
+    color: ${BZ_COLOR.production70};
+}
+.text-yield-gold {
+    color: ${BZ_COLOR.gold70};
+}
+.text-yield-science {
+    color: ${BZ_COLOR.science70};
+}
+.text-yield-culture {
+    color: ${BZ_COLOR.culture70};
+}
+.text-yield-happiness {
+    color: ${BZ_COLOR.happiness70};
+}
+.text-yield-diplomacy {
+    color: ${BZ_COLOR.diplomacy70};
 }
 `,
 // 0. CITY-BANNER -top-9 absolute flex flex-row justify-start items-center flex-nowrap bg-center whitespace-nowrap bg-no-repeat
