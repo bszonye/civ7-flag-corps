@@ -1,4 +1,3 @@
-// TODO: config option to show yields
 import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 
 var bzTarget;
@@ -354,6 +353,7 @@ class bzCityTooltip {
         this.target = null;
         this.subtarget = null;
         this.city = null;
+        this.location = null;
         // document root
         this.tooltip = document.createElement('fxs-tooltip');
         this.tooltip.classList.value = "bz-tooltip bz-city-tooltip max-w-96";
@@ -407,7 +407,7 @@ class bzCityTooltip {
             target.closest('[data-tooltip-style="bz-city-tooltip"]');
         if (banner?.component == this.target && subtarget == this.subtarget &&
             !this.updateQueued) return false;
-        // set target, location, and city
+        // set target, city, and location
         this.target = banner?.component ?? null;
         this.subtarget = subtarget;
         if (this.target) {
@@ -421,6 +421,7 @@ class bzCityTooltip {
                     type: 1,
                 });
             }
+            this.location = this.city?.location ?? this.target.location ?? null;
         }
         this.updateQueued = false;
         return true;
@@ -459,7 +460,7 @@ class bzCityTooltip {
         if (!this.target) return;
         this.model();
         this.render();
-        this.setWarningCursor(this.city.location);
+        this.setWarningCursor(this.location);
     }
     model() {
         // update point-of-view info
@@ -490,7 +491,7 @@ class bzCityTooltip {
     // data modeling methods
     modelSettlement() {
         // owner, civ, city
-        const loc = this.city.location;
+        const loc = this.location;
         const ownerID = GameplayMap.getOwner(loc.x, loc.y);
         this.owner = Players.get(ownerID);
         this.relationship = this.getCivRelationship(this.owner);
