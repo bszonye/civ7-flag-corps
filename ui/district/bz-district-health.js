@@ -28,6 +28,7 @@ const BZ_HEAD_STYLE = [
     bottom: 0.1666666667rem;
     left: 0.1666666667rem;
     border-radius: 0.2777777778rem / 0.3888888889rem;
+    max-width: 100%;
 }
 `,
 ];
@@ -101,8 +102,12 @@ export class bzDistrictHealthBar {
     }
     beforeAttach() { }
     afterAttach() {
-        this.progressBar = this.component.progressBar;
-        this.progressInk = this.component.progressInk;
+        const c = this.component;
+        // remove civ icon from city center
+        c.civHexOuter.classList.toggle("hidden", c.isCityCenter);
+        // fix "ink" proportions
+        this.progressBar = c.progressBar;
+        this.progressInk = c.progressInk;
         const healthValue = this.Root.getAttribute('data-district-health');
         this.afterUpdateDistrictHealth(healthValue);
     }
