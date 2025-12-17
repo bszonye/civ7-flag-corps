@@ -103,8 +103,11 @@ export class bzDistrictHealthBar {
     beforeAttach() { }
     afterAttach() {
         const c = this.component;
-        // remove civ icon from city center
-        c.civHexOuter.classList.toggle("hidden", c.isCityCenter);
+        // revert changes to city center
+        if (c.isCityCenter) {
+            c.hslot.classList.remove("district-health-fow");
+            c.civHexOuter.classList.add("hidden");
+        }
         // fix "ink" proportions
         this.progressBar = c.progressBar;
         this.progressInk = c.progressInk;
