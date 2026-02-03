@@ -652,7 +652,7 @@ class bzCityTooltip {
         // show city-state bonus
         if (this.owner.isMinor) {
             const bonusType = Game.CityStates.getBonusType(this.owner.id);
-            const bonus = GameInfo.CityStateBonuses.find(b => b.$hash == bonusType);
+            const bonus = GameInfo.CityStateBonuses.lookup(bonusType);
             if (bonus) {
                 const rules = docRules([bonus.Name, bonus.Description]);
                 rules.style.marginTop = rules.style.marginBottom =
