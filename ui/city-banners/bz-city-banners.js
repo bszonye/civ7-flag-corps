@@ -1,6 +1,6 @@
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
 import bzCityTooltip from '/bz-flag-corps/ui/tooltips/bz-city-tooltip.js';
-import { C as CityBannerManager } from '/base-standard/ui/city-banners/city-banner-manager.chunk.js';
+import { bzCityBannerManager } from '/bz-flag-corps/ui/city-banners/bz-city-banner-manager.js';
 
 // color palette
 const BZ_COLOR = {
@@ -877,7 +877,7 @@ export class bzCityBanner {
     onAttributeChanged(_name, _prev, _next) { }
 }
 function refreshAllBanners() {
-    const banners = CityBannerManager.instance?.banners;
+    const banners = bzCityBannerManager.instance?.banners;
     if (!banners) {
         console.warn(`bz-city-banners: no banners to refresh`);
         return;

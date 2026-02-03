@@ -1,9 +1,14 @@
 import { C as ComponentID } from '/core/ui/utilities/utilities-component-id.chunk.js';
-export class bzCityBannerManager {
+class bzCityBannerManager {
+    static c_instance;
     static c_prototype;
+    static get instance() {
+        return bzCityBannerManager.c_instance;
+    }
     constructor(component) {
         this.component = component;
         component.bzComponent = this;
+        bzCityBannerManager.c_instance = component.instance;
         this.Root = this.component.Root;
         this.banners = this.component.banners;
         this.patchPrototypes(this.component);
@@ -67,3 +72,4 @@ export class bzCityBannerManager {
     }
 }
 Controls.decorate('city-banners', (component) => new bzCityBannerManager(component));
+export { bzCityBannerManager };
