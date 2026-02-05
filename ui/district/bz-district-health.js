@@ -58,9 +58,9 @@ DHMproto.addChildForTracking = function(...args) {
 
 const DISTRICT_BANNER_OFFSET = { x: -30, y: 15, z: 8 };
 const CITY_CENTER_BANNER_OFFSET = { x: -20, y: 25, z: 8 };
-// city banners: BANNER_ANCHOR_OFFSET = { x: 0, y: 0, z: 42 };
-const BZ_DISTRICT_BANNER_OFFSET = { x: 0, y: 0, z: 30 };
-const BZ_CITY_CENTER_BANNER_OFFSET = { x: 0, y: 0, z: 42 };
+// align district healthbars with unit flags and city banners
+const BZ_DISTRICT_BANNER_OFFSET = { x: 0, y: 0, z: 30 };  // match unit flags
+const BZ_CITY_CENTER_BANNER_OFFSET = { x: 0, y: 0, z: 42 };  // match city banners
 export class bzDistrictHealthBar {
     static c_prototype;
     constructor(component) {
