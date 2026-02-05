@@ -8,10 +8,13 @@ const BZ_HEAD_STYLE = [
 // set healthbar snug against city banner
 `
 .bz-flags .district-health-container {
-    top: -3.6111111111rem;
+    top: -3.4444444444rem;
     left: -4.7777777778rem;
     height: 1.8888888889rem;
     width: 11.1111111111rem;
+}
+.bz-flags .district-health-container.bz-city-center {
+    top: -3.6111111111rem;
 }
 .bz-flags .district-health-bar {
     position: absolute;
@@ -119,6 +122,10 @@ export class bzDistrictHealthBar {
     beforeAttach() { }
     afterAttach() {
         const c = this.component;
+        if (c.isCityCenter) this.Root.classList.add("bz-city-center");
+        // TODO: center hexes?
+        // c.civHexOuter.classList.add("-top-5", "z-1");
+        // c.civHexOuter.style.left = "3.7777777778rem";
         // fix "ink" proportions
         this.progressBar = c.progressBar;
         this.progressInk = c.progressInk;
