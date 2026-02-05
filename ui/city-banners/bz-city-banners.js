@@ -849,7 +849,7 @@ export class bzCityBanner {
             const max = districts?.getDistrictMaxHealth(this.location);
             const unrest = this.Root.querySelector(".city-banner__unrest");
             const razing = this.Root.querySelector(".city-banner__razing");
-            const shift = (cur && cur != max) ? "-0.8333333333rem" : "0";
+            const shift = cur != max ? "-1.1111111111rem" : "0";
             unrest.style.top = razing.style.top = shift;
         }
         // hide unrest when razing

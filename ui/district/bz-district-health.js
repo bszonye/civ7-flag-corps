@@ -8,7 +8,7 @@ const BZ_HEAD_STYLE = [
 // set healthbar snug against city banner
 `
 .bz-flags .district-health-container {
-    top: -3.3888888889rem;
+    top: -3.6111111111rem;
     left: -4.7777777778rem;
     height: 1.8888888889rem;
     width: 11.1111111111rem;
@@ -38,9 +38,25 @@ BZ_HEAD_STYLE.map(style => {
     document.head.appendChild(e);
 });
 
+// fix district ownership initialization
+const DHMproto = DistrictHealthManager.prototype;
+const DHM_addChildForTracking = DHMproto.addChildForTracking;
+DHMproto.addChildForTracking = function(...args) {
+    DHM_addChildForTracking.apply(this, args);
+    const [child] = args;
+    const id = child.componentID ?? ComponentID.getInvalidID();
+    if (ComponentID.isInvalid(id)) return;
+    const district = Districts.get(id);
+    if (district.owner != district.controllingPlayer) {
+        const districtHealth = this.children.get(ComponentID.toBitfield(district.id));
+        districtHealth?.setContested(true, district.controllingPlayer);
+    }
+};
+
 const DISTRICT_BANNER_OFFSET = { x: -30, y: 15, z: 8 };
 const CITY_CENTER_BANNER_OFFSET = { x: -20, y: 25, z: 8 };
-const BZ_DISTRICT_BANNER_OFFSET = { x: 0, y: 0, z: 42 };
+// city banners: BANNER_ANCHOR_OFFSET = { x: 0, y: 0, z: 42 };
+const BZ_DISTRICT_BANNER_OFFSET = { x: 0, y: 0, z: 30 };
 const BZ_CITY_CENTER_BANNER_OFFSET = { x: 0, y: 0, z: 42 };
 export class bzDistrictHealthBar {
     static c_prototype;
@@ -103,11 +119,6 @@ export class bzDistrictHealthBar {
     beforeAttach() { }
     afterAttach() {
         const c = this.component;
-        // revert changes to city center
-        if (c.isCityCenter) {
-            c.hslot.classList.remove("district-health-fow");
-            c.civHexOuter.classList.add("hidden");
-        }
         // fix "ink" proportions
         this.progressBar = c.progressBar;
         this.progressInk = c.progressInk;
