@@ -8,7 +8,7 @@ const BZ_HEAD_STYLE = [
 // set healthbar snug against city banner
 `
 .bz-flags .district-health-container {
-    top: -1.1111111111rem;
+    top: -1.8888888889rem;
     left: -4.7777777778rem;
     height: 1.8888888889rem;
     width: 11.1111111111rem;
@@ -59,7 +59,7 @@ DHMproto.addChildForTracking = function(...args) {
 const DISTRICT_BANNER_OFFSET = { x: -30, y: 15, z: 8 };
 const CITY_CENTER_BANNER_OFFSET = { x: -20, y: 25, z: 8 };
 // align with city banners (0, 0, 42) or unit flags (0, 0, 30)
-const BZ_DISTRICT_BANNER_OFFSET = { x: 0, y: 0, z: 42 };
+const BZ_DISTRICT_BANNER_OFFSET = { x: 0, y: 0, z: 30 };
 const BZ_CITY_CENTER_BANNER_OFFSET = { x: 0, y: 0, z: 42 };
 export class bzDistrictHealthBar {
     static c_prototype;
