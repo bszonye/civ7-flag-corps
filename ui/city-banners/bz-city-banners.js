@@ -104,7 +104,7 @@ const BZ_HEAD_STYLE = [
 `,  // 1 .CONTAINER flex flex-col mt-2">
 `
 .bz-flags city-banner.city-banner .city-banner__container {
-    margin: 0rem;
+    margin: 0;
 }
 .bz-debug .city-banner .city-banner__container {
     background-color: #f0fa;
@@ -156,7 +156,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__stretch-bg {
     border-image-source: url("blp:town_pill.png");
     border-image-slice: 60 24 2 24 fill;
-    border-image-outset: 0rem 0.4444444444rem;
+    border-image-outset: 0 0.4444444444rem;
     border-image-width: 3.3333333333rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
     fxs-border-image-tint: var(--player-color-primary);
 }
@@ -210,7 +210,7 @@ const BZ_HEAD_STYLE = [
 }
 .bz-flags .city-banner__portrait-img {
     top: 0.0555555556rem;
-    left: 0rem;
+    left: 0;
     width: 1.7777777778rem;  /* 64x90 */
     height: 2.5rem;
     background-size: cover;
@@ -399,12 +399,16 @@ const BZ_HEAD_STYLE = [
     top: -1rem;
 }
 .bz-flags city-banner.city-banner .city-banner__turn-number {
-    background-image: url("blp:town_turn-bg.png");
-    background-size: 100% 100%;
-    line-height: 1;
+    background-image: none;
     margin: 0;
-    padding: 0.8333333333rem 0.1111111111rem 0.1666666667rem;
-    min-width: 1.6666666667rem;
+    padding: 0.8333333333rem 0.1666666667rem 0.1666666667rem;
+    width: auto;
+    min-width: 1.1111111111rem;
+    align-self: center;
+    text-align: center;
+    background-color: #000a;
+    border-radius: 50% / 0.1666666667rem;
+    line-height: 1;
 }
 `,  //     3 .CITY-STATE-CONTAINER justify-center
     //       4 .CITY-STATE-TYPE size-7 self-center align-center justify-center
@@ -412,7 +416,7 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags .city-banner.city-banner--citystate .city-banner__city-state-container,
 .bz-flags .city-banner.city-banner--village .city-banner__city-state-container {
-    margin: 0.0555555556rem 0rem 0rem 0.0555555556rem;
+    margin: 0.0555555556rem 0 0 0.0555555556rem;
 }
 .bz-flags .city-banner.city-banner--citystate .city-banner__city-state-type,
 .bz-flags .city-banner.city-banner--village .city-banner__city-state-type {
@@ -423,7 +427,7 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner > fxs-hslot {
     position: absolute;
-    margin: 0rem;
+    margin: 0;
     top: -2.72222222222rem;
     height: 2.6666666667rem;
     display: flex;
@@ -433,14 +437,13 @@ const BZ_HEAD_STYLE = [
 `,  //   2 FXS-VSLOT -mr-3 flex-auto
     //     3 .CONQUERED-ICON relative size-14 -mr-6 bg-cover bg-no-repeat
 `
-.bz-flags city-banner > fxs-hslot > fxs-vslot {
+.bz-flags city-banner.city-banner .bz-city-conquered {
     position: absolute;
-    margin: 0rem;
+    margin: 0;
+    top: 0.7777777778rem;
 }
 .bz-flags city-banner.city-banner .city-banner__conquered-icon {
     position: absolute;
-    margin: 0rem;
-    top: 2.6666666667rem;
 }
 `,  //   2 FXS-VSLOT.UNREST -mr-3
     //     3 .UNREST-ICON relative size-14 bg-cover bg-no-repeat
@@ -449,55 +452,56 @@ const BZ_HEAD_STYLE = [
     //       4 .TIME-TEXT self-center font-body-xs text-white
 `
 .bz-flags city-banner.city-banner .city-banner__unrest {
-    position: relative;
-    width: 2.6666666667rem;
-    height: 2.6666666667rem;
-    margin: 0rem 0.1666666667rem;
+    position: absolute;
+    margin: 0;
+    right: -2.6666666667rem;
 }
 .bz-flags city-banner.city-banner .city-banner__unrest-icon {
     position: relative;
-    margin: 0rem;
-    top: -0.2222222222rem;
-    left: -0.1111111111rem;
+    z-index: 1;
+    margin: 0;
 }
 `,  //   2 FXS-VSLOT.RAZING
     //     3 .RAZING-ICON relative size-14 bg-cover bg-no-repeat
 `
 .bz-flags city-banner.city-banner .city-banner__razing {
-    position: relative;
-    width: 2.6666666667rem;
-    height: 2.6666666667rem;
-    margin: 0rem 0.1666666667rem;
+    position: absolute;
+    margin: 0;
+    right: -2.6666666667rem;
 }
 .bz-flags city-banner.city-banner .city-banner__razing-icon {
     position: relative;
-    margin: 0rem;
-    top: -0.2222222222rem;
-    left: -0.1111111111rem;
+    z-index: 1;
+    margin: 0;
 }
 `,  //     3 .TIME-CONTAINER -mt-3 pr-2 flex flex-row
     //       4 .TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
     //       4 .TIME-TEXT self-center font-body-xs text-white
 `
 .bz-flags .city-banner .city-banner__time-container {
+    position: relative;
+    margin: 0;
+    top: -1.3333333333rem;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0;
     border-image-source: none;
     border-image-slice: 0;
     border-image-width: 0;
-    padding: 0;
-    position: relative;
-    background-color: #000a;
-    margin: -0.6666666667rem 0.1111111111rem 0rem;
-    height: 1.1111111111rem;
-    border-radius: 0.4444444444rem / 50%;
-    justify-content: center;
-    align-items: center;
 }
 .bz-flags .city-banner .city-banner__time-icon {
-    margin: 0rem;
+    display: none;
 }
 .bz-flags .city-banner .city-banner__time-text {
+    margin: 0;
+    padding: 0.8333333333rem 0.1666666667rem 0.1666666667rem;
+    width: auto;
+    min-width: 1.1111111111rem;
+    align-self: center;
+    text-align: center;
+    background-color: #000a;
+    border-radius: 50% / 0.1666666667rem;
     line-height: 1;
-    margin-right: 0.3333333333rem;
 }
 `,
 ];
@@ -559,22 +563,26 @@ function lightenColor(rgb, lightness) {
 
 export class bzCityBanner {
     static c_prototype;
+    componentID = null;
+    location = null;
+    city = null;
+    owner = null;
+    suzerain = null;
+    leader = null;
+    player = null;  // local observer
+    isAlly = false;  // is leader allied?
+    isEnemy = false;  // is leader at war?
+    isVassal = false;  // is owner a vassal state?
+    hasHead = false;
+    stretch = null;
+    conqueredSlot = null;
+    unrestSlot = null;
+    razingSlot = null;
     constructor(component) {
         this.component = component;
         component.bzComponent = this;
         this.Root = this.component.Root;
         this.elements = this.component.elements;
-        this.componentID = null;
-        this.location = null;
-        this.city = null;
-        this.owner = null;
-        this.suzerain = null;
-        this.leader = null;
-        this.player = null;  // local observer
-        this.isAlly = false;  // is leader allied?
-        this.isEnemy = false;  // is leader at war?
-        this.isVassal = false;  // is owner a vassal state?
-        this.hasHead = false;
         this.patchPrototypes(this.component);
         this.patchStyles(this.component);
     }
@@ -678,6 +686,17 @@ export class bzCityBanner {
         this.owner = Players.get(this.componentID.owner);
         this.player = Players.get(GameContext.localObserverID);
         this.component.realizePlayerColors();
+        // attach external icons to the main banner
+        if (this.stretch) return;
+        this.stretch = this.Root.querySelector(".city-banner__stretch");
+        const conqueredIcon = this.Root.querySelector(".city-banner__conquered-icon");
+        this.conqueredSlot = conqueredIcon?.parentElement;
+        this.conqueredSlot?.classList.add("bz-city-conquered");
+        this.unrestSlot = this.Root.querySelector(".city-banner__unrest");
+        this.razingSlot = this.Root.querySelector(".city-banner__razing");
+        this.stretch.appendChild(this.conqueredSlot);
+        this.stretch.appendChild(this.unrestSlot);
+        this.stretch.appendChild(this.razingSlot);
     }
     realizeIcon() {
         // expand the capital-star to show ownership & town focus
@@ -842,16 +861,6 @@ export class bzCityBanner {
     }
     afterRealizeHappiness() {
         bzCityTooltip.queueUpdate(this);
-        // shift icons above damage bar
-        if (this.owner) {
-            const districts = Players.Districts.get(this.owner.id);
-            const cur = districts?.getDistrictHealth(this.location);
-            const max = districts?.getDistrictMaxHealth(this.location);
-            const unrest = this.Root.querySelector(".city-banner__unrest");
-            const razing = this.Root.querySelector(".city-banner__razing");
-            const shift = cur != max ? "-1.1111111111rem" : "0";
-            unrest.style.top = razing.style.top = shift;
-        }
         // hide unrest when razing
         const showUnrest = this.city?.Happiness?.hasUnrest && !this.city.isBeingRazed;
         this.Root.classList.toggle("city-banner--unrest", showUnrest);
