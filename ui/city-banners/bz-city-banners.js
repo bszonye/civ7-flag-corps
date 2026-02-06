@@ -460,6 +460,7 @@ const BZ_HEAD_STYLE = [
     position: relative;
     z-index: 1;
     margin: 0;
+    filter: drop-shadow(0 0.0555555556rem 0.1111111111rem black);
 }
 `,  //   2 FXS-VSLOT.RAZING
     //     3 .RAZING-ICON relative size-14 bg-cover bg-no-repeat
@@ -473,6 +474,7 @@ const BZ_HEAD_STYLE = [
     position: relative;
     z-index: 1;
     margin: 0;
+    filter: drop-shadow(0 0.0555555556rem 0.1111111111rem black);
 }
 `,  //     3 .TIME-CONTAINER -mt-3 pr-2 flex flex-row
     //       4 .TIME-ICON self-center bg-cover bg-no-repeat size-6 ml-1
