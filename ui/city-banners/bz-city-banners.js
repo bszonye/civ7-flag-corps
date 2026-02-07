@@ -462,6 +462,7 @@ const BZ_HEAD_STYLE = [
     z-index: 2;
     width: 2.6666666667rem;
     height: 2.6666666667rem;
+    top: -0.0555555556rem;
     margin: 0;
     filter: drop-shadow(0 0.0555555556rem 0.1111111111rem black);
 }
