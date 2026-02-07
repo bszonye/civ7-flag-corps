@@ -454,11 +454,14 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__unrest {
     position: absolute;
     margin: 0;
-    right: -2.6666666667rem;
+    top: 0.4444444444rem;
+    right: -2.1111111111rem;
 }
 .bz-flags city-banner.city-banner .city-banner__unrest-icon {
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    width: 2.6666666667rem;
+    height: 2.6666666667rem;
     margin: 0;
     filter: drop-shadow(0 0.0555555556rem 0.1111111111rem black);
 }
@@ -468,11 +471,14 @@ const BZ_HEAD_STYLE = [
 .bz-flags city-banner.city-banner .city-banner__razing {
     position: absolute;
     margin: 0;
-    right: -2.6666666667rem;
+    top: 0.2222222222rem;
+    right: -2.2222222222rem;
 }
 .bz-flags city-banner.city-banner .city-banner__razing-icon {
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    width: 2.8888888889rem;
+    height: 2.8888888889rem;
     margin: 0;
     filter: drop-shadow(0 0.0555555556rem 0.1111111111rem black);
 }
@@ -495,6 +501,7 @@ const BZ_HEAD_STYLE = [
     display: none;
 }
 .bz-flags .city-banner .city-banner__time-text {
+    z-index: -1;
     margin: 0;
     padding: 0.8333333333rem 0.1666666667rem 0.1666666667rem;
     width: auto;
@@ -504,6 +511,11 @@ const BZ_HEAD_STYLE = [
     background-color: #000a;
     border-radius: 50% / 0.1666666667rem;
     line-height: 1;
+}
+.bz-flags .text-negative,
+.bz-flags .text-negative-light {
+    color: #ff6644;
+    text-shadow: 0 0.0555555556rem 0.1111111111rem black, 0 0 0.3333333333rem black;
 }
 `,
 ];
@@ -695,7 +707,11 @@ export class bzCityBanner {
         this.conqueredSlot = conqueredIcon?.parentElement;
         this.conqueredSlot?.classList.add("bz-city-conquered");
         this.unrestSlot = this.Root.querySelector(".city-banner__unrest");
+        const unrestTurns = this.unrestSlot?.querySelector(".city-banner__time-text");
+        unrestTurns?.classList.add("text-negative", "font-bold");
         this.razingSlot = this.Root.querySelector(".city-banner__razing");
+        const razingTurns = this.razingSlot?.querySelector(".city-banner__time-text");
+        razingTurns?.classList.add("text-negative", "font-bold");
         this.stretch.appendChild(this.conqueredSlot);
         this.stretch.appendChild(this.unrestSlot);
         this.stretch.appendChild(this.razingSlot);
