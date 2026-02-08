@@ -641,27 +641,32 @@ class bzCityTooltip {
         const banner = docBanner(rows, style, metrics.padding.banner.px);
         banner.style.lineHeight = metrics.body.ratio;
         banner.style.marginBottom = metrics.body.margin.px;
-        if (isEnemy && !this.growth && !this.production) {
-            // bottom bumper rounding
+        this.container.appendChild(banner);
+        // show city-state bonus
+        const bonusType = Game.CityStates.getBonusType(this.owner.id);
+        const bonus = GameInfo.CityStateBonuses.lookup(bonusType);
+        if (bonus) {
+            const rules = docRules([bonus.Name, bonus.Description]);
+            rules.style.marginTop = rules.style.marginBottom =
+                metrics.margin.px;
+            const title = rules.firstChild.firstChild;
+            title.classList.add("text-secondary", "font-title", "uppercase");
+            title.style.lineHeight = metrics.body.ratio;
+            if (!this.owner.isMinor) {
+                // broken independent player, recycled from a city-state
+                const size = "1.3333333333rem";
+                const warning = docIcon("ATTENTION", size, size, "self-center", "-mb-2");
+                // title.nextSibling.appendChild(warning);
+                this.container.appendChild(warning);
+            }
+            this.container.appendChild(rules);
+        }
+        // bottom bumper rounding
+        if (isEnemy && !bonus && !this.growth && !this.production) {
             banner.style.paddingBottom = metrics.margin.px;  // a little extra
             banner.style.marginBottom = `-${metrics.padding.y.css}`;
             const radius = metrics.radius.css;
             banner.style.borderRadius = `0 0 ${radius} ${radius}`;
-        }
-        this.container.appendChild(banner);
-        // show city-state bonus
-        if (this.owner.isMinor) {
-            const bonusType = Game.CityStates.getBonusType(this.owner.id);
-            const bonus = GameInfo.CityStateBonuses.lookup(bonusType);
-            if (bonus) {
-                const rules = docRules([bonus.Name, bonus.Description]);
-                rules.style.marginTop = rules.style.marginBottom =
-                    metrics.margin.px;
-                const title = rules.firstChild.firstChild;
-                title.classList.add("text-secondary", "font-title", "uppercase");
-                title.style.lineHeight = metrics.body.ratio;
-                this.container.appendChild(rules);
-            }
         }
     }
     getOwnerName(owner) {

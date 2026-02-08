@@ -63,15 +63,16 @@ UFMproto.onRecalculateFlagOffsets = function() {
     for (const plotIndex of this.plotIndicesToCheck) {
         const loc = GameplayMap.getLocationFromIndex(plotIndex);
         const units = MapUnits.getUnits(loc.x, loc.y);
-        const position = { x: 0, y: -32 };
         // dimensions
         const yBanners = bzFlagCorpsOptions.banners ? 0 : null;
+        const yOpen = yBanners ?? -32;
         const yCity = yBanners ?? 8;
         const yTown = yBanners ?? 24;
         const yVillage = yBanners ?? 18;
         const xOrigin = -6;
         const xOffset = 36;  // x-offset between icons
         const width = units.length * xOffset;
+        const position = { x: 0, y: yOpen };
         // is there a city or town banner?
         const cityID = MapCities.getCity(loc.x, loc.y);
         const city = cityID && Cities.get(cityID);
