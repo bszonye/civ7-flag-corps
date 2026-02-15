@@ -438,7 +438,13 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner.city-banner .bz-city-conquered {
     position: absolute;
+    top: 1.2222222222rem;
     margin: 0;
+}
+.bz-flags city-banner.city-banner--citystate .bz-city-conquered {
+    top: -0.1111111111rem;
+}
+.bz-flags city-banner.city-banner--town .bz-city-conquered {
     top: 0.7777777778rem;
 }
 .bz-flags city-banner.city-banner .city-banner__conquered-icon {
