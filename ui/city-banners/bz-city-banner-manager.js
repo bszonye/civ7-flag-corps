@@ -1,25 +1,14 @@
 import { C as ComponentID } from '/core/ui/utilities/utilities-component-id.chunk.js';
 class bzCityBannerManager {
-    static c_instance;
-    static c_prototype;
-    static get instance() {
-        return bzCityBannerManager.c_instance;
-    }
     constructor(component) {
         this.component = component;
         component.bzComponent = this;
-        bzCityBannerManager.c_instance = component.instance;
         this.Root = this.component.Root;
         this.banners = this.component.banners;
-        this.patchPrototypes(this.component);
         this.cityRazingStartedListener = this.onCityRazingStarted.bind(this);
         this.diplomacyEventListener = this.onDiplomacyEvent.bind(this);
         this.districtDamageChangedListener = this.onDistrictDamageChanged.bind(this);
         this.playerUpdateListener = this.onPlayerUpdate.bind(this);
-    }
-    patchPrototypes(component) {
-        const c_prototype = Object.getPrototypeOf(component);
-        if (bzCityBannerManager.c_prototype == c_prototype) return;
     }
     beforeAttach() { }
     afterAttach() {

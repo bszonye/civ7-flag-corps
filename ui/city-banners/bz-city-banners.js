@@ -1,6 +1,5 @@
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
 import bzCityTooltip from '/bz-flag-corps/ui/tooltips/bz-city-tooltip.js';
-import { bzCityBannerManager } from '/bz-flag-corps/ui/city-banners/bz-city-banner-manager.js';
 
 // color palette
 const BZ_COLOR = {
@@ -439,7 +438,13 @@ const BZ_HEAD_STYLE = [
 `
 .bz-flags city-banner.city-banner .bz-city-conquered {
     position: absolute;
+    top: 1.2222222222rem;
     margin: 0;
+}
+.bz-flags city-banner.city-banner--citystate .bz-city-conquered {
+    top: -0.1111111111rem;
+}
+.bz-flags city-banner.city-banner--town .bz-city-conquered {
     top: 0.7777777778rem;
 }
 .bz-flags city-banner.city-banner .city-banner__conquered-icon {
@@ -905,7 +910,7 @@ export class bzCityBanner {
     onAttributeChanged(_name, _prev, _next) { }
 }
 function refreshAllBanners() {
-    const banners = bzCityBannerManager.instance?.banners;
+    const banners = window.banners;
     if (!banners) {
         console.warn(`bz-city-banners: no banners to refresh`);
         return;
