@@ -234,8 +234,9 @@ const BZ_HEAD_STYLE = [
     margin-top: -0.0555555556rem;
 }
 .bz-flags city-banner.city-banner .city-banner__capital-star {
-    background-image: url("blp:icon-capital.png");
-    margin: 0.2222222222rem -0.3333333333rem 0 0;
+    background-image: url("blp:fi_city_capital_icon_curr_64.png");
+    /* margin: 0.2222222222rem -0.3333333333rem 0 0; */
+    margin: 0.4444444444rem -0.1111111111rem 0 0.2222222222rem;
 }
 .bz-flags .city-banner.city-banner--village .city-banner__capital-star {
     display: none;
@@ -727,7 +728,9 @@ export class bzCityBanner {
         this.hasHead = false;
         if (!this.city) return;
         if (!this.owner || this.owner.isIndependent) return;
-        const { capitalIndicator, } = this.elements;
+        const {
+            capitalIndicator, originalCapitalIndicator, originalCapitalCurrIndicator,
+        } = this.elements;
         let icon = null;
         const filter = [];
         const tint = `fxs-color-tint(${this.color2})`;
@@ -740,10 +743,15 @@ export class bzCityBanner {
             const civ = suz && GameInfo.Civilizations.lookup(suz.civilizationType);
             icon = civ && UI.getIconCSS(civ.CivilizationType);
             filter.push(tint, shadow, light);
-        } else if (this.city.isCapital) {
+        } else if (this.city.isCapital || this.city.isOriginalCapital) {
             // capital star
             this.hasHead = !bzFlagCorpsOptions.noHeads;
-            icon = "url('blp:icon-capital.png')";
+            icon =
+                this.city.isCapital && this.city.isOriginalCapital ?
+                "url('blp:fi_city_capital_icon_og_curr_64.png')" :
+                this.city.isOriginalCapital ?
+                "url('blp:fi_city_capital_icon_og_64.png')" :
+                "url('blp:fi_city_capital_icon_curr_64.png')";
             filter.push(shadow, light);
         } else if (!this.city.isTown) {
             // city owner
@@ -765,6 +773,8 @@ export class bzCityBanner {
         capitalIndicator.style.backgroundImage = icon;
         capitalIndicator.style.filter = filter.join(' ');
         capitalIndicator.classList.toggle('hidden', !icon);
+        originalCapitalIndicator.classList.add("hidden");
+        originalCapitalCurrIndicator.classList.add("hidden");
         // "no heads" option
         const portrait = this.Root.querySelector(".city-banner__portrait");
         if (this.hasHead) {
