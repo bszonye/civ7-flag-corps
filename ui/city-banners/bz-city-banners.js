@@ -744,7 +744,8 @@ export class bzCityBanner {
         const tint = `fxs-color-tint(${this.color2})`;
         const shadow = `drop-shadow(${BZ_SHADOW_SHAPE} ${this.color1dark})`;
         const light = `drop-shadow(${BZ_LIGHT_SHAPE} ${this.color1light})`;
-        const filter = [shadow, light];
+        const sfilter = `${shadow} ${light}`;
+        const filter = [sfilter];
         if (this.owner.isMinor) {
             // city-state
             this.hasHead = !bzFlagCorpsOptions.noHeads;
@@ -776,9 +777,9 @@ export class bzCityBanner {
         const {
             capitalIndicator, originalCapitalIndicator, originalCapitalCurrIndicator,
         } = this.elements;
-        capitalIndicator.style.filter =
-            originalCapitalCurrIndicator.style.filter = `${shadow} ${light}`;
-        originalCapitalIndicator.style.filter = `saturate(0) ${shadow} ${light}`;
+        capitalIndicator.style.filter = sfilter;
+        originalCapitalCurrIndicator.style.filter = sfilter;
+        originalCapitalIndicator.style.filter = `saturate(0) ${sfilter}`;
         // "no heads" option
         const portrait = this.Root.querySelector(".city-banner__portrait");
         if (this.hasHead) {
