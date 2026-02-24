@@ -1,5 +1,4 @@
 // TODO: realign district healthbars
-import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
 import { P as PlotCoord } from '/core/ui/utilities/utilities-plotcoord.chunk.js';
 import { C as ComponentID } from '/core/ui/utilities/utilities-component-id.chunk.js';
 import DistrictHealthManager from '/base-standard/ui/district/district-health-manager.js';
@@ -56,8 +55,8 @@ DHMproto.addChildForTracking = function(...args) {
     }
 };
 
-const DISTRICT_BANNER_OFFSET = { x: -30, y: 15, z: 8 };
-const CITY_CENTER_BANNER_OFFSET = { x: -20, y: 25, z: 8 };
+// const DISTRICT_BANNER_OFFSET = { x: -30, y: 15, z: 8 };
+// const CITY_CENTER_BANNER_OFFSET = { x: -20, y: 25, z: 8 };
 // align with city banners (0, 0, 42) or unit flags (0, 0, 30)
 const BZ_DISTRICT_BANNER_OFFSET = { x: 0, y: 0, z: 30 };
 const BZ_CITY_CENTER_BANNER_OFFSET = { x: 0, y: 0, z: 42 };
@@ -93,17 +92,10 @@ export class bzDistrictHealthBar {
     }
     bzMakeWorldAnchor(location) {
         this.component.destroyWorldAnchor();
-        let worldAnchorHandle = null;
-        if (this.component.isCityCenter) {
-            const offset = bzFlagCorpsOptions.banners ?
-                BZ_CITY_CENTER_BANNER_OFFSET : CITY_CENTER_BANNER_OFFSET;
-            worldAnchorHandle = WorldAnchors.RegisterFixedWorldAnchor(location, offset);
-        }
-        else {
-            const offset = bzFlagCorpsOptions.banners ?
-                BZ_DISTRICT_BANNER_OFFSET : DISTRICT_BANNER_OFFSET;
-            worldAnchorHandle = WorldAnchors.RegisterFixedWorldAnchor(location, offset);
-        }
+        const offset = this.component.isCityCenter ?
+            BZ_CITY_CENTER_BANNER_OFFSET : BZ_DISTRICT_BANNER_OFFSET;
+        const worldAnchorHandle = WorldAnchors
+            .RegisterFixedWorldAnchor(location, offset);
         if (worldAnchorHandle !== null && worldAnchorHandle >= 0) {
             this.Root.setAttribute('data-bind-style-transform2d', `{{FixedWorldAnchors.offsetTransforms[${worldAnchorHandle}].value}}`);
             this.Root.setAttribute('data-bind-style-opacity', `{{FixedWorldAnchors.visibleValues[${worldAnchorHandle}]}}`);

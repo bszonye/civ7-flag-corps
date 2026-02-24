@@ -536,7 +536,7 @@ BZ_HEAD_STYLE.map(style => {
     e.textContent = style;
     document.head.appendChild(e);
 });
-document.body.classList.toggle("bz-flags", bzFlagCorpsOptions.banners);
+document.body.classList.add("bz-flags");
 // use the Map Trix debug hotkey instead
 // if (UI.isDebugPlotInfoVisible()) document.body.classList.add("bz-debug");
 
@@ -759,7 +759,7 @@ export class bzCityBanner {
             const civ = GameInfo.Civilizations.lookup(this.owner.civilizationType);
             icon = UI.getIconCSS(civ.CivilizationType);
             filter.unshift(tint);
-        } else if (bzFlagCorpsOptions.banners) {
+        } else {
             // town focus
             const isGrowing = this.city.Growth?.growthType == GrowthTypes.EXPAND;
             const ptype = this.city.Growth?.projectType ?? null;
@@ -796,7 +796,7 @@ export class bzCityBanner {
     afterAffinityUpdate() {
         bzCityTooltip.queueUpdate(this);
         this.realizePortrait();  // sets relationship info too
-        if (!this.owner?.isMajor && bzFlagCorpsOptions.banners) {
+        if (!this.owner?.isMajor) {
             const isNeutral = !this.isVassal && !this.isEnemy;
             this.Root.classList.toggle("city-banner--friendly", this.isVassal);
             this.Root.classList.toggle("city-banner--hostile", this.isEnemy);

@@ -64,7 +64,7 @@ UFMproto.onRecalculateFlagOffsets = function() {
         const loc = GameplayMap.getLocationFromIndex(plotIndex);
         const units = MapUnits.getUnits(loc.x, loc.y);
         // dimensions
-        const yBanners = bzFlagCorpsOptions.banners ? 0 : null;
+        const yBanners = 0;
         const yOpen = yBanners ?? -32;
         const yCity = yBanners ?? 8;
         const yTown = yBanners ?? 24;

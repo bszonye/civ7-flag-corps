@@ -12,7 +12,6 @@ class bzFlagCorpsOptionsEvent extends CustomEvent {
 const bzFlagCorpsOptions = new class {
     modID = "bz-flag-corps";
     defaults = {
-        banners: Number(true),
         noHeads: Number(false),
         noShadow: Number(false),
     };
@@ -30,15 +29,6 @@ const bzFlagCorpsOptions = new class {
         const value = Number(this.data[optionID]);
         ModOptions.save(this.modID, optionID, value);
         window.dispatchEvent(new bzFlagCorpsOptionsEvent());
-    }
-    get banners() {
-        this.data.banners ??= Boolean(this.load("banners"));
-        return this.data.banners;
-    }
-    set banners(flag) {
-        this.data.banners = Boolean(flag);
-        this.save("banners");
-        document.body.classList.toggle("bz-flags", this.data.banners);
     }
     get noHeads() {
         this.data.noHeads ??= Boolean(this.load("noHeads"));
@@ -60,16 +50,6 @@ const bzFlagCorpsOptions = new class {
 };
 
 Options.addInitCallback(() => {
-    Options.addOption({
-        category: CategoryType.Mods,
-        group: "bz_mods",
-        type: OptionType.Checkbox,
-        id: "bz-city-banners",
-        initListener: (info) => info.currentValue = bzFlagCorpsOptions.banners,
-        updateListener: (_info, value) => bzFlagCorpsOptions.banners = value,
-        label: "LOC_OPTIONS_BZ_CITY_BANNERS",
-        description: "LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION",
-    });
     Options.addOption({
         category: CategoryType.Mods,
         group: "bz_mods",
