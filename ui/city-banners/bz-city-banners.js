@@ -231,13 +231,12 @@ const BZ_HEAD_STYLE = [
     //         5 .CAPITAL-STAR w-6 h-6 bg-cover bg-no-repeat hidden
 `
 .bz-flags .bz-settlement-icon {
-    margin: 0.2222222222rem -0.3333333333rem 0 0;
+    margin: 0.2777777778rem -0.3333333333rem -0.0555555556rem 0;
 }
 .bz-flags city-banner.city-banner .city-banner__capital-star,
 .bz-flags city-banner.city-banner .city-banner__original-capital-curr-star,
 .bz-flags city-banner.city-banner .city-banner__original-capital-star {
-    /* margin: 0.2222222222rem -0.3333333333rem 0 0; */
-    margin: 0.4444444444rem -0.1111111111rem 0 0.2222222222rem;
+    margin: 0.5rem -0.1111111111rem 0 0.2222222222rem;
 }
 .bz-flags city-banner.city-banner .city-banner__original-capital-star {
     background-position: center;
