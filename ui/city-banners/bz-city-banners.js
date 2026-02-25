@@ -228,19 +228,27 @@ const BZ_HEAD_STYLE = [
 }
 `,  //     3 FXS-VSLOT.NAME-VSLOT pointer-events-auto cursor-pointer max-h-10
     //       4 FXS-HSLOT
-    //         5 .CAPITAL-STAR w-6 h-6 bg-cover bg-no-repeat hidden
+    //         5 .CAPITAL-STAR w-6 h-6 bg-cover bg-no-repeat hidden pointer-events-auto
+    //         5 .ORIGINAL-CAPITAL-STAR w-6 h-6 ...
+    //         5 .ORIGINAL-CAPITAL-CURR-STAR w-6 h-6 ...
 `
-.bz-flags .bz-settlement-icon {
-    margin: 0.2777777778rem -0.3333333333rem -0.0555555556rem 0;
-}
+.bz-flags .bz-settlement-icon,
 .bz-flags city-banner.city-banner .city-banner__capital-star,
 .bz-flags city-banner.city-banner .city-banner__original-capital-curr-star,
 .bz-flags city-banner.city-banner .city-banner__original-capital-star {
-    margin: 0.5rem -0.1111111111rem 0 0.2222222222rem;
+    background-position: center;
+    position: relative;
+    width: 1.7777777778rem;
+    height: 1.7777777778rem;
+    top: 0.2777777778rem;
+    margin: 0 -0.3333333333rem 0 0;
+}
+.bz-flags city-banner.city-banner .city-banner__capital-star,
+.bz-flags city-banner.city-banner .city-banner__original-capital-curr-star {
+    background-size: 75%;
 }
 .bz-flags city-banner.city-banner .city-banner__original-capital-star {
-    background-position: center;
-    background-size: 80%;
+    background-size: 60%;
 }
 .bz-flags .city-banner.city-banner--village .city-banner__capital-star {
     display: none;
