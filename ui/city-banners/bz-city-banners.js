@@ -240,7 +240,7 @@ const BZ_HEAD_STYLE = [
     position: relative;
     width: 1.7777777778rem;
     height: 1.7777777778rem;
-    top: 0.2777777778rem;
+    top: 0.2222222222rem;
     margin: 0 -0.3333333333rem 0 0;
 }
 .bz-flags city-banner.city-banner .city-banner__capital-star,
