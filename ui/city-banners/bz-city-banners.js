@@ -745,7 +745,9 @@ export class bzCityBanner {
         const light = `drop-shadow(${BZ_LIGHT_SHAPE} ${this.color1light})`;
         const sfilter = `${shadow} ${light}`;
         const filter = [sfilter];
-        if (this.owner.isMinor) {
+        if (this.city.isCapital) {
+            this.hasHead = !bzFlagCorpsOptions.noHeads;
+        } else if (this.owner.isMinor) {
             // city-state
             this.hasHead = !bzFlagCorpsOptions.noHeads;
             const suz = Players.get(this.owner.Influence?.getSuzerain() ?? -1);
