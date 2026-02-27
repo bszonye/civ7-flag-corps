@@ -780,7 +780,7 @@ export class bzCityBanner {
                 filter.unshift("sepia(1) brightness(1.2) saturate(2)");
             }
         }
-        this.settlementIcon.style.backgroundImage = icon;
+        if (icon) this.settlementIcon.style.backgroundImage = icon;
         this.settlementIcon.style.filter = filter.join(' ');
         this.settlementIcon.classList.toggle('hidden', !icon);
         const {
