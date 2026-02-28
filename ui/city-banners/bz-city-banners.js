@@ -784,11 +784,13 @@ export class bzCityBanner {
         this.settlementIcon.style.filter = filter.join(' ');
         this.settlementIcon.classList.toggle('hidden', !icon);
         const {
-            capitalIndicator, originalCapitalIndicator, originalCapitalCurrIndicator,
+            capitalIndicator: cap,
+            originalCapitalIndicator: ocap,
+            originalCapitalCurrIndicator: occap,
         } = this.elements;
-        capitalIndicator.style.filter = sfilter;
-        originalCapitalCurrIndicator.style.filter = sfilter;
-        originalCapitalIndicator.style.filter = `saturate(0) ${sfilter}`;
+        if (cap) cap.style.filter = sfilter;
+        if (ocap) ocap.style.filter = `saturate(0) ${sfilter}`;
+        if (occap) occap.style.filter = sfilter;
         // "no heads" option
         const portrait = this.Root.querySelector(".city-banner__portrait");
         if (this.hasHead) {
