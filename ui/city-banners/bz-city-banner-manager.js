@@ -1,4 +1,4 @@
-import { C as ComponentID } from '/core/ui/utilities/utilities-component-id.chunk.js';
+import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
 class bzCityBannerManager {
     constructor(component) {
         this.component = component;

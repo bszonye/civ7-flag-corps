@@ -1,6 +1,6 @@
 // TODO: realign district healthbars
-import { P as PlotCoord } from '/core/ui/utilities/utilities-plotcoord.chunk.js';
-import { C as ComponentID } from '/core/ui/utilities/utilities-component-id.chunk.js';
+import { PlotCoord } from '/core/ui/utilities/utilities-plotcoord.js';
+import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
 import DistrictHealthManager from '/base-standard/ui/district/district-health-manager.js';
 
 const BZ_HEAD_STYLE = [
