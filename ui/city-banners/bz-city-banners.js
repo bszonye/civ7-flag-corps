@@ -386,7 +386,18 @@ const BZ_HEAD_STYLE = [
 }
 .bz-flags city-banner.city-banner .city-banner__population-ring,
 .bz-flags city-banner.city-banner .city-banner__production-ring {
-    background-position: -0.0277777778rem 0.0277777778rem;
+    top: 0.0277777778rem;
+    left: -0.0277777778rem;
+}
+.bz-flags city-banner.city-banner .city-banner__population-number,
+.bz-flags city-banner.city-banner .city-banner__queue-img {
+    position: relative;
+}
+.bz-flags city-banner.city-banner .city-banner__population-number,
+.bz-flags city-banner.city-banner .city-banner__queue-img,
+.bz-flags city-banner.city-banner .fxs-ring-meter__ring {
+    top: -0.0277777778rem;
+    left: 0.0277777778rem;
 }
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-left {
