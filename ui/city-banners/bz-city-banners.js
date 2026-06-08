@@ -784,10 +784,16 @@ export class bzCityBanner {
             const isGrowing = this.city.Growth?.growthType == GrowthTypes.EXPAND;
             const ptype = this.city.Growth?.projectType ?? null;
             const focus = ptype && GameInfo.Projects.lookup(ptype);
+            const locked = Game.CityCommands.canStart(
+                this.city.id,
+                CityCommandTypes.CHANGE_GROWTH_MODE,
+                { Type: GrowthTypes.PROJECT },
+                false
+            )?.Projects?.length == 1;
             if (isGrowing) icon = UI.getIconCSS("PROJECT_GROWTH");
             if (focus) icon ??= UI.getIconCSS(focus.ProjectType);
             // show locked focus with brown leaf icon
-            if (focus && isGrowing) {
+            if (isGrowing && locked) {
                 filter.unshift("sepia(1) brightness(1.2) saturate(2)");
             }
         }
