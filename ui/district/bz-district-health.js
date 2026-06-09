@@ -7,13 +7,13 @@ const BZ_HEAD_STYLE = [
 // set healthbar snug against city banner
 `
 .bz-flags .district-health-container {
-    top: -1.8888888889rem;
-    left: -4.7777777778rem;
+    top: -2.7777777778rem;
+    left: -9.2777777778rem;
     height: 1.8888888889rem;
     width: 11.1111111111rem;
 }
 .bz-flags .district-health-container.bz-city-center {
-    top: -3.6111111111rem;
+    top: -4.7222222222rem;
 }
 .bz-flags .district-health-bar {
     position: absolute;
