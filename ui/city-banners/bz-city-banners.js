@@ -228,14 +228,27 @@ const BZ_HEAD_STYLE = [
 }
 `,  //     3 FXS-VSLOT.NAME-VSLOT pointer-events-auto cursor-pointer max-h-10
     //       4 FXS-HSLOT
-    //         5 .CAPITAL-STAR w-8 h-8 bg-cover bg-no-repeat hidden
+    //         5 .CAPITAL-STAR w-6 h-6 bg-cover bg-no-repeat hidden pointer-events-auto
+    //         5 .ORIGINAL-CAPITAL-STAR w-6 h-6 ...
+    //         5 .ORIGINAL-CAPITAL-CURR-STAR w-6 h-6 ...
 `
-.city-banner.city-banner--citystate .city-banner__capital-star {
-    margin-top: -0.0555555556rem;
+.bz-flags .bz-settlement-icon,
+.bz-flags city-banner.city-banner .city-banner__capital-star,
+.bz-flags city-banner.city-banner .city-banner__original-capital-curr-star,
+.bz-flags city-banner.city-banner .city-banner__original-capital-star {
+    background-position: center;
+    position: relative;
+    width: 1.7777777778rem;
+    height: 1.7777777778rem;
+    top: 0.2222222222rem;
+    margin: 0 -0.3333333333rem 0 0;
 }
-.bz-flags city-banner.city-banner .city-banner__capital-star {
-    background-image: url("blp:icon-capital.png");
-    margin: 0.2222222222rem -0.3333333333rem 0 0;
+.bz-flags city-banner.city-banner .city-banner__capital-star,
+.bz-flags city-banner.city-banner .city-banner__original-capital-curr-star {
+    background-size: 75%;
+}
+.bz-flags city-banner.city-banner .city-banner__original-capital-star {
+    background-size: 60%;
 }
 .bz-flags .city-banner.city-banner--village .city-banner__capital-star {
     display: none;
@@ -373,7 +386,18 @@ const BZ_HEAD_STYLE = [
 }
 .bz-flags city-banner.city-banner .city-banner__population-ring,
 .bz-flags city-banner.city-banner .city-banner__production-ring {
-    background-position: -0.0277777778rem 0.0277777778rem;
+    top: 0.0277777778rem;
+    left: -0.0277777778rem;
+}
+.bz-flags city-banner.city-banner .city-banner__population-number,
+.bz-flags city-banner.city-banner .city-banner__queue-img {
+    position: relative;
+}
+.bz-flags city-banner.city-banner .city-banner__population-number,
+.bz-flags city-banner.city-banner .city-banner__queue-img,
+.bz-flags city-banner.city-banner .fxs-ring-meter__ring {
+    top: -0.0277777778rem;
+    left: 0.0277777778rem;
 }
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-left {
@@ -530,7 +554,7 @@ BZ_HEAD_STYLE.map(style => {
     e.textContent = style;
     document.head.appendChild(e);
 });
-document.body.classList.toggle("bz-flags", bzFlagCorpsOptions.banners);
+document.body.classList.add("bz-flags");
 // use the Map Trix debug hotkey instead
 // if (UI.isDebugPlotInfoVisible()) document.body.classList.add("bz-debug");
 
@@ -598,6 +622,7 @@ export class bzCityBanner {
     conqueredSlot = null;
     unrestSlot = null;
     razingSlot = null;
+    settlementIcon = null;
     constructor(component) {
         this.component = component;
         component.bzComponent = this;
@@ -706,65 +731,83 @@ export class bzCityBanner {
         this.owner = Players.get(this.componentID.owner);
         this.player = Players.get(GameContext.localObserverID);
         this.component.realizePlayerColors();
+        if (this.stretch) return;  // one-time initialization
         // attach external icons to the main banner
-        if (this.stretch) return;
         this.stretch = this.Root.querySelector(".city-banner__stretch");
-        const conqueredIcon = this.Root.querySelector(".city-banner__conquered-icon");
-        this.conqueredSlot = conqueredIcon?.parentElement;
+        const conquered = this.Root.querySelector(".city-banner__conquered-icon");
+        this.conqueredSlot = conquered?.parentElement;
         this.conqueredSlot?.classList.add("bz-city-conquered");
         this.unrestSlot = this.Root.querySelector(".city-banner__unrest");
-        const unrestTurns = this.unrestSlot?.querySelector(".city-banner__time-text");
-        unrestTurns?.classList.add("text-negative", "font-bold");
+        const unrest = this.unrestSlot?.querySelector(".city-banner__time-text");
+        unrest?.classList.add("text-negative", "font-bold");
         this.razingSlot = this.Root.querySelector(".city-banner__razing");
-        const razingTurns = this.razingSlot?.querySelector(".city-banner__time-text");
-        razingTurns?.classList.add("text-negative", "font-bold");
+        const razing = this.razingSlot?.querySelector(".city-banner__time-text");
+        razing?.classList.add("text-negative", "font-bold");
         this.stretch.appendChild(this.conqueredSlot);
         this.stretch.appendChild(this.unrestSlot);
         this.stretch.appendChild(this.razingSlot);
+        // add settlement type icon
+        this.settlementIcon = document.createElement("div");
+        this.settlementIcon.className =
+            "bz-settlement-icon size-8 bg-cover bg-no-repeat hidden pointer-events-auto";
+        const star = this.Root.querySelector(".city-banner__capital-star");
+        star?.insertAdjacentElement("beforebegin", this.settlementIcon);
     }
     realizeIcon() {
         // expand the capital-star to show ownership & town focus
         this.hasHead = false;
         if (!this.city) return;
         if (!this.owner || this.owner.isIndependent) return;
-        const { capitalIndicator, } = this.elements;
         let icon = null;
-        const filter = [];
         const tint = `fxs-color-tint(${this.color2})`;
         const shadow = `drop-shadow(${BZ_SHADOW_SHAPE} ${this.color1dark})`;
         const light = `drop-shadow(${BZ_LIGHT_SHAPE} ${this.color1light})`;
-        if (this.owner.isMinor) {
+        const sfilter = `${shadow} ${light}`;
+        const filter = [sfilter];
+        if (this.city.isCapital) {
+            this.hasHead = !bzFlagCorpsOptions.noHeads;
+        } else if (this.owner.isMinor) {
             // city-state
             this.hasHead = !bzFlagCorpsOptions.noHeads;
             const suz = Players.get(this.owner.Influence?.getSuzerain() ?? -1);
             const civ = suz && GameInfo.Civilizations.lookup(suz.civilizationType);
             icon = civ && UI.getIconCSS(civ.CivilizationType);
-            filter.push(tint, shadow, light);
-        } else if (this.city.isCapital) {
-            // capital star
-            this.hasHead = !bzFlagCorpsOptions.noHeads;
-            icon = "url('blp:icon-capital.png')";
-            filter.push(shadow, light);
+            filter.unshift(tint);
         } else if (!this.city.isTown) {
             // city owner
             this.hasHead = !bzFlagCorpsOptions.noHeads;
             const civ = GameInfo.Civilizations.lookup(this.owner.civilizationType);
             icon = UI.getIconCSS(civ.CivilizationType);
-            filter.push(tint, shadow, light);
-        } else if (bzFlagCorpsOptions.banners) {
+            filter.unshift(tint);
+        } else {
             // town focus
             const isGrowing = this.city.Growth?.growthType == GrowthTypes.EXPAND;
             const ptype = this.city.Growth?.projectType ?? null;
             const focus = ptype && GameInfo.Projects.lookup(ptype);
+            const locked = Game.CityCommands.canStart(
+                this.city.id,
+                CityCommandTypes.CHANGE_GROWTH_MODE,
+                { Type: GrowthTypes.PROJECT },
+                false
+            )?.Projects?.length == 1;
             if (isGrowing) icon = UI.getIconCSS("PROJECT_GROWTH");
             if (focus) icon ??= UI.getIconCSS(focus.ProjectType);
             // show locked focus with brown leaf icon
-            if (focus && isGrowing) filter.push("sepia(1) brightness(1.2) saturate(2)");
-            filter.push(shadow, light);
+            if (isGrowing && locked) {
+                filter.unshift("sepia(1) brightness(1.2) saturate(2)");
+            }
         }
-        capitalIndicator.style.backgroundImage = icon;
-        capitalIndicator.style.filter = filter.join(' ');
-        capitalIndicator.classList.toggle('hidden', !icon);
+        if (icon) this.settlementIcon.style.backgroundImage = icon;
+        this.settlementIcon.style.filter = filter.join(' ');
+        this.settlementIcon.classList.toggle('hidden', !icon);
+        const {
+            capitalIndicator: cap,
+            originalCapitalIndicator: ocap,
+            originalCapitalCurrIndicator: occap,
+        } = this.elements;
+        if (cap) cap.style.filter = sfilter;
+        if (ocap) ocap.style.filter = `saturate(0) ${sfilter}`;
+        if (occap) occap.style.filter = sfilter;
         // "no heads" option
         const portrait = this.Root.querySelector(".city-banner__portrait");
         if (this.hasHead) {
@@ -781,7 +824,7 @@ export class bzCityBanner {
     afterAffinityUpdate() {
         bzCityTooltip.queueUpdate(this);
         this.realizePortrait();  // sets relationship info too
-        if (!this.owner?.isMajor && bzFlagCorpsOptions.banners) {
+        if (!this.owner?.isMajor) {
             const isNeutral = !this.isVassal && !this.isEnemy;
             this.Root.classList.toggle("city-banner--friendly", this.isVassal);
             this.Root.classList.toggle("city-banner--hostile", this.isEnemy);

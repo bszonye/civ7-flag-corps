@@ -16,6 +16,7 @@ export default [
         languageOptions: {
             globals: {
                 Cities: "readonly",
+                CityCommandTypes: "readonly",
                 CombatTypes: "readonly",
                 Constructibles: "readonly",
                 Controls: "readonly",

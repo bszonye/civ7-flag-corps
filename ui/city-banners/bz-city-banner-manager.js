@@ -1,4 +1,4 @@
-import { C as ComponentID } from '/core/ui/utilities/utilities-component-id.chunk.js';
+import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
 class bzCityBannerManager {
     constructor(component) {
         this.component = component;
@@ -48,14 +48,14 @@ class bzCityBannerManager {
             console.error("District damage changed but no associated banner was found. cid: ", ComponentID.toLogString(data.cityID));
             return;
         }
-        cityBanner.queueBuildsUpdate();
+        cityBanner.fullUpdate("onDistrictDamageChanged");
     }
     onPlayerUpdate(data) {
         // update all player banners when player data changes
         // (at the start of each turn and after resource allocation)
         this.banners.forEach((banner, _key) => {
             if (banner.city && banner.componentID.owner == data.player) {
-                banner.queueBuildsUpdate();
+                banner.fullUpdate("onPlayerUpdate");
             }
         });
     }

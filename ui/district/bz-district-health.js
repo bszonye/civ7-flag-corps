@@ -1,20 +1,19 @@
 // TODO: realign district healthbars
-import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
-import { P as PlotCoord } from '/core/ui/utilities/utilities-plotcoord.chunk.js';
-import { C as ComponentID } from '/core/ui/utilities/utilities-component-id.chunk.js';
+import { PlotCoord } from '/core/ui/utilities/utilities-plotcoord.js';
+import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
 import DistrictHealthManager from '/base-standard/ui/district/district-health-manager.js';
 
 const BZ_HEAD_STYLE = [
 // set healthbar snug against city banner
 `
 .bz-flags .district-health-container {
-    top: -1.8888888889rem;
-    left: -4.7777777778rem;
+    top: -2.7777777778rem;
+    left: -9.2777777778rem;
     height: 1.8888888889rem;
     width: 11.1111111111rem;
 }
 .bz-flags .district-health-container.bz-city-center {
-    top: -3.6111111111rem;
+    top: -4.7222222222rem;
 }
 .bz-flags .district-health-bar {
     position: absolute;
@@ -56,8 +55,8 @@ DHMproto.addChildForTracking = function(...args) {
     }
 };
 
-const DISTRICT_BANNER_OFFSET = { x: -30, y: 15, z: 8 };
-const CITY_CENTER_BANNER_OFFSET = { x: -20, y: 25, z: 8 };
+// const DISTRICT_BANNER_OFFSET = { x: -30, y: 15, z: 8 };
+// const CITY_CENTER_BANNER_OFFSET = { x: -20, y: 25, z: 8 };
 // align with city banners (0, 0, 42) or unit flags (0, 0, 30)
 const BZ_DISTRICT_BANNER_OFFSET = { x: 0, y: 0, z: 30 };
 const BZ_CITY_CENTER_BANNER_OFFSET = { x: 0, y: 0, z: 42 };
@@ -93,17 +92,10 @@ export class bzDistrictHealthBar {
     }
     bzMakeWorldAnchor(location) {
         this.component.destroyWorldAnchor();
-        let worldAnchorHandle = null;
-        if (this.component.isCityCenter) {
-            const offset = bzFlagCorpsOptions.banners ?
-                BZ_CITY_CENTER_BANNER_OFFSET : CITY_CENTER_BANNER_OFFSET;
-            worldAnchorHandle = WorldAnchors.RegisterFixedWorldAnchor(location, offset);
-        }
-        else {
-            const offset = bzFlagCorpsOptions.banners ?
-                BZ_DISTRICT_BANNER_OFFSET : DISTRICT_BANNER_OFFSET;
-            worldAnchorHandle = WorldAnchors.RegisterFixedWorldAnchor(location, offset);
-        }
+        const offset = this.component.isCityCenter ?
+            BZ_CITY_CENTER_BANNER_OFFSET : BZ_DISTRICT_BANNER_OFFSET;
+        const worldAnchorHandle = WorldAnchors
+            .RegisterFixedWorldAnchor(location, offset);
         if (worldAnchorHandle !== null && worldAnchorHandle >= 0) {
             this.Root.setAttribute('data-bind-style-transform2d', `{{FixedWorldAnchors.offsetTransforms[${worldAnchorHandle}].value}}`);
             this.Root.setAttribute('data-bind-style-opacity', `{{FixedWorldAnchors.visibleValues[${worldAnchorHandle}]}}`);

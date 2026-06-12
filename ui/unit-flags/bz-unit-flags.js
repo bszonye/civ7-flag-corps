@@ -1,6 +1,6 @@
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
-import { C as ComponentID } from '/core/ui/utilities/utilities-component-id.chunk.js';
-import { L as Layout } from '/core/ui/utilities/utilities-layout.chunk.js';
+import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
+import { Layout } from '/core/ui/utilities/utilities-layout.js';
 import { UnitFlagManager } from '/base-standard/ui/unit-flags/unit-flag-manager.js';
 import { GenericUnitFlag } from '/base-standard/ui/unit-flags/unit-flags.js';
 import { IndependentPowersUnitFlag } from '/base-standard/ui/unit-flags/unit-flags-independent-powers.js';
@@ -64,7 +64,7 @@ UFMproto.onRecalculateFlagOffsets = function() {
         const loc = GameplayMap.getLocationFromIndex(plotIndex);
         const units = MapUnits.getUnits(loc.x, loc.y);
         // dimensions
-        const yBanners = bzFlagCorpsOptions.banners ? 0 : null;
+        const yBanners = 0;
         const yOpen = yBanners ?? -32;
         const yCity = yBanners ?? 8;
         const yTown = yBanners ?? 24;

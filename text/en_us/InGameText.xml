@@ -22,12 +22,6 @@
         <Replace Tag="LOC_BZ_WAS_PREVIOUSLY">
             <Text>(Was {1_name})</Text>
         </Replace>
-        <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS">
-            <Text>Flag Corps • restyle city banners</Text>
-        </Replace>
-        <Replace Tag="LOC_OPTIONS_BZ_CITY_BANNERS_DESCRIPTION">
-            <Text>Updates city and town banners with a cleaner, more consistent style.</Text>
-        </Replace>
         <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS">
             <Text>Flag Corps • remove leader heads</Text>
         </Replace>
