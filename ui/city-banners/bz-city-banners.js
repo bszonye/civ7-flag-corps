@@ -54,6 +54,7 @@ const BZ_COLOR = {
     light: "#fff6e5cc",     //  40° 100 95 pale bronze
     shadow: "#00000080",
     progress: "#e0b96c",    //  40°  65 65 deep bronze
+    growing: "#60c000",
 };
 const BZ_SHADOW_SHAPE = "0.0277777778rem 0.0555555556rem 0.0555555556rem";
 const BZ_SHADOW_SPEC = `${BZ_SHADOW_SHAPE} ${BZ_COLOR.black}`;
@@ -784,17 +785,22 @@ export class bzCityBanner {
             const isGrowing = this.city.Growth?.growthType == GrowthTypes.EXPAND;
             const ptype = this.city.Growth?.projectType ?? null;
             const focus = ptype && GameInfo.Projects.lookup(ptype);
-            const locked = Game.CityCommands.canStart(
+            const projects = Game.CityCommands.canStart(
                 this.city.id,
                 CityCommandTypes.CHANGE_GROWTH_MODE,
                 { Type: GrowthTypes.PROJECT },
                 false
-            )?.Projects?.length == 1;
-            if (isGrowing) icon = UI.getIconCSS("PROJECT_GROWTH");
-            if (focus) icon ??= UI.getIconCSS(focus.ProjectType);
+            )?.Projects;
+            const locked = projects?.length == 1 ? GameInfo.Projects[projects[0]] : null;
+            if (focus) icon = UI.getIconCSS(focus.ProjectType);
+            if (locked) icon ??= UI.getIconCSS(locked.ProjectType);
+            if (isGrowing) icon ??= UI.getIconCSS("PROJECT_GROWTH");
             // show locked focus with brown leaf icon
             if (isGrowing && locked) {
-                filter.unshift("sepia(1) brightness(1.2) saturate(2)");
+                filter.unshift(
+                    "saturate(0) contrast(0.5) brightness(1.33)",
+                    `fxs-color-tint(${BZ_COLOR.growing})`
+                );
             }
         }
         if (icon) this.settlementIcon.style.backgroundImage = icon;
