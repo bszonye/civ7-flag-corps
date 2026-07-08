@@ -795,7 +795,7 @@ export class bzCityBanner {
             if (focus) icon = UI.getIconCSS(focus.ProjectType);
             if (locked) icon ??= UI.getIconCSS(locked.ProjectType);
             if (isGrowing) icon ??= UI.getIconCSS("PROJECT_GROWTH");
-            // show locked focus with brown leaf icon
+            // show locked focus with tinted green icon
             if (isGrowing && locked) {
                 filter.unshift(
                     "saturate(0) contrast(0.5) brightness(1.33)",
