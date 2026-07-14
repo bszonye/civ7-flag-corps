@@ -874,7 +874,7 @@ export class bzCityBanner {
         const { productionQueue, } = this.elements;
         productionQueue.removeAttribute('data-tooltip-content');
         // in single-player mode, hide other players' queues
-        if (this.isRival()) productionQueue.style.display = 'none';
+        productionQueue.classList.toggle("hidden-important", this.isRival());
         // add subtarget class
         productionQueue.classList.add("bz-city-queue");
     }
