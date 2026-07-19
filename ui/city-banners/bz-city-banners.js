@@ -48,7 +48,7 @@ const BZ_COLOR = {
     cultural: "#892bb3",
     // relationship ring colors
     friendly: "#e5d2ac",
-    hostile: "#af1b1c",
+    hostile: "#d93a37",  /* sampled from unit flags */
     neutral: "#afb7cf",     // 225°  25 75 gray
     // highlight & shadow colors
     light: "#fff6e5cc",     //  40° 100 95 pale bronze
