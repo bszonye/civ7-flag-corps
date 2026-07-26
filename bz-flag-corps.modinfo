@@ -9,6 +9,7 @@
         <URL>https://forums.civfanatics.com/resources/flag-corps.32132/</URL>
         <Package>Mod</Package>
         <AffectsSavedGames>0</AffectsSavedGames>
+        <bzIcon>blp:focus_hub</bzIcon>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
