@@ -10,6 +10,7 @@
         <Package>Mod</Package>
         <AffectsSavedGames>0</AffectsSavedGames>
         <bzIcon>blp:focus_hub</bzIcon>
+        <bzIconGlow>#d93a37</bzIconGlow>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
