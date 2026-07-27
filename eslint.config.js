@@ -18,6 +18,7 @@ export default [
                 Cities: "readonly",
                 CityCommandTypes: "readonly",
                 CombatTypes: "readonly",
+                Configuration: "readonly",
                 Constructibles: "readonly",
                 Controls: "readonly",
                 CustomEvent: "readonly",
