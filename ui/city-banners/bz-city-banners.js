@@ -67,9 +67,6 @@ const BZ_HEAD_STYLE = [
 .bz-flags .diplo-ribbon__front-banner {
     fxs-border-image-tint: var(--player-color-primary);
 }
-.bz-flags .diplo-ribbon__front-banner-shadow {
-    fxs-border-image-tint: #0008;
-}
 .text-yield-food {
     color: ${BZ_COLOR.foodText};
 }
