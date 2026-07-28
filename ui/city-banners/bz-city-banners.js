@@ -746,7 +746,7 @@ export class bzCityBanner {
     realizeIcon() {
         // expand the capital-star to show ownership & town focus
         this.hasHead = false;
-        if (!this.city) return;
+        if (!this.city?.isValid) return;
         if (!this.owner || this.owner.isIndependent) return;
         let icon = null;
         const tint = `fxs-color-tint(${this.color2})`;
@@ -916,6 +916,7 @@ export class bzCityBanner {
         this.elements.portraitIcon.style.backgroundImage = portrait;
     }
     afterRealizeBuilds() {
+        if (!this.city?.isValid) return;
         // update town focus
         this.realizeIcon();
         // fix turn counters
@@ -924,9 +925,9 @@ export class bzCityBanner {
             counter.classList.remove("font-base-2xs");
             counter.classList.add("text-xs");
         }
-        // in debug mode, show other players' queues
+        // show other players' queues in autoplay or debug mode
         const isLocalPlayerCity = this.city.owner === GameContext.localObserverID;
-        if (!isLocalPlayerCity && UI.isDebugPlotInfoVisible()) {
+        if (!isLocalPlayerCity && !this.isRival()) {
           const { productionQueueContainer, productionQueue } = this.elements;
           const buildQueue = this.city.BuildQueue;
           const cityProduction = this.city.Production;
