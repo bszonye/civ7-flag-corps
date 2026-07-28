@@ -361,7 +361,7 @@ const BZ_HEAD_STYLE = [
     align-items: center;
     justify-content: center;
     top: 0.1666666667rem;
-    left: 0;
+    left: 0.1111111111rem;
     width: 1.5555555556rem;
     height: 1.5555555556rem;
     margin-top: 0;
@@ -369,9 +369,8 @@ const BZ_HEAD_STYLE = [
     padding: 0;
     box-shadow: none;
 }
-.bz-flags .city-banner.city-banner--city-other .city-banner__queue-container {
-    /* TODO: why is this 1.1111111111rem too high? */
-    top: 1.2777777778rem;
+.bz-flags .city-banner.city-banner--city-other .city-banner__production-container {
+    top: 0.0555555556rem;
 }
 .bz-flags .city-banner .dan-tooltip {
     filter: drop-shadow(0 0.0555555556rem 0.1111111111rem #0006);
@@ -408,6 +407,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--city-other .queue-production {
     display: flex;
 }
+.bz-flags .city-banner.city-banner--city-other .queue-production.hidden,
 .bz-flags .city-banner.city-banner--city-other .queue-production.queue-none {
     display: none;
 }
@@ -860,10 +860,8 @@ export class bzCityBanner {
     afterProcessBuilds(_data) {
         bzCityTooltip.queueUpdate(this);
         // hide default tooltip
-        const { productionQueue, } = this.elements;
+        const { productionQueue } = this.elements;
         productionQueue.removeAttribute('data-tooltip-content');
-        // in single-player mode, hide other players' queues
-        productionQueue.classList.toggle("hidden-important", this.isRival());
         // add subtarget class
         productionQueue.classList.add("bz-city-queue");
     }
@@ -925,6 +923,21 @@ export class bzCityBanner {
         for (const counter of counters) {
             counter.classList.remove("font-base-2xs");
             counter.classList.add("text-xs");
+        }
+        // in debug mode, show other players' queues
+        const isLocalPlayerCity = this.city.owner === GameContext.localObserverID;
+        if (!isLocalPlayerCity && UI.isDebugPlotInfoVisible()) {
+          const { productionQueueContainer, productionQueue } = this.elements;
+          const buildQueue = this.city.BuildQueue;
+          const cityProduction = this.city.Production;
+          if (buildQueue && cityProduction && !buildQueue.isEmpty) {
+              productionQueueContainer.classList.toggle("hidden", false);
+              productionQueue.dataset.cityid = JSON.stringify(this.city.id);
+              productionQueue.dataset.prodPerTurn = (this.city.Yields?.getNetYield(YieldTypes.YIELD_PRODUCTION) ?? 0).toString();
+              productionQueue.dataset.turnsLeft = buildQueue.currentTurnsLeft.toString();
+              productionQueue.dataset.percent = buildQueue.getPercentComplete(buildQueue.currentProductionTypeHash).toString();
+              this.component.processBuilds(buildQueue, cityProduction);
+          }
         }
     }
     afterRealizeHappiness() {
