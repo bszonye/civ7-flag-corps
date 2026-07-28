@@ -627,7 +627,6 @@ export class bzCityBanner {
         this.Root = this.component.Root;
         this.elements = this.component.elements;
         this.patchPrototypes(this.component);
-        this.patchStyles(this.component);
     }
     patchPrototypes(component) {
         const c_prototype = Object.getPrototypeOf(component);
@@ -714,14 +713,6 @@ export class bzCityBanner {
             const after_rv = afterRealizeTradeNetwork.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
-    }
-    patchStyles(banner) {
-        const { growthQueueTurns, productionQueueTurns } = banner.elements;
-        // TODO
-        growthQueueTurns?.classList.remove("font-base-2xs");
-        growthQueueTurns?.classList.add("text-xs");
-        productionQueueTurns?.classList.remove("font-base-xs");
-        productionQueueTurns?.classList.add("text-xs");
     }
     beforeBuildBanner() {
         this.componentID = this.component.componentID;
@@ -929,6 +920,12 @@ export class bzCityBanner {
     afterRealizeBuilds() {
         // update town focus
         this.realizeIcon();
+        // fix turn counters
+        const counters = this.Root.querySelectorAll(".city-banner__turn-number");
+        for (const counter of counters) {
+            counter.classList.remove("font-base-2xs");
+            counter.classList.add("text-xs");
+        }
     }
     afterRealizeHappiness() {
         bzCityTooltip.queueUpdate(this);
