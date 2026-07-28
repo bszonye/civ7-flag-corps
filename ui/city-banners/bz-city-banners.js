@@ -674,12 +674,12 @@ export class bzCityBanner {
             const after_rv = afterSetFood.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
-        // afterSetProduction
-        const afterSetProduction = this.afterSetProduction;
-        const setProduction = proto.setProduction;
-        proto.setProduction = function(...args) {
-            const c_rv = setProduction.apply(this, args);
-            const after_rv = afterSetProduction.apply(this.bzComponent, args);
+        // afterProcessBuilds
+        const afterProcessBuilds = this.afterProcessBuilds;
+        const processBuilds = proto.processBuilds;
+        proto.processBuilds = function(...args) {
+            const c_rv = processBuilds.apply(this, args);
+            const after_rv = afterProcessBuilds.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
         // afterRealizeBuilds
@@ -717,10 +717,11 @@ export class bzCityBanner {
     }
     patchStyles(banner) {
         const { growthQueueTurns, productionQueueTurns } = banner.elements;
-        growthQueueTurns.classList.remove("font-base-2xs");
-        growthQueueTurns.classList.add("text-xs");
-        productionQueueTurns.classList.remove("font-base-xs");
-        productionQueueTurns.classList.add("text-xs");
+        // TODO
+        growthQueueTurns?.classList.remove("font-base-2xs");
+        growthQueueTurns?.classList.add("text-xs");
+        productionQueueTurns?.classList.remove("font-base-xs");
+        productionQueueTurns?.classList.add("text-xs");
     }
     beforeBuildBanner() {
         this.componentID = this.component.componentID;
@@ -865,7 +866,7 @@ export class bzCityBanner {
         // add subtarget class
         growthQueueContainer.classList.add("bz-city-growth");
     }
-    afterSetProduction(_data) {
+    afterProcessBuilds(_data) {
         bzCityTooltip.queueUpdate(this);
         // hide default tooltip
         const { productionQueue, } = this.elements;
