@@ -665,22 +665,6 @@ export class bzCityBanner {
             const after_rv = afterSetCityInfo.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
-        // afterSetFood
-        const afterSetFood = this.afterSetFood;
-        const setFood = proto.setFood;
-        proto.setFood = function(...args) {
-            const c_rv = setFood.apply(this, args);
-            const after_rv = afterSetFood.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
-        }
-        // afterProcessBuilds
-        const afterProcessBuilds = this.afterProcessBuilds;
-        const processBuilds = proto.processBuilds;
-        proto.processBuilds = function(...args) {
-            const c_rv = processBuilds.apply(this, args);
-            const after_rv = afterProcessBuilds.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
-        }
         // afterRealizeBuilds
         const afterRealizeBuilds = this.afterRealizeBuilds;
         const realizeBuilds = proto.realizeBuilds;
@@ -825,6 +809,7 @@ export class bzCityBanner {
             this.Root.classList.toggle("city-banner--hostile", this.isEnemy);
             this.Root.classList.toggle("city-banner--neutral", isNeutral);
         }
+        // TODO: update queue visibility when local player changes
     }
     afterCapitalUpdate() {
         bzCityTooltip.queueUpdate(this);
@@ -848,22 +833,6 @@ export class bzCityBanner {
         portrait.removeAttribute('data-tooltip-content');
         // set affinity rings for captured settlements
         if (this.city && this.owner.isIndependent) this.component.affinityUpdate();
-    }
-    afterSetFood(_turnsLeft, _current, _nextTarget) {
-        bzCityTooltip.queueUpdate(this);
-        // hide default tooltip
-        const { growthQueueContainer, } = this.elements;
-        growthQueueContainer.removeAttribute('data-tooltip-content');
-        // add subtarget class
-        growthQueueContainer.classList.add("bz-city-growth");
-    }
-    afterProcessBuilds(_data) {
-        bzCityTooltip.queueUpdate(this);
-        // hide default tooltip
-        const { productionQueue } = this.elements;
-        productionQueue.removeAttribute('data-tooltip-content');
-        // add subtarget class
-        productionQueue.classList.add("bz-city-queue");
     }
     isRival() {
         // does this banner belong to a rival?
@@ -917,18 +886,24 @@ export class bzCityBanner {
     }
     afterRealizeBuilds() {
         if (!this.city?.isValid) return;
+        const {
+            container_bg,
+            cityName,
+            growthQueueContainer,
+            productionQueueContainer,
+            productionQueue,
+        } = this.elements;
+        // update tooltips
+        bzCityTooltip.queueUpdate(this);
+        cityName.removeAttribute('data-tooltip-content');
+        container_bg.removeAttribute('data-tooltip-content');
+        growthQueueContainer.classList.add("bz-city-growth");
+        productionQueueContainer.classList.add("bz-city-queue");
         // update town focus
         this.realizeIcon();
-        // fix turn counters
-        const counters = this.Root.querySelectorAll(".city-banner__turn-number");
-        for (const counter of counters) {
-            counter.classList.remove("font-base-2xs");
-            counter.classList.add("text-xs");
-        }
         // show other players' queues in autoplay or debug mode
         const isLocalPlayerCity = this.city.owner === GameContext.localObserverID;
         if (!isLocalPlayerCity && !this.isRival()) {
-          const { productionQueueContainer, productionQueue } = this.elements;
           const buildQueue = this.city.BuildQueue;
           const cityProduction = this.city.Production;
           if (buildQueue && cityProduction && !buildQueue.isEmpty) {
@@ -939,6 +914,12 @@ export class bzCityBanner {
               productionQueue.dataset.percent = buildQueue.getPercentComplete(buildQueue.currentProductionTypeHash).toString();
               this.component.processBuilds(buildQueue, cityProduction);
           }
+        }
+        // fix turn counters
+        const counters = this.Root.querySelectorAll(".city-banner__turn-number");
+        for (const counter of counters) {
+            counter.classList.remove("font-base-2xs");
+            counter.classList.add("text-xs");
         }
     }
     afterRealizeHappiness() {

@@ -428,6 +428,9 @@ class bzCityTooltip {
     }
     isBlank() {
         if (!this.target) return true;
+        // yield to vanilla tooltips over the progress meters
+        if (this.subtarget == bzTarget.GROWTH) return true;
+        if (this.subtarget == bzTarget.PRODUCTION) return true;
         // hide the tooltip over elements with tooltip content
         if (this.target.Root.getAttribute("data-tooltip-content")) return true;
         if (this.subtarget == bzTarget.PRODUCTION) return this.city.BuildQueue.isEmpty;
@@ -477,9 +480,9 @@ class bzCityTooltip {
         metrics = getFontMetrics();
         const border = this.tooltip.querySelector('.img-tooltip-border');
         if (border) border.borderRadius = metrics.radius.tooltip.css;
-        // render subtarget tooltips, if needed
-        if (this.subtarget == bzTarget.GROWTH) return this.renderGrowth();
-        if (this.subtarget == bzTarget.PRODUCTION) return this.renderProduction();
+        // yield to vanilla tooltips over the progress meters
+        if (this.subtarget == bzTarget.GROWTH) return;
+        if (this.subtarget == bzTarget.PRODUCTION) return;
         // render main tooltip
         this.renderSettlement();
         this.renderConnections();
