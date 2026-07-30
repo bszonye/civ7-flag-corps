@@ -67,9 +67,6 @@ const BZ_HEAD_STYLE = [
 .bz-flags .diplo-ribbon__front-banner {
     fxs-border-image-tint: var(--player-color-primary);
 }
-.bz-flags .diplo-ribbon__front-banner-shadow {
-    fxs-border-image-tint: #0008;
-}
 .text-yield-food {
     color: ${BZ_COLOR.foodText};
 }
@@ -364,7 +361,7 @@ const BZ_HEAD_STYLE = [
     align-items: center;
     justify-content: center;
     top: 0.1666666667rem;
-    left: 0;
+    left: 0.1111111111rem;
     width: 1.5555555556rem;
     height: 1.5555555556rem;
     margin-top: 0;
@@ -372,9 +369,8 @@ const BZ_HEAD_STYLE = [
     padding: 0;
     box-shadow: none;
 }
-.bz-flags .city-banner.city-banner--city-other .city-banner__queue-container {
-    /* TODO: why is this 1.1111111111rem too high? */
-    top: 1.2777777778rem;
+.bz-flags .city-banner.city-banner--city-other .city-banner__production-container {
+    top: 0.0555555556rem;
 }
 .bz-flags .city-banner .dan-tooltip {
     filter: drop-shadow(0 0.0555555556rem 0.1111111111rem #0006);
@@ -411,6 +407,7 @@ const BZ_HEAD_STYLE = [
 .bz-flags .city-banner.city-banner--city-other .queue-production {
     display: flex;
 }
+.bz-flags .city-banner.city-banner--city-other .queue-production.hidden,
 .bz-flags .city-banner.city-banner--city-other .queue-production.queue-none {
     display: none;
 }
@@ -630,7 +627,6 @@ export class bzCityBanner {
         this.Root = this.component.Root;
         this.elements = this.component.elements;
         this.patchPrototypes(this.component);
-        this.patchStyles(this.component);
     }
     patchPrototypes(component) {
         const c_prototype = Object.getPrototypeOf(component);
@@ -669,22 +665,6 @@ export class bzCityBanner {
             const after_rv = afterSetCityInfo.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
-        // afterSetFood
-        const afterSetFood = this.afterSetFood;
-        const setFood = proto.setFood;
-        proto.setFood = function(...args) {
-            const c_rv = setFood.apply(this, args);
-            const after_rv = afterSetFood.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
-        }
-        // afterSetProduction
-        const afterSetProduction = this.afterSetProduction;
-        const setProduction = proto.setProduction;
-        proto.setProduction = function(...args) {
-            const c_rv = setProduction.apply(this, args);
-            const after_rv = afterSetProduction.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
-        }
         // afterRealizeBuilds
         const afterRealizeBuilds = this.afterRealizeBuilds;
         const realizeBuilds = proto.realizeBuilds;
@@ -718,13 +698,6 @@ export class bzCityBanner {
             return after_rv ?? c_rv;
         }
     }
-    patchStyles(banner) {
-        const { growthQueueTurns, productionQueueTurns } = banner.elements;
-        growthQueueTurns.classList.remove("font-base-2xs");
-        growthQueueTurns.classList.add("text-xs");
-        productionQueueTurns.classList.remove("font-base-xs");
-        productionQueueTurns.classList.add("text-xs");
-    }
     beforeBuildBanner() {
         this.componentID = this.component.componentID;
         this.location = this.component.location;
@@ -757,7 +730,7 @@ export class bzCityBanner {
     realizeIcon() {
         // expand the capital-star to show ownership & town focus
         this.hasHead = false;
-        if (!this.city) return;
+        if (!this.city?.isValid) return;
         if (!this.owner || this.owner.isIndependent) return;
         let icon = null;
         const tint = `fxs-color-tint(${this.color2})`;
@@ -836,6 +809,7 @@ export class bzCityBanner {
             this.Root.classList.toggle("city-banner--hostile", this.isEnemy);
             this.Root.classList.toggle("city-banner--neutral", isNeutral);
         }
+        // TODO: update queue visibility when local player changes
     }
     afterCapitalUpdate() {
         bzCityTooltip.queueUpdate(this);
@@ -859,24 +833,6 @@ export class bzCityBanner {
         portrait.removeAttribute('data-tooltip-content');
         // set affinity rings for captured settlements
         if (this.city && this.owner.isIndependent) this.component.affinityUpdate();
-    }
-    afterSetFood(_turnsLeft, _current, _nextTarget) {
-        bzCityTooltip.queueUpdate(this);
-        // hide default tooltip
-        const { growthQueueContainer, } = this.elements;
-        growthQueueContainer.removeAttribute('data-tooltip-content');
-        // add subtarget class
-        growthQueueContainer.classList.add("bz-city-growth");
-    }
-    afterSetProduction(_data) {
-        bzCityTooltip.queueUpdate(this);
-        // hide default tooltip
-        const { productionQueue, } = this.elements;
-        productionQueue.removeAttribute('data-tooltip-content');
-        // in single-player mode, hide other players' queues
-        productionQueue.classList.toggle("hidden-important", this.isRival());
-        // add subtarget class
-        productionQueue.classList.add("bz-city-queue");
     }
     isRival() {
         // does this banner belong to a rival?
@@ -929,8 +885,42 @@ export class bzCityBanner {
         this.elements.portraitIcon.style.backgroundImage = portrait;
     }
     afterRealizeBuilds() {
+        if (!this.city?.isValid) return;
+        const {
+            container_bg,
+            cityName,
+            growthQueueContainer,
+            productionQueueContainer,
+            productionQueue,
+        } = this.elements;
+        // update tooltips
+        bzCityTooltip.queueUpdate(this);
+        cityName.removeAttribute('data-tooltip-content');
+        container_bg.removeAttribute('data-tooltip-content');
+        growthQueueContainer.classList.add("bz-city-growth");
+        productionQueueContainer.classList.add("bz-city-queue");
         // update town focus
         this.realizeIcon();
+        // show other players' queues in autoplay or debug mode
+        const isLocalPlayerCity = this.city.owner === GameContext.localObserverID;
+        if (!isLocalPlayerCity && !this.isRival()) {
+          const buildQueue = this.city.BuildQueue;
+          const cityProduction = this.city.Production;
+          if (buildQueue && cityProduction && !buildQueue.isEmpty) {
+              productionQueueContainer.classList.toggle("hidden", false);
+              productionQueue.dataset.cityid = JSON.stringify(this.city.id);
+              productionQueue.dataset.prodPerTurn = (this.city.Yields?.getNetYield(YieldTypes.YIELD_PRODUCTION) ?? 0).toString();
+              productionQueue.dataset.turnsLeft = buildQueue.currentTurnsLeft.toString();
+              productionQueue.dataset.percent = buildQueue.getPercentComplete(buildQueue.currentProductionTypeHash).toString();
+              this.component.processBuilds(buildQueue, cityProduction);
+          }
+        }
+        // fix turn counters
+        const counters = this.Root.querySelectorAll(".city-banner__turn-number");
+        for (const counter of counters) {
+            counter.classList.remove("font-base-2xs");
+            counter.classList.add("text-xs");
+        }
     }
     afterRealizeHappiness() {
         bzCityTooltip.queueUpdate(this);
