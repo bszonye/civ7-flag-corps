@@ -665,6 +665,14 @@ export class bzCityBanner {
             const after_rv = afterSetCityInfo.apply(this.bzComponent, args);
             return after_rv ?? c_rv;
         }
+        // afterRealizePopulation
+        const afterRealizePopulation = this.afterRealizePopulation;
+        const realizePopulation = proto.realizePopulation;
+        proto.realizePopulation = function(...args) {
+            const c_rv = realizePopulation.apply(this, args);
+            const after_rv = afterRealizePopulation.apply(this.bzComponent, args);
+            return after_rv ?? c_rv;
+        }
         // afterRealizeBuilds
         const afterRealizeBuilds = this.afterRealizeBuilds;
         const realizeBuilds = proto.realizeBuilds;
@@ -884,12 +892,28 @@ export class bzCityBanner {
         this.elements.portraitIcon.style.transform = transform;
         this.elements.portraitIcon.style.backgroundImage = portrait;
     }
-    afterRealizeBuilds() {
+    afterRealizePopulation() {
         if (!this.city?.isValid) return;
         const {
             container_bg,
             cityName,
             growthQueueContainer,
+        } = this.elements;
+        // update tooltips
+        bzCityTooltip.queueUpdate(this);
+        cityName.removeAttribute('data-tooltip-content');
+        container_bg.removeAttribute('data-tooltip-content');
+        growthQueueContainer.classList.add("bz-city-growth");
+        // fix turn counters
+        const counter = growthQueueContainer.querySelector(".city-banner__turn-number");
+        counter?.classList.remove("font-base-2xs");
+        counter?.classList.add("text-xs");
+    }
+    afterRealizeBuilds() {
+        if (!this.city?.isValid) return;
+        const {
+            container_bg,
+            cityName,
             productionQueueContainer,
             productionQueue,
         } = this.elements;
@@ -897,7 +921,6 @@ export class bzCityBanner {
         bzCityTooltip.queueUpdate(this);
         cityName.removeAttribute('data-tooltip-content');
         container_bg.removeAttribute('data-tooltip-content');
-        growthQueueContainer.classList.add("bz-city-growth");
         productionQueueContainer.classList.add("bz-city-queue");
         // update town focus
         this.realizeIcon();
@@ -915,12 +938,11 @@ export class bzCityBanner {
               this.component.processBuilds(buildQueue, cityProduction);
           }
         }
-        // fix turn counters
-        const counters = this.Root.querySelectorAll(".city-banner__turn-number");
-        for (const counter of counters) {
-            counter.classList.remove("font-base-2xs");
-            counter.classList.add("text-xs");
-        }
+        // fix turn counter
+        const counter = productionQueueContainer
+            .querySelector(".city-banner__turn-number");
+        counter?.classList.remove("font-base-2xs");
+        counter?.classList.add("text-xs");
     }
     afterRealizeHappiness() {
         bzCityTooltip.queueUpdate(this);
