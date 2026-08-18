@@ -1,5 +1,4 @@
 import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
-import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
 import { Layout } from '/core/ui/utilities/utilities-layout.js';
 import { UnitFlagManager } from '/base-standard/ui/unit-flags/unit-flag-manager.js';
 import { GenericUnitFlag } from '/base-standard/ui/unit-flags/unit-flags.js';
@@ -40,16 +39,6 @@ BZ_HEAD_STYLE.map(style => {
 // sync optional styling
 document.body.classList.toggle("bz-flags-no-shadow", bzFlagCorpsOptions.noShadow);
 
-function isVillage(loc) {
-    for (const item of MapConstructibles.getHiddenFilteredConstructibles(loc.x, loc.y)) {
-        const cons = Constructibles.getByComponentID(item);
-        const info = GameInfo.Constructibles.lookup(cons.type);
-        if (info.ConstructibleType == "IMPROVEMENT_VILLAGE") return true;
-        if (info.ConstructibleType == "IMPROVEMENT_ENCAMPMENT") return true;
-    }
-    return false;
-}
-
 const UFMproto = UnitFlagManager.prototype;
 const UFM_onInitialize = UFMproto.onInitialize;
 UFMproto.onInitialize = function(...args) {
@@ -58,58 +47,18 @@ UFMproto.onInitialize = function(...args) {
     engine.on('DiplomacyEventEnded', (_data) => { this.requestFlagsRebuild() });
 };
 
-const _onRecalculateFlagOffsets = UFMproto.onRecalculateFlagOffsets;
-UFMproto.onRecalculateFlagOffsets = function() {
-    for (const plotIndex of this.plotIndicesToCheck) {
-        const loc = GameplayMap.getLocationFromIndex(plotIndex);
-        const units = MapUnits.getUnits(loc.x, loc.y);
-        // dimensions
-        const yBanners = 0;
-        const yOpen = yBanners ?? -32;
-        const yCity = yBanners ?? 8;
-        const yTown = yBanners ?? 24;
-        const yVillage = yBanners ?? 18;
-        const xOrigin = -6;
-        const xOffset = 36;  // x-offset between icons
-        const width = units.length * xOffset;
-        const position = { x: 0, y: yOpen };
-        // is there a city or town banner?
-        const cityID = MapCities.getCity(loc.x, loc.y);
-        const city = cityID && Cities.get(cityID);
-        if (city && city.location.x == loc.x && city.location.y == loc.y) {
-            position.y = city.isTown ? yTown : yCity;
-        } else if (isVillage(loc)) {
-            position.y = yVillage;
-        }
-        for (let u = 0; u < units.length; u++) {
-            const unitFlag = UnitFlagManager.instance.getFlag(units[u]);
-            if (unitFlag) {
-                position.x = xOrigin - width/2 + xOffset * u;
-                unitFlag.bzUpdatePosition(position);
-            }
-            else {
-                console.error("unit-flag-manager: onRecalculateFlagOffsets(): Unit flag's for unit " + ComponentID.toLogString(units[u]) + " is not found");
-            }
-        }
-    }
-    this.plotIndicesToCheck.clear();
-}
-
 // patched methods
 const GUF_onAttach = GenericUnitFlag.prototype.onAttach;
-GenericUnitFlag.prototype.onAttach = function(...args) {  // GeneralUnitFlag only
+GenericUnitFlag.prototype.onAttach = function(...args) {
     GUF_onAttach.apply(this, args);
-    this.realizeAffinity();
+    this.unitContainer.style.top = Layout.pixels(0);  // adjust y axis
+    this.realizeAffinity();  // show unit affinity
 };
-function bzUpdatePosition(position) {
-    if (this.unitContainer && this.flagOffset != position) {
-        this.flagOffset = position;
-        this.unitContainer.style.left = Layout.pixels(position.x);
-        this.unitContainer.style.top = Layout.pixels(position.y);
-    }
+const IPUF_onAttach = IndependentPowersUnitFlag.prototype.onAttach;
+IndependentPowersUnitFlag.prototype.onAttach = function(...args) {
+    IPUF_onAttach.apply(this, args);
+    this.unitContainer.style.top = Layout.pixels(0);  // adjust y axis
 };
-GenericUnitFlag.prototype.bzUpdatePosition = bzUpdatePosition;
-IndependentPowersUnitFlag.prototype.bzUpdatePosition = bzUpdatePosition;
 // show relationships for majors & city-states
 GenericUnitFlag.prototype.getRelationship = function() {
     // parallel to IndependentPowersUnitFlag.getRelationship
