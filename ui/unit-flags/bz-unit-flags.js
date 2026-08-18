@@ -51,14 +51,23 @@ UFMproto.onInitialize = function(...args) {
 const GUF_onAttach = GenericUnitFlag.prototype.onAttach;
 GenericUnitFlag.prototype.onAttach = function(...args) {
     GUF_onAttach.apply(this, args);
-    this.unitContainer.style.top = Layout.pixels(0);  // adjust y axis
+    this.unitContainer.style.top = "0";  // adjust y axis
     this.realizeAffinity();  // show unit affinity
 };
 const IPUF_onAttach = IndependentPowersUnitFlag.prototype.onAttach;
 IndependentPowersUnitFlag.prototype.onAttach = function(...args) {
     IPUF_onAttach.apply(this, args);
-    this.unitContainer.style.top = Layout.pixels(0);  // adjust y axis
+    this.unitContainer.style.top = "0";  // adjust y axis
 };
+IndependentPowersUnitFlag.prototype.updateTop = function(position, total) {
+  const offset = position - (total - 1) / 2 - 0.75;  // fix horizontal alignment
+  if (this.unitContainer) {
+    if (this.flagOffset != offset) {
+      this.flagOffset = offset;
+      this.unitContainer.style.left = Layout.pixels(offset * 32);
+    }
+  }
+}
 // show relationships for majors & city-states
 GenericUnitFlag.prototype.getRelationship = function() {
     // parallel to IndependentPowersUnitFlag.getRelationship
