@@ -61,33 +61,30 @@ DHMproto.addChildForTracking = function(...args) {
 const BZ_DISTRICT_BANNER_OFFSET = { x: 0, y: 0, z: 30 };
 const BZ_CITY_CENTER_BANNER_OFFSET = { x: 0, y: 0, z: 42 };
 export class bzDistrictHealthBar {
-    static c_prototype;
+    static c;
     constructor(component) {
         this.component = component;
-        component.bzComponent = this;
+        this.component.bzFlagCorps = this;
         this.Root = this.component.Root;
         this.progressBar = null;
         this.progressInk = null;
-        this.patchPrototypes(this.component);
+        this.patchPrototype(Object.getPrototypeOf(component));
     }
-    patchPrototypes(component) {
-        const c_prototype = Object.getPrototypeOf(component);
-        if (bzDistrictHealthBar.c_prototype == c_prototype) return;
-        // patch component methods
-        const proto = bzDistrictHealthBar.c_prototype = c_prototype;
+    patchPrototype(proto) {
+        if (bzDistrictHealthBar.c) return;  // one-time initialization
+        // patch DistrictHealthBar methods & properties
+        const c = bzDistrictHealthBar.c = { proto };
         // replace DistrictHealthBar.makeWorldAnchor
-        const bzMakeWorldAnchor = this.bzMakeWorldAnchor;
-        bzDistrictHealthBar.c_makeWorldAnchor = proto.makeWorldAnchor;
-        proto.makeWorldAnchor = function(...args) {
-            return bzMakeWorldAnchor.apply(this.bzComponent, args);
+        c.makeWorldAnchor = c.proto.makeWorldAnchor;
+        c.proto.makeWorldAnchor = function(...args) {
+            return this.bzFlagCorps.bzMakeWorldAnchor(...args);
         }
         // afterUpdateDistrictHealth
-        const afterUpdateDistrictHealth = this.afterUpdateDistrictHealth;
-        const updateDistrictHealth = proto.updateDistrictHealth;
-        proto.updateDistrictHealth = function(...args) {
-            const c_rv = updateDistrictHealth.apply(this, args);
-            const after_rv = afterUpdateDistrictHealth.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
+        c.updateDistrictHealth = c.proto.updateDistrictHealth;
+        c.proto.updateDistrictHealth = function(...args) {
+            const crv = c.updateDistrictHealth.apply(this, args);
+            const arv = this.bzFlagCorps.afterUpdateDistrictHealth(...args);
+            return arv ?? crv;
         }
     }
     bzMakeWorldAnchor(location) {

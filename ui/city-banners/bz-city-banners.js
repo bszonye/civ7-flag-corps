@@ -604,7 +604,7 @@ function lightenColor(rgb, lightness) {
 }
 
 export class bzCityBanner {
-    static c_prototype;
+    static c;
     componentID = null;
     location = null;
     city = null;
@@ -623,87 +623,77 @@ export class bzCityBanner {
     settlementIcon = null;
     constructor(component) {
         this.component = component;
-        component.bzComponent = this;
+        this.component.bzFlagCorps = this;
         this.Root = this.component.Root;
         this.elements = this.component.elements;
-        this.patchPrototypes(this.component);
+        this.patchPrototype(Object.getPrototypeOf(component));
     }
-    patchPrototypes(component) {
-        const c_prototype = Object.getPrototypeOf(component);
-        if (bzCityBanner.c_prototype == c_prototype) return;
-        // patch component methods
-        const proto = bzCityBanner.c_prototype = c_prototype;
+    patchPrototype(proto) {
+        if (bzCityBanner.c) return;  // one-time initialization
+        // patch CityBanner methods & properties
+        const c = bzCityBanner.c = { proto };
         // beforeBuildBanner
-        const beforeBuildBanner = this.beforeBuildBanner;
-        const buildBanner = proto.buildBanner;
-        proto.buildBanner = function(...args) {
-            const before_rv = beforeBuildBanner.apply(this.bzComponent, args);
-            const c_rv = buildBanner.apply(this, args);
-            return c_rv ?? before_rv;
+        c.buildBanner = c.proto.buildBanner;
+        c.proto.buildBanner = function(...args) {
+            const brv = this.bzFlagCorps.beforeBuildBanner(...args);
+            const crv = c.buildBanner.apply(this, args);
+            return crv ?? brv;
         }
         // afterAffinityUpdate
-        const afterAffinityUpdate = this.afterAffinityUpdate;
-        const affinityUpdate = proto.affinityUpdate;
-        proto.affinityUpdate = function(...args) {
-            const c_rv = affinityUpdate.apply(this, args);
-            const after_rv = afterAffinityUpdate.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
+        c.affinityUpdate = c.proto.affinityUpdate;
+        c.proto.affinityUpdate = function(...args) {
+            const crv = c.affinityUpdate.apply(this, args);
+            const arv = this.bzFlagCorps.afterAffinityUpdate(...args);
+            return arv ?? crv;
         }
         // afterCapitalUpdate
-        const afterCapitalUpdate = this.afterCapitalUpdate;
-        const capitalUpdate = proto.capitalUpdate;
-        proto.capitalUpdate = function(...args) {
-            const c_rv = capitalUpdate.apply(this, args);
-            const after_rv = afterCapitalUpdate.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
+        c.capitalUpdate = c.proto.capitalUpdate;
+        c.proto.capitalUpdate = function(...args) {
+            const crv = c.capitalUpdate.apply(this, args);
+            const arv = this.bzFlagCorps.afterCapitalUpdate(...args);
+            return arv ?? crv;
         }
         // afterSetCityInfo
-        const afterSetCityInfo = this.afterSetCityInfo;
-        const setCityInfo = proto.setCityInfo;
-        proto.setCityInfo = function(...args) {
-            const c_rv = setCityInfo.apply(this, args);
-            const after_rv = afterSetCityInfo.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
+        c.setCityInfo = c.proto.setCityInfo;
+        c.proto.setCityInfo = function(...args) {
+            const crv = c.setCityInfo.apply(this, args);
+            const arv = this.bzFlagCorps.afterSetCityInfo(...args);
+            return arv ?? crv;
         }
         // afterRealizePopulation
-        const afterRealizePopulation = this.afterRealizePopulation;
-        const realizePopulation = proto.realizePopulation;
-        proto.realizePopulation = function(...args) {
-            const c_rv = realizePopulation.apply(this, args);
-            const after_rv = afterRealizePopulation.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
+        c.realizePopulation = c.proto.realizePopulation;
+        c.proto.realizePopulation = function(...args) {
+            const crv = c.realizePopulation.apply(this, args);
+            const arv = this.bzFlagCorps.afterRealizePopulation(...args);
+            return arv ?? crv;
         }
         // afterRealizeBuilds
-        const afterRealizeBuilds = this.afterRealizeBuilds;
-        const realizeBuilds = proto.realizeBuilds;
-        proto.realizeBuilds = function(...args) {
-            const c_rv = realizeBuilds.apply(this, args);
-            const after_rv = afterRealizeBuilds.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
+        c.realizeBuilds = c.proto.realizeBuilds;
+        c.proto.realizeBuilds = function(...args) {
+            const crv = c.realizeBuilds.apply(this, args);
+            const arv = this.bzFlagCorps.afterRealizeBuilds(...args);
+            return arv ?? crv;
         }
         // afterRealizeHappiness
-        const afterRealizeHappiness = this.afterRealizeHappiness;
-        const realizeHappiness = proto.realizeHappiness;
-        proto.realizeHappiness = function(...args) {
-            const c_rv = realizeHappiness.apply(this, args);
-            const after_rv = afterRealizeHappiness.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
+        c.realizeHappiness = c.proto.realizeHappiness;
+        c.proto.realizeHappiness = function(...args) {
+            const crv = c.realizeHappiness.apply(this, args);
+            const arv = this.bzFlagCorps.afterRealizeHappiness(...args);
+            return arv ?? crv;
         }
         // afterRealizePlayerColors
-        const afterRealizePlayerColors = this.afterRealizePlayerColors;
-        const realizePlayerColors = proto.realizePlayerColors;
-        proto.realizePlayerColors = function(...args) {
-            const c_rv = realizePlayerColors.apply(this, args);
-            const after_rv = afterRealizePlayerColors.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
+        c.realizePlayerColors = c.proto.realizePlayerColors;
+        c.proto.realizePlayerColors = function(...args) {
+            const crv = c.realizePlayerColors.apply(this, args);
+            const arv = this.bzFlagCorps.afterRealizePlayerColors(...args);
+            return arv ?? crv;
         }
         // afterRealizeTradeNetwork
-        const afterRealizeTradeNetwork = this.afterRealizeTradeNetwork;
-        const realizeTradeNetwork = proto.realizeTradeNetwork;
-        proto.realizeTradeNetwork = function(...args) {
-            const c_rv = realizeTradeNetwork.apply(this, args);
-            const after_rv = afterRealizeTradeNetwork.apply(this.bzComponent, args);
-            return after_rv ?? c_rv;
+        c.realizeTradeNetwork = c.proto.realizeTradeNetwork;
+        c.proto.realizeTradeNetwork = function(...args) {
+            const crv = c.realizeTradeNetwork.apply(this, args);
+            const arv = this.bzFlagCorps.afterRealizeTradeNetwork(...args);
+            return arv ?? crv;
         }
     }
     beforeBuildBanner() {
@@ -834,7 +824,6 @@ export class bzCityBanner {
             const lightSpec = `${BZ_LIGHT_SHAPE} ${this.color1light}`;
             cityName.style.textShadow = `${shadowSpec}, ${lightSpec}`;
         }
-        this.Root.bzComponent = this;
         this.Root.setAttribute('data-tooltip-style', 'bz-city-tooltip');
         const { container, portrait, } = this.elements;
         container.removeAttribute('data-tooltip-content');
