@@ -62,3 +62,4 @@ const CityBannerNameTooltip = (props) => {
 
 export { CityBannerNameTooltip };
 //# sourceMappingURL=city-banner-name-tooltip.js.map
+// vim: sw=2

@@ -160,7 +160,7 @@ function computeIdentity(cityID, location) {
     }
   }
   let portraitIcon = "";
-  let leaderName = "";
+  let leaderName = "";  // eslint-disable-line no-useless-assignment
   const leaderType = player.leaderType;
   if (leaderType != -1) {
     portraitIcon = Icon.getLeaderPortraitIcon(leaderType);
@@ -419,3 +419,4 @@ function computeFullBannerData(cityID, location) {
 
 export { BannerType, areCityBannersDisabled, computeCapitalInfo, computeConquered, computeFullBannerData, computeIdentity, computeRelationship, computeReligionInfo, computeStatusInfo, setCityBannersDisabled };
 //# sourceMappingURL=city-banner-data.js.map
+// vim: sw=2

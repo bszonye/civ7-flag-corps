@@ -287,3 +287,4 @@ defineLegacyComponent("city-banner-population", {
 
 export { CityBannerPopulation };
 //# sourceMappingURL=city-banner-population.js.map
+// vim: sw=2

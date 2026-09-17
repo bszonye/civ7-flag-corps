@@ -117,7 +117,7 @@ const CityBannerImpl = (props) => {
                   },
                   get children() {
                     var _el$7 = _tmpl$2(), _el$8 = _el$7.firstChild, _el$9 = _el$8.nextSibling, _el$10 = _el$9.nextSibling;
-                    createRenderEffect((_$p) => (_$p = `url('${props.data.identity.portraitIcon}')`) != null ? _el$10.style.setProperty("background-image", _$p) : _el$10.style.removeProperty("background-image"));
+                    createRenderEffect((_$p) => (_$p = `url('${props.data.identity.portraitIcon}')`) != null ? _el$10.style.setProperty("background-image", _$p) : _el$10.style.removeProperty("background-image"));  // eslint-disable-line no-constant-binary-expression
                     return _el$7;
                   }
                 }), _el$11);
@@ -389,3 +389,4 @@ const CityBanner = ComponentRegistry.register("CityBanner", CityBannerImpl);
 
 export { CityBanner };
 //# sourceMappingURL=city-banner.js.map
+// vim: sw=2
