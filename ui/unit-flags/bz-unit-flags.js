@@ -4,44 +4,8 @@ import { UnitFlagManager } from '/base-standard/ui/unit-flags/unit-flag-manager.
 import { GenericUnitFlag } from '/base-standard/ui/unit-flags/unit-flags.js';
 import { IndependentPowersUnitFlag } from '/base-standard/ui/unit-flags/unit-flags-independent-powers.js';
 
-// additional CSS definitions
-const BZ_HEAD_STYLE = [
-`
-.bz-flags-no-shadow .unit-flag__shadow,
-.bz-flags-no-shadow .unit-flag--civilian .unit-flag__shadow,
-.bz-flags-no-shadow .unit-flag--army .unit-flag__shadow,
-.bz-flags-no-shadow .unit-flag--combat .unit-flag__shadow {
-    background-image: none;
-}
-`,
-`
-.bz-flags .unit-flag__healthbar-container {
-    top: 0.1111111111rem;
-}
-.bz-flags.unit-flag--army .unit-flag__healthbar-container {
-    top: 0.0555555556rem;
-}
-.bz-flags.unit-flag--civilian .unit-flag__healthbar-container {
-    top: 0.0555555556rem;
-}
-.bz-flags.unit-flag--combat .unit-flag__healthbar-container {
-    top: 0.1666666667rem;
-}
-.bz-flags .unit-flag__healthbar {
-    height: 0.5555555556rem;
-    border-radius: 0.2777777778rem / 0.4444444444rem;
-}
-.bz-flags .unit-flag__healthbar-inner {
-    height: 0.3333333333rem;
-    border-radius: 0.1666666667rem / 0.3333333333rem;
-}
-`,
-];
-BZ_HEAD_STYLE.map(style => {
-    const e = document.createElement('style');
-    e.textContent = style;
-    document.head.appendChild(e);
-});
+Controls.loadStyle("/bz-flag-corps/ui/unit-flags/bz-unit-flags.css");
+
 // sync optional styling
 document.body.classList.toggle("bz-flags-no-shadow", bzFlagCorpsOptions.noShadow);
 
