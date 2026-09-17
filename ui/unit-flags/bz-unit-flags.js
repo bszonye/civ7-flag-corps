@@ -15,10 +15,16 @@ const BZ_HEAD_STYLE = [
 }
 `,
 `
-.bz-flags.bz-flags-no-shadow .unit-flag__healthbar-container {
-    top: 0.2222222222rem;
-}
 .bz-flags .unit-flag__healthbar-container {
+    top: 0.1111111111rem;
+}
+.bz-flags.unit-flag--army .unit-flag__healthbar-container {
+    top: 0.0555555556rem;
+}
+.bz-flags.unit-flag--civilian .unit-flag__healthbar-container {
+    top: 0.0555555556rem;
+}
+.bz-flags.unit-flag--combat .unit-flag__healthbar-container {
     top: 0.1666666667rem;
 }
 .bz-flags .unit-flag__healthbar {
@@ -51,12 +57,14 @@ UFMproto.onInitialize = function(...args) {
 const GUF_onAttach = GenericUnitFlag.prototype.onAttach;
 GenericUnitFlag.prototype.onAttach = function(...args) {
     GUF_onAttach.apply(this, args);
+    this.unitContainer.classList.add("bz-flags");
     this.unitContainer.style.top = "0";  // adjust y axis
     this.realizeAffinity();  // show unit affinity
 };
 const IPUF_onAttach = IndependentPowersUnitFlag.prototype.onAttach;
 IndependentPowersUnitFlag.prototype.onAttach = function(...args) {
     IPUF_onAttach.apply(this, args);
+    this.Root.classList.add("bz-flags");
     this.unitContainer.style.top = "0";  // adjust y axis
 };
 IndependentPowersUnitFlag.prototype.updateTop = function(position, total) {
