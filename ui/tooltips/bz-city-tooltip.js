@@ -130,7 +130,7 @@ const BZ_HEAD_STYLE = [
 `,
 ];
 BZ_HEAD_STYLE.map(style => {
-    const e = document.createElement('style');
+    const e = document.createElement("style");
     e.textContent = style;
     document.head.appendChild(e);
 });
@@ -143,11 +143,11 @@ function docBanner(text, style, padding) {
     banner.style.paddingLeft = banner.style.paddingRight = metrics.padding.x.css;
     banner.style.marginLeft = banner.style.marginRight = `-${metrics.padding.x.css}`;
     // center content vertically and horizontally
-    banner.style.display = 'flex';
-    banner.style.flexDirection = 'column';
-    banner.style.justifyContent = 'center';
-    banner.style.alignItems = 'center';
-    banner.style.textAlign = 'center';
+    banner.style.display = "flex";
+    banner.style.flexDirection = "column";
+    banner.style.justifyContent = "center";
+    banner.style.alignItems = "center";
+    banner.style.textAlign = "center";
     // make sure the banner is tall enough for end bumpers
     banner.style.minHeight = metrics.bumper.css;
     // set the text
@@ -180,13 +180,13 @@ function docList(text, style=null, size=metrics.body) {
     // create a paragraph of rules text
     // note: very finicky! test changes thoroughly (see docRules)
     const wrap = document.createElement("div");
-    wrap.style.display = 'flex';
-    wrap.style.alignSelf = 'center';
-    wrap.style.textAlign = 'center';
+    wrap.style.display = "flex";
+    wrap.style.alignSelf = "center";
+    wrap.style.textAlign = "center";
     wrap.style.lineHeight = size.ratio;
     const list = document.createElement("div");
-    list.style.display = 'flex';
-    list.style.flexDirection = 'column';
+    list.style.display = "flex";
+    list.style.flexDirection = "column";
     if (size.width) list.style.maxWidth = size.width.css;
     for (const item of text) {
         const row = document.createElement("div");
@@ -206,7 +206,7 @@ function docRules(text, style=null, bg=BZ_COLOR.rules) {
     // function and docList set up flex boxes and style properties to
     // center text with all combinations (with/without styling and
     // wrapped/unwrapped text).
-    const size = !text.some(t => Locale.stylize(t).includes('<fxs-font-icon')) ?
+    const size = !text.some(t => Locale.stylize(t).includes("<fxs-font-icon")) ?
         metrics.body : metrics.rules;
     const list = docList(text, style, metrics.rules);
     list.style.lineHeight = size.ratio;
@@ -222,7 +222,7 @@ function docRules(text, style=null, bg=BZ_COLOR.rules) {
 function docText(text, style) {
     const e = document.createElement("div");
     if (style) e.classList.value = style;
-    e.setAttribute('data-l10n-id', text);
+    e.setAttribute("data-l10n-id", text);
     return e;
 }
 function docTimer(size, resize, ...style) {
@@ -279,19 +279,19 @@ function getFontMetrics() {
         const digits = (n) => sizes(n * figure.rem, Math.ceil);
         return { size, ratio, cap, spacing, leading, margin, figure, digits, };
     }
-    const head = font('sm', 1.25);
-    const body = font('xs', 1.25);
-    const note = font('2xs', 1);
-    const rules = font('xs');  // is this needed?
+    const head = font("sm", 1.25);
+    const body = font("xs", 1.25);
+    const note = font("2xs", 1);
+    const rules = font("xs");  // is this needed?
     rules.width = sizes(BZ_RULES_WIDTH);
-    const table = font('xs');
+    const table = font("xs");
     const yields = font(8/9);
     const radius = sizes(2/3 * padding.rem);
     radius.content = sizes(radius.rem);
     radius.tooltip = sizes(radius.rem + border.rem);
     // minimum end banner height to avoid radius glitches
     const bumper = sizes(Math.max(table.spacing.rem, 2*radius.rem));
-    const isIdeographic = Locale.getCurrentDisplayLocale().startsWith('zh_');
+    const isIdeographic = Locale.getCurrentDisplayLocale().startsWith("zh_");
     return {
         sizes, font,
         padding, margin, border,
@@ -330,10 +330,10 @@ const BZ_PRELOADED_ICONS = {};
 function preloadIcon(icon, context) {
     if (!icon) return;
     const url = icon.startsWith("url(") ? icon : UI.getIcon(icon, context);
-    const name = url.replace(/url|[(\042\047)]/g, '');  // \042\047 = quotation marks
+    const name = url.replace(/url|[(\042\047)]/g, "");  // \042\047 = quotation marks
     if (!name || name in BZ_PRELOADED_ICONS) return;
     BZ_PRELOADED_ICONS[name] = true;
-    Controls.preloadImage(name, 'plot-tooltip');
+    Controls.preloadImage(name, "plot-tooltip");
 }
 function setStyle(element, style, padding) {
     if (!element || !style) return;
@@ -355,10 +355,10 @@ class bzCityTooltip {
         this.city = null;
         this.location = null;
         // document root
-        this.tooltip = document.createElement('fxs-tooltip');
+        this.tooltip = document.createElement("fxs-tooltip");
         this.tooltip.classList.value = "bz-tooltip bz-city-tooltip max-w-96";
         this.tooltip.style.lineHeight = metrics.table.ratio;
-        this.container = document.createElement('div');
+        this.container = document.createElement("div");
         this.container.classList.value = "relative font-body text-xs";
         this.tooltip.appendChild(this.container);
         // point-of-view info
@@ -382,7 +382,7 @@ class bzCityTooltip {
         this.totalYields = 0;
         Loading.runWhenFinished(() => {
             for (const y of GameInfo.Yields) {
-                // Controls.preloadImage(url, 'plot-tooltip');
+                // Controls.preloadImage(url, "plot-tooltip");
                 preloadIcon(`${y.YieldType}`, "YIELD");
             }
             const icons = [
@@ -403,8 +403,8 @@ class bzCityTooltip {
         const subtarget = sub.find(t => target.closest(t)) ?? null;
         // get main target, if possible
         const banner =
-            target.closest('[data-tooltip-content]') ??
-            target.closest('[data-tooltip-style="bz-city-tooltip"]');
+            target.closest("[data-tooltip-content]") ??
+            target.closest("[data-tooltip-style='bz-city-tooltip']");
         if (banner == this.target && subtarget == this.subtarget && !this.updateQueued) {
             return false;
         }
@@ -439,7 +439,7 @@ class bzCityTooltip {
     }
     reset() {
         // document root
-        this.container.innerHTML = '';
+        this.container.innerHTML = "";
         // point-of-view info
         this.observerID = GameContext.localObserverID;
         this.observer = Players.get(this.observerID);
@@ -479,7 +479,7 @@ class bzCityTooltip {
     render() {
         // update metrics
         metrics = getFontMetrics();
-        const border = this.tooltip.querySelector('.img-tooltip-border');
+        const border = this.tooltip.querySelector(".img-tooltip-border");
         if (border) border.borderRadius = metrics.radius.tooltip.css;
         // yield to vanilla tooltips over the progress meters
         if (this.subtarget == bzTarget.GROWTH) return;
@@ -620,7 +620,7 @@ class bzCityTooltip {
         layout.style.lineHeight = metrics.head.ratio;
         layout.style.marginTop = metrics.head.margin.px;
         const ttText = document.createElement("div");
-        ttText.setAttribute('data-l10n-id', text);
+        ttText.setAttribute("data-l10n-id", text);
         layout.appendChild(ttText);
         this.container.appendChild(layout);
     }
@@ -744,7 +744,7 @@ class bzCityTooltip {
             }
             const name = document.createElement("div");
             name.classList.value = "max-w-36 mx-1 text-left font-fit-shrink truncate";
-            name.setAttribute('data-l10n-id', conn.name);
+            name.setAttribute("data-l10n-id", conn.name);
             row.appendChild(name);
             rows.push(row);
         }
@@ -801,7 +801,7 @@ class bzCityTooltip {
             const threshold = Locale.compose("LOC_BZ_GROUPED_DIGITS", food.threshold);
             const progress = `${current} / ${threshold}`;
             row.appendChild(docText(progress, "text-left flex-auto mx-1"));
-            row.appendChild(docText('•'));
+            row.appendChild(docText("•"));
             row.appendChild(docText(food.turns.toFixed(), "text-right mx-1"));
             row.appendChild(docTimer(size, size));
             this.container.appendChild(row);
@@ -843,9 +843,9 @@ class bzCityTooltip {
             const name = document.createElement("div");
             name.classList.value = "text-left flex-auto";
             name.classList.add("mx-1");  // wider spacing
-            name.setAttribute('data-l10n-id', item.name);
+            name.setAttribute("data-l10n-id", item.name);
             row.appendChild(name);
-            if (single) row.appendChild(docText('•'));
+            if (single) row.appendChild(docText("•"));
             const turns = document.createElement("div");
             turns.classList.value = "text-right mx-1";
             turns.style.width = dwidth;
@@ -873,12 +873,12 @@ class bzCityTooltip {
         // set column width based on number of digits (at least three)
         const digits = getDigits(this.yields.map(y => y.value.toFixed()), 2);
         const width = metrics.yields.digits(digits).css;
-        const tt = document.createElement('div');
+        const tt = document.createElement("div");
         tt.classList.value = "self-center flex flex-wrap justify-center w-full";
         // one column per yield type
         for (const [i, column] of this.yields.entries()) {
             const y = this.yieldColumn(column, width);
-            if (i) y.style.marginLeft = '0.3333333333rem';  // all but first column
+            if (i) y.style.marginLeft = "0.3333333333rem";  // all but first column
             tt.appendChild(y);
         }
         tt.style.marginTop = metrics.yields.margin.px;
@@ -911,5 +911,5 @@ class bzCityTooltip {
 }
 
 bzCityTooltip._instance = new bzCityTooltip();
-TooltipManager.registerType('bz-city-tooltip', bzCityTooltip.instance);
+TooltipManager.registerType("bz-city-tooltip", bzCityTooltip.instance);
 export { bzCityTooltip as default };
