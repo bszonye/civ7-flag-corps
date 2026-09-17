@@ -47,9 +47,22 @@
                 <LoadOrder>1001</LoadOrder>
             </Properties>
             <Actions>
+                <ImportFiles>
+                    <Item>ui-next/screens/city-banners/city-banner-data.js</Item>
+                    <Item>ui-next/screens/city-banners/city-banner-focus.js</Item>
+                    <Item>ui-next/screens/city-banners/city-banner-name-tooltip.js</Item>
+                    <Item>ui-next/screens/city-banners/city-banner-population.js</Item>
+                    <Item>ui-next/screens/city-banners/city-banner-production.js</Item>
+                    <Item>ui-next/screens/city-banners/city-banner.js</Item>
+                <!--
+                    <Item>ui-next/screens/city-banners/city-banners.js</Item>
+                -->
+                </ImportFiles>
                 <UIScripts>
+                    <!--
                     <Item>ui/city-banners/bz-city-banner-manager.js</Item>
                     <Item>ui/city-banners/bz-city-banners.js</Item>
+                    -->
                     <Item>ui/district/bz-district-health.js</Item>
                     <Item>ui/options/bz-flag-corps-options.js</Item>
                     <Item>ui/options/mod-options.js</Item>
@@ -80,3 +93,4 @@
         <File>text/zh_Hant_HK/ModInfoText.xml</File>
     </LocalizedText>
 </Mod>
+<!-- vim: set sw=4 et :-->
