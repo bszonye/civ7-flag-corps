@@ -14,7 +14,7 @@ import { CityBannerNameTooltip } from './city-banner-name-tooltip.js';
 import { CityBannerPopulation } from './city-banner-population.js';
 import { CityBannerProduction } from './city-banner-production.js';
 
-Controls.loadStyle("fs://game/bz-flag-corps/ui-next/screens/city-banners/bz-city-banner.css");
+Controls.loadStyle("/bz-flag-corps/ui-next/screens/city-banners/bz-city-banner.css");
 
 var
   _tmpl$ = /* @__PURE__ */ template(`<div class="city-banner__stretch-bg absolute inset-0 pointer-events-none"></div>`),
