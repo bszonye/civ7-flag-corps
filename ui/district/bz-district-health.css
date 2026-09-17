@@ -1,20 +1,14 @@
-.bz-flags .district-health-container {
-    top: -2.7777777778rem;
-    left: -9.2777777778rem;
-    height: 1.8888888889rem;
-    width: 11.1111111111rem;
+.bz-flags.district-health-container {
+    pointer-events: none;
+    top: 0.7777777778rem;
 }
-.bz-flags .district-health-container.bz-city-center {
-    top: -4.7222222222rem;
+.bz-flags.district-health-container.bz-city-center {
+    /* top: 0;  /* TODO */
 }
 .bz-flags .district-health-bar {
-    position: absolute;
-    left: 2rem;
-    width: 5.5555555556rem;
     height: 0.8888888889rem;
-    pointer-events: auto;
     border-radius: 0.4444444444rem / 0.5555555556rem;
-    background-color: black;
+    pointer-events: none;
 }
 .bz-flags .district-health-bar-ink {
     top: 0.1666666667rem;
@@ -24,3 +18,11 @@
     border-radius: 0.2777777778rem / 0.3888888889rem;
     max-width: 100%;
 }
+.bz-flags .bz-district-hex {
+    position: absolute;
+    z-index: 1;
+    top: 0.8888888889rem;
+    left: 1.7777777778rem;
+    filter: drop-shadow(0 -0.1111111111rem 0 black);
+}
+/* vim:set sw=4 et: */

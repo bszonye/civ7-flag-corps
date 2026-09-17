@@ -3,42 +3,7 @@ import { PlotCoord } from '/core/ui/utilities/utilities-plotcoord.js';
 import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
 import DistrictHealthManager from '/base-standard/ui/district/district-health-manager.js';
 
-const BZ_HEAD_STYLE = [
-// set healthbar snug against city banner
-`
-.bz-flags .district-health-container {
-    top: -2.7777777778rem;
-    left: -9.2777777778rem;
-    height: 1.8888888889rem;
-    width: 11.1111111111rem;
-}
-.bz-flags .district-health-container.bz-city-center {
-    top: -4.7222222222rem;
-}
-.bz-flags .district-health-bar {
-    position: absolute;
-    left: 2rem;
-    width: 5.5555555556rem;
-    height: 0.8888888889rem;
-    pointer-events: auto;
-    border-radius: 0.4444444444rem / 0.5555555556rem;
-    background-color: black;
-}
-.bz-flags .district-health-bar-ink {
-    top: 0.1666666667rem;
-    right: 0.1666666667rem;
-    bottom: 0.1666666667rem;
-    left: 0.1666666667rem;
-    border-radius: 0.2777777778rem / 0.3888888889rem;
-    max-width: 100%;
-}
-`,
-];
-BZ_HEAD_STYLE.map(style => {
-    const e = document.createElement('style');
-    e.textContent = style;
-    document.head.appendChild(e);
-});
+Controls.loadStyle("/bz-flag-corps/ui/district/bz-district-health.css");
 
 // fix district ownership initialization
 const DHMproto = DistrictHealthManager.prototype;
@@ -55,19 +20,15 @@ DHMproto.addChildForTracking = function(...args) {
     }
 };
 
-// const DISTRICT_BANNER_OFFSET = { x: -30, y: 15, z: 8 };
-// const CITY_CENTER_BANNER_OFFSET = { x: -20, y: 25, z: 8 };
 // align with city banners (0, 0, 42) or unit flags (0, 0, 30)
 const BZ_DISTRICT_BANNER_OFFSET = { x: 0, y: 0, z: 30 };
-const BZ_CITY_CENTER_BANNER_OFFSET = { x: 0, y: 0, z: 42 };
+const BZ_CITY_CENTER_BANNER_OFFSET = { x: 0, y: 0, z: 30 };
+// const BZ_CITY_CENTER_BANNER_OFFSET = { x: 0, y: 0, z: 42 };
 export class bzDistrictHealthBar {
     static c;
     constructor(component) {
         this.component = component;
         this.component.bzFlagCorps = this;
-        this.Root = this.component.Root;
-        this.progressBar = null;
-        this.progressInk = null;
         this.patchPrototype(Object.getPrototypeOf(component));
     }
     patchPrototype(proto) {
@@ -76,9 +37,7 @@ export class bzDistrictHealthBar {
         const c = bzDistrictHealthBar.c = { proto };
         // replace DistrictHealthBar.makeWorldAnchor
         c.makeWorldAnchor = c.proto.makeWorldAnchor;
-        c.proto.makeWorldAnchor = function(...args) {
-            return this.bzFlagCorps.bzMakeWorldAnchor(...args);
-        }
+        c.proto.makeWorldAnchor = this.makeWorldAnchor;
         // afterUpdateDistrictHealth
         c.updateDistrictHealth = c.proto.updateDistrictHealth;
         c.proto.updateDistrictHealth = function(...args) {
@@ -87,38 +46,36 @@ export class bzDistrictHealthBar {
             return arv ?? crv;
         }
     }
-    bzMakeWorldAnchor(location) {
-        this.component.destroyWorldAnchor();
-        const offset = this.component.isCityCenter ?
+    makeWorldAnchor(location) {
+        this.destroyWorldAnchor();
+        const offset = this.isCityCenter ?
             BZ_CITY_CENTER_BANNER_OFFSET : BZ_DISTRICT_BANNER_OFFSET;
         const worldAnchorHandle = WorldAnchors
             .RegisterFixedWorldAnchor(location, offset);
-        if (worldAnchorHandle !== null && worldAnchorHandle >= 0) {
-            this.Root.setAttribute('data-bind-style-transform2d', `{{FixedWorldAnchors.offsetTransforms[${worldAnchorHandle}].value}}`);
-            this.Root.setAttribute('data-bind-style-opacity', `{{FixedWorldAnchors.visibleValues[${worldAnchorHandle}]}}`);
-            this.component._worldAnchorHandle = worldAnchorHandle;
+        if (!worldAnchorHandle || worldAnchorHandle < 0) {
+            console.error(`Failed to create WorldAnchorHandle for DistrictHealthBar, District id: ${ComponentID.toLogString(this._componentID)}`);
+            return;
         }
-        else {
-            console.error(`Failed to create WorldAnchorHandle for DistrictHealthBar, District id: ${ComponentID.toLogString(this.component._componentID)}`);
-        }
+        this.Root.setAttribute('data-bind-style-transform2d', `{{FixedWorldAnchors.offsetTransforms[${worldAnchorHandle}].value}}`);
+        this.Root.setAttribute('data-bind-style-opacity', `{{FixedWorldAnchors.visibleValues[${worldAnchorHandle}]}}`);
+        this._worldAnchorHandle = worldAnchorHandle;
     }
     afterUpdateDistrictHealth(value) {
-        if (!this.progressBar || !this.progressInk) return;
+        const c = this.component;
+        if (!c.progressBar || !c.progressInk) return;
         const healthAmt = parseFloat(value);
         const MAX = 94/100 * 100;  // ink/healthbar = 94/100 pixels
-        this.progressInk.style.widthPERCENT = healthAmt * MAX;
+        c.progressInk.style.widthPERCENT = healthAmt * MAX;
     }
     beforeAttach() { }
     afterAttach() {
         const c = this.component;
-        if (c.isCityCenter) this.Root.classList.add("bz-city-center");
-        // TODO: center hexes?
-        // c.civHexOuter.classList.add("-top-5", "z-1");
-        // c.civHexOuter.style.left = "3.7777777778rem";
+        c.Root.classList.add("bz-flags");
+        if (c.isCityCenter) c.Root.classList.add("bz-city-center");
+        c.Root.classList.toggle("bz-city-center", c.isCityCenter);
+        c.civHexOuter.classList.add("bz-district-hex");
         // fix "ink" proportions
-        this.progressBar = c.progressBar;
-        this.progressInk = c.progressInk;
-        const healthValue = this.Root.getAttribute('data-district-health');
+        const healthValue = c.Root.getAttribute('data-district-health');
         this.afterUpdateDistrictHealth(healthValue);
     }
     beforeDetach() { }
