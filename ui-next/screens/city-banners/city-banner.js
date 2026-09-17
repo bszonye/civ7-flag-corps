@@ -88,6 +88,10 @@ const CityBannerImpl = (props) => {
             get children() {
               return [(() => {
                 var _el$ = _tmpl$15(), _el$2 = _el$.firstChild, _el$3 = _el$2.firstChild, _el$4 = _el$3.nextSibling, _el$6 = _el$2.nextSibling, _el$11 = _el$6.firstChild, _el$12 = _el$11.firstChild, _el$17 = _el$12.nextSibling, _el$25 = _el$11.nextSibling, _el$26 = _el$25.firstChild;
+                // TRIX: attach custom city tooltip
+                _el$.setAttribute("data-city-owner", props.cityID.owner);
+                _el$.setAttribute("data-city-local-id", props.cityID.id);
+                _el$.setAttribute("data-tooltip-style", "bz-city-tooltip");
                 insert(_el$2, createComponent(Show, {
                   get when() {
                     return props.data.identity.bannerType == BannerType.Town;

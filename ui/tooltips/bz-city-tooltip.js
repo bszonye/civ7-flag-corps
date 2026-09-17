@@ -2,15 +2,15 @@ import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 
 var bzTarget;
 (function (bzTarget) {
-    bzTarget[bzTarget["GROWTH"] = '.bz-city-growth'] = "GROWTH";
-    bzTarget[bzTarget["PRODUCTION"] = '.bz-city-queue'] = "PRODUCTION";
+    bzTarget[bzTarget["GROWTH"] = ".city-banner__population-container"] = "GROWTH";
+    bzTarget[bzTarget["PRODUCTION"] = ".city-banner__production-container"] = "PRODUCTION";
 })(bzTarget || (bzTarget = {}));
 
 // custom & adapted icons
 const BZ_ICON_RURAL = "CITY_RURAL";  // urban population/yield
 const BZ_ICON_URBAN = "CITY_URBAN";  // rural population/yield
-const BZ_ICON_SPECIAL = "url('specialist_tile_pip_full')";  // specialists
-const BZ_ICON_TIMER = "url('hud_turn-timer')";
+const BZ_ICON_SPECIAL = "url(blp:specialist_tile_pip_full)";  // specialists
+const BZ_ICON_TIMER = "url(blp:hud_turn-timer)";
 
 // color palette
 const BZ_COLOR = {
@@ -405,10 +405,11 @@ class bzCityTooltip {
         const banner =
             target.closest('[data-tooltip-content]') ??
             target.closest('[data-tooltip-style="bz-city-tooltip"]');
-        if (banner?.component == this.target && subtarget == this.subtarget &&
-            !this.updateQueued) return false;
+        if (banner == this.target && subtarget == this.subtarget && !this.updateQueued) {
+            return false;
+        }
         // set target, city, and location
-        this.target = banner?.component ?? null;
+        this.target = banner;
         this.subtarget = subtarget;
         if (this.target) {
             this.city = this.target.city;
@@ -432,7 +433,7 @@ class bzCityTooltip {
         if (this.subtarget == bzTarget.GROWTH) return true;
         if (this.subtarget == bzTarget.PRODUCTION) return true;
         // hide the tooltip over elements with tooltip content
-        if (this.target.Root.getAttribute("data-tooltip-content")) return true;
+        if (this.target.getAttribute("data-tooltip-content")) return true;
         if (this.subtarget == bzTarget.PRODUCTION) return this.city.BuildQueue.isEmpty;
         return false;
     }
