@@ -110,6 +110,7 @@ const CityBannerImpl = (props) => {
             },
             get children() {
               return [(() => {
+                // _tmpl$15 = template(`<div class="city-banner__container flex flex-col mt-2 pointer-events-none"><div class="city-banner__stretch absolute flex flex-row justify-center align-center w-full h-8 top-1\\.5 pointer-events-none"><div class="city-banner__city-state-border absolute -left-2 -right-2 -top-0 -bottom-0"></div><div class="city-banner__city-state-ring absolute -left-1 -right-1 top-1 bottom-0"></div></div><div class="city-banner__name-container relative flex justify-between"><div class="pointer-events-auto cursor-pointer max-h-10 relative flex flex-col"><div class="flex flex-row"></div><div class="city-banner__status-religion relative flex flex-row"></div></div><div class="city-banner__population-container city-banner__queue-container queue-growth items-center justify-center w-8 h-6 -mt-2"><div class="city-banner__population"></div></div></div></div>`);
                 var
                   _el$ = _tmpl$15(),  // CONTAINER flex-col
                   _el$2 = _el$.firstChild,  // STRETCH absolute flex-row
