@@ -110,7 +110,17 @@ const CityBannerImpl = (props) => {
             },
             get children() {
               return [(() => {
-                var _el$ = _tmpl$15(), _el$2 = _el$.firstChild, _el$3 = _el$2.firstChild, _el$4 = _el$3.nextSibling, _el$6 = _el$2.nextSibling, _el$11 = _el$6.firstChild, _el$12 = _el$11.firstChild, _el$17 = _el$12.nextSibling, _el$25 = _el$11.nextSibling, _el$26 = _el$25.firstChild;
+                var
+                  _el$ = _tmpl$15(),  // CONTAINER flex-col
+                  _el$2 = _el$.firstChild,  // STRETCH absolute flex-row
+                  _el$3 = _el$2.firstChild,  // CITY-STATE-BORDER absolute
+                  _el$4 = _el$3.nextSibling,  // CITY-STATE-RING absolute
+                  _el$6 = _el$2.nextSibling,  // NAME-CONTAINER relative flex
+                  _el$11 = _el$6.firstChild,  // pointer-events-auto max-h-10
+                  _el$12 = _el$11.firstChild,  // flex flex-row
+                  _el$17 = _el$12.nextSibling,  // STATUS-RELIGION relative flex-row
+                  _el$25 = _el$11.nextSibling,  // POPULATION-CONTAINER queue-container
+                  _el$26 = _el$25.firstChild;  // POPULATION
                 // TRIX: attach custom city tooltip
                 _el$.setAttribute("data-city-owner", props.cityID.owner);
                 _el$.setAttribute("data-city-local-id", props.cityID.id);
