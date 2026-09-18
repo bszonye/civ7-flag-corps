@@ -1,5 +1,6 @@
-import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
 import bzCityTooltip from '/bz-flag-corps/ui/tooltips/bz-city-tooltip.js';
+
+const bzFlagCorpsOptions = { noHeads: false };
 
 // color palette
 const BZ_COLOR = {

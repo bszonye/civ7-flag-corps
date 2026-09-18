@@ -1,5 +1,3 @@
-// TODO: realign district healthbars
-import { PlotCoord } from '/core/ui/utilities/utilities-plotcoord.js';
 import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
 import DistrictHealthManager from '/base-standard/ui/district/district-health-manager.js';
 
@@ -82,17 +80,4 @@ export class bzDistrictHealthBar {
     afterDetach() { }
     onAttributeChanged(_name, _prev, _next) { }
 }
-function refreshAllHealthBars() {
-    const districts = DistrictHealthManager.instance?.children;
-    if (!districts) {
-        console.warn(`bz-district-health: no districts to refresh`);
-        return;
-    }
-    districts.forEach((district, _key) => {
-        const position = district.Root.getAttribute('data-district-location');
-        const location = PlotCoord.fromString(position);
-        district.makeWorldAnchor(location);
-    });
-}
-window.addEventListener('bz-flag-corps-options', refreshAllHealthBars);
 Controls.decorate('district-health-bar', (component) => new bzDistrictHealthBar(component));

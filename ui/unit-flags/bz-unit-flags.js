@@ -1,4 +1,3 @@
-import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
 import { Layout } from '/core/ui/utilities/utilities-layout.js';
 import { utils } from '/core/ui/graph-layout/utils.js';
 import { UnitFlagManager } from '/base-standard/ui/unit-flags/unit-flag-manager.js';
@@ -6,6 +5,8 @@ import { GenericUnitFlag } from '/base-standard/ui/unit-flags/unit-flags.js';
 import { IndependentPowersUnitFlag } from '/base-standard/ui/unit-flags/unit-flags-independent-powers.js';
 
 Controls.loadStyle("/bz-flag-corps/ui/unit-flags/bz-unit-flags.css");
+
+const bzFlagCorpsOptions = { noShadow: false };
 
 // sync optional styling
 document.body.classList.toggle("bz-flags-no-shadow", bzFlagCorpsOptions.noShadow);
