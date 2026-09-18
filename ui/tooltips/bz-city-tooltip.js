@@ -519,6 +519,7 @@ class bzCityTooltip {
             this.townFocus = focus;
             this.settlementType = this.townFocus.name;
         } else if (this.city.isCapital) {
+            // TODO: show New/Original Capital labels
             this.settlementType = "LOC_CAPITAL_SELECT_PROMOTION_CAPITAL";
         } else {
             this.settlementType = "LOC_CAPITAL_SELECT_PROMOTION_CITY";

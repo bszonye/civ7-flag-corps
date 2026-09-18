@@ -88,9 +88,11 @@
 .bz-flags .city-banner__capital-star,
 .bz-flags .city-banner__original-capital-curr-star {
     background-size: 100% /* 75% */;
+    background-position: center;
 }
 .bz-flags .city-banner__original-capital-star {
     background-size: 80% /* 60% */;
+    background-position: center;
     filter: saturate(0);
 }
 
@@ -101,4 +103,10 @@
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-left {
     filter: brightness(2.333) fxs-color-tint(var(--bz-color-production));
+}
+.bz-flags .city-banner__name {
+  text-shadow:  /* TODO */
+  -1px -1px 0rem #fff5,
+  1px 1px 0rem #000a,
+  0.0555555556rem 0.0555555556rem 0.0555555556rem #000a;
 }
