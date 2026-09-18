@@ -65,6 +65,14 @@
   --bz-color-culture: #5c5cd6;     /* 240° 60 60 violet */
   --bz-color-happiness: #f5993d;   /*  30° 90 60 orange */
   --bz-color-diplomacy: #afb7cf;   /* 225° 25 75 gray */
+  /* yields adjusted to L70+ for text contrast */
+  --bz-color-food-text: #80b34d;
+  --bz-color-production-text: #e87b64;
+  --bz-color-gold-text: #f6ce55;
+  --bz-color-science-text: #79b3ee;
+  --bz-color-culture-text: #8d92f9;
+  --bz-color-happiness-text: #f5993d;
+  --bz-color-diplomacy-text: #afb7cf;
 }
 .bz-flags {
   /* city-state & independent power types */
@@ -92,5 +100,5 @@
 }
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-left {
-    filter: brightness(1.889) fxs-color-tint(var(--bz-color-production));
+    filter: brightness(2.333) fxs-color-tint(var(--bz-color-production));
 }
