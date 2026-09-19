@@ -235,13 +235,11 @@
 /* CITY-STATE-RING:
    city-banner__city-state-ring absolute -left-1 -right-1 top-1 bottom-0 */
 .bz-flags .city-banner__city-state-ring,
+.bz-flags.city-banner.city-banner--town .city-banner__city-state-ring,
+.bz-flags.city-banner.city-banner--citystate .city-banner__city-state-ring,
 .bz-flags.city-banner.city-banner--hostile .city-banner__city-state-ring,
-.bz-flags.city-banner.city-banner--friendly .city-banner__city-state-ring,
-.bz-flags.city-banner.city-banner--citystate .city-banner__city-state-ring {
+.bz-flags.city-banner.city-banner--friendly .city-banner__city-state-ring {
   fxs-border-image-tint: var(--player-color-secondary);
-}
-.bz-flags.city-banner.city-banner--town .city-banner__city-state-ring {
-  fxs-border-image-tint: transparent;
 }
 .bz-flags.city-banner.city-banner--village .city-banner__city-state-ring {
   fxs-border-image-tint: white;
@@ -990,27 +988,14 @@
 /* RIGHT-CONTAINER:
    items-center -ml-12 mt-10 city-banner__right-container flex flex-row */
 .bz-flags .city-banner__right-container {
-  position: absolute;
-  margin: 0;
-  top: -2.72222222222rem;
-  height: 2.6666666667rem;
-  display: flex;
-  justify-content: center;
-  transform: translateX(-50%) scale(1);
+  display: none;  /* contents moved to STRETCH */
 }
 
 /* CONQUERED: flex-auto -mr-3 flex flex-col */
 .bz-flags.city-banner .bz-city-banner__conquered {
   position: absolute;
   top: 1.2222222222rem;
-  pointer-events: auto;
   margin: 0;
-}
-.bz-flags.city-banner--town .bz-city-banner__conquered {
-  top: 1.1111111111rem;
-}
-.bz-flags.city-banner--citystate .bz-city-banner__conquered {
-  top: 1.2222222222rem;
 }
 
 /* CONQUERED-ICON:
@@ -1074,7 +1059,6 @@
   width: 2.6666666667rem;
   height: 2.6666666667rem;
   top: -0.0555555556rem;
-  /* filter: drop-shadow(0 0.0555555556rem 0.1111111111rem black); */
 }
 .bz-flags.city-banner .city-banner__unrest-icon,
 .bz-flags.city-banner.city-banner--town .city-banner__unrest-icon,
@@ -1118,7 +1102,6 @@
   z-index: 2;
   width: 2.8888888889rem;
   height: 2.8888888889rem;
-  /* filter: drop-shadow(0 0.0555555556rem 0.1111111111rem black); */
 }
 .bz-flags .city-banner__razing-icon,
 .bz-flags.city-banner.city-banner--town .city-banner__razing-icon,
