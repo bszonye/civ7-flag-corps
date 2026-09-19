@@ -21,6 +21,7 @@ export default [
                 CityGovernmentLevels: "readonly",
                 CityTransferTypes: "readonly",
                 CombatTypes: "readonly",
+                Color: "readonly",
                 Configuration: "readonly",
                 Constructibles: "readonly",
                 Controls: "readonly",

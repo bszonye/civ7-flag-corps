@@ -90,7 +90,8 @@ const CityBannerImpl = (props) => {
     get style() {
       return {
         "--player-color-primary": props.data.identity.playerColorPrimary,
-        "--player-color-secondary": props.data.identity.playerColorSecondary
+        "--player-color-secondary": props.data.identity.playerColorSecondary,
+        "--player-color-text": props.data.identity.playerColorText  // TRIX
       };
     },
     get children() {
@@ -122,6 +123,11 @@ const CityBannerImpl = (props) => {
                   _el$17 = _el$12.nextSibling,  // STATUS-RELIGION relative flex-row
                   _el$25 = _el$11.nextSibling,  // POPULATION-CONTAINER queue-container
                   _el$26 = _el$25.firstChild;  // POPULATION
+                // TODO/DEBUG
+                // _el$2.style.backgroundColor = "#fa0a";
+                // _el$6.style.backgroundColor = "#0aaa";
+                // _el$11.style.backgroundColor = "#aaaa";
+                // _el$12.style.backgroundColor = "#aaaa";
                 // TRIX: attach custom city tooltip
                 _el$.setAttribute("data-city-owner", props.cityID.owner);
                 _el$.setAttribute("data-city-local-id", props.cityID.id);
@@ -152,7 +158,7 @@ const CityBannerImpl = (props) => {
                 // TRIX: add conquest icons to STRETCH, not RIGHT-CONTAINER
                 insert(_el$2, createComponent(Show, {
                   get when() {
-                    return props.data.conquered;
+                    return props.data.conquered || true;
                   },
                   get children() {
                     return createComponent(Tooltip.Text, {
@@ -165,7 +171,7 @@ const CityBannerImpl = (props) => {
                 }), null);
                 insert(_el$2, createComponent(Show, {
                   get when() {
-                    return props.data.status.hasUnrest;
+                    return props.data.status.hasUnrest || true;
                   },
                   get children() {
                     var _el$34 = _tmpl$17(), _el$35 = _el$34.firstChild, _el$36 = _el$35.nextSibling, _el$37 = _el$36.firstChild, _el$38 = _el$37.nextSibling;
