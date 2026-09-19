@@ -26,14 +26,14 @@ GUF.onAttach = GUF.proto.onAttach;
 GUF.proto.onAttach = function(...args) {
     GUF.onAttach.apply(this, args);
     this.Root.classList.add("bz-flags");
-    this.unitContainer.style.top = "0";  // adjust y axis
+    // this.unitContainer.style.top = "0";  // adjust y axis
     this.realizeAffinity();  // show unit affinity
 };
 IPUF.onAttach = IPUF.proto.onAttach;
 IPUF.proto.onAttach = function(...args) {
     IPUF.onAttach.apply(this, args);
     this.Root.classList.add("bz-flags", "bz-flags-independent");
-    this.unitContainer.style.top = "0";  // adjust y axis
+    // this.unitContainer.style.top = "0";  // adjust y axis
 };
 IPUF.proto.updateTop = function(position, total) {
   const offset = position - (total - 1) / 2 - 0.75;  // fix horizontal alignment

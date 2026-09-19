@@ -1,11 +1,34 @@
+/* optionally hide black shadows */
 .bz-flags-no-shadow .unit-flag__shadow,
-.bz-flags-no-shadow .unit-flag--civilian .unit-flag__shadow,
 .bz-flags-no-shadow .unit-flag--army .unit-flag__shadow,
+.bz-flags-no-shadow .unit-flag--civilian .unit-flag__shadow,
 .bz-flags-no-shadow .unit-flag--combat .unit-flag__shadow {
     background-image: none;
 }
-`,
-`
+/* fix red shadow proportions */
+.bz-flags.unit-flag--hostile .unit-flag__shadow {
+  background-image: url("blp:unit_support-shadow_red.png");
+  left: -0.0555555556rem;
+  right: -0.0555555556rem;
+  top: -0.0555555556rem;
+  bottom: -0.0555555556rem;
+  background-size: 100% 100%;
+}
+.bz-flags.unit-flag--hostile .unit-flag--combat .unit-flag__shadow {
+  background-image: url("blp:unit_combat-shadow_red.png");
+  top: -0.1111111111rem;
+}
+/* fix flag alignment */
+.bz-flags .unit-flag__container {
+    top: 0;
+}
+.bz-flags .unit-flag--army {
+    top: 0.2777777778rem;
+}
+.bz-flags .unit-flag--combat {
+    top: 0.1666666667rem;
+}
+/* improve healthbar */
 .bz-flags .unit-flag__healthbar-container {
     width: 1.7222222222rem;
 }
@@ -23,7 +46,7 @@
 }
 .bz-flags .unit-flag--combat .unit-flag__healthbar,
 .bz-flags.unit-flag--hostile .unit-flag--combat .unit-flag__healthbar {
-    top: -0.2222222222rem;
+    top: -0.2777777778rem;
     width: 100%;
     left: 0;
 }
