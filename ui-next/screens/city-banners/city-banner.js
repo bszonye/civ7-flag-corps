@@ -149,6 +149,40 @@ const CityBannerImpl = (props) => {
                     });
                   }
                 }), null);
+                // TRIX: add conquest icons to STRETCH, not RIGHT-CONTAINER
+                insert(_el$2, createComponent(Show, {
+                  get when() {
+                    return props.data.conquered;
+                  },
+                  get children() {
+                    return createComponent(Tooltip.Text, {
+                      text: "LOC_CITY_BANNER_CONQUERED_TOOLTIP",
+                      get children() {
+                        return _tmpl$16();
+                      }
+                    });
+                  }
+                }), null);
+                insert(_el$2, createComponent(Show, {
+                  get when() {
+                    return props.data.status.hasUnrest;
+                  },
+                  get children() {
+                    var _el$34 = _tmpl$17(), _el$35 = _el$34.firstChild, _el$36 = _el$35.nextSibling, _el$37 = _el$36.firstChild, _el$38 = _el$37.nextSibling;
+                    insert(_el$38, () => props.data.status.unrestTurns);
+                    return _el$34;
+                  }
+                }), null);
+                insert(_el$2, createComponent(Show, {
+                  get when() {
+                    return props.data.status.isBeingRazed;
+                  },
+                  get children() {
+                    var _el$39 = _tmpl$18(), _el$40 = _el$39.firstChild, _el$41 = _el$40.nextSibling, _el$42 = _el$41.firstChild, _el$43 = _el$42.nextSibling;
+                    insert(_el$43, () => props.data.status.razedTurns);
+                    return _el$39;
+                  }
+                }), null);
                 insert(_el$6, createComponent(CityBannerNameTooltip, {
                   get data() {
                     return props.data.identity;
@@ -379,7 +413,9 @@ const CityBannerImpl = (props) => {
                   }
                 }), null);
                 return _el$;
-              })(), (() => {
+              })()];
+              // TRIX: moved from _tmpl$19 to _el$6 of _tmpl$15
+              (() => {  // eslint-disable-line no-unreachable
                 var _el$32 = _tmpl$19();
                 insert(_el$32, createComponent(Show, {
                   get when() {
@@ -415,7 +451,7 @@ const CityBannerImpl = (props) => {
                   }
                 }), null);
                 return _el$32;
-              })()];
+              });
             }
           });
         }
