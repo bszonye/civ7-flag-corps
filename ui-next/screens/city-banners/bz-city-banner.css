@@ -653,8 +653,8 @@
   opacity: 1;
 }
 .bz-flags.city-banner .city-banner__trade-network-background {
-  background-color: #e6b816;  /* economic yellow, reduced to L80 */
-  border: 2px solid black;
+  background-color: #550000;
+  border: 2px solid #e6b816;  /* economic yellow, reduced to L80 */
 }
 .bz-flags .city-banner__trade-network-icon {
   background-image: url("blp:trade_broken.png");
@@ -1147,4 +1147,4 @@
 }
 
 /* TRIX */
-/* vim:set sw=2 et: */
+/* vim:set sw=2 et tw=72: */
