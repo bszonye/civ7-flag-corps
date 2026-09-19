@@ -1,65 +1,41 @@
-import bzFlagCorpsOptions from '/bz-flag-corps/ui/options/bz-flag-corps-options.js';
 import { Layout } from '/core/ui/utilities/utilities-layout.js';
+import { utils } from '/core/ui/graph-layout/utils.js';
 import { UnitFlagManager } from '/base-standard/ui/unit-flags/unit-flag-manager.js';
 import { GenericUnitFlag } from '/base-standard/ui/unit-flags/unit-flags.js';
 import { IndependentPowersUnitFlag } from '/base-standard/ui/unit-flags/unit-flags-independent-powers.js';
 
-// additional CSS definitions
-const BZ_HEAD_STYLE = [
-`
-.bz-flags-no-shadow .unit-flag__shadow,
-.bz-flags-no-shadow .unit-flag--civilian .unit-flag__shadow,
-.bz-flags-no-shadow .unit-flag--army .unit-flag__shadow,
-.bz-flags-no-shadow .unit-flag--combat .unit-flag__shadow {
-    background-image: none;
-}
-`,
-`
-.bz-flags.bz-flags-no-shadow .unit-flag__healthbar-container {
-    top: 0.2222222222rem;
-}
-.bz-flags .unit-flag__healthbar-container {
-    top: 0.1666666667rem;
-}
-.bz-flags .unit-flag__healthbar {
-    height: 0.5555555556rem;
-    border-radius: 0.2777777778rem / 0.4444444444rem;
-}
-.bz-flags .unit-flag__healthbar-inner {
-    height: 0.3333333333rem;
-    border-radius: 0.1666666667rem / 0.3333333333rem;
-}
-`,
-];
-BZ_HEAD_STYLE.map(style => {
-    const e = document.createElement('style');
-    e.textContent = style;
-    document.head.appendChild(e);
-});
+Controls.loadStyle("/bz-flag-corps/ui/unit-flags/bz-unit-flags.css");
+
+const bzFlagCorpsOptions = { noShadow: false };
+
 // sync optional styling
 document.body.classList.toggle("bz-flags-no-shadow", bzFlagCorpsOptions.noShadow);
 
-const UFMproto = UnitFlagManager.prototype;
-const UFM_onInitialize = UFMproto.onInitialize;
-UFMproto.onInitialize = function(...args) {
-    UFM_onInitialize.apply(this, args);
+const UFM = { proto: UnitFlagManager.prototype };
+const GUF = { proto: GenericUnitFlag.prototype };
+const IPUF = { proto: IndependentPowersUnitFlag.prototype };
+
+// patched methods
+UFM.onInitialize = UFM.proto.onInitialize;
+UFM.proto.onInitialize = function(...args) {
+    UFM.onInitialize.apply(this, args);
     engine.on('DiplomacyEventStarted', (_data) => { this.requestFlagsRebuild() });
     engine.on('DiplomacyEventEnded', (_data) => { this.requestFlagsRebuild() });
 };
-
-// patched methods
-const GUF_onAttach = GenericUnitFlag.prototype.onAttach;
-GenericUnitFlag.prototype.onAttach = function(...args) {
-    GUF_onAttach.apply(this, args);
-    this.unitContainer.style.top = "0";  // adjust y axis
+GUF.onAttach = GUF.proto.onAttach;
+GUF.proto.onAttach = function(...args) {
+    GUF.onAttach.apply(this, args);
+    this.Root.classList.add("bz-flags");
+    // this.unitContainer.style.top = "0";  // adjust y axis
     this.realizeAffinity();  // show unit affinity
 };
-const IPUF_onAttach = IndependentPowersUnitFlag.prototype.onAttach;
-IndependentPowersUnitFlag.prototype.onAttach = function(...args) {
-    IPUF_onAttach.apply(this, args);
-    this.unitContainer.style.top = "0";  // adjust y axis
+IPUF.onAttach = IPUF.proto.onAttach;
+IPUF.proto.onAttach = function(...args) {
+    IPUF.onAttach.apply(this, args);
+    this.Root.classList.add("bz-flags", "bz-flags-independent");
+    // this.unitContainer.style.top = "0";  // adjust y axis
 };
-IndependentPowersUnitFlag.prototype.updateTop = function(position, total) {
+IPUF.proto.updateTop = function(position, total) {
   const offset = position - (total - 1) / 2 - 0.75;  // fix horizontal alignment
   if (this.unitContainer) {
     if (this.flagOffset != offset) {
@@ -68,8 +44,18 @@ IndependentPowersUnitFlag.prototype.updateTop = function(position, total) {
     }
   }
 }
+IPUF.realizeUnitHealth = IPUF.proto.realizeUnitHealth;
+IPUF.proto.realizeUnitHealth = function(...args) {
+    IPUF.realizeUnitHealth.apply(this, args);
+    if (this.unitHealthBarInner) {
+        const health = this.unit.Health;
+        const damage = (health.maxDamage - health.damage) / health.maxDamage;
+        const MAX = 100 * 25/31;
+        this.unitHealthBarInner.style.widthPERCENT = utils.clamp(damage, 0, 1) * MAX;
+    }
+};
 // show relationships for majors & city-states
-GenericUnitFlag.prototype.getRelationship = function() {
+GUF.proto.getRelationship = function() {
     // parallel to IndependentPowersUnitFlag.getRelationship
     const IR = IndependentRelationship;
     const ownerID = this.componentID.owner;
@@ -84,5 +70,4 @@ GenericUnitFlag.prototype.getRelationship = function() {
     }
     return IR.NEUTRAL;
 }
-GenericUnitFlag.prototype.realizeAffinity =
-    IndependentPowersUnitFlag.prototype.realizeAffinity;
+GUF.proto.realizeAffinity = IPUF.proto.realizeAffinity;

@@ -2,7 +2,7 @@ import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
 class bzCityBannerManager {
     constructor(component) {
         this.component = component;
-        component.bzComponent = this;
+        this.component.bzFlagCorps = this;
         this.Root = this.component.Root;
         this.banners = this.component.banners;
         this.cityRazingStartedListener = this.onCityRazingStarted.bind(this);
