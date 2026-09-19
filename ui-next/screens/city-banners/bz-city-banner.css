@@ -760,7 +760,6 @@
 .bz-flags.city-banner.city-banner--city .city-banner__population {
   top: auto;
   height: auto;
-  background-color: magenta;
 }
 .bz-flags.city-banner.city-banner--city-other .queue-production {
   display: flex;
@@ -1004,24 +1003,30 @@
 .bz-flags.city-banner .bz-city-banner__conquered {
   position: absolute;
   top: 1.2222222222rem;
-  background-color: magenta;
   pointer-events: auto;
-}
-.bz-flags.city-banner--citystate .bz-city-banner__conquered {
-  top: -0.1111111111rem;
-}
-.bz-flags.city-banner--town .bz-city-banner__conquered {
-  top: 0.7777777778rem;
-}
-.bz-flags.city-banner .bz-city-banner__conquered,
-.bz-flags.city-banner.city-banner--town .city-banner__conquered-icon,
-.bz-flags.city-banner.city-banner--citystate .city-banner__conquered-icon {
   margin: 0;
 }
+.bz-flags.city-banner--town .bz-city-banner__conquered {
+  top: 1.1111111111rem;
+}
+.bz-flags.city-banner--citystate .bz-city-banner__conquered {
+  top: 1.2222222222rem;
+}
+
 /* CONQUERED-ICON:
    city-banner__conquered-icon relative size-14 -mr-6 bg-cover bg-no-repeat flex */
-.bz-flags.city-banner .city-banner__conquered-icon {
+.bz-flags .city-banner__conquered-icon {
+  transform: translateX(-50%) scale(1);
+  display: none;
+  background-image: url("blp:icon-conquered.png");
   position: absolute;
+}
+.bz-flags.city-banner.city-banner--conquered .city-banner__conquered-icon {
+  display: flex;
+}
+.bz-flags.city-banner.city-banner--town .city-banner__conquered-icon,
+.bz-flags.city-banner.city-banner--citystate .city-banner__conquered-icon {
+  margin-top: 0;
 }
 /* vanilla */
 .city-banner.city-banner--town .city-banner__conquered-icon {
@@ -1041,10 +1046,15 @@
 
 /* UNREST: city-banner__unrest -mr-3 flex flex-col */
 .bz-flags.city-banner .city-banner__unrest {
+  display: none;
   position: absolute;
-  margin: 0;
   top: 0.4444444444rem;
   right: -2.1111111111rem;
+  margin: 0;
+  display: flex;
+}
+.bz-flags.city-banner.city-banner--unrest .city-banner__unrest {
+  display: flex;
 }
 /* vanilla */
 .city-banner.city-banner--unrest .city-banner__unrest {
@@ -1055,15 +1065,15 @@
 }
 
 /* UNREST-ICON: city-banner__unrest-icon relative size-14 bg-cover bg-no-repeat flex */
-.bz-flags.city-banner .city-banner__unrest-icon {
-  position: relative;
+.bz-flags .city-banner__unrest-icon {
+  background-image: url("blp:icon_unrest.png");
   z-index: 2;
   width: 2.6666666667rem;
   height: 2.6666666667rem;
   top: -0.0555555556rem;
-  filter: drop-shadow(0 0.0555555556rem 0.1111111111rem black);
+  /* filter: drop-shadow(0 0.0555555556rem 0.1111111111rem black); */
 }
-.bz-flags.city-banner .city-banner__unrest-icon {
+.bz-flags.city-banner .city-banner__unrest-icon,
 .bz-flags.city-banner.city-banner--town .city-banner__unrest-icon,
 .bz-flags.city-banner.city-banner--citystate .city-banner__unrest-icon {
   margin: 0;
@@ -1080,17 +1090,16 @@
 }
 
 /* RAZING: city-banner__razing -mr-3 flex flex-col */
-.bz-flags.city-banner .city-banner__razing {
+.bz-flags .city-banner__razing {
+  display: none;
   position: absolute;
-  margin: 0;
   top: 0.2222222222rem;
   right: -2.2222222222rem;
+  margin: 0;
+  display: flex;
 }
 .bz-flags.city-banner.city-banner--razing .city-banner__razing {
   display: flex;
-}
-.bz-flags.city-banner__razing {
-  display: none;
 }
 /* vanilla */
 .city-banner.city-banner--razing .city-banner__razing {
@@ -1101,14 +1110,14 @@
 }
 
 /* RAZING-ICON: city-banner__razing-icon relative size-14 bg-cover bg-no-repeat flex */
-.bz-flags.city-banner .city-banner__razing-icon {
-  position: relative;
+.bz-flags .city-banner__razing-icon {
+  background-image: url("blp:icon_razed.png");
   z-index: 2;
   width: 2.8888888889rem;
   height: 2.8888888889rem;
-  filter: drop-shadow(0 0.0555555556rem 0.1111111111rem black);
+  /* filter: drop-shadow(0 0.0555555556rem 0.1111111111rem black); */
 }
-.bz-flags.city-banner .city-banner__razing-icon,
+.bz-flags .city-banner__razing-icon,
 .bz-flags.city-banner.city-banner--town .city-banner__razing-icon,
 .bz-flags.city-banner.city-banner--citystate .city-banner__razing-icon {
   margin: 0;
