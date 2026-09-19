@@ -1033,7 +1033,7 @@
   background-image: url("blp:icon-conquered.png");
 }
 
-/* UNREST */
+/* UNREST: city-banner__unrest -mr-3 flex flex-col */
 .bz-flags.city-banner .city-banner__unrest {
   position: absolute;
   margin: 0;
@@ -1048,7 +1048,7 @@
   display: none;
 }
 
-/* UNREST-ICON */
+/* UNREST-ICON: city-banner__unrest-icon relative size-14 bg-cover bg-no-repeat flex */
 .bz-flags.city-banner .city-banner__unrest-icon {
   position: relative;
   z-index: 2;
@@ -1069,7 +1069,7 @@
   background-image: url("blp:icon_unrest.png");
 }
 
-/* RAZING */
+/* RAZING: city-banner__razing -mr-3 flex flex-col */
 .bz-flags.city-banner .city-banner__razing {
   position: absolute;
   margin: 0;
@@ -1084,7 +1084,7 @@
   display: none;
 }
 
-/* RAZING-ICON */
+/* RAZING-ICON: city-banner__razing-icon relative size-14 bg-cover bg-no-repeat flex */
 .bz-flags.city-banner .city-banner__razing-icon {
   position: relative;
   z-index: 2;
@@ -1104,7 +1104,7 @@
   background-image: url("blp:icon_razed.png");
 }
 
-/* TIME-CONTAINER */
+/* TIME-CONTAINER: city-banner__time-container -mt-3 pr-2 flex flex-row */
 .bz-flags.city-banner .city-banner__time-container {
   position: relative;
   margin: 0;
@@ -1123,7 +1123,7 @@
   border-image-width: 1.1111111111rem 0.8888888889rem 1.1111111111rem 0.8888888889rem;
 }
 
-/* TIME-ICON */
+/* TIME-ICON: city-banner__time-icon self-center bg-cover bg-no-repeat size-6 ml-1 */
 .bz-flags.city-banner .city-banner__time-icon {
   display: none;
 }
@@ -1132,7 +1132,7 @@
   background-image: url("blp:town_turn-icon.png");
 }
 
-/* TIME-TEXT */
+/* TIME-TEXT: city-banner__time-text self-center font-body-xs text-white */
 .bz-flags.city-banner .city-banner__time-text {
   z-index: -1;
   margin: 0;
