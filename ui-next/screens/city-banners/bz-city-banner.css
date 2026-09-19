@@ -638,7 +638,7 @@
   background-position: center center;
 }
 .bz-flags.city-banner .city-banner__religion-symbol-bg {
-  background-color: #d6d7d5;
+  background-color: #d0d4d2;  /* sampled from religion icons */
 }
 .bz-flags.city-banner.city-banner--has-religion .city-banner__religion {
   display: flex;
@@ -654,7 +654,7 @@
 }
 .bz-flags.city-banner .city-banner__trade-network-background {
   background-color: #550000;
-  border: 2px solid #e6b816;  /* economic yellow, reduced to L80 */
+  border: 0.0555555556rem solid #e6b816;  /* economic yellow, reduced to L80 */
 }
 .bz-flags .city-banner__trade-network-icon {
   background-image: url("blp:trade_broken.png");
