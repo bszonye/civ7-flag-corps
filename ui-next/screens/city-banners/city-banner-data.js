@@ -2,6 +2,7 @@ import { createSignal } from '../../../../core/vendor/solid-js/dist/solid.js';
 import { ComponentID } from '../../../../core/ui/utilities/utilities-component-id.js';
 import { Icon } from '../../../../core/ui/utilities/utilities-image.js';
 import { ProductionPanelCategory } from '../../../ui/production-chooser/production-chooser-helpers.js';
+import { getTextColor } from '/bz-flag-corps/ui-next/screens/city-banners/bz-city-banner-helpers.js';
 
 var BannerType = /* @__PURE__ */ ((BannerType2) => {
   BannerType2["Town"] = "town";
@@ -183,7 +184,7 @@ function computeIdentity(cityID, location) {
   if (playerColorPrimary == playerColorSecondary) {
     playerColorPrimary = "rgb(155, 0, 0)";
   }
-  const playerColorText = player.isIndependent ? "white" : bzGetTextColor(cityID.owner);
+  const playerColorText = player.isIndependent ? "white" : getTextColor(cityID.owner);
   return {
     location: bannerLocation,
     bannerType,
@@ -200,44 +201,6 @@ function computeIdentity(cityID, location) {
     playerColorSecondary,
     playerColorText  // TRIX
   };
-}
-console.warn(`TRIX COLOR ${Object.getOwnPropertyNames(Object.getPrototypeOf(Color))}`);
-function bzGetTextColor(id) {
-  // TRIX: determine a contrasting text color
-  const text = (srgb) => `rgb(${srgb.r}, ${srgb.g}, ${srgb.b})`;
-  const Y = (srgb) => {
-    const lrgb = Color.convertToLinear(srgb);
-    return 0.2126 * lrgb.x + 0.7152 * lrgb.y + 0.0722 * lrgb.z;
-  }
-  const c1 = UI.Player.getPrimaryColorValue(id);
-  const c2 = UI.Player.getSecondaryColorValue(id);
-  const Y1 = Y(c1);
-  const Y2 = Y(c2);
-  // console.warn(`TRIX Y ${Y1.toFixed(3)} ${text(c1)} ${Y2.toFixed(3)} ${text(c2)}`);
-  if (Y1 < 0.30 && Y2 <= Y1) return "white";
-  if (0.30 <= Y1 && Y1 <= Y2) return "black";
-  const YT = Y1 < Y2 ?
-    Math.pow(Math.max(0.69 - Math.pow(Y1, 0.65), 0.0884), 1 / 0.62) :
-    Math.pow(Math.max(Math.pow(Y1, 0.56) - 0.69, 0.1075), 1 / 0.57);
-  console.warn(`TRIX Y ${Y1.toFixed(3)} ${text(c1)} ${Y2.toFixed(3)} ${text(c2)} ${YT.toFixed(3)}`);
-  if (Y1 <= Y2 && YT <= Y2) return text(c2);
-  if (Y2 <= Y1 && Y2 <= YT) return text(c2);
-  const lighten = (c) => 1 - ((1 - c) * (1 - YT) / (1 - Y2));
-  const n2 = Color.convertToLinear(c2);
-  const nt = Y2 < YT ? {
-    x: lighten(n2.x),
-    y: lighten(n2.y),
-    z: lighten(n2.z),
-    w: 1
-  } : {
-    x: n2.x * YT / Y2,
-    y: n2.y * YT / Y2,
-    z: n2.z * YT / Y2,
-    w: 1
-  }
-  const ct = Color.convertToSRGB(nt);
-  console.warn(`TRIX Y ${Y1.toFixed(3)} ${text(c1)} ${Y2.toFixed(3)} ${text(c2)} ${YT.toFixed(3)} ${text(ct)}`);
-  return text(ct);
 }
 function computeCapitalInfo(cityID, location) {
   const city = Cities.get(cityID);

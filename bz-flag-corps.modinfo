@@ -47,6 +47,7 @@
                     <Item>ui/district/bz-district-health.css</Item>
                     <Item>ui/unit-flags/bz-unit-flags.css</Item>
                     <Item>ui-next/screens/city-banners/bz-city-banner.css</Item>
+                    <Item>ui-next/screens/city-banners/bz-city-banner-helpers.js</Item>
                     <Item>ui-next/screens/city-banners/city-banner-data.js</Item>
                     <Item>ui-next/screens/city-banners/city-banner-focus.js</Item>
                     <Item>ui-next/screens/city-banners/city-banner-name-tooltip.js</Item>

@@ -1,0 +1,107 @@
+function srgbToHex(rgba) {
+  const { r, g, b, a } = rgba;
+  const hex = "#" + ((r << 16) | (g << 8) | b).toString(16).padStart(6, "0");
+  return a != null && a != 255 ? hex + a.toString(16).padStart(2, "0") : hex;
+}
+function srgbToLinear(rgba) {
+  const G = (c) => Math.pow(c / 255, 2.4);
+  const r = G(rgba.r);
+  const g = G(rgba.g);
+  const b = G(rgba.b);
+  if (rgba.a != null) return { r, g, b, a: rgba.a / 255 };
+  return { r, g, b };
+}
+function linearToSRGB(rgba) {
+  const G = (c) => Math.round(Math.pow(c, 1 / 2.4) * 255);
+  const r = G(rgba.r);
+  const g = G(rgba.g);
+  const b = G(rgba.b);
+  if (rgba.a != null) return { r, g, b, a: Math.round(rgba.a * 255) };
+  return { r, g, b };
+}
+function getLuminance(c) {
+  c = srgbToLinear(c);
+  return 0.2126729 * c.r + 0.7151522 * c.g + 0.0721750 * c.b;
+}
+const Bclip = 1.414, Bthrsh = 0.022;
+const Nbg = 0.56, Nfg = 0.57, Rbg = 0.65, Rfg = 0.62;
+const Wscale = 1.14, Woffset = 0.027;
+const fsc = (Y) => Y < 0 ? 0 : Y < Bthrsh ? Y + Math.pow(Bthrsh - Y, Bclip) : Y;
+function getYLc(bg, fg) {
+  const Ybg = fsc(bg);
+  const Yfg = fsc(fg);
+  const [Xbg, Xfg] = Yfg < Ybg ? [Nbg, Nfg] : [Rbg, Rfg];
+  const Sapc = (Math.pow(Ybg, Xbg) - Math.pow(Yfg, Xfg)) * Wscale;
+  return Math.abs(Sapc) < 0.1 ? 0 : 100 * (Sapc - Math.sign(Sapc) * Woffset);
+}
+function getColorLc(bg, fg) {
+  bg = getLuminance(Color.convertToSRGB(bg));
+  fg = getLuminance(Color.convertToSRGB(fg));
+  return getYLc(bg, fg);
+}
+function getLcTarget(Y, Lc) {
+  if (!Lc) return Y;
+  if (0 < Lc) {
+    // normal contrast, dark on light
+    if (getYLc(Y, 0) <= Lc) return 0;  // black
+    const Srev = (Lc/100 + Woffset) / Wscale;
+    const Ybg = fsc(Y);
+    const Yfg = Math.pow(Math.pow(Ybg, Nbg) - Srev, 1 / Nfg);
+    return Yfg;  // approximate for Y < 0.022
+  } else {
+    // reverse contrast, light on dark
+    if (Lc <= getYLc(Y, 1)) return 1;  // white
+    const Srev = (Lc/100 - Woffset) / Wscale;
+    const Ybg = fsc(Y);
+    const Yfg = Math.pow(Math.pow(Ybg, Rbg) - Srev, 1 / Rfg);
+    return Yfg;
+  }
+}
+function getTextColor(id) {
+  // TRIX: determine a contrasting text color
+  const Y = (srgb) => {
+    const lrgb = srgbToLinear(srgb);
+    return 0.2126 * lrgb.r + 0.7152 * lrgb.g + 0.0722 * lrgb.b;
+  }
+  const c1 = UI.Player.getPrimaryColorValue(id);
+  const c2 = UI.Player.getSecondaryColorValue(id);
+  const Y1 = Y(c1);
+  const Y2 = Y(c2);
+  const Lc = getYLc(Y1, Y2);
+  const YT = (() => {
+    if (Y2 < Y1) {
+      if (60 <= Lc) return Y2;
+      if (45 <= Lc) return getLcTarget(Y1, 60);
+      if (Lc < 30) return getLcTarget(Y1, 45);
+      return getLcTarget(Y1, Lc + 15);
+    } else {
+      if (-60 >= Lc) return Y2;
+      if (-45 >= Lc) return getLcTarget(Y1, -60);
+      if (Lc > -35) return getLcTarget(Y1, -45);
+      return getLcTarget(Y1, Lc - 15);
+    }
+  })();
+  console.warn(`TRIX Lc ${Lc.toFixed(1)} ${Y1.toFixed(3)} ${srgbToHex(c1)} ${Y2.toFixed(3)} ${srgbToHex(c2)} ${YT.toFixed(3)}`);
+  if (Y1 <= Y2 && YT <= Y2) return srgbToHex(c2);
+  if (Y2 <= Y1 && Y2 <= YT) return srgbToHex(c2);
+  const lighten = (c) => 1 - ((1 - c) * (1 - YT) / (1 - Y2));
+  const n2 = srgbToLinear(c2);
+  const nt = Y2 < YT ? {
+    r: lighten(n2.r),
+    g: lighten(n2.g),
+    b: lighten(n2.b),
+    a: 1
+  } : {
+    r: n2.r * YT / Y2,
+    g: n2.g * YT / Y2,
+    b: n2.b * YT / Y2,
+    a: 1
+  }
+  const ct = linearToSRGB(nt);
+  const Tc = getYLc(Y1, YT);
+  console.warn(`TRIX Tc ${Tc.toFixed(1)} ${Y1.toFixed(3)} ${srgbToHex(c1)} ${Y2.toFixed(3)} ${srgbToHex(c2)} ${YT.toFixed(3)} ${srgbToHex(ct)}`);
+  return srgbToHex(ct);
+}
+
+export { getTextColor };
+// vim: sw=2

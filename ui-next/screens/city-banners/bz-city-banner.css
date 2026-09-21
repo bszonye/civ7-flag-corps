@@ -323,18 +323,18 @@
 .bz-flags.city-banner.city-banner--citystate .city-banner__name-container {
   margin-top: -0.3333333333rem;
 }
-.bz-flags.city-banner--citystate .city-banner__name-container {
-  color: var(--player-color-secondary);
-  color: black;
-}
-.bz-flags.city-banner--village .city-banner__name-container {
-  color: white;
-}
 .bz-flags .city-banner__name-container {
   line-height: 1.6666666667rem;
   color: var(--player-color-text);
   pointer-events: auto;
   margin-left: 0.1666666667rem;
+}
+.bz-flags.city-banner.city-banner--citystate .city-banner__name-container,
+.bz-colors .bz-flags.city-banner.city-banner--citystate .city-banner__name-container {
+  color: var(--player-color-text);
+}
+.bz-flags.city-banner.city-banner--village .city-banner__name-container {
+  color: white;
 }
 /* vanilla */
 .city-banner .city-banner__name-container {
