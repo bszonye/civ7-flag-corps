@@ -2,7 +2,7 @@ import { createSignal } from '../../../../core/vendor/solid-js/dist/solid.js';
 import { ComponentID } from '../../../../core/ui/utilities/utilities-component-id.js';
 import { Icon } from '../../../../core/ui/utilities/utilities-image.js';
 import { ProductionPanelCategory } from '../../../ui/production-chooser/production-chooser-helpers.js';
-import { getTextColor } from '/bz-flag-corps/ui-next/screens/city-banners/bz-city-banner-helpers.js';
+import { getLightingColor, getTextColor } from '/bz-flag-corps/ui-next/screens/city-banners/bz-city-banner-helpers.js';
 
 var BannerType = /* @__PURE__ */ ((BannerType2) => {
   BannerType2["Town"] = "town";
@@ -178,13 +178,15 @@ function computeIdentity(cityID, location) {
       leaderName = suzerainPlayer.leaderName;
     }
   }
+  const owner = cityID.owner;
   const cityStateBonusName = bonusDefinition?.Name ?? "";
-  let playerColorPrimary = UI.Player.getPrimaryColorValueAsString(cityID.owner);
-  const playerColorSecondary = UI.Player.getSecondaryColorValueAsString(cityID.owner);
+  let playerColorPrimary = UI.Player.getPrimaryColorValueAsString(owner);
+  const playerColorSecondary = UI.Player.getSecondaryColorValueAsString(owner);
   if (playerColorPrimary == playerColorSecondary) {
     playerColorPrimary = "rgb(155, 0, 0)";
   }
-  const playerColorText = player.isIndependent ? "white" : getTextColor(cityID.owner);
+  const playerColorText = player.isIndependent ? "white" : getTextColor(owner);
+  const playerColorLighting = player.isIndependent ? void 0 : getLightingColor(owner);
   return {
     location: bannerLocation,
     bannerType,
@@ -199,7 +201,8 @@ function computeIdentity(cityID, location) {
     cityStateTypeName,
     playerColorPrimary,
     playerColorSecondary,
-    playerColorText  // TRIX
+    playerColorText,  // TRIX
+    playerColorLighting  // TRIX
   };
 }
 function computeCapitalInfo(cityID, location) {

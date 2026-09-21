@@ -529,10 +529,15 @@
   padding: 0 0.3333333333rem;
   letter-spacing: 0.0555555556rem;
   margin: 0.3333333333rem -0.0555555556rem 0 0;
-  text-shadow: 1px 1px 0rem #0009, -1px -1px 0rem #fff6;
-  text-shadow: none;  /* TODO */
+  text-shadow: none;
   font-weight: bold;
   pointer-events: auto;
+}
+.bz-flags.city-banner.bz-black-shadow .city-banner__name {
+  text-shadow: 1px 1px 0 #000a;
+}
+.bz-flags.city-banner.bz-white-highlight .city-banner__name {
+  text-shadow: -1px -1px 0 #fffa;
 }
 .bz-flags.city-banner.city-banner--town .city-banner__name,
 .bz-flags.city-banner.city-banner--city-other .city-banner__name,

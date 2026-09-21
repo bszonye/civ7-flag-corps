@@ -84,7 +84,10 @@ const CityBannerImpl = (props) => {
         "city-banner--razing": props.data.status.isBeingRazed,
         "city-banner--friendly": props.data.relationship == "friendly",
         "city-banner--hostile": props.data.relationship == "hostile",
-        "city-banner--neutral": props.data.relationship == "neutral"
+        "city-banner--neutral": props.data.relationship == "neutral",
+        // TRIX: subtler shadow colors
+        "bz-black-shadow": props.data.identity.playerColorLighting === "black",
+        "bz-white-highlight": props.data.identity.playerColorLighting === "white",
       };
     },
     get style() {

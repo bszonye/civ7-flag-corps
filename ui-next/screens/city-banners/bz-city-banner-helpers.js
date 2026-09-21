@@ -52,6 +52,13 @@ function getLcTarget(Y, Lc) {
     return Yfg;
   }
 }
+function getLightingColor(id) {
+  const c1 = UI.Player.getPrimaryColorValue(id);
+  const c2 = UI.Player.getSecondaryColorValue(id);
+  const Y1 = getLuminance(c1);
+  const Y2 = getLuminance(c2);
+  return Y1 < Y2 ? "black" : "white";
+}
 function getTextColor(id) {
   // TRIX: determine a contrasting text color
   const c1 = UI.Player.getPrimaryColorValue(id);
@@ -61,14 +68,14 @@ function getTextColor(id) {
   const Lc = getYLc(Y1, Y2);
   const YT = (() => {
     if (Y2 < Y1) {
-      if (60 <= Lc) return Y2;
-      if (45 <= Lc) return getLcTarget(Y1, 60);
-      if (Lc < 30) return getLcTarget(Y1, 45);
-      return getLcTarget(Y1, Lc + 15);
+      if (75 <= Lc) return Y2;
+      if (45 <= Lc) return getLcTarget(Y1, 75);
+      if (Lc < 30) return getLcTarget(Y1, 60);
+      return getLcTarget(Y1, Lc + 30);
     } else {
       if (-60 >= Lc) return Y2;
       if (-45 >= Lc) return getLcTarget(Y1, -60);
-      if (Lc > -35) return getLcTarget(Y1, -45);
+      if (Lc > -30) return getLcTarget(Y1, -45);
       return getLcTarget(Y1, Lc - 15);
     }
   })();
@@ -94,5 +101,5 @@ function getTextColor(id) {
   return srgbToHex(ct);
 }
 
-export { getTextColor };
+export { getLightingColor, getTextColor };
 // vim: sw=2
