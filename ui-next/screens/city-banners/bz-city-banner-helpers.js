@@ -68,15 +68,9 @@ function getTextColor(id) {
   const Lc = getYLc(Y1, Y2);
   const YT = (() => {
     if (Y2 < Y1) {
-      if (75 <= Lc) return Y2;
-      if (45 <= Lc) return getLcTarget(Y1, 75);
-      if (Lc < 30) return getLcTarget(Y1, 60);
-      return getLcTarget(Y1, Lc + 30);
+      return Math.max(getLcTarget(Y1, 75), 0.025);
     } else {
-      if (-60 >= Lc) return Y2;
-      if (-45 >= Lc) return getLcTarget(Y1, -60);
-      if (Lc > -30) return getLcTarget(Y1, -45);
-      return getLcTarget(Y1, Lc - 15);
+      return Math.min(getLcTarget(Y1, Math.min(Lc - 15, -45)), 0.90);
     }
   })();
   console.warn(`TRIX Lc ${Lc.toFixed(1)} ${Y1.toFixed(3)} ${srgbToHex(c1)} ${Y2.toFixed(3)} ${srgbToHex(c2)} ${YT.toFixed(3)}`);
