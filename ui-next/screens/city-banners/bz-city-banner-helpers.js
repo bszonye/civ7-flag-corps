@@ -34,11 +34,6 @@ function getYLc(bg, fg) {
   const Sapc = (Math.pow(Ybg, Xbg) - Math.pow(Yfg, Xfg)) * Wscale;
   return Math.abs(Sapc) < 0.1 ? 0 : 100 * (Sapc - Math.sign(Sapc) * Woffset);
 }
-function getColorLc(bg, fg) {
-  bg = getLuminance(Color.convertToSRGB(bg));
-  fg = getLuminance(Color.convertToSRGB(fg));
-  return getYLc(bg, fg);
-}
 function getLcTarget(Y, Lc) {
   if (!Lc) return Y;
   if (0 < Lc) {
@@ -59,14 +54,10 @@ function getLcTarget(Y, Lc) {
 }
 function getTextColor(id) {
   // TRIX: determine a contrasting text color
-  const Y = (srgb) => {
-    const lrgb = srgbToLinear(srgb);
-    return 0.2126 * lrgb.r + 0.7152 * lrgb.g + 0.0722 * lrgb.b;
-  }
   const c1 = UI.Player.getPrimaryColorValue(id);
   const c2 = UI.Player.getSecondaryColorValue(id);
-  const Y1 = Y(c1);
-  const Y2 = Y(c2);
+  const Y1 = getLuminance(c1);
+  const Y2 = getLuminance(c2);
   const Lc = getYLc(Y1, Y2);
   const YT = (() => {
     if (Y2 < Y1) {
