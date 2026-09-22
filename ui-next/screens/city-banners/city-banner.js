@@ -126,11 +126,6 @@ const CityBannerImpl = (props) => {
                   _el$17 = _el$12.nextSibling,  // STATUS-RELIGION relative flex-row
                   _el$25 = _el$11.nextSibling,  // POPULATION-CONTAINER queue-container
                   _el$26 = _el$25.firstChild;  // POPULATION
-                // TODO/DEBUG
-                // _el$2.style.backgroundColor = "#fa0a";
-                // _el$6.style.backgroundColor = "#0aaa";
-                // _el$11.style.backgroundColor = "#aaaa";
-                // _el$12.style.backgroundColor = "#aaaa";
                 // TRIX: attach custom city tooltip
                 const loc = props.location ?? props.data.identity.location;
                 _el$.setAttribute("data-city-location", JSON.stringify(loc));

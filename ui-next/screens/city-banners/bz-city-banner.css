@@ -119,25 +119,6 @@
 .bz-flags.city-banner.hidden {
   visibility: hidden;
 }
-/* vanilla */
-.city-banner {
-  pointer-events: none;
-  height: 3.6666666667rem;
-  top: -4rem;
-}
-.city-banner.disabled .city-banner__name {
-  pointer-events: none;
-}
-.city-banner.hidden {
-  visibility: hidden;
-}
-.city-banner.city-banner--town {
-  top: -3.0555555556rem;
-}
-.city-banner.city-banner--village {
-  top: -3.2222222222rem;
-}
-
 /* CONTAINER: city-banner__container flex flex-col mt-2 pointer-events-none */
 .bz-flags.city-banner .city-banner__container,
 .bz-flags.city-banner.city-banner--city-other .city-banner__container,
@@ -151,23 +132,6 @@
 .bz-flags.city-banner__container.disabled {
   pointer-events: none;
 }
-/* vanilla */
-.city-banner.city-banner--city-other .city-banner__container {
-  margin-top: 1.5555555556rem;
-}
-.city-banner.city-banner--city .city-banner__container {
-  margin-top: 1.1111111111rem;
-}
-.city-banner.city-banner--citystate .city-banner__container {
-  margin-top: 1.1111111111rem;
-}
-.city-banner__container {
-  transform: translateX(-50%) scale(1);
-}
-.city-banner__container.disabled {
-  pointer-events: none;
-}
-
 /* STRETCH:
    city-banner__stretch absolute flex flex-row justify-center
    align-center w-full h-8 top-1\\.5 pointer-events-none */
@@ -177,23 +141,8 @@
 .bz-flags.city-banner.city-banner--citystate .city-banner__stretch {
   top: 0.0555555556rem;
   height: 3.6666666667rem;
+  /* background-color: #fa0a;  /* TODO/DEBUG */
 }
-/* vanilla */
-.city-banner .city-banner__stretch {
-  top: 0.3333333333rem;
-  height: 3.6666666667rem;
-}
-.city-banner.city-banner--city-other .city-banner__stretch {
-  top: 1.3333333333rem;
-  height: 4.6666666667rem;
-}
-.city-banner.city-banner--city .city-banner__stretch {
-  top: 1.3333333333rem;
-}
-.city-banner.city-banner--citystate .city-banner__stretch {
-  top: 1.3333333333rem;
-}
-
 /* CITY-STATE-BORDER:
    city-banner__city-state-border absolute -left-2 -right-2 -top-0 -bottom-0 */
 .bz-flags .city-banner__city-state-border {
@@ -214,24 +163,6 @@
 .bz-flags.city-banner.city-banner--hostile .city-banner__city-state-border {
   fxs-border-image-tint: var(--bz-color-hostile);
 }
-/* vanilla */
-.city-banner.city-banner--hostile .city-banner__city-state-border {
-  display: flex;
-  fxs-border-image-tint: #a00000;
-}
-.city-banner.city-banner--friendly .city-banner__city-state-border {
-  display: flex;
-  fxs-border-image-tint: #ffd553;
-}
-.city-banner__city-state-border {
-  display: none;
-  margin-top: 0.3888888889rem;
-  border-image-source: url("blp:hostile_pill.png");
-  border-image-slice: 60 24 2 24 fill;
-  border-image-outset: 0.2222222222rem 0.1111111111rem;
-  border-image-width: 3rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
-}
-
 /* CITY-STATE-RING:
    city-banner__city-state-ring absolute -left-1 -right-1 top-1 bottom-0 */
 .bz-flags .city-banner__city-state-ring,
@@ -250,28 +181,6 @@
   border-image-outset: 0.2222222222rem 0.3888888889rem;
   border-image-width: 3.3333333333rem 1.3888888889rem 0.1111111111rem 1.3333333333rem;
 }
-/* vanilla */
-.city-banner.city-banner--hostile .city-banner__city-state-ring {
-  display: flex;
-  fxs-border-image-tint: white;
-}
-.city-banner.city-banner--friendly .city-banner__city-state-ring {
-  display: flex;
-  fxs-border-image-tint: white;
-}
-.city-banner.city-banner--citystate .city-banner__city-state-ring {
-  border-image-slice: 60 24 2 24 fill;
-  border-image-outset: 0.2222222222rem 0.1111111111rem;
-  border-image-width: 3.3333333333rem 1.3888888889rem 0.1111111111rem 1.3333333333rem;
-}
-.city-banner__city-state-ring {
-  display: none;
-  border-image-source: url("blp:city_pill.png");
-  border-image-slice: 60 24 2 24 fill;
-  border-image-outset: 0.2222222222rem 0.3888888889rem;
-  border-image-width: 3.3333333333rem 1.3888888889rem 0.1111111111rem 1.3333333333rem;
-}
-
 /* STRETCH-BG: city-banner__stretch-bg absolute inset-0 pointer-events-none */
 .bz-flags.city-banner .city-banner__stretch-bg {
   fxs-border-image-tint: var(--player-color-primary);
@@ -289,35 +198,16 @@
 .bz-flags.city-banner.city-banner--village .city-banner__stretch-bg {
   fxs-border-image-tint: var(--player-color-primary);
 }
-/* vanilla */
-.city-banner.city-banner--city-other .city-banner__stretch-bg {
-  border-image-source: url("blp:city_pill.png");
-}
-.city-banner.city-banner--city .city-banner__stretch-bg {
-  border-image-source: url("blp:city_pill.png");
-}
-.city-banner.city-banner--village .city-banner__stretch-bg {
-  fxs-border-image-tint: rgb(22, 22, 35);
-}
-.city-banner.city-banner--citystate .city-banner__stretch-bg {
-  border-image-source: url("blp:city_pill.png");
-  fxs-border-image-tint: white;
-}
-.city-banner__stretch-bg {
-  fxs-border-image-tint: var(--player-color-primary);
-  border-image-source: url("blp:town_pill.png");
-  border-image-slice: 60 24 2 24 fill;
-  border-image-outset: 0rem 0.4444444444rem;
-  border-image-width: 3.3333333333rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
-}
-
 /* NAME-CONTAINER: city-banner__name-container relative flex justify-between */
 .bz-flags.city-banner .city-banner__name-container,
 .bz-flags.city-banner.city-banner--city-other .city-banner__name-container,
 .bz-flags.city-banner.city-banner--city .city-banner__name-container,
 .bz-flags.city-banner.city-banner--village .city-banner__name-container,
 .bz-flags.city-banner.city-banner--citystate .city-banner__name-container {
-  margin-top: -0.3333333333rem;
+  margin-top: 0;
+  height: 1.7777777778rem;
+  line-height: 1.7777777778rem;
+  /* background-color: #aaa6;  /* TODO/DEBUG */
 }
 .bz-flags .city-banner__name-container {
   line-height: 1.6666666667rem;
@@ -330,31 +220,6 @@
 .bz-flags.city-banner.city-banner--village .city-banner__name-container {
   color: var(--player-color-text);
 }
-/* vanilla */
-.city-banner .city-banner__name-container {
-  margin-top: 0.8888888889rem;
-  pointer-events: auto;
-}
-.city-banner.city-banner--city-other .city-banner__name-container {
-  margin-top: 0.8888888889rem;
-}
-.city-banner.city-banner--city .city-banner__name-container {
-  margin-top: 1.8888888889rem;
-}
-.city-banner.city-banner--village .city-banner__name-container {
-  margin-top: -0.3333333333rem;
-  color: white;
-}
-.city-banner.city-banner--citystate .city-banner__name-container {
-  margin-top: 1.8888888889rem;
-  color: black;
-}
-.city-banner__name-container {
-  line-height: 2rem;
-  color: var(--player-color-secondary);
-  pointer-events: auto;
-}
-
 /* PORTRAIT: city-banner__portrait relative pointer-events-auto flex */
 .bz-flags.city-banner .city-banner__portrait {
   display: none;
@@ -373,32 +238,6 @@
 .bz-flags.city-banner__portrait.disabled {
   pointer-events: none;
 }
-/* vanilla */
-.city-banner .city-banner__portrait {
-  display: none;
-}
-.city-banner.city-banner--city-other .city-banner__portrait {
-  top: 0rem;
-  width: 1.3333333333rem;
-  height: 2rem;
-  display: flex;
-}
-.city-banner.city-banner--city .city-banner__portrait {
-  top: -0.1666666667rem;
-  width: 1.3333333333rem;
-  height: 2rem;
-  display: flex;
-}
-.city-banner.city-banner--citystate .city-banner__portrait {
-  top: -0.1666666667rem;
-  width: 1.1111111111rem;
-  height: 1.7777777778rem;
-  display: flex;
-}
-.city-banner__portrait.disabled {
-  pointer-events: none;
-}
-
 /* PORTRAIT-BG1:
    city-banner__portrait-bg1 absolute inset-0 bg-center bg-cover bg-no-repeat */
 .bz-flags .city-banner__portrait-bg1 {
@@ -408,11 +247,6 @@
   background-size: cover;
   background-image: url("blp:town_portrait-hex.png");
 }
-/* vanilla */
-.city-banner__portrait-bg1 {
-  background-image: url("blp:town_portrait-hex.png");
-}
-
 /* PORTRAIT-BG2:
    city-banner__portrait-bg2 absolute inset-x-0 top-0 -bottom-2
    bg-center bg-cover bg-no-repeat */
@@ -430,11 +264,6 @@
   height: 2.5rem;
   background-size: cover;
 }
-/* vanilla */
-.city-banner__portrait-bg2 {
-  background-image: url("blp:town_portrait-frame.png");
-}
-
 /* PORTRAIT-IMG:
    city-banner__portrait-img absolute -left-2 -right-2 -top-1 bottom-0
    bg-cover bg-center bg-no-repeat pointer-events-none */
@@ -442,7 +271,6 @@
 .bz-flags.city-banner--citystate .city-banner__portrait-img {
   transform: scale(-1, 1);  /* face left */
 }
-
 /* ORIGINAL-CAPITAL-CURR-STAR:
    city-banner__original-capital-curr-star w-6 h-6 bg-cover bg-no-repeat
    pointer-events-auto */
@@ -485,38 +313,6 @@
 .bz-flags.city-banner.city-banner--village .city-banner__capital-star {
   display: none;
 }
-/* vanilla */
-.city-banner.city-banner--city .city-banner__capital-star {
-  margin-top: 0.1111111111rem;
-}
-.city-banner.city-banner--city .city-banner__original-capital-curr-star {
-  margin-top: 0.1111111111rem;
-}
-.city-banner.city-banner--city .city-banner__original-capital-star {
-  margin-top: 0.1111111111rem;
-}
-.city-banner__capital-star {
-  background-image: url("blp:fi_city_capital_icon_curr_64.png");
-  margin-top: 0.4444444444rem;
-  margin-right: -0.2222222222rem;
-  margin-left: 0.2222222222rem;
-}
-.city-banner__original-capital-curr-star {
-  background-image: url("blp:fi_city_capital_icon_og_curr_64.png");
-  margin-top: 0.4444444444rem;
-  margin-right: -0.2222222222rem;
-  margin-left: 0.2222222222rem;
-}
-.city-banner__original-capital-star {
-  background-image: url("blp:fi_city_capital_icon_og_64.png");
-  margin-top: 0.4444444444rem;
-  margin-right: -0.2222222222rem;
-  margin-left: 0.2222222222rem;
-}
-.city-banner__town-original-capital-star {
-  margin-top: 0.0555555556rem;
-}
-
 /* NAME: city-banner__name font-title text-base uppercase */
 .bz-flags.city-banner .city-banner__name {
   position: relative;
@@ -526,6 +322,9 @@
   text-shadow: none;
   font-weight: bold;
   pointer-events: auto;
+  height: 1.7777777778rem;
+  line-height: 1.7777777778rem;
+  background-color: #0aaa;  /* TODO/DEBUG */
 }
 .bz-flags.city-banner.bz-black-shadow .city-banner__name {
   text-shadow: 1px 1px 0 #0009;
@@ -535,44 +334,17 @@
   text-shadow: -1px -1px 0 #fff9;
   font-weight: bold;
 }
+.bz-flags.city-banner .city-banner__name,
 .bz-flags.city-banner.city-banner--town .city-banner__name,
 .bz-flags.city-banner.city-banner--city-other .city-banner__name,
 .bz-flags.city-banner.city-banner--village .city-banner__name {
-  margin-top: 0.3333333333rem;
+  margin: 0;
 }
 
 .bz-flags.city-banner.city-banner--citystate .city-banner__name,
 .bz-flags.city-banner.city-banner--village .city-banner__name {
   text-shadow: none;
 }
-/* vanilla */
-.city-banner .city-banner__name {
-  pointer-events: auto;
-}
-.city-banner.city-banner--town .city-banner__name {
-  margin-top: -0.2777777778rem;
-}
-.city-banner.city-banner--city-other .city-banner__name {
-  margin-top: 0.1111111111rem;
-}
-.city-banner.city-banner--village .city-banner__name {
-  margin-top: 0.3888888889rem;
-  text-shadow: none;
-}
-.city-banner.city-banner--citystate .city-banner__name {
-  text-shadow: none;
-}
-.city-banner__name {
-  position: relative;
-  padding: 0 0.3333333333rem;
-  letter-spacing: 0.0555555556rem;
-  margin-right: -0.0555555556rem;
-  margin-top: -0.2222222222rem;
-  text-shadow: 0.0555555556rem 0.0555555556rem 0rem rgba(0, 0, 0, 0.25), 0.0833333333rem 0.0833333333rem 0rem rgba(0, 0, 0, 0.25);
-  font-weight: bold;
-  pointer-events: auto;
-}
-
 /* STATUS-RELIGION: city-banner__status-religion relative flex flex-row */
 .bz-flags.city-banner .city-banner__status-religion {
   position: absolute;
@@ -584,18 +356,6 @@
 .bz-flags.city-banner.city-banner--city .city-banner__status-religion {
   top: 1.8333333333rem;
 }
-/* vanilla */
-.city-banner .city-banner__status-religion {
-  top: -0.4444444444rem;
-  left: 0.2222222222rem;
-}
-.city-banner.city-banner--city-other .city-banner__status-religion {
-  top: -0.3333333333rem;
-}
-.city-banner.city-banner--city .city-banner__status-religion {
-  top: -0.3333333333rem;
-}
-
 /* STATUS, TRADE-NETWORK:
    city-banner__status flex justify-center align-center opacity-100 pointer-events-auto
    city-banner__trade-network flex justify-center align-center pointer-events-auto */
@@ -662,65 +422,6 @@
   background-size: 100%;
   background-position: center center;
 }
-/* vanilla */
-.city-banner.city-banner--village .city-banner__status {
-  display: none;
-}
-.city-banner__status {
-  height: 1rem;
-  width: 1rem;
-  margin-right: 0.1111111111rem;
-}
-.city-banner__status .city-banner__status--hidden {
-  opacity: 0;
-}
-.city-banner.city-banner--has-religion .city-banner__religion {
-  display: flex;
-}
-.city-banner__religion {
-  display: none;
-}
-.city-banner__trade-network {
-  height: 1rem;
-  width: 1rem;
-  position: relative;
-}
-.city-banner__trade-network .city-banner__trade-network--hidden {
-  opacity: 0;
-}
-.city-banner__status-background {
-  border-radius: 50%;
-  border-width: 0.25rem;
-  border-color: rgba(0, 0, 0, 0.5);
-  border-style: solid;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-.city-banner__religion-symbol-bg {
-  width: 1rem;
-  height: 1rem;
-  margin-right: 0.1111111111rem;
-  border-radius: 50%;
-  border-width: 0.25rem;
-  border-color: rgba(0, 0, 0, 0.5);
-  border-style: solid;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-.city-banner__status-icon {
-  background-size: 125%;
-  background-position: center center;
-}
-.city-banner__religion-symbol {
-  width: 1rem;
-  height: 1rem;
-  margin-top: -0.2777777778rem;
-  margin-left: -0.2777777778rem;
-}
-.city-banner__trade-network-icon {
-  background-image: url("blp:trade_broken.png");
-  background-size: 100%;
-  background-position: center center;
-}
-
 /* POPULATION-CONTAINER:
    city-banner__population-container city-banner__queue-container
    queue-growth items-center justify-center w-8 h-6 -mt-2 */
@@ -733,14 +434,12 @@
   position: relative;
   align-items: center;
   justify-content: center;
-  left: 0.1111111111rem;
-  width: 1.5555555556rem;
-  height: 1.5555555556rem;
+  width: 2rem;
+  height: 2rem;
   margin-top: 0;
-  margin-right: 0.1111111111rem;
+  margin-right: -0.0555555556rem;
   padding: 0;
-  box-shadow: none;
-  /* background-color: magenta;  /* TODO/DEBUG */
+  background-color: #fffa;  /* TODO/DEBUG */
 }
 .bz-flags.city-banner.city-banner--town .city-banner__population-container,
 .bz-flags.city-banner.city-banner--city-other .city-banner__population-container {
@@ -755,7 +454,7 @@
 .bz-flags.city-banner.city-banner--city-other .city-banner__population-container,
 .bz-flags.city-banner.city-banner--city-other .city-banner__production-container,
 .bz-flags.city-banner.city-banner--citystate .city-banner__queue-container {
-  top: 0.1666666667rem;
+  top: -0.1111111111rem;
   left: 0;
 }
 .bz-flags.city-banner.city-banner--village .city-banner__population-container {
@@ -772,38 +471,6 @@
 .bz-flags.city-banner.city-banner--city-other .queue-production.queue-none {
   display: none;
 }
-/* vanilla */
-.city-banner__queue-container.disabled {
-  pointer-events: none;
-}
-.city-banner__queue-container.queue-none {
-  display: none;
-}
-.city-banner.city-banner--town .city-banner__population-container {
-  margin-top: -0.4444444444rem;
-}
-.city-banner.city-banner--city-other .city-banner__population-container {
-  margin-top: -0.3333333333rem;
-}
-.city-banner.city-banner--village .city-banner__population-container {
-  display: none;
-}
-.city-banner.city-banner--city .city-banner__population {
-  top: -0.3888888889rem;
-  height: 3.5555555556rem;
-}
-.city-banner__queue-container.queue-growth {
-  right: 0.1666666667rem;
-  pointer-events: auto;
-}
-.city-banner__queue-container.queue-production {
-  left: 0.1666666667rem;
-  pointer-events: auto;
-}
-.city-banner.city-banner--city-other .queue-production {
-  display: none;
-}
-
 /* RING:
    city-banner__ring city-banner__population-ring bg-cover bg-center
    flex size-9 self-center align-center
@@ -813,6 +480,8 @@
   background-image: url("hud_sub_circle_bk");
   line-height: 2rem;
   z-index: 1;
+  top: 0.0555555556rem;
+  /* background-color: #fffa;  /* TODO/DEBUG */
 }
 .bz-flags.city-banner .city-banner__ring,
 .bz-flags.city-banner.city-banner--city-other .city-banner__ring,
@@ -822,8 +491,9 @@
 }
 .bz-flags.city-banner .city-banner__population-ring,
 .bz-flags.city-banner .city-banner__production-ring {
-  top: 0.0277777778rem;
-  left: -0.0277777778rem;
+  /* TODO: no longer needed? */
+  /* top: 0.0277777778rem; */
+  /* left: -0.0277777778rem; */
 }
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-left {
@@ -833,34 +503,6 @@
 .bz-flags .city-banner__production-ring .fxs-ring-meter__ring-left {
   filter: brightness(2.333) fxs-color-tint(var(--bz-color-production));
 }
-/* vanilla */
-.city-banner .city-banner__ring {
-  margin-top: 0.1666666667rem;
-}
-.city-banner.city-banner--city-other .city-banner__ring {
-  margin-top: 0.3333333333rem;
-}
-.city-banner.city-banner--citystate .city-banner__ring {
-  margin-top: 0.2777777778rem;
-  margin-right: 0.1111111111rem;
-}
-.city-banner__ring {
-  background-image: url("blp:hud_sub_circle_bk.png");
-  margin-right: -0.2222222222rem;
-  margin-top: 0.3333333333rem;
-}
-.city-banner__ring .fxs-ring-meter__ring-right,
-.city-banner__ring .fxs-ring-meter__ring-left {
-  background-image: url("blp:hud_small-progress_bar.png");
-  background-size: cover;
-}
-.city-banner__ring .fxs-ring-meter__ring-right {
-  background-position: right;
-}
-.city-banner__ring .fxs-ring-meter__ring-left {
-  background-position: left;
-}
-
 /* POPULATION-NUMBER:
    city-banner__population-number font-body-xs text-white top-0 w-full
    text-center pointer-events-auto */
@@ -882,14 +524,6 @@
   top: -0.0277777778rem;
   left: 0.0277777778rem;
 }
-/* vanilla */
-.city-banner__population-number {
-  background-image: url("blp:town_pop-bg.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  fxs-background-image-tint: black;
-}
-
 /* TURN:
    city-banner__turn flex flex-col relative justify-end align-center
    self-center w-8 mt-0-\\\\.5 pointer-events-none */
@@ -897,29 +531,13 @@
   position: relative;
   margin: 0;
   top: -1rem;
+  opacity: 0;  /* TODO/DEBUG */
 }
 .bz-flags.city-banner.city-banner--city-other .city-banner__turn,
 .bz-flags.city-banner.city-banner--city .city-banner__turn,
 .bz-flags.city-banner.city-banner--citystate .city-banner__turn {
   top: -1rem;
 }
-/* vanilla */
-.city-banner .city-banner__turn {
-  top: -0.1666666667rem;
-}
-.city-banner.city-banner--city-other .city-banner__turn {
-  top: 0.1111111111rem;
-}
-.city-banner.city-banner--city-other .city-banner__turn {
-  top: 0rem;
-}
-.city-banner.city-banner--city .city-banner__turn {
-  top: 0.1111111111rem;
-}
-.city-banner.city-banner--citystate .city-banner__turn {
-  top: 0.1111111111rem;
-}
-
 /* TURN-NUMBER:
    city-banner__turn-number font-body-xs text-white text-center w-full
    bg-cover bg-center bg-no-repeat */
@@ -935,28 +553,11 @@
   background-color: #000a;
   border-radius: 50% / 0.1666666667rem;
 }
-/* vanilla */
-.city-banner__turn-number {
-  background-image: url("blp:town_turn-bg.png");
-  line-height: 1rem;
-  padding-left: 0.0555555556rem;
-}
-
 /* CITY-STATE-CONTAINER: city-banner__city-state-container justify-center */
 .bz-flags.city-banner.city-banner--citystate .city-banner__city-state-container,
 .bz-flags.city-banner.city-banner--village .city-banner__city-state-container {
   margin: 0.0555555556rem 0 0 0.0555555556rem;
 }
-/* vanilla */
-.city-banner.city-banner--village .city-banner__city-state-container {
-  margin-top: 0.2222222222rem;
-}
-.city-banner.city-banner--citystate .city-banner__city-state-container {
-  margin-top: 0.1111111111rem;
-  margin-left: 0.2222222222rem;
-  margin-right: 0.1111111111rem;
-}
-
 /* CITY-STATE-CONTAINER: city-banner__city-state-container justify-center */
 /* CITY-STATE-TYPE:
    city-banner__city-state-type size-7 self-center align-center justify-center flex
@@ -971,44 +572,17 @@
 .bz-flags.city-banner.city-banner--village .city-banner__city-state-icon {
   fxs-background-image-tint: white;
 }
-/* vanilla */
-.city-banner.city-banner--village .city-banner__city-state-type {
-  display: flex;
-}
-.city-banner.city-banner--village .city-banner__city-state-type {
-  margin-top: 0.3333333333rem;
-}
-.city-banner.city-banner--citystate .city-banner__city-state-type {
-  display: flex;
-  margin-top: 0;
-}
-.city-banner__city-state-type {
-  display: none;
-  background-color: rgb(0, 0, 0);
-  border-color: rgba(22, 26, 36, 0.8431372549);
-  margin-right: 0.1111111111rem;
-  margin-top: 0.5555555556rem;
-  border-radius: 50%;
-  border-width: 0.2rem;
-  border-style: solid;
-}
-.city-banner.city-banner--village .city-banner__city-state-icon {
-  fxs-background-image-tint: white;
-}
-
 /* RIGHT-CONTAINER:
    items-center -ml-12 mt-10 city-banner__right-container flex flex-row */
 .bz-flags .city-banner__right-container {
   display: none;  /* contents moved to STRETCH */
 }
-
 /* CONQUERED: flex-auto -mr-3 flex flex-col */
 .bz-flags.city-banner .bz-city-banner__conquered {
   position: absolute;
   top: 1.2222222222rem;
   margin: 0;
 }
-
 /* CONQUERED-ICON:
    city-banner__conquered-icon relative size-14 -mr-6 bg-cover bg-no-repeat flex */
 .bz-flags .city-banner__conquered-icon {
@@ -1025,22 +599,6 @@
 .bz-flags.city-banner.city-banner--citystate .city-banner__conquered-icon {
   margin-top: 0;
 }
-/* vanilla */
-.city-banner.city-banner--town .city-banner__conquered-icon {
-  margin-top: 0.4444444444rem;
-}
-.city-banner.city-banner--citystate .city-banner__conquered-icon {
-  margin-top: 1.3333333333rem;
-}
-.city-banner.city-banner--conquered .city-banner__conquered-icon {
-  display: flex;
-}
-.city-banner__conquered-icon {
-  transform: translateX(-50%) scale(1);
-  display: none;
-  background-image: url("blp:icon-conquered.png");
-}
-
 /* UNREST: city-banner__unrest -mr-3 flex flex-col */
 .bz-flags.city-banner .city-banner__unrest {
   display: none;
@@ -1056,14 +614,6 @@
 .bz-flags.city-banner.city-banner--unrest.city-banner--razing .city-banner__unrest {
   display: none;
 }
-/* vanilla */
-.city-banner.city-banner--unrest .city-banner__unrest {
-  display: flex;
-}
-.city-banner__unrest {
-  display: none;
-}
-
 /* UNREST-ICON: city-banner__unrest-icon relative size-14 bg-cover bg-no-repeat flex */
 .bz-flags .city-banner__unrest-icon {
   background-image: url("blp:icon_unrest.png");
@@ -1077,17 +627,6 @@
 .bz-flags.city-banner.city-banner--citystate .city-banner__unrest-icon {
   margin: 0;
 }
-/* vanilla */
-.city-banner.city-banner--town .city-banner__unrest-icon {
-  margin-top: 0.4444444444rem;
-}
-.city-banner.city-banner--citystate .city-banner__unrest-icon {
-  margin-top: 1.3333333333rem;
-}
-.city-banner__unrest-icon {
-  background-image: url("blp:icon_unrest.png");
-}
-
 /* RAZING: city-banner__razing -mr-3 flex flex-col */
 .bz-flags .city-banner__razing {
   display: none;
@@ -1100,14 +639,6 @@
 .bz-flags.city-banner.city-banner--razing .city-banner__razing {
   display: flex;
 }
-/* vanilla */
-.city-banner.city-banner--razing .city-banner__razing {
-  display: flex;
-}
-.city-banner__razing {
-  display: none;
-}
-
 /* RAZING-ICON: city-banner__razing-icon relative size-14 bg-cover bg-no-repeat flex */
 .bz-flags .city-banner__razing-icon {
   background-image: url("blp:icon_razed.png");
@@ -1120,17 +651,6 @@
 .bz-flags.city-banner.city-banner--citystate .city-banner__razing-icon {
   margin: 0;
 }
-/* vanilla */
-.city-banner.city-banner--town .city-banner__razing-icon {
-  margin-top: 0.4444444444rem;
-}
-.city-banner.city-banner--citystate .city-banner__razing-icon {
-  margin-top: 1.3333333333rem;
-}
-.city-banner__razing-icon {
-  background-image: url("blp:icon_razed.png");
-}
-
 /* TIME-CONTAINER: city-banner__time-container -mt-3 pr-2 flex flex-row */
 .bz-flags.city-banner .city-banner__time-container {
   position: relative;
@@ -1143,22 +663,10 @@
   border-image-slice: 0;
   border-image-width: 0;
 }
-/* vanilla */
-.city-banner__time-container {
-  border-image-source: url("blp:turn_bg.png");
-  border-image-slice: 20 16 fill;
-  border-image-width: 1.1111111111rem 0.8888888889rem 1.1111111111rem 0.8888888889rem;
-}
-
 /* TIME-ICON: city-banner__time-icon self-center bg-cover bg-no-repeat size-6 ml-1 */
 .bz-flags.city-banner .city-banner__time-icon {
   display: none;
 }
-/* vanilla */
-.city-banner__time-icon {
-  background-image: url("blp:town_turn-icon.png");
-}
-
 /* TIME-TEXT: city-banner__time-text self-center font-body-xs text-white */
 .bz-flags.city-banner .city-banner__time-text {
   z-index: -1;
@@ -1172,6 +680,4 @@
   border-radius: 50% / 0.1666666667rem;
   line-height: 1;
 }
-
-/* TRIX */
 /* vim:set sw=2 et tw=72: */

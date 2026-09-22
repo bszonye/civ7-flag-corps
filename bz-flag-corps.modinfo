@@ -44,6 +44,7 @@
             </Properties>
             <Actions>
                 <ImportFiles>
+                    <Item>ui/city-banners/city-banners.css</Item>
                     <Item>ui/district/bz-district-health.css</Item>
                     <Item>ui/unit-flags/bz-unit-flags.css</Item>
                     <Item>ui-next/screens/city-banners/bz-city-banner.css</Item>
