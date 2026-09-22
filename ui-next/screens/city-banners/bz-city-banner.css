@@ -286,9 +286,11 @@
 /* STATUS-RELIGION: city-banner__status-religion relative flex flex-row */
 .bz-flags .city-banner__status-religion {
   position: absolute;
-  top: 1.5rem;
-  left: 0.8888888889rem;
-  transform: translateX(-50%) scale(1);
+  top: 1.5555555556rem;
+  left: -2.1111111111rem;
+}
+.bz-flags.city-banner--town .city-banner__status-religion {
+  left: -0.3333333333rem;
 }
 /* STATUS, TRADE-NETWORK:
    city-banner__status flex justify-center align-center opacity-100 pointer-events-auto
@@ -485,7 +487,7 @@
 /* CONQUERED: flex-auto -mr-3 flex flex-col */
 .bz-flags .bz-city-banner__conquered {
   position: absolute;
-  top: 1.2222222222rem;
+  top: 1.3333333333rem;
   margin: 0;
 }
 /* CONQUERED-ICON:
