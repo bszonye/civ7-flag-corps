@@ -728,11 +728,11 @@
 /* PRODUCTION-CONTAINER:
    city-banner__production-container city-banner__queue-container
    queue-production items-center justify-center w-8 h-6 -mt-2 */
+/* PRODUCTION: city-banner__production */
 .bz-flags.city-banner .city-banner__queue-container {
   position: relative;
   align-items: center;
   justify-content: center;
-  top: 0.1666666667rem;
   left: 0.1111111111rem;
   width: 1.5555555556rem;
   height: 1.5555555556rem;
@@ -746,15 +746,17 @@
 .bz-flags.city-banner.city-banner--city-other .city-banner__population-container {
   margin-top: 0;
 }
-.bz-flags.city-banner.city-banner--city-other .city-banner__population-container {
-  top: -0.1666666667rem;
+.bz-flags .city-banner__population,
+.bz-flags .city-banner__production {
+  width: 100%;
+  height: 100%;
 }
-.bz-flags.city-banner.city-banner--city-other .city-banner__production-container {
-  top: -0.2777777778rem;
-  left: 0;
-}
+.bz-flags.city-banner .city-banner__queue-container,
+.bz-flags.city-banner.city-banner--city-other .city-banner__population-container,
+.bz-flags.city-banner.city-banner--city-other .city-banner__production-container,
 .bz-flags.city-banner.city-banner--citystate .city-banner__queue-container {
-  top: -0.1111111111rem;
+  top: 0.1666666667rem;
+  left: 0;
 }
 .bz-flags.city-banner.city-banner--village .city-banner__population-container {
   display: none;
@@ -810,8 +812,13 @@
 .bz-flags.city-banner .city-banner__ring {
   background-image: url("hud_sub_circle_bk");
   line-height: 2rem;
-  margin: 0.001px 0 0 0;
   z-index: 1;
+}
+.bz-flags.city-banner .city-banner__ring,
+.bz-flags.city-banner.city-banner--city-other .city-banner__ring,
+.bz-flags.city-banner.city-banner--citystate .city-banner__ring {
+  margin-top: 0.001px;
+  margin-right: 0;
 }
 .bz-flags.city-banner .city-banner__population-ring,
 .bz-flags.city-banner .city-banner__production-ring {
