@@ -69,7 +69,7 @@ function getTextColors(id) {
   const Lc = getYLc(Y1, Y2);
   const YT = (() => Y2 < Y1 ?
     Math.max(getLcTarget(Y1, 75), 0.025) :
-    Math.min(getLcTarget(Y1, Math.min(Lc - 15, -45)), 0.90))();
+    Math.min(getLcTarget(Y1, Math.min((Lc - 75) / 2, -45)), 0.900))();
   if (Y1 <= Y2 && YT <= Y2 || Y2 <= Y1 && Y2 <= YT) {
     return cacheColors[id] = { playerColorText: srgbToHex(c2), playerColorLighting };
   }
