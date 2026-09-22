@@ -132,6 +132,8 @@ const CityBannerImpl = (props) => {
                 // _el$11.style.backgroundColor = "#aaaa";
                 // _el$12.style.backgroundColor = "#aaaa";
                 // TRIX: attach custom city tooltip
+                const loc = props.location ?? props.data.identity.location;
+                _el$.setAttribute("data-city-location", JSON.stringify(loc));
                 _el$.setAttribute("data-city-owner", props.cityID.owner);
                 _el$.setAttribute("data-city-local-id", props.cityID.id);
                 _el$.setAttribute("data-tooltip-style", "bz-city-tooltip");

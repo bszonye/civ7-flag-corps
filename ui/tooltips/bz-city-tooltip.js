@@ -413,17 +413,14 @@ class bzCityTooltip {
         this.target = banner;
         this.subtarget = subtarget;
         if (this.target) {
-            this.city = this.target.city;
-            if (this.city == null) {
-                const owner = banner.getAttribute("data-city-owner") ?? "-1";
-                const localId = banner.getAttribute("data-city-local-id") ?? "-1";
-                this.city = Cities.get({
-                    owner: JSON.parse(owner),
-                    id: JSON.parse(localId),
-                    type: 1,
-                });
-            }
-            this.location = this.city?.location ?? this.target.location ?? null;
+            this.location = JSON.parse(banner.getAttribute("data-city-location"));
+            const owner = banner.getAttribute("data-city-owner") ?? "-1";
+            const localId = banner.getAttribute("data-city-local-id") ?? "-1";
+            this.city = Cities.get({
+                owner: JSON.parse(owner),
+                id: JSON.parse(localId),
+                type: 1,
+            });
         }
         this.updateQueued = false;
         return true;
