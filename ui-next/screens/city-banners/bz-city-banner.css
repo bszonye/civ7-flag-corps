@@ -534,11 +534,11 @@
   pointer-events: auto;
 }
 .bz-flags.city-banner.bz-black-shadow .city-banner__name {
-  text-shadow: 1px 1px 0 #000a;
+  text-shadow: 1px 1px 0 #0009;
   font-weight: normal;
 }
 .bz-flags.city-banner.bz-white-highlight .city-banner__name {
-  text-shadow: -1px -1px 0 #fffa;
+  text-shadow: -1px -1px 0 #fff9;
   font-weight: bold;
 }
 .bz-flags.city-banner.city-banner--town .city-banner__name,
