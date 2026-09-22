@@ -160,7 +160,7 @@ function computeIdentity(cityID, location) {
         break;
     }
   }
-  let portraitIcon = "";
+  let portraitIcon = "";  // eslint-disable-line no-useless-assignment
   let leaderName = "";  // eslint-disable-line no-useless-assignment
   const leaderType = player.leaderType;
   if (leaderType != -1) {
@@ -168,6 +168,7 @@ function computeIdentity(cityID, location) {
     const leader = GameInfo.Leaders.lookup(leaderType);
     leaderName = leader ? leader.Name : "LOC_LEADER_NONE_NAME";
   } else {
+    portraitIcon = "blp:icon_razed.png";  // TRIX
     leaderName = bannerType == "village" /* Village */ || (bannerType == "town" /* Town */ || bannerType == "city" /* City */) && player.isIndependent ? player.name : "LOC_LEADER_NONE_NAME";
   }
   const civName = GameplayMap.getOwnerName(bannerLocation.x, bannerLocation.y);
@@ -203,8 +204,9 @@ function computeIdentity(cityID, location) {
     cityStateTypeName,
     playerColorPrimary,
     playerColorSecondary,
-    playerColorText,  // TRIX
-    playerColorLighting  // TRIX
+    // TRIX
+    playerColorText,
+    playerColorLighting,
   };
 }
 function computeCapitalInfo(cityID, location) {
