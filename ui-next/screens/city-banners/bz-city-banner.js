@@ -67,14 +67,9 @@ function getTextColors(id) {
   const Y2 = getLuminance(c2);
   const playerColorLighting = Y1 < Y2 ? "black" : "white";
   const Lc = getYLc(Y1, Y2);
-  const YT = (() => {
-    if (Y2 < Y1) {
-      return Math.max(getLcTarget(Y1, 75), 0.025);
-    } else {
-      return Math.min(getLcTarget(Y1, Math.min(Lc - 15, -45)), 0.90);
-    }
-  })();
-  console.warn(`TRIX Lc ${Lc.toFixed(1)} ${Y1.toFixed(3)} ${srgbToHex(c1)} ${Y2.toFixed(3)} ${srgbToHex(c2)} ${YT.toFixed(3)}`);
+  const YT = (() => Y2 < Y1 ?
+    Math.max(getLcTarget(Y1, 75), 0.025) :
+    Math.min(getLcTarget(Y1, Math.min(Lc - 15, -45)), 0.90))();
   if (Y1 <= Y2 && YT <= Y2 || Y2 <= Y1 && Y2 <= YT) {
     return cacheColors[id] = { playerColorText: srgbToHex(c2), playerColorLighting };
   }
@@ -92,8 +87,6 @@ function getTextColors(id) {
     a: 1
   }
   const ct = linearToSRGB(nt);
-  const Tc = getYLc(Y1, YT);
-  console.warn(`TRIX Tc ${Tc.toFixed(1)} ${Y1.toFixed(3)} ${srgbToHex(c1)} ${Y2.toFixed(3)} ${srgbToHex(c2)} ${YT.toFixed(3)} ${srgbToHex(ct)}`);
   return cacheColors[id] = { playerColorText: srgbToHex(ct), playerColorLighting };
 }
 
