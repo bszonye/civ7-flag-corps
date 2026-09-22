@@ -47,7 +47,7 @@ const CityBannerProduction = (props) => {
             min: 0,
             max: 100,
             get value() {
-              return 95;  // percent();
+              return percent();
             },
             "class": "city-banner__ring city-banner__production-ring bg-cover bg-center flex size-9 self-center align-center pointer-events-auto",
             get children() {

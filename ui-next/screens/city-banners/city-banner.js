@@ -158,7 +158,7 @@ const CityBannerImpl = (props) => {
                 // TRIX: add conquest icons to STRETCH, not RIGHT-CONTAINER
                 insert(_el$2, createComponent(Show, {
                   get when() {
-                    return props.data.conquered || true;
+                    return props.data.conquered;
                   },
                   get children() {
                     return createComponent(Tooltip.Text, {
@@ -171,7 +171,7 @@ const CityBannerImpl = (props) => {
                 }), null);
                 insert(_el$2, createComponent(Show, {
                   get when() {
-                    return props.data.status.hasUnrest || true;
+                    return props.data.status.hasUnrest;
                   },
                   get children() {
                     var _el$34 = _tmpl$17(), _el$35 = _el$34.firstChild, _el$36 = _el$35.nextSibling, _el$37 = _el$36.firstChild, _el$38 = _el$37.nextSibling;
