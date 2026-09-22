@@ -3,8 +3,8 @@ import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 
 var bzTarget;
 (function (bzTarget) {
-    bzTarget[bzTarget["GROWTH"] = ".city-banner__population-container"] = "GROWTH";
-    bzTarget[bzTarget["PRODUCTION"] = ".city-banner__production-container"] = "PRODUCTION";
+    bzTarget[bzTarget["GROWTH"] = ".queue-growth"] = "GROWTH";
+    bzTarget[bzTarget["PRODUCTION"] = ".queue-production"] = "PRODUCTION";
 })(bzTarget || (bzTarget = {}));
 
 // custom & adapted icons
