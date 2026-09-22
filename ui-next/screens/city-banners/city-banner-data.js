@@ -180,8 +180,11 @@ function computeIdentity(cityID, location) {
   }
   const owner = cityID.owner;
   const cityStateBonusName = bonusDefinition?.Name ?? "";
-  let playerColorPrimary = UI.Player.getPrimaryColorValueAsString(owner);
-  const playerColorSecondary = UI.Player.getSecondaryColorValueAsString(owner);
+  // TRIX: handle towns conquered by villages & encampments
+  let playerColorPrimary = player.isIndependent ? "black" :
+    UI.Player.getPrimaryColorValueAsString(owner);
+  const playerColorSecondary = player.isIndependent ? "white" :
+    UI.Player.getSecondaryColorValueAsString(owner);
   if (playerColorPrimary == playerColorSecondary) {
     playerColorPrimary = "rgb(155, 0, 0)";
   }

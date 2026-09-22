@@ -237,12 +237,10 @@
 .bz-flags .city-banner__city-state-ring,
 .bz-flags.city-banner.city-banner--town .city-banner__city-state-ring,
 .bz-flags.city-banner.city-banner--citystate .city-banner__city-state-ring,
+.bz-flags.city-banner.city-banner--village .city-banner__city-state-ring,
 .bz-flags.city-banner.city-banner--hostile .city-banner__city-state-ring,
 .bz-flags.city-banner.city-banner--friendly .city-banner__city-state-ring {
   fxs-border-image-tint: var(--player-color-secondary);
-}
-.bz-flags.city-banner.city-banner--village .city-banner__city-state-ring {
-  fxs-border-image-tint: white;
 }
 .bz-flags .city-banner__city-state-ring,
 .bz-flags.city-banner.city-banner--citystate .city-banner__city-state-ring {
@@ -287,11 +285,9 @@
 .bz-flags.city-banner.city-banner--citystate .city-banner__stretch-bg {
   border-image-source: url("blp:town_pill.png");
 }
-.bz-flags.city-banner.city-banner--citystate .city-banner__stretch-bg {
-  fxs-border-image-tint: var(--player-color-primary);
-}
+.bz-flags.city-banner.city-banner--citystate .city-banner__stretch-bg,
 .bz-flags.city-banner.city-banner--village .city-banner__stretch-bg {
-  fxs-border-image-tint: black;
+  fxs-border-image-tint: var(--player-color-primary);
 }
 /* vanilla */
 .city-banner.city-banner--city-other .city-banner__stretch-bg {
@@ -330,11 +326,9 @@
   margin-left: 0.1666666667rem;
 }
 .bz-flags.city-banner.city-banner--citystate .city-banner__name-container,
-.bz-colors .bz-flags.city-banner.city-banner--citystate .city-banner__name-container {
-  color: var(--player-color-text);
-}
+.bz-colors .bz-flags.city-banner.city-banner--citystate .city-banner__name-container,
 .bz-flags.city-banner.city-banner--village .city-banner__name-container {
-  color: white;
+  color: var(--player-color-text);
 }
 /* vanilla */
 .city-banner .city-banner__name-container {
