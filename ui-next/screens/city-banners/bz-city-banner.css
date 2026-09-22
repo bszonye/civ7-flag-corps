@@ -535,9 +535,11 @@
 }
 .bz-flags.city-banner.bz-black-shadow .city-banner__name {
   text-shadow: 1px 1px 0 #000a;
+  font-weight: normal;
 }
 .bz-flags.city-banner.bz-white-highlight .city-banner__name {
   text-shadow: -1px -1px 0 #fffa;
+  font-weight: bold;
 }
 .bz-flags.city-banner.city-banner--town .city-banner__name,
 .bz-flags.city-banner.city-banner--city-other .city-banner__name,

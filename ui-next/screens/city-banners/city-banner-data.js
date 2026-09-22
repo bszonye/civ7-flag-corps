@@ -2,7 +2,7 @@ import { createSignal } from '../../../../core/vendor/solid-js/dist/solid.js';
 import { ComponentID } from '../../../../core/ui/utilities/utilities-component-id.js';
 import { Icon } from '../../../../core/ui/utilities/utilities-image.js';
 import { ProductionPanelCategory } from '../../../ui/production-chooser/production-chooser-helpers.js';
-import { getLightingColor, getTextColor } from '/bz-flag-corps/ui-next/screens/city-banners/bz-city-banner.js';
+import { getTextColors } from '/bz-flag-corps/ui-next/screens/city-banners/bz-city-banner.js';
 
 var BannerType = /* @__PURE__ */ ((BannerType2) => {
   BannerType2["Town"] = "town";
@@ -185,9 +185,7 @@ function computeIdentity(cityID, location) {
   if (playerColorPrimary == playerColorSecondary) {
     playerColorPrimary = "rgb(155, 0, 0)";
   }
-  // TODO: merge these
-  const playerColorText = player.isIndependent ? "white" : getTextColor(owner);
-  const playerColorLighting = player.isIndependent ? void 0 : getLightingColor(owner);
+  const { playerColorText, playerColorLighting } = getTextColors(owner);  // TRIX
   return {
     location: bannerLocation,
     bannerType,

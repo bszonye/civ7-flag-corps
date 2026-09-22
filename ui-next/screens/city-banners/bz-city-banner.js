@@ -52,19 +52,20 @@ function getLcTarget(Y, Lc) {
     return Yfg;
   }
 }
-function getLightingColor(id) {
-  const c1 = UI.Player.getPrimaryColorValue(id);
-  const c2 = UI.Player.getSecondaryColorValue(id);
-  const Y1 = getLuminance(c1);
-  const Y2 = getLuminance(c2);
-  return Y1 < Y2 ? "black" : "white";
-}
-function getTextColor(id) {
+const cacheColors = [];
+function getTextColors(id) {
   // TRIX: determine a contrasting text color
+  const player = Players.get(id);
+  if (!player || player.isIndependent) {
+    return { playerColorText: "white", playerColorLighting: "black" };
+  }
+  const cache = cacheColors.at(id);
+  if (cache) return cache;
   const c1 = UI.Player.getPrimaryColorValue(id);
   const c2 = UI.Player.getSecondaryColorValue(id);
   const Y1 = getLuminance(c1);
   const Y2 = getLuminance(c2);
+  const playerColorLighting = Y1 < Y2 ? "black" : "white";
   const Lc = getYLc(Y1, Y2);
   const YT = (() => {
     if (Y2 < Y1) {
@@ -74,8 +75,9 @@ function getTextColor(id) {
     }
   })();
   console.warn(`TRIX Lc ${Lc.toFixed(1)} ${Y1.toFixed(3)} ${srgbToHex(c1)} ${Y2.toFixed(3)} ${srgbToHex(c2)} ${YT.toFixed(3)}`);
-  if (Y1 <= Y2 && YT <= Y2) return srgbToHex(c2);
-  if (Y2 <= Y1 && Y2 <= YT) return srgbToHex(c2);
+  if (Y1 <= Y2 && YT <= Y2 || Y2 <= Y1 && Y2 <= YT) {
+    return cacheColors[id] = { playerColorText: srgbToHex(c2), playerColorLighting };
+  }
   const lighten = (c) => 1 - ((1 - c) * (1 - YT) / (1 - Y2));
   const n2 = srgbToLinear(c2);
   const nt = Y2 < YT ? {
@@ -92,8 +94,8 @@ function getTextColor(id) {
   const ct = linearToSRGB(nt);
   const Tc = getYLc(Y1, YT);
   console.warn(`TRIX Tc ${Tc.toFixed(1)} ${Y1.toFixed(3)} ${srgbToHex(c1)} ${Y2.toFixed(3)} ${srgbToHex(c2)} ${YT.toFixed(3)} ${srgbToHex(ct)}`);
-  return srgbToHex(ct);
+  return cacheColors[id] = { playerColorText: srgbToHex(c2), playerColorLighting };
 }
 
-export { getLightingColor, getTextColor };
+export { getTextColors };
 // vim: sw=2
