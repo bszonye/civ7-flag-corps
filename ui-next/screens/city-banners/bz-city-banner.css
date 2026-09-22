@@ -12,6 +12,8 @@
   --bz-color-secondary-3: #4c473d;
   --bz-color-secondary: var(--bz-color-secondary-2);
   --bz-color-bronze: var(--bz-color-secondary-2);
+  --bz-color-tertiary-1: #b29e79;
+  --bz-color-tertiary-2: #dad0bd;
   --bz-color-accent-1: #e5e5e5;
   --bz-color-accent-2: #c2c4cc;
   --bz-color-accent-3: #9da0a6;
@@ -131,7 +133,7 @@
 .bz-flags .city-banner__stretch {
   top: 0.0555555556rem;
   height: 3.6666666667rem;
-  /* background-color: #fa0a;  /* TODO/DEBUG */
+  /* background-color: #fa0a;  /* DEBUG */
 }
 /* CITY-STATE-BORDER:
    city-banner__city-state-border absolute -left-2 -right-2 -top-0 -bottom-0 */
@@ -178,7 +180,7 @@
   line-height: 1.7777777778rem;
   color: var(--player-color-text);
   pointer-events: auto;
-  /* background-color: #fff6;  /* TODO/DEBUG */
+  /* background-color: #aaf6;  /* DEBUG */
 }
 /* PORTRAIT: city-banner__portrait relative pointer-events-auto flex */
 .bz-flags .city-banner__portrait {
@@ -273,7 +275,7 @@
   pointer-events: auto;
   height: 1.7777777778rem;
   line-height: 1.7777777778rem;
-  /* background-color: #0aaa;  /* TODO/DEBUG */
+  /* background-color: #0aaa;  /* DEBUG */
 }
 .bz-flags.bz-black-shadow .city-banner__name {
   text-shadow: 1px 1px 0 #0009;
@@ -374,10 +376,10 @@
   margin-top: 0;
 }
 .queue-growth {
-  /* background-color: #6f06;  /* TODO/DEBUG */
+  /* background-color: #80bd4399;  /* DEBUG */
 }
 .queue-production {
-  /* background-color: #f606;  /* TODO/DEBUG */
+  /* background-color: #e87b6499;  /* DEBUG */
 }
 .bz-flags .city-banner__population,
 .bz-flags .city-banner__production {
@@ -399,12 +401,12 @@
 .bz-flags .city-banner__ring {
   position: absolute;
   top: -0.0833333333rem;
-  left: -0.1666666667rem;
+  left: -0.1388888889rem;
   background-image: url("hud_sub_circle_bk");
   z-index: 1;
   line-height: 2rem;
   margin-top: 0.001px;
-  /* background-color: #fffa;  /* TODO/DEBUG */
+  /* background-color: #fffa;  /* DEBUG */
 }
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-right,
 .bz-flags .city-banner__population-ring .fxs-ring-meter__ring-left {
@@ -439,11 +441,12 @@
    city-banner__turn flex flex-col relative justify-end align-center
    self-center w-8 mt-0-\\\\.5 pointer-events-none */
 .bz-flags .city-banner__turn {
+  position: absolute;
   margin-top: 0;
   top: 0.8888888889rem;
-  left: 0.1666666667rem;
-  /* opacity: 0;  /* TODO/DEBUG */
-  /* background-color: #fffa;  /* TODO/DEBUG */
+  left: 0;
+  /* opacity: 0;  /* DEBUG */
+  /* background-color: #fffa;  /* DEBUG */
 }
 /* TURN-NUMBER:
    city-banner__turn-number font-body-xs text-white text-center w-full
@@ -461,22 +464,27 @@
   border-radius: 50% / 0.1666666667rem;
 }
 /* CITY-STATE-CONTAINER: city-banner__city-state-container justify-center */
+.bz-flags .city-banner__city-state-container {
+  display: none;
+}
 .bz-flags.city-banner--citystate .city-banner__city-state-container,
 .bz-flags.city-banner--village .city-banner__city-state-container {
-  margin: 0.0555555556rem 0 0 0.0555555556rem;
+  display: flex;
 }
-/* CITY-STATE-CONTAINER: city-banner__city-state-container justify-center */
 /* CITY-STATE-TYPE:
    city-banner__city-state-type size-7 self-center align-center justify-center flex
  */
-.bz-flags.city-banner--citystate .city-banner__city-state-type,
-.bz-flags.city-banner--village .city-banner__city-state-type {
-  margin-top: 0.0555555556rem;
-  margin-right: 0.1111111111rem;
+.bz-flags .city-banner__city-state-type {
+  margin: 0.1111111111rem;
+  background-color: black;
+  border-color: #8c7e62;  /* var(--bz-color-secondary-2) */
+  border-radius: 50%;
+  border-width: 0.0555555556rem;
+  border-style: solid;
 }
 /* CITY-STATE-ICON:
    city-banner__city-state-icon size-8 self-center align-center bg-cover bg-no-repeat */
-.bz-flags.city-banner--village .city-banner__city-state-icon {
+.bz-flags .city-banner__city-state-icon {
   fxs-background-image-tint: white;
 }
 /* RIGHT-CONTAINER:
@@ -497,7 +505,7 @@
   display: none;
   background-image: url("blp:icon-conquered.png");
   position: absolute;
-  display: flex;  /* TODO/DEBUG */
+  display: flex;  /* DEBUG */
 }
 .bz-flags.city-banner--conquered .city-banner__conquered-icon {
   display: flex;
@@ -507,9 +515,8 @@
   display: none;
   position: absolute;
   top: 0.4444444444rem;
-  right: -2.1111111111rem;
+  right: -2.2222222222rem;
   margin: 0;
-  display: flex;  /* TODO/DEBUG */
 }
 .bz-flags.city-banner--unrest .city-banner__unrest {
   display: flex;
@@ -530,9 +537,8 @@
   display: none;
   position: absolute;
   top: 0.2222222222rem;
-  right: -2.2222222222rem;
+  right: -2.3333333333rem;
   margin: 0;
-  display: flex;  /* TODO/DEBUG */
 }
 .bz-flags.city-banner--razing .city-banner__razing {
   display: flex;
@@ -548,10 +554,10 @@
 .bz-flags .city-banner__time-container {
   position: relative;
   margin: 0;
+  padding: 0;
   top: -1.3333333333rem;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 0;
   border-image-source: none;
   border-image-slice: 0;
   border-image-width: 0;
@@ -563,11 +569,8 @@
 /* TIME-TEXT: city-banner__time-text self-center font-body-xs text-white */
 .bz-flags .city-banner__time-text {
   z-index: -1;
-  margin: 0;
   padding: 0.8333333333rem 0.1666666667rem 0.1666666667rem;
-  width: auto;
   min-width: 1.1111111111rem;
-  align-self: center;
   text-align: center;
   background-color: #000a;
   border-radius: 50% / 0.1666666667rem;
