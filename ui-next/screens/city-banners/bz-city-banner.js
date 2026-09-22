@@ -94,7 +94,7 @@ function getTextColors(id) {
   const ct = linearToSRGB(nt);
   const Tc = getYLc(Y1, YT);
   console.warn(`TRIX Tc ${Tc.toFixed(1)} ${Y1.toFixed(3)} ${srgbToHex(c1)} ${Y2.toFixed(3)} ${srgbToHex(c2)} ${YT.toFixed(3)} ${srgbToHex(ct)}`);
-  return cacheColors[id] = { playerColorText: srgbToHex(c2), playerColorLighting };
+  return cacheColors[id] = { playerColorText: srgbToHex(ct), playerColorLighting };
 }
 
 export { getTextColors };
