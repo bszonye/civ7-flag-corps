@@ -138,7 +138,7 @@
 .bz-flags .city-banner__city-state-border {
   fxs-border-image-tint: transparent;
   display: flex;
-  margin-top: 0.3888888889rem;
+  top: 0.3888888889rem;
   border-image-source: url("blp:hostile_pill.png");
   border-image-slice: 60 24 2 24 fill;
   border-image-outset: 0.2222222222rem 0.1111111111rem;
@@ -173,28 +173,24 @@
 }
 /* NAME-CONTAINER: city-banner__name-container relative flex justify-between */
 .bz-flags .city-banner__name-container {
-  margin-top: 0;
+  padding-left: 0.3333333333rem;
   height: 1.7777777778rem;
   line-height: 1.7777777778rem;
   color: var(--player-color-text);
   pointer-events: auto;
-  margin-left: 0.1666666667rem;
   /* background-color: #fff6;  /* TODO/DEBUG */
 }
 /* PORTRAIT: city-banner__portrait relative pointer-events-auto flex */
 .bz-flags .city-banner__portrait {
-  display: none;
-}
-.bz-flags.city-banner--city .city-banner__portrait,
-.bz-flags.city-banner--city-other .city-banner__portrait,
-.bz-flags.city-banner--citystate .city-banner__portrait {
   display: flex;
-  top: -0.3888888889rem;
+  margin-left: -0.3333333333rem;
+  top: -0.6666666667rem;
   width: 1.7777777778rem;
   height: 2.5rem;
-  left: 0.1666666667rem;
-  margin: -0.2777777778rem;
-  margin-right: 0;
+}
+.bz-flags.city-banner--town .city-banner__portrait,
+.bz-flags.city-banner--village .city-banner__portrait {
+  display: none;
 }
 .bz-flags .city-banner__portrait.disabled {
   pointer-events: none;
@@ -243,7 +239,6 @@
 .bz-flags .city-banner__capital-star,
 .bz-flags .city-banner__original-capital-curr-star,
 .bz-flags .city-banner__original-capital-star {
-  margin: 0;  /* TODO */
   width: 1.7777777778rem;
   height: 1.7777777778rem;
   background-position: center;
@@ -251,16 +246,22 @@
 .bz-flags .city-banner__capital-star {
   background-image: url("blp:fi_city_capital_icon_curr_64.png");
   background-size: 75%;
+  padding-left: 0.1111111111rem;
+  margin-right: -0.1111111111rem;
   filter: drop-shadow(0 1px 0.0555555556rem black);
 }
 .bz-flags .city-banner__original-capital-curr-star {
   background-image: url("blp:fi_city_capital_icon_og_curr_64.png");
   background-size: 75%;
+  padding-left: 0.1111111111rem;
+  margin-right: -0.1111111111rem;
   filter: drop-shadow(0 1px 0.0555555556rem black);
 }
 .bz-flags .city-banner__original-capital-star {
+  margin-right: -0.1111111111rem;
   background-image: url("blp:fi_city_capital_icon_og_64.png");
   background-size: 60%;
+  margin-right: -0.2222222222rem;
   filter: drop-shadow(0 1px 0.0555555556rem black) saturate(0);
 }
 /* NAME: city-banner__name font-title text-base uppercase */
@@ -268,8 +269,6 @@
   position: relative;
   padding: 0 0.3333333333rem;
   letter-spacing: 0.0555555556rem;
-  margin: 0.3333333333rem -0.0555555556rem 0 0;
-  text-shadow: none;
   font-weight: bold;
   pointer-events: auto;
   height: 1.7777777778rem;
@@ -283,9 +282,6 @@
 .bz-flags.bz-white-highlight .city-banner__name {
   text-shadow: -1px -1px 0 #fff9;
   font-weight: bold;
-}
-.bz-flags .city-banner__name {
-  margin: 0;
 }
 /* STATUS-RELIGION: city-banner__status-religion relative flex flex-row */
 .bz-flags .city-banner__status-religion {
