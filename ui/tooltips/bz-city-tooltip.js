@@ -1,3 +1,4 @@
+// TODO: fix villages
 import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 
 var bzTarget;
