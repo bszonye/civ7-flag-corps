@@ -290,21 +290,25 @@
   text-shadow: -1px -1px 0 #fff9;
   font-weight: bold;
 }
+.bz-flags.city-banner--village .city-banner__name {
+  padding-left: 0.5555555556rem;
+}
 /* STATUS-RELIGION: city-banner__status-religion relative flex flex-row */
 .bz-flags .city-banner__status-religion {
   position: absolute;
   top: 1.5555555556rem;
-  left: -1.5555555556rem;
+  left: -1.3333333333rem;
 }
 .bz-flags.city-banner--town .city-banner__status-religion {
+  left: 0.3888888889rem;
 }
 .bz-flags.city-banner--has-religion .city-banner__status-religion,
 .bz-flags.city-banner--disconnected .city-banner__status-religion {
-  left: -2.1111111111rem;
+  left: -1.9444444444rem;
 }
 .bz-flags.city-banner--town.city-banner--has-religion .city-banner__status-religion,
 .bz-flags.city-banner--town.city-banner--disconnected .city-banner__status-religion {
-  left: -1.5555555556rem;
+  left: -0.2222222222rem;
 }
 /* STATUS, TRADE-NETWORK:
    city-banner__status flex justify-center align-center opacity-100 pointer-events-auto

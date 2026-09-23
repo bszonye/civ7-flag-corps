@@ -249,7 +249,6 @@ const CityBannerImpl = (props) => {
                           "class": "city-banner__bz-civ-symbol size-8 pointer-events-none",
                           isUrl: true,
                           get name() {
-                            console.warn(`TRIX ICON ${props.data.identity.civIcon}`);
                             return props.data.identity.civIcon;
                           },
                         });
