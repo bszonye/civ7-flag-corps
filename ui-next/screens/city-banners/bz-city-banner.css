@@ -343,7 +343,7 @@
   display: none;
 }
 .bz-flags .city-banner__status-background {
-  background-color: black;
+  background-color: var(--bz-color-primary-3);
 }
 .bz-flags .city-banner__status-icon {
   background-size: 150%;
