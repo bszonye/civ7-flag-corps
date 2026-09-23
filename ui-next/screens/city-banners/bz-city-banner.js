@@ -110,6 +110,7 @@ function getTownFocusInfo(city) {
     Description: "LOC_PROJECT_TOWN_FOOD_INCREASE_DESCRIPTION",
     ...GameInfo.Projects.lookup(id),
   };
+  // TODO: build tooltip with description and status
   info.isGrowing = city.Growth.growthType == GrowthTypes.EXPAND;
   info.isSpecialized = info.ProjectType != "PROJECT_GROWTH";
   info.isPaused = info.isGrowing && info.isSpecialized;
