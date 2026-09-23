@@ -90,5 +90,31 @@ function getTextColors(id) {
   return cacheColors[id] = { playerColorText: srgbToHex(ct), playerColorLighting };
 }
 
-export { getTextColors };
+function getTownFocusInfo(city) {
+  if (!city?.isTown) return void 0;
+  const id = (() => {
+    const id = city.Growth?.projectType ?? -1;
+    if (id != -1) return id;
+    // check for locked focus
+    const projects = Game.CityCommands.canStart(
+      city.id,
+      CityCommandTypes.CHANGE_GROWTH_MODE,
+      { Type: GrowthTypes.PROJECT },
+      false
+    )?.Projects;
+    return projects?.length == 1 ? projects[0] : -1;
+  })();
+  const info = {
+    ProjectType: "PROJECT_GROWTH",
+    Name: "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH",
+    Description: "LOC_PROJECT_TOWN_FOOD_INCREASE_DESCRIPTION",
+    ...GameInfo.Projects.lookup(id),
+  };
+  info.isGrowing = city.Growth.growthType == GrowthTypes.EXPAND;
+  info.isSpecialized = info.ProjectType != "PROJECT_GROWTH";
+  info.isPaused = info.isGrowing && info.isSpecialized;
+  return info;
+}
+
+export { getTextColors, getTownFocusInfo };
 // vim: sw=2

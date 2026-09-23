@@ -141,7 +141,7 @@
   fxs-border-image-tint: transparent;
   display: flex;
   top: 0.3888888889rem;
-  border-image-source: url("blp:hostile_pill.png");
+  border-image-source: url("blp:hostile_pill");
   border-image-slice: 60 24 2 24 fill;
   border-image-outset: 0.2222222222rem 0.1111111111rem;
   border-image-width: 3rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
@@ -160,7 +160,7 @@
 .bz-flags .city-banner__city-state-ring {
   fxs-border-image-tint: var(--player-color-secondary);
   display: flex;
-  border-image-source: url("blp:city_pill.png");
+  border-image-source: url("blp:city_pill");
   border-image-slice: 60 24 2 24 fill;
   border-image-outset: 0.2222222222rem 0.3888888889rem;
   border-image-width: 3.3333333333rem 1.3888888889rem 0.1111111111rem 1.3333333333rem;
@@ -171,11 +171,10 @@
   border-image-slice: 60 24 2 24 fill;
   border-image-outset: 0rem 0.4444444444rem;
   border-image-width: 3.3333333333rem 1.3333333333rem 0.1111111111rem 1.3333333333rem;
-  border-image-source: url("blp:town_pill.png");
+  border-image-source: url("blp:town_pill");
 }
 /* NAME-CONTAINER: city-banner__name-container relative flex justify-between */
 .bz-flags .city-banner__name-container {
-  padding-left: 0.3333333333rem;
   height: 1.7777777778rem;
   line-height: 1.7777777778rem;
   color: var(--player-color-text);
@@ -185,7 +184,6 @@
 /* PORTRAIT: city-banner__portrait relative pointer-events-auto flex */
 .bz-flags .city-banner__portrait {
   display: flex;
-  margin-left: -0.3333333333rem;
   top: -0.6666666667rem;
   width: 1.7777777778rem;
   height: 2.5rem;
@@ -204,7 +202,7 @@
   width: 1.7777777778rem;
   height: 2.5rem;
   background-size: cover;
-  background-image: url("blp:town_portrait-hex.png");
+  background-image: url("blp:town_portrait-hex");
 }
 /* PORTRAIT-BG2:
    city-banner__portrait-bg2 absolute inset-x-0 top-0 -bottom-2
@@ -214,7 +212,7 @@
   width: 1.7777777778rem;
   height: 2.5rem;
   background-size: cover;
-  background-image: url("blp:town_portrait-frame.png");
+  background-image: url("blp:town_portrait-frame");
 }
 /* PORTRAIT-IMG:
    city-banner__portrait-img absolute -left-2 -right-2 -top-1 bottom-0
@@ -241,29 +239,26 @@
 .bz-flags .city-banner__capital-star,
 .bz-flags .city-banner__original-capital-curr-star,
 .bz-flags .city-banner__original-capital-star {
-  width: 1.7777777778rem;
+  margin-left: 0.2222222222rem;
+  width: 1.3333333333rem;
   height: 1.7777777778rem;
   background-position: center;
+  background-size: contain;
+  /* background-color: #0aaa;  /* DEBUG */
 }
 .bz-flags .city-banner__capital-star {
-  background-image: url("blp:fi_city_capital_icon_curr_64.png");
-  background-size: 75%;
-  padding-left: 0.1111111111rem;
-  margin-right: -0.1111111111rem;
+  background-image: url("blp:fi_city_capital_icon_curr_64");
   filter: drop-shadow(0 1px 0.0555555556rem black);
 }
 .bz-flags .city-banner__original-capital-curr-star {
-  background-image: url("blp:fi_city_capital_icon_og_curr_64.png");
-  background-size: 75%;
-  padding-left: 0.1111111111rem;
-  margin-right: -0.1111111111rem;
+  background-image: url("blp:fi_city_capital_icon_og_curr_64");
   filter: drop-shadow(0 1px 0.0555555556rem black);
 }
 .bz-flags .city-banner__original-capital-star {
-  margin-right: -0.1111111111rem;
-  background-image: url("blp:fi_city_capital_icon_og_64.png");
-  background-size: 60%;
-  margin-right: -0.2222222222rem;
+  margin-left: 0.3333333333rem;
+  margin-right: 0.1111111111rem;
+  width: 1.1111111111rem;
+  background-image: url("blp:fi_city_capital_icon_og_64");
   filter: drop-shadow(0 1px 0.0555555556rem black) saturate(0);
 }
 /* NAME: city-banner__name font-title text-base uppercase */
@@ -289,10 +284,11 @@
 .bz-flags .city-banner__status-religion {
   position: absolute;
   top: 1.5555555556rem;
-  left: -2.1111111111rem;
+  left: -1.5555555556rem;
 }
-.bz-flags.city-banner--town .city-banner__status-religion {
-  left: -0.3333333333rem;
+.bz-flags.city-banner--has-religion .city-banner__status-religion,
+.bz-flags.city-banner--disconnected .city-banner__status-religion {
+  left: -2.1111111111rem;
 }
 /* STATUS, TRADE-NETWORK:
    city-banner__status flex justify-center align-center opacity-100 pointer-events-auto
@@ -357,7 +353,7 @@
   border: 0.0555555556rem solid #e6b816;  /* economic yellow, reduced to L80 */
 }
 .bz-flags .city-banner__trade-network-icon {
-  background-image: url("blp:trade_broken.png");
+  background-image: url("blp:trade_broken");
   background-size: 100%;
   background-position: center center;
 }
@@ -393,6 +389,7 @@
 .bz-flags.city-banner--city-other .queue-production.queue-none {
   display: none;
 }
+
 /* RING:
    city-banner__ring city-banner__population-ring bg-cover bg-center
    flex size-9 self-center align-center
@@ -422,7 +419,7 @@
 /* PRODUCTION-ICON:
    bz-city-banner__production-icon size-4 self-center bg-contain bg-no-repeat */
 .bz-flags .city-banner__population-number {
-  background-image: url("blp:town_pop-bg.png");
+  background-image: url("blp:town_pop-bg");
   background-size: cover;
   background-repeat: no-repeat;
   fxs-background-image-tint: black;
@@ -463,9 +460,48 @@
   background-color: #000a;
   border-radius: 50% / 0.1666666667rem;
 }
+/* BZ-TOWN-FOCUS-CONTAINER:
+   city-banner__bz-town-focus-container relative size-8 justify-center */
+.bz-flags .city-banner__bz-town-focus-container {
+  display: none;
+}
+.bz-flags.city-banner--town .city-banner__bz-town-focus-container {
+  display: flex;
+}
+/* BZ-TOWN-FOCUS-BACKGROUND:
+   city-banner__bz-town-focus-bg bg-center bg-cover bg-no-repeat size-9
+   absolute flex */
+.bz-flags.city-banner--town .city-banner__bz-town-focus-bg {
+  top: -0.0833333333rem;
+  left: -0.1388888889rem;
+  background-image: url("blp:hud_sub_circle_bk");
+  line-height: 2rem;
+  margin-top: 0.001px;
+  /* background-color: #fffa;  /* DEBUG */
+}
+/* BZ-TOWN-FOCUS-ICON:
+   city-banner__bz-town-focus-icon bg-center bg-cover bg-no-repeat
+   size-9 absolute */
+.bz-flags.city-banner--town .city-banner__bz-town-focus-icon {
+  background-image: url("blp:focus_growth");
+  background-size: 100%;
+  top: -0.0277777778rem;
+  left: 0.0277777778rem;
+  /* background-color: #fffa;  /* DEBUG */
+}
+.bz-flags .city-banner__bz-town-focus-icon[bz-town-focus="PROJECT_TOWN_URBAN_CENTER"] {
+  top: -0.0277777778rem;
+  left: 0.0555555556rem;
+}
+.bz-flags .city-banner__bz-town-focus-icon.bz-paused-focus {
+  filter: saturate(0) contrast(0.5) brightness(1.5) fxs-color-tint(#60c000);
+}
 /* CITY-STATE-CONTAINER: city-banner__city-state-container justify-center */
 .bz-flags .city-banner__city-state-container {
   display: none;
+  position: relative;
+  width: 1.7777777778rem;
+  height: 1.7777777778rem;
 }
 .bz-flags.city-banner--citystate .city-banner__city-state-container,
 .bz-flags.city-banner--village .city-banner__city-state-container {
@@ -475,9 +511,12 @@
    city-banner__city-state-type size-7 self-center align-center justify-center flex
  */
 .bz-flags .city-banner__city-state-type {
-  margin: 0.1111111111rem;
+  position: absolute;
+}
+.bz-flags.city-banner--citystate .city-banner__city-state-type,
+.bz-flags.city-banner--village .city-banner__city-state-type {
   background-color: black;
-  border-color: #8c7e62;  /* var(--bz-color-secondary-2) */
+  border-color: #b29e79;  /* var(--bz-color-tertiary-1); */
   border-radius: 50%;
   border-width: 0.0555555556rem;
   border-style: solid;
@@ -485,7 +524,6 @@
 /* CITY-STATE-ICON:
    city-banner__city-state-icon size-8 self-center align-center bg-cover bg-no-repeat */
 .bz-flags .city-banner__city-state-icon {
-  fxs-background-image-tint: white;
 }
 /* RIGHT-CONTAINER:
    items-center -ml-12 mt-10 city-banner__right-container flex flex-row */
@@ -503,7 +541,7 @@
 .bz-flags .city-banner__conquered-icon {
   transform: translateX(-50%) scale(1);
   display: none;
-  background-image: url("blp:icon-conquered.png");
+  background-image: url("blp:icon-conquered");
   position: absolute;
   display: flex;  /* DEBUG */
 }
@@ -526,7 +564,7 @@
 }
 /* UNREST-ICON: city-banner__unrest-icon relative size-14 bg-cover bg-no-repeat flex */
 .bz-flags .city-banner__unrest-icon {
-  background-image: url("blp:icon_unrest.png");
+  background-image: url("blp:icon_unrest");
   z-index: 2;
   width: 2.6666666667rem;
   height: 2.6666666667rem;
@@ -545,7 +583,7 @@
 }
 /* RAZING-ICON: city-banner__razing-icon relative size-14 bg-cover bg-no-repeat flex */
 .bz-flags .city-banner__razing-icon {
-  background-image: url("blp:icon_razed.png");
+  background-image: url("blp:icon_razed");
   z-index: 2;
   width: 2.8888888889rem;
   height: 2.8888888889rem;

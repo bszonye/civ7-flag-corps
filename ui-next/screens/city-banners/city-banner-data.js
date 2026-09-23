@@ -2,7 +2,7 @@ import { createSignal } from '../../../../core/vendor/solid-js/dist/solid.js';
 import { ComponentID } from '../../../../core/ui/utilities/utilities-component-id.js';
 import { Icon } from '../../../../core/ui/utilities/utilities-image.js';
 import { ProductionPanelCategory } from '../../../ui/production-chooser/production-chooser-helpers.js';
-import { getTextColors } from '/bz-flag-corps/ui-next/screens/city-banners/bz-city-banner.js';
+import { getTextColors, getTownFocusInfo } from '/bz-flag-corps/ui-next/screens/city-banners/bz-city-banner.js';
 
 var BannerType = /* @__PURE__ */ ((BannerType2) => {
   BannerType2["Town"] = "town";
@@ -365,15 +365,10 @@ function computeStatusInfo(cityID, location) {
       }
     }
   }
-  let tradeNetworkHidden = true;
-  let tradeNetworkTooltip = "";
-  if (city.Trade) {
-    const isInNetwork = city.Trade.isInTradeNetwork();
-    tradeNetworkHidden = !isLocalPlayerCity || isInNetwork;
-    if (!isInNetwork) {
-      tradeNetworkTooltip = "{LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED} {LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED_DESCRIPTION}";
-    }
-  }
+  const tradeNetworkDisconnected = city.Trade && !city.Trade.isInTradeNetwork();
+  const tradeNetworkHidden = !tradeNetworkDisconnected;
+  const tradeNetworkTooltip = tradeNetworkDisconnected ?
+    "{LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED} {LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED_DESCRIPTION}" : "";
   let showProductionQueue = false;
   let prodPerTurn = 0;
   let turnsLeft = 0;
@@ -390,11 +385,14 @@ function computeStatusInfo(cityID, location) {
     currentProduction = queueData.shift();
     buildQueue = queueData;
   }
+  // TRIX: town focus status
+  const townFocusInfo = getTownFocusInfo(city);
   return {
     visible: GameplayMap.getRevealedState(GameContext.localObserverID, city.location.x, city.location.y) != RevealedStates.HIDDEN,
     disabled: areCityBannersDisabled,
     statusIcon,
     statusTooltip,
+    tradeNetworkDisconnected,  // TRIX
     tradeNetworkHidden,
     tradeNetworkTooltip,
     hasUnrest: city.Happiness?.hasUnrest ?? false,
@@ -410,7 +408,9 @@ function computeStatusInfo(cityID, location) {
     turnsLeft,
     percent,
     currentProduction,
-    buildQueue
+    buildQueue,
+    // TRIX
+    townFocusInfo,
   };
 }
 function computeFullBannerData(cityID, location) {

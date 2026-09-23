@@ -88,6 +88,8 @@ const CityBannerImpl = (props) => {
         // TRIX: subtler shadow colors
         "bz-black-shadow": props.data.identity.playerColorLighting === "black",
         "bz-white-highlight": props.data.identity.playerColorLighting === "white",
+        // TRIX: flags promoted to top level
+        "city-banner--disconnected": props.data.status.tradeNetworkDisconnected,
       };
     },
     get style() {
@@ -194,8 +196,6 @@ const CityBannerImpl = (props) => {
                     return props.data.identity;
                   },
                   get children() {
-                    // TRIX: portrait replacements go here
-                    // (town focus or civ symbol)
                     var _el$7 = _tmpl$2(), _el$8 = _el$7.firstChild, _el$9 = _el$8.nextSibling, _el$10 = _el$9.nextSibling;
                     createRenderEffect((_$p) => (_$p = `url('${props.data.identity.portraitIcon}')`) != null ? _el$10.style.setProperty("background-image", _$p) : _el$10.style.removeProperty("background-image"));  // eslint-disable-line no-constant-binary-expression
                     return _el$7;
@@ -394,6 +394,35 @@ const CityBannerImpl = (props) => {
                       }
                     }));
                     return _el$27;
+                  }
+                }), null);
+                insert(_el$6, createComponent(Show, {  // TRIX: town focus
+                  get when() {
+                    return props.data.identity.bannerType == BannerType.Town && props.data.status.townFocusInfo.isSpecialized;
+                  },
+                  get children() {
+                    const tmplFocus = template(`<div class="city-banner__bz-town-focus-container relative size-8 justify-center"><div class="city-banner__bz-town-focus-bg bg-center bg-cover bg-no-repeat size-9 absolute flex"></div></div>`);
+                    var elFocus = tmplFocus(), elFocusBG = elFocus.firstChild;
+                    insert(elFocusBG, createComponent(Tooltip.Text, {
+                      get text() {
+                        return props.data.status.townFocusInfo?.Name;
+                      },
+                      get children() {
+                        const info = props.data.status.townFocusInfo;
+                        const tmplFocusIcon = template(`<div class="city-banner__bz-town-focus-icon bg-center bg-cover bg-no-repeat size-9 absolute"></div>`);
+                        var elFocusIcon = tmplFocusIcon();
+                        use((el) => {
+                          createEffect(() => {
+                            el.setAttribute("bz-town-focus", info.ProjectType);
+                            el.classList.toggle("bz-paused-focus", info.isPaused);
+                          });
+                        }, elFocusIcon);
+                        const icon = UI.getIconCSS(info.ProjectType);
+                        createRenderEffect((_$p) => (_$p = icon) != null ? elFocusIcon.style.setProperty("background-image", _$p) : elFocusIcon.style.removeProperty("background-image"));
+                        return elFocusIcon;
+                      }
+                    }));
+                    return elFocus;
                   }
                 }), null);
                 insert(_el$6, createComponent(Show, {
