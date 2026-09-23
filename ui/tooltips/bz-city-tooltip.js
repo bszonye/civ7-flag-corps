@@ -1,5 +1,6 @@
 // TODO: fix villages
 import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
+import { getTownFocusInfo } from '/bz-flag-corps/ui-next/screens/city-banners/bz-city-banner.js';
 
 const BZ_TARGETS = [
     ".city-banner__queue-container",
@@ -317,15 +318,13 @@ function getReligionInfo(id) {
     return { name, icon, info, };
 }
 function getTownFocus(city) {
-    const ptype = city.Growth?.projectType ?? null;
-    const info = ptype && GameInfo.Projects.lookup(ptype);
-    const isGrowing = !info || city.Growth?.growthType == GrowthTypes.EXPAND;
-    const town = "LOC_CAPITAL_SELECT_PROMOTION_NONE";
-    const growth = "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH";
-    const name = info?.Name ?? town;
-    const note = isGrowing && name != growth ? growth : null;
-    const icon = isGrowing ? "PROJECT_GROWTH" : info.ProjectType;
-    return { isGrowing, name, note, icon, info, };
+    const info = getTownFocusInfo(city);
+    if (info) {
+        info.name = info?.Name ?? "LOC_CAPITAL_SELECT_PROMOTION_NONE";
+        info.note = info.isPaused ? "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH" : null;
+        info.icon = info.ProjectType;
+    }
+    return info;
 }
 const BZ_PRELOADED_ICONS = {};
 function preloadIcon(icon, context) {
@@ -498,6 +497,7 @@ class bzCityTooltip {
             this.originalOwner = Players.get(this.city.originalOwner);
         }
         // settlement type
+        this.townFocus = getTownFocus(this.city);
         if (this.owner.isIndependent) {
             // village, encampement, or captured town
             if (this.city) {
@@ -508,13 +508,14 @@ class bzCityTooltip {
             }
         } else if (this.owner.isMinor) {
             this.settlementType = "LOC_BZ_SETTLEMENT_CITY_STATE";
-        } else if (this.city.isTown) {
-            const focus = getTownFocus(this.city);
-            this.townFocus = focus;
-            this.settlementType = this.townFocus.name;
         } else if (this.city.isCapital) {
-            // TODO: show New/Original Capital labels
-            this.settlementType = "LOC_CAPITAL_SELECT_PROMOTION_CAPITAL";
+            this.settlementType = this.city.isOriginalCapital ?
+                "LOC_CAPITAL_SELECT_PROMOTION_CAPITAL" :
+                "LOC_UI_CITY_CAPITAL_CURR_DESC";
+        } else if (this.city.isOriginalCapital && !this.townFocus?.isSpecialized) {
+            this.settlementType = "LOC_UI_CITY_CAPITAL_OG_DESC";
+        } else if (this.city.isTown) {
+            this.settlementType = this.townFocus.name;
         } else {
             this.settlementType = "LOC_CAPITAL_SELECT_PROMOTION_CITY";
         }

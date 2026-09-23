@@ -370,7 +370,7 @@ function computeStatusInfo(cityID, location) {
       if (conn) tradeNetworkConnections.push(conn); // ignore stale connections
   }
   const tradeNetworkDisconnected = city.Trade && !city.Trade.isInTradeNetwork();
-  const tradeNetworkHidden = !isLocalPlayerCity;
+  const tradeNetworkHidden = false;  // !isLocalPlayerCity;
   const tradeNetworkTooltip = tradeNetworkDisconnected ?
     "{LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED} {LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED_DESCRIPTION}" : Locale.compose("LOC_UI_CITY_DETAILS_NUMBER_OF_CONNECTIONS", city.name, tradeNetworkConnections.length);
   let showProductionQueue = false;
