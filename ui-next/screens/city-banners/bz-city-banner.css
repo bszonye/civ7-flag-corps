@@ -259,7 +259,7 @@
   background-image: url("blp:fi_city_capital_icon_og_64");
   filter: drop-shadow(0 1px 0.0555555556rem black) saturate(0);
 }
-/* BZ-CIV-SYMBOL: city-banner__bz-civ-symbol size-8 pointer-events-none */
+/* BZ-CIV-SYMBOL: city-banner__bz-civ-symbol size-8 */
 .bz-flags .city-banner__bz-civ-symbol {
   margin-left: 0.1111111111rem;
   margin-right: -0.1111111111rem;
@@ -296,12 +296,12 @@
 /* STATUS-RELIGION: city-banner__status-religion relative flex flex-row */
 .bz-flags .city-banner__status-religion {
   position: absolute;
-  bottom: -0.8888888889rem;
-  left: -0.2777777778rem;  /* straddle */
+  bottom: -0.9444444444rem;
+  left: -0.4444444444rem;  /* straddle */
   /* background-color: #0aaa;  /* DEBUG */
 }
 .bz-flags.city-banner--original-capital .city-banner__status-religion {
-  left: -0.3888888889rem;  /* straddle */
+  left: -0.5555555556rem;  /* straddle */
 }
 /* STATUS, TRADE-NETWORK:
    city-banner__status flex justify-center align-center opacity-100 pointer-events-auto
@@ -327,16 +327,16 @@
 .bz-flags .city-banner__religion-symbol-bg,
 .bz-flags .city-banner__trade-network-background {
   position: relative;
-  height: 1.1111111111rem;
-  width: 1.1111111111rem;
+  height: 1.2222222222rem;
+  width: 1.2222222222rem;
   margin: 0 0.1111111111rem;
   border-radius: 50%;
 }
 .bz-flags .city-banner__status-icon,
 .bz-flags .city-banner__religion-symbol,
 .bz-flags .city-banner__trade-network-icon {
-  height: 1.1111111111rem;
-  width: 1.1111111111rem;
+  height: 1.2222222222rem;
+  width: 1.2222222222rem;
 }
 .bz-flags.city-banner--village .city-banner__status,
 .bz-flags .city-banner__status.hidden {
@@ -365,13 +365,25 @@
   display: none;
 }
 .bz-flags .city-banner__trade-network-background {
-  background-color: #550000;
+  background-color: var(--bz-color-primary-3);
   border: 0.0555555556rem solid #e6b816;  /* economic yellow, reduced to L80 */
+  border: 0.0555555556rem solid #e5d2ac;
 }
 .bz-flags .city-banner__trade-network-icon {
-  background-image: url("blp:trade_broken");
   background-size: 100%;
   background-position: center center;
+  line-height: 1.2222222222rem;
+  text-align: center;
+  color: var(--bz-color-secondary-1);
+}
+.bz-flags.city-banner--disconnected .city-banner__trade-network-background {
+  background-color: #550000;
+  border-color: #e00;
+}
+.bz-flags.city-banner--disconnected .city-banner__trade-network-icon {
+  background-image: url("blp:trade_broken");
+  /* color: var(--bz-color-economic); */
+  color: white;
 }
 /* POPULATION-CONTAINER:
    city-banner__population-container city-banner__queue-container

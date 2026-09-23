@@ -1,11 +1,11 @@
 // TODO: fix villages
 import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 
-var bzTarget;
-(function (bzTarget) {
-    bzTarget[bzTarget["GROWTH"] = ".queue-growth"] = "GROWTH";
-    bzTarget[bzTarget["PRODUCTION"] = ".queue-production"] = "PRODUCTION";
-})(bzTarget || (bzTarget = {}));
+const BZ_TARGETS = [
+    ".city-banner__queue-container",
+    ".city-banner__status-religion",
+    ".bz-city-banner__conquered",
+];
 
 // custom & adapted icons
 const BZ_ICON_RURAL = "CITY_RURAL";  // urban population/yield
@@ -400,8 +400,7 @@ class bzCityTooltip {
     getHTML() { return this.tooltip; }
     isUpdateNeeded(target) {
         // first check for a subtarget
-        const sub = [bzTarget.GROWTH, bzTarget.PRODUCTION];
-        const subtarget = sub.find(t => target.closest(t)) ?? null;
+        const subtarget = BZ_TARGETS.find(t => target.closest(t)) ?? null;
         // get main target, if possible
         const banner =
             target.closest("[data-tooltip-content]") ??
@@ -428,11 +427,9 @@ class bzCityTooltip {
     isBlank() {
         if (!this.target) return true;
         // yield to vanilla tooltips over the progress meters
-        if (this.subtarget == bzTarget.GROWTH) return true;
-        if (this.subtarget == bzTarget.PRODUCTION) return true;
+        if (this.subtarget) return true;
         // hide the tooltip over elements with tooltip content
         if (this.target.getAttribute("data-tooltip-content")) return true;
-        if (this.subtarget == bzTarget.PRODUCTION) return this.city.BuildQueue.isEmpty;
         return false;
     }
     reset() {
@@ -480,8 +477,7 @@ class bzCityTooltip {
         const border = this.tooltip.querySelector(".img-tooltip-border");
         if (border) border.borderRadius = metrics.radius.tooltip.css;
         // yield to vanilla tooltips over the progress meters
-        if (this.subtarget == bzTarget.GROWTH) return;
-        if (this.subtarget == bzTarget.PRODUCTION) return;
+        if (this.subtarget) return;
         // render main tooltip
         this.renderSettlement();
         this.renderConnections();

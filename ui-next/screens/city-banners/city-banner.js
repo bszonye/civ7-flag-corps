@@ -10,7 +10,7 @@ import { FocusContext } from '../../../../core/ui-next/services/focus.js';
 import { RaiseDiplomacyEvent } from '../../../ui/diplomacy/diplomacy-events.js';
 import { CityBannerFocusContext } from './city-banner-focus.js';
 import { BannerType } from './city-banner-data.js';
-import { CityBannerNameTooltip } from './city-banner-name-tooltip.js';
+// import { CityBannerNameTooltip } from './city-banner-name-tooltip.js';
 import { CityBannerPopulation } from './city-banner-population.js';
 import { CityBannerProduction } from './city-banner-production.js';
 
@@ -143,7 +143,8 @@ const CityBannerImpl = (props) => {
                     return props.data.identity.bannerType == BannerType.Town;
                   },
                   get fallback() {
-                    return createComponent(CityBannerNameTooltip, {
+                    return createComponent(Show, {  // CityBannerNameTooltip, {
+                      when: true,
                       get data() {
                         return props.data.identity;
                       },
@@ -196,7 +197,8 @@ const CityBannerImpl = (props) => {
                     return _el$39;
                   }
                 }), null);
-                insert(_el$6, createComponent(CityBannerNameTooltip, {
+                insert(_el$6, createComponent(Show, {  // CityBannerNameTooltip, {
+                  when: true,
                   get data() {
                     return props.data.identity;
                   },
@@ -250,7 +252,7 @@ const CityBannerImpl = (props) => {
                       },
                       get children() {
                         return createComponent(Icon, {
-                          "class": "city-banner__bz-civ-symbol size-8 pointer-events-none",
+                          "class": "city-banner__bz-civ-symbol size-8",
                           isUrl: true,
                           get name() {
                             return props.data.identity.civIcon;
@@ -265,7 +267,8 @@ const CityBannerImpl = (props) => {
                     return props.data.identity.bannerType == BannerType.Town;
                   },
                   get fallback() {
-                    return createComponent(CityBannerNameTooltip, {
+                    return createComponent(Show, {  // CityBannerNameTooltip, {
+                      when: true,
                       get data() {
                         return props.data.identity;
                       },
@@ -281,7 +284,8 @@ const CityBannerImpl = (props) => {
                     });
                   },
                   get children() {
-                    return createComponent(Tooltip.Text, {
+                    return createComponent(Show, {  // Tooltip.Text, {
+                      when: true,
                       text: "LOC_CAPITAL_SELECT_PROMOTION_NONE",
                       get children() {
                         var _el$16 = _tmpl$6();
@@ -303,6 +307,28 @@ const CityBannerImpl = (props) => {
                     var _el$18 = _tmpl$7(), _el$19 = _el$18.firstChild, _el$20 = _el$19.nextSibling;
                     createRenderEffect((_$p) => (_$p = props.data.status.statusIcon) != null ? _el$20.style.setProperty("background-image", _$p) : _el$20.style.removeProperty("background-image"));
                     return _el$18;
+                  }
+                }), null);
+                // TRIX: move trade before religion
+                insert(_el$17, createComponent(Show, {
+                  get when() {
+                    return !props.data.status.tradeNetworkHidden;
+                  },
+                  get children() {
+                    return createComponent(Tooltip.Text, {
+                      get text() {
+                        return props.data.status.tradeNetworkTooltip;
+                      },
+                      get children() {
+                        var elTrade = _tmpl$11(), elIcon = elTrade.lastChild;
+                        const connections =
+                          props.data.status.tradeNetworkConnections.length;
+                        const font = connections < 10 ? "font-body-xs" : "font-body-2xs";
+                        elIcon.classList.add(font);
+                        elIcon.textContent = connections;
+                        return elTrade;
+                      }
+                    });
                   }
                 }), null);
                 insert(_el$17, createComponent(Show, {
@@ -357,21 +383,6 @@ const CityBannerImpl = (props) => {
                       }
                     }), null);
                     return _el$21;
-                  }
-                }), null);
-                insert(_el$17, createComponent(Show, {
-                  get when() {
-                    return !props.data.status.tradeNetworkHidden;
-                  },
-                  get children() {
-                    return createComponent(Tooltip.Text, {
-                      get text() {
-                        return props.data.status.tradeNetworkTooltip;
-                      },
-                      get children() {
-                        return _tmpl$11();
-                      }
-                    });
                   }
                 }), null);
                 insert(_el$26, createComponent(CityBannerPopulation, {

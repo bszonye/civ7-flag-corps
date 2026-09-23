@@ -363,10 +363,16 @@ function computeStatusInfo(cityID, location) {
       }
     }
   }
+  const tradeNetworkConnections = [];
+  const ids = city.getConnectedCities() ?? [];
+  for (const id of ids) {
+      const conn = Cities.get(id);
+      if (conn) tradeNetworkConnections.push(conn); // ignore stale connections
+  }
   const tradeNetworkDisconnected = city.Trade && !city.Trade.isInTradeNetwork();
-  const tradeNetworkHidden = !tradeNetworkDisconnected;
+  const tradeNetworkHidden = !isLocalPlayerCity;
   const tradeNetworkTooltip = tradeNetworkDisconnected ?
-    "{LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED} {LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED_DESCRIPTION}" : "";
+    "{LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED} {LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED_DESCRIPTION}" : Locale.compose("LOC_UI_CITY_DETAILS_NUMBER_OF_CONNECTIONS", city.name, tradeNetworkConnections.length);
   let showProductionQueue = false;
   let prodPerTurn = 0;
   let turnsLeft = 0;
@@ -409,6 +415,7 @@ function computeStatusInfo(cityID, location) {
     buildQueue,
     // TRIX
     townFocusInfo,
+    tradeNetworkConnections,
   };
 }
 function computeFullBannerData(cityID, location) {
