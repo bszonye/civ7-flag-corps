@@ -225,8 +225,7 @@
   height: 2.5rem;
   background-size: cover;
 }
-.bz-flags.city-banner--city-other .city-banner__portrait-img,
-.bz-flags.city-banner--citystate .city-banner__portrait-img {
+.bz-flags.city-banner--rival .city-banner__portrait-img {
   transform: scale(-1, 1);  /* face left */
 }
 /* ORIGINAL-CAPITAL-CURR-STAR:

@@ -160,29 +160,21 @@ function computeIdentity(cityID, location) {
         break;
     }
   }
-  let portraitIcon = "";  // eslint-disable-line no-useless-assignment
-  let leaderName = "";  // eslint-disable-line no-useless-assignment
-  const leaderType = player.leaderType;
-  if (leaderType != -1) {
-    portraitIcon = Icon.getLeaderPortraitIcon(leaderType);
-    const leader = GameInfo.Leaders.lookup(leaderType);
-    leaderName = leader ? leader.Name : "LOC_LEADER_NONE_NAME";
-  } else {
-    portraitIcon = "blp:icon_razed.png";  // TRIX
-    leaderName = bannerType == "village" /* Village */ || (bannerType == "town" /* Town */ || bannerType == "city" /* City */) && player.isIndependent ? player.name : "LOC_LEADER_NONE_NAME";
-  }
+  const leader = Players.get(
+    player.isMajor ? player.id :
+    player.isMinor && player.Influence?.hasSuzerain ? player.Influence.getSuzerain() :
+    -1
+  );
+  const leaderType = leader?.leaderType ?? -1;
+  const leaderInfo = GameInfo.Leaders.lookup(leaderType);
+  const leaderName = leaderInfo?.Name ?? "LOC_LEADER_NONE_NAME";
+  const portraitIcon = leader ? Icon.getLeaderPortraitIcon(leaderType) : "blp:icon_razed";
+  const isRival = leader && leader.id != GameContext.localObserverID;
+  const civ = leader?.civilizationType ?? -1;
+  const civInfo = GameInfo.Civilizations.lookup(civ);
+  const civIcon = civInfo && UI.getIconCSS(civInfo.CivilizationType);
   const civName = GameplayMap.getOwnerName(bannerLocation.x, bannerLocation.y);
-  let civID = player.isMajor ? player.civilizationType : -1;
-  if (player.isMinor && player.Influence?.hasSuzerain) {
-    const suzerainPlayer = Players.get(player.Influence.getSuzerain());
-    if (suzerainPlayer) {
-      portraitIcon = Icon.getLeaderPortraitIcon(suzerainPlayer.leaderType);
-      leaderName = suzerainPlayer.leaderName;
-      civID = suzerainPlayer.civilizationType;
-    }
-  }
-  const civ = GameInfo.Civilizations.lookup(civID);
-  const civIcon = civ && UI.getIconCSS(civ.CivilizationType);
+
   const owner = cityID.owner;
   const cityStateBonusName = bonusDefinition?.Name ?? "";
   // TRIX: handle towns conquered by villages & encampments
@@ -212,6 +204,7 @@ function computeIdentity(cityID, location) {
     playerColorText,
     playerColorLighting,
     civIcon,
+    isRival,
   };
 }
 function computeCapitalInfo(cityID, location) {

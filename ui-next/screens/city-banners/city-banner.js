@@ -88,8 +88,9 @@ const CityBannerImpl = (props) => {
         // TRIX: subtler shadow colors
         "bz-black-shadow": props.data.identity.playerColorLighting === "black",
         "bz-white-highlight": props.data.identity.playerColorLighting === "white",
-        // TRIX: flags promoted to top level
+        // TRIX: flags needed at top level
         "city-banner--disconnected": props.data.status.tradeNetworkDisconnected,
+        "city-banner--rival": props.data.identity.isRival,
       };
     },
     get style() {
