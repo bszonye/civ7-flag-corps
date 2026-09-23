@@ -172,13 +172,17 @@ function computeIdentity(cityID, location) {
     leaderName = bannerType == "village" /* Village */ || (bannerType == "town" /* Town */ || bannerType == "city" /* City */) && player.isIndependent ? player.name : "LOC_LEADER_NONE_NAME";
   }
   const civName = GameplayMap.getOwnerName(bannerLocation.x, bannerLocation.y);
+  let civID = player.isMajor ? player.civilizationType : -1;
   if (player.isMinor && player.Influence?.hasSuzerain) {
     const suzerainPlayer = Players.get(player.Influence.getSuzerain());
     if (suzerainPlayer) {
       portraitIcon = Icon.getLeaderPortraitIcon(suzerainPlayer.leaderType);
       leaderName = suzerainPlayer.leaderName;
+      civID = suzerainPlayer.civilizationType;
     }
   }
+  const civ = GameInfo.Civilizations.lookup(civID);
+  const civIcon = civ && UI.getIconCSS(civ.CivilizationType);
   const owner = cityID.owner;
   const cityStateBonusName = bonusDefinition?.Name ?? "";
   // TRIX: handle towns conquered by villages & encampments
@@ -207,6 +211,7 @@ function computeIdentity(cityID, location) {
     // TRIX
     playerColorText,
     playerColorLighting,
+    civIcon,
   };
 }
 function computeCapitalInfo(cityID, location) {

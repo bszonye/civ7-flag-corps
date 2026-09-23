@@ -187,6 +187,7 @@
   top: -0.6666666667rem;
   width: 1.7777777778rem;
   height: 2.5rem;
+  margin-right: -0.1666666667rem;
 }
 .bz-flags.city-banner--town .city-banner__portrait,
 .bz-flags.city-banner--village .city-banner__portrait {
@@ -239,7 +240,7 @@
 .bz-flags .city-banner__capital-star,
 .bz-flags .city-banner__original-capital-curr-star,
 .bz-flags .city-banner__original-capital-star {
-  margin-left: 0.2222222222rem;
+  margin-left: 0.3333333333rem;
   width: 1.3333333333rem;
   height: 1.7777777778rem;
   background-position: center;
@@ -255,11 +256,21 @@
   filter: drop-shadow(0 1px 0.0555555556rem black);
 }
 .bz-flags .city-banner__original-capital-star {
-  margin-left: 0.3333333333rem;
-  margin-right: 0.1111111111rem;
   width: 1.1111111111rem;
   background-image: url("blp:fi_city_capital_icon_og_64");
   filter: drop-shadow(0 1px 0.0555555556rem black) saturate(0);
+}
+/* BZ-CIV-SYMBOL: city-banner__bz-civ-symbol size-8 pointer-events-none */
+.bz-flags .city-banner__bz-civ-symbol {
+  margin-left: 0.1111111111rem;
+  margin-right: -0.1111111111rem;
+  fxs-background-image-tint: var(--player-color-secondary);
+}
+.bz-flags.bz-black-shadow .city-banner__bz-civ-symbol {
+  filter: fxs-color-tint(var(--player-color-secondary)) drop-shadow(1px 1px 0 #0009);
+}
+.bz-flags.bz-white-highlight .city-banner__bz-civ-symbol {
+  filter: fxs-color-tint(var(--player-color-secondary)) drop-shadow(-1px -1px 0 #fff9);
 }
 /* NAME: city-banner__name font-title text-base uppercase */
 .bz-flags .city-banner__name {
@@ -286,9 +297,15 @@
   top: 1.5555555556rem;
   left: -1.5555555556rem;
 }
+.bz-flags.city-banner--town .city-banner__status-religion {
+}
 .bz-flags.city-banner--has-religion .city-banner__status-religion,
 .bz-flags.city-banner--disconnected .city-banner__status-religion {
   left: -2.1111111111rem;
+}
+.bz-flags.city-banner--town.city-banner--has-religion .city-banner__status-religion,
+.bz-flags.city-banner--town.city-banner--disconnected .city-banner__status-religion {
+  left: -1.5555555556rem;
 }
 /* STATUS, TRADE-NETWORK:
    city-banner__status flex justify-center align-center opacity-100 pointer-events-auto
