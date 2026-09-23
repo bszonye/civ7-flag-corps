@@ -344,7 +344,10 @@ function computeStatusInfo(cityID, location) {
       turnsLeft: 0,
       percent: 0,
       currentProduction: void 0,
-      buildQueue: []
+      buildQueue: [],
+      // TRIX
+      townFocusInfo: {},
+      tradeNetworkConnections: [],
     } : null;
   }
   const isLocalPlayerCity = cityID.owner === GameContext.localObserverID;
@@ -371,8 +374,14 @@ function computeStatusInfo(cityID, location) {
   }
   const tradeNetworkDisconnected = city.Trade && !city.Trade.isInTradeNetwork();
   const tradeNetworkHidden = false;  // !isLocalPlayerCity;
-  const tradeNetworkTooltip = tradeNetworkDisconnected ?
-    "{LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED} {LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED_DESCRIPTION}" : Locale.compose("LOC_UI_CITY_DETAILS_NUMBER_OF_CONNECTIONS", city.name, tradeNetworkConnections.length);
+  const tradeNetworkTooltip = [
+    tradeNetworkConnections.length || !tradeNetworkDisconnected ?
+    Locale.compose(
+      "LOC_UI_CITY_DETAILS_NUMBER_OF_CONNECTIONS",
+      city.name, tradeNetworkConnections.length
+    ) : null,
+    tradeNetworkDisconnected ? "{LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED} {LOC_UI_CITY_STATUS_TRADE_NOT_CONNECTED_DESCRIPTION}" : null,
+  ].filter(e => e).join("[n] [n]");
   let showProductionQueue = false;
   let prodPerTurn = 0;
   let turnsLeft = 0;

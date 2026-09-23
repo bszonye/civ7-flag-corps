@@ -366,8 +366,7 @@
 }
 .bz-flags .city-banner__trade-network-background {
   background-color: var(--bz-color-primary-3);
-  border: 0.0555555556rem solid #e6b816;  /* economic yellow, reduced to L80 */
-  border: 0.0555555556rem solid #e5d2ac;
+  border: 0.0555555556rem solid #8c7e62;  /* var(--bz-color-secondary-2) */
 }
 .bz-flags .city-banner__trade-network-icon {
   background-size: 100%;
@@ -377,13 +376,17 @@
   color: var(--bz-color-secondary-1);
 }
 .bz-flags.city-banner--disconnected .city-banner__trade-network-background {
-  background-color: #550000;
-  border-color: #e00;
+  border-color: #dc1e46;  /* var(--bz-color-negative) */
+  background-color: #46000e;  /* var(--bz-color-negative) at L25 */
 }
 .bz-flags.city-banner--disconnected .city-banner__trade-network-icon {
-  background-image: url("blp:trade_broken");
-  /* color: var(--bz-color-economic); */
+  background-image: url("blp:fi_trade_route_64");
+  fxs-background-image-tint: var(--bz-color-negative);
   color: white;
+}
+.bz-flags.city-banner--unconnected .city-banner__trade-network-icon {
+  background-image: url("blp:fi_trade_route_64");
+  color: transparent;
 }
 /* POPULATION-CONTAINER:
    city-banner__population-container city-banner__queue-container
