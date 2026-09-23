@@ -296,19 +296,12 @@
 /* STATUS-RELIGION: city-banner__status-religion relative flex flex-row */
 .bz-flags .city-banner__status-religion {
   position: absolute;
-  top: 1.5555555556rem;
-  left: -1.3333333333rem;
+  bottom: -0.8888888889rem;
+  left: -0.2777777778rem;  /* straddle */
+  /* background-color: #0aaa;  /* DEBUG */
 }
-.bz-flags.city-banner--town .city-banner__status-religion {
-  left: 0.3888888889rem;
-}
-.bz-flags.city-banner--has-religion .city-banner__status-religion,
-.bz-flags.city-banner--disconnected .city-banner__status-religion {
-  left: -1.9444444444rem;
-}
-.bz-flags.city-banner--town.city-banner--has-religion .city-banner__status-religion,
-.bz-flags.city-banner--town.city-banner--disconnected .city-banner__status-religion {
-  left: -0.2222222222rem;
+.bz-flags.city-banner--original-capital .city-banner__status-religion {
+  left: -0.3888888889rem;  /* straddle */
 }
 /* STATUS, TRADE-NETWORK:
    city-banner__status flex justify-center align-center opacity-100 pointer-events-auto
@@ -326,22 +319,28 @@
 /* RELIGION-SYMBOL:
    city-banner__religion-symbol [religion-symbol--right] */
 .bz-flags .city-banner__status,
-.bz-flags .city-banner__religion-symbol-bg,
+.bz-flags .city-banner__religion,
 .bz-flags .city-banner__trade-network {
   position: relative;
-  /* TODO: enlarge? realign? */
-  height: 1.1111111111rem;
-  width: 1.1111111111rem;
-  margin: 0 0.0555555556rem;
-}
-.bz-flags.city-banner--village .city-banner__status,
-.bz-flags .city-banner__status.hidden {
-  display: none;
 }
 .bz-flags .city-banner__status-background,
 .bz-flags .city-banner__religion-symbol-bg,
 .bz-flags .city-banner__trade-network-background {
+  position: relative;
+  height: 1.1111111111rem;
+  width: 1.1111111111rem;
+  margin: 0 0.1111111111rem;
   border-radius: 50%;
+}
+.bz-flags .city-banner__status-icon,
+.bz-flags .city-banner__religion-symbol,
+.bz-flags .city-banner__trade-network-icon {
+  height: 1.1111111111rem;
+  width: 1.1111111111rem;
+}
+.bz-flags.city-banner--village .city-banner__status,
+.bz-flags .city-banner__status.hidden {
+  display: none;
 }
 .bz-flags .city-banner__status-background {
   background-color: black;
@@ -350,20 +349,17 @@
   background-size: 150%;
   background-position: center center;
 }
-.bz-flags .city-banner__religion-symbol-bg {
-  background-color: #d0d4d2;  /* sampled from religion icons */
-}
 .bz-flags .city-banner__religion {
   display: none;
 }
 .bz-flags.city-banner--has-religion .city-banner__religion {
   display: flex;
 }
+.bz-flags .city-banner__religion-symbol-bg {
+  background-color: #d0d4d2;  /* sampled from religion icons */
+}
 .bz-flags .city-banner__religion-symbol {
   background-size: 95%;
-  width: 100%;
-  height: 100%;
-  margin: 0;
 }
 .bz-flags .city-banner__trade-network .city-banner__trade-network--hidden {
   display: none;
@@ -552,18 +548,27 @@
 }
 /* CONQUERED: flex-auto -mr-3 flex flex-col */
 .bz-flags .bz-city-banner__conquered {
-  position: absolute;
-  top: 1.3333333333rem;
+  position: relative;
   margin: 0;
+  left: 50%;
 }
 /* CONQUERED-ICON:
    city-banner__conquered-icon relative size-14 -mr-6 bg-cover bg-no-repeat flex */
 .bz-flags .city-banner__conquered-icon {
-  transform: translateX(-50%) scale(1);
   display: none;
-  background-image: url("blp:icon-conquered");
   position: absolute;
-  display: flex;  /* DEBUG */
+  height: 1.7777777778rem;
+  width: 2.6666666667rem;
+  top: -1rem;
+  left: 0.8888888889rem;
+  margin: 0;
+  transform: translateX(-50%) scale(1);
+  background-image: url("blp:icon-conquered");
+  background-position: center;
+  /* background-color: #fffa;  /* DEBUG */
+}
+.bz-flags.city-banner--original-capital .city-banner__conquered-icon {
+  left: 0.7222222222rem;
 }
 .bz-flags.city-banner--conquered .city-banner__conquered-icon {
   display: flex;

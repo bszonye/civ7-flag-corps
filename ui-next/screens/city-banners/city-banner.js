@@ -90,6 +90,9 @@ const CityBannerImpl = (props) => {
         "bz-white-highlight": props.data.identity.playerColorLighting === "white",
         // TRIX: flags needed at top level
         "city-banner--disconnected": props.data.status.tradeNetworkDisconnected,
+        "city-banner--capital": props.data.capital.isCapital,
+        "city-banner--original-capital": props.data.capital.isOriginalCapital,
+        "city-banner--original-capital-curr": props.data.capital.isOriginalCapitalCurrent,
         "city-banner--rival": props.data.identity.isRival,
       };
     },
@@ -158,8 +161,8 @@ const CityBannerImpl = (props) => {
                     });
                   }
                 }), null);
-                // TRIX: add conquest icons to STRETCH, not RIGHT-CONTAINER
-                insert(_el$2, createComponent(Show, {
+                // TRIX: add conquered icon to NAME, not RIGHT-CONTAINER
+                insert(_el$11, createComponent(Show, {
                   get when() {
                     return props.data.conquered;
                   },
@@ -171,7 +174,8 @@ const CityBannerImpl = (props) => {
                       }
                     });
                   }
-                }), null);
+                }), _el$12);
+                // TRIX: add unrest & razing to STRETCH, not RIGHT-CONTAINER
                 insert(_el$2, createComponent(Show, {
                   get when() {
                     return props.data.status.hasUnrest;
