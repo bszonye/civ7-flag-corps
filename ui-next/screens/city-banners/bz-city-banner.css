@@ -112,7 +112,7 @@
 .bz-flags.city-banner {
   pointer-events: none;
   height: 3.6666666667rem;
-  top: -3rem;  /* TODO */
+  top: -3rem;
 }
 .bz-flags.city-banner.disabled .city-banner__name {
   pointer-events: none;

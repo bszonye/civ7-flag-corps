@@ -1,4 +1,3 @@
-// TODO: fix more tooltip clashes
 import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 import { getTownFocusInfo } from '/bz-flag-corps/ui-next/screens/city-banners/bz-city-banner.js';
 
