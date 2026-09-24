@@ -1,11 +1,11 @@
-import { Portal } from '../../../../core/vendor/solid-js/web/dist/web.js';
-import { onMount, onCleanup, createComponent, For } from '../../../../core/vendor/solid-js/dist/solid.js';
-import { createStore } from '../../../../core/vendor/solid-js/store/dist/store.js';
-import { ComponentID } from '../../../../core/ui/utilities/utilities-component-id.js';
-import { createArraySignal } from '../../../../core/ui-next/utilities/solid-utilities.js';
-import { computeFullBannerData, computeRelationship, computeIdentity, computeCapitalInfo, computeReligionInfo, computeConquered, computeStatusInfo } from './city-banner-data.js';
-import { CityBanner } from './city-banner.js';
-import { CityBannersStressTest } from './city-banners-stress-test.js';
+import { Portal } from '/core/vendor/solid-js/web/dist/web.js';
+import { onMount, onCleanup, createComponent, For } from '/core/vendor/solid-js/dist/solid.js';
+import { createStore } from '/core/vendor/solid-js/store/dist/store.js';
+import { ComponentID } from '/core/ui/utilities/utilities-component-id.js';
+import { createArraySignal } from '/core/ui-next/utilities/solid-utilities.js';
+import { computeFullBannerData, computeRelationship, computeIdentity, computeCapitalInfo, computeReligionInfo, computeConquered, computeStatusInfo } from '/base-standard/ui-next/screens/city-banners/city-banner-data.js';
+import { CityBanner } from '/base-standard/ui-next/screens/city-banners/city-banner.js';
+import { CityBannersStressTest } from '/base-standard/ui-next/screens/city-banners/city-banners-stress-test.js';
 
 function indexResourceTypes() {
   const yieldTagTypes = /* @__PURE__ */ new Map([["FOOD", "YIELD_FOOD"], ["PRODUCTION", "YIELD_PRODUCTION"], ["GOLD", "YIELD_GOLD"], ["SCIENCE", "YIELD_SCIENCE"], ["CULTURE", "YIELD_CULTURE"], ["HAPPINESS", "YIELD_HAPPINESS"]]);
@@ -152,15 +152,9 @@ const CityBanners = () => {
     }
   }
   function onDiplomacyEventEnded(data) {
-    if (!data.location) {
-      return;
-    }
-    for (const cityID of cityIds()) {
-      const location = getVillageLocation(cityID) ?? Cities.get(cityID)?.location;
-      if (location?.x == data.location.x && location.y == data.location.y) {
-        updateBanner(cityID, "relationship", computeRelationship(cityID.owner));
-        return;
-      }
+    // TRIX: this needs a full refresh when wars end
+    if (data.location) {
+      refreshAllRelationships();
     }
   }
   function onLocalPlayerChanged() {
@@ -390,3 +384,4 @@ const CityBanners = () => {
 
 export { CityBanners };
 //# sourceMappingURL=city-banners.js.map
+// vim: sw=2

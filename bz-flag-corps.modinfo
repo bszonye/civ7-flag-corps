@@ -55,9 +55,7 @@
                     <Item>ui-next/screens/city-banners/city-banner-population.js</Item>
                     <Item>ui-next/screens/city-banners/city-banner-production.js</Item>
                     <Item>ui-next/screens/city-banners/city-banner.js</Item>
-                <!--
                     <Item>ui-next/screens/city-banners/city-banners.js</Item>
-                -->
                 </ImportFiles>
                 <UIScripts>
                     <!--
