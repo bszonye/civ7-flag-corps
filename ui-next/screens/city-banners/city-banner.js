@@ -89,12 +89,15 @@ const CityBannerImpl = (props) => {
         "bz-black-shadow": props.data.identity.playerColorLighting === "black",
         "bz-white-highlight": props.data.identity.playerColorLighting === "white",
         // TRIX: flags needed at top level
+        "city-banner--infected": props.data.status.isInfected,
         "city-banner--unconnected": !props.data.status.tradeNetworkConnections.length,
         "city-banner--disconnected": props.data.status.tradeNetworkDisconnected,
         "city-banner--capital": props.data.capital.isCapital,
         "city-banner--original-capital": props.data.capital.isOriginalCapital,
         "city-banner--original-capital-curr": props.data.capital.isOriginalCapitalCurrent,
         "city-banner--rival": props.data.identity.isRival,
+        // TRIX: happiness details
+        [props.data.status.happinessStage.class]: true,
       };
     },
     get style() {

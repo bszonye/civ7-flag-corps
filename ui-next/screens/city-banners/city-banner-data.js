@@ -13,11 +13,15 @@ var BannerType = /* @__PURE__ */ ((BannerType2) => {
 })(BannerType || {});
 const happinessStages = [];
 GameInfo.HappinessStages.forEach((row) => {
+  const type = row.HappinessStageType.replace("HAPPINESS_STAGE_", "");
   happinessStages.push({
-    name: row.HappinessStageType.replace("HAPPINESS_STAGE_", "LOC_UI_CITY_DETAILS_"),
-    icon: row.HappinessStageType.replace("HAPPINESS_STAGE_", "YIELD_"),
+    name: "LOC_UI_CITY_DETAILS_" + type,
+    icon: "YIELD_" + type,
     min: row.StageMinThreshold ?? -Infinity,
-    max: row.StageMaxThreshold ?? Infinity
+    max: row.StageMaxThreshold ?? Infinity,
+    // TRIX
+    "class": "city-banner--" + type.toLowerCase(),
+    level: 2 - row.$index,
   });
 });
 function processBuilds(buildQueue, cityProduction) {
@@ -348,24 +352,19 @@ function computeStatusInfo(cityID, location) {
       // TRIX
       townFocusInfo: {},
       tradeNetworkConnections: [],
+      isInfected: false,
+      happinessStage: {},
     } : null;
   }
   const isLocalPlayerCity = cityID.owner === GameContext.localObserverID;
-  let statusIcon = "";
-  let statusTooltip = "";
-  if (city.isInfected) {
-    statusTooltip = "LOC_UI_CITY_DETAILS_INFECTED";
-    statusIcon = `url('${UI.getIconURL("YIELD_PLAGUE", "YIELD")}')`;
-  } else {
-    const happiness = city.Yields?.getYield(YieldTypes.YIELD_HAPPINESS) ?? 0;
-    for (const stage of happinessStages) {
-      if (happiness >= stage.min && happiness <= stage.max) {
-        statusTooltip = stage.name;
-        statusIcon = `url('${UI.getIconURL(stage.icon, "YIELD")}')`;
-        break;
-      }
-    }
-  }
+  const happiness = city.Yields?.getYield(YieldTypes.YIELD_HAPPINESS) ?? 0;
+  const happinessStage = happinessStages
+    .find(stage => stage.min <= happiness && happiness <= stage.max);
+  const isInfected = city.isInfected;
+  const statusTooltip =
+    isInfected ? "LOC_UI_CITY_DETAILS_INFECTED" : happinessStage.name;
+  const statusIcon =
+    `url('${UI.getIconURL(isInfected ? "YIELD_PLAGUE" : happinessStage.icon, "YIELD")}')`;
   const tradeNetworkConnections = [];
   const ids = city.getConnectedCities() ?? [];
   for (const id of ids) {
@@ -425,6 +424,8 @@ function computeStatusInfo(cityID, location) {
     // TRIX
     townFocusInfo,
     tradeNetworkConnections,
+    isInfected,
+    happinessStage,
   };
 }
 function computeFullBannerData(cityID, location) {
