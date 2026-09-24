@@ -43,6 +43,7 @@
   --bz-color-caution: #cea92f;  /* caution = healthbar-medium */
   --bz-color-note: #ff800033;  /* note = orange 20% opacity */
   --bz-color-hostile: #d93a37;  /* sampled from unit flags */
+  --bz-color-hostile-ring: #fc4f4a;  /* brighter version for banners */
 }
 .bz-flags {
   /* geographic colors */
@@ -149,11 +150,12 @@
 .bz-flags.city-banner--citystate .city-banner__city-state-border {
   fxs-border-image-tint: var(--bz-color-neutral);
 }
-.bz-flags.city-banner--friendly .city-banner__city-state-border {
+.bz-flags.city-banner--friendly.city-banner--citystate .city-banner__city-state-border,
+.bz-flags.city-banner--friendly.city-banner--village .city-banner__city-state-border {
   fxs-border-image-tint: var(--bz-color-friendly);
 }
 .bz-flags.city-banner--hostile .city-banner__city-state-border {
-  fxs-border-image-tint: var(--bz-color-hostile);
+  fxs-border-image-tint: var(--bz-color-hostile-ring);
 }
 /* CITY-STATE-RING:
    city-banner__city-state-ring absolute -left-1 -right-1 top-1 bottom-0 */
@@ -350,7 +352,7 @@
   filter: drop-shadow(0 0 0.333rem var(--bz-color-negative));
 }
 .bz-flags.city-banner--ecstatic .city-banner__status-background {
-  background-color: #fef1a1;
+  background-color: white;
   filter: drop-shadow(0 0 0.333rem #fef1a1);
 }
 .bz-flags.city-banner--infected .city-banner__status-background {

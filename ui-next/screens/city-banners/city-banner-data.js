@@ -11,6 +11,13 @@ var BannerType = /* @__PURE__ */ ((BannerType2) => {
   BannerType2["CityState"] = "citystate";
   return BannerType2;
 })(BannerType || {});
+const portraitMoods = {
+  ECSTATIC: "friendly",
+  JOYOUS: "friendly",
+  HAPPY: "neutral",
+  UNHAPPY: "hostile",
+  ANGRY: "hostile",
+};
 const happinessStages = [];
 GameInfo.HappinessStages.forEach((row) => {
   const type = row.HappinessStageType.replace("HAPPINESS_STAGE_", "");
@@ -22,6 +29,7 @@ GameInfo.HappinessStages.forEach((row) => {
     // TRIX
     "class": "city-banner--" + type.toLowerCase(),
     level: 2 - row.$index,
+    mood: portraitMoods[type],
   });
 });
 function processBuilds(buildQueue, cityProduction) {
@@ -172,7 +180,16 @@ function computeIdentity(cityID, location) {
   const leaderType = leader?.leaderType ?? -1;
   const leaderInfo = GameInfo.Leaders.lookup(leaderType);
   const leaderName = leaderInfo?.Name ?? "LOC_LEADER_NONE_NAME";
-  const portraitIcon = leader ? Icon.getLeaderPortraitIcon(leaderType) : "blp:icon_razed";
+  const portraitIcons = leader ? {
+    friendly: UI.getIconURL(leaderInfo.LeaderType, "LEADER_HAPPY"),
+    neutral: UI.getIconURL(leaderInfo.LeaderType),
+    hostile: UI.getIconURL(leaderInfo.LeaderType, "LEADER_ANGRY"),
+  } : {
+    friendly: "blp:icon_razed",
+    neutral: "blp:icon_razed",
+    hostile: "blp:icon_razed",
+  }
+  const portraitIcon = portraitIcons.friendly;
   const isRival = leader && leader.id != GameContext.localObserverID;
   const civ = leader?.civilizationType ?? -1;
   const civInfo = GameInfo.Civilizations.lookup(civ);
@@ -205,10 +222,11 @@ function computeIdentity(cityID, location) {
     playerColorPrimary,
     playerColorSecondary,
     // TRIX
-    playerColorText,
-    playerColorLighting,
     civIcon,
     isRival,
+    playerColorLighting,
+    playerColorText,
+    portraitIcons,
   };
 }
 function computeCapitalInfo(cityID, location) {
@@ -307,10 +325,13 @@ function computeRelationship(playerID) {
   if (!player) {
     return void 0;
   }
+  if (player.Diplomacy?.isAtWarWith(localPlayerID)) return "hostile";  // TRIX
+  if (player.Diplomacy?.hasAllied(localPlayerID)) return "friendly";  // TRIX
   let relationship = Game.IndependentPowers.getIndependentRelationship(playerID, localPlayerID);
   if (player.isMinor) {
     const suzerain = player.Influence?.hasSuzerain ? Players.get(player.Influence.getSuzerain()) : null;
     if (suzerain) {
+      if (suzerain.id == localPlayerID) return "friendly";
       relationship = Game.IndependentPowers.getIndependentRelationship(suzerain.id, localPlayerID);
     }
   }
