@@ -522,8 +522,8 @@ class bzCityTooltip {
             if (this.city.isTown) {
                 this.settlementType = Locale.compose(
                     "LOC_BZ_PARENTHESIS",
-                    `{${this.settlementType}}[n]`,
-                    this.townFocus.name
+                    `{${this.townFocus.name}}[n]`,
+                    this.settlementType
                 );
             }
         } else if (this.city.isTown) {
