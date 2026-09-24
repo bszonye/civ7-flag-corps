@@ -259,16 +259,16 @@
   background-image: url(blp:fi_city_capital_icon_og_64);
   filter: drop-shadow(0 1px 0.0555555556rem black) saturate(0);
 }
-/* BZ-CIV-SYMBOL: city-banner__bz-civ-symbol size-8 */
-.bz-flags .city-banner__bz-civ-symbol {
+/* BZ-CIV-SYMBOL: bz-city-banner__civ-symbol size-8 */
+.bz-flags .bz-city-banner__civ-symbol {
   margin-left: 0.1111111111rem;
   margin-right: -0.1111111111rem;
   fxs-background-image-tint: var(--player-color-secondary);
 }
-.bz-flags.bz-black-shadow .city-banner__bz-civ-symbol {
+.bz-flags.bz-black-shadow .bz-city-banner__civ-symbol {
   filter: fxs-color-tint(var(--player-color-secondary)) drop-shadow(1px 1px 0 #0009);
 }
-.bz-flags.bz-white-highlight .city-banner__bz-civ-symbol {
+.bz-flags.bz-white-highlight .bz-city-banner__civ-symbol {
   filter: fxs-color-tint(var(--player-color-secondary)) drop-shadow(-1px -1px 0 #fff9);
 }
 /* NAME: city-banner__name font-title text-base uppercase */
@@ -504,17 +504,17 @@
   border-radius: 50% / 0.1666666667rem;
 }
 /* BZ-TOWN-FOCUS-CONTAINER:
-   city-banner__bz-town-focus-container relative size-8 justify-center */
-.bz-flags .city-banner__bz-town-focus-container {
+   bz-city-banner__town-focus-container relative size-8 justify-center */
+.bz-flags .bz-city-banner__town-focus-container {
   display: none;
 }
-.bz-flags.city-banner--town .city-banner__bz-town-focus-container {
+.bz-flags.city-banner--town .bz-city-banner__town-focus-container {
   display: flex;
 }
 /* BZ-TOWN-FOCUS-BACKGROUND:
-   city-banner__bz-town-focus-bg bg-center bg-cover bg-no-repeat size-9
+   bz-city-banner__town-focus-bg bg-center bg-cover bg-no-repeat size-9
    absolute flex */
-.bz-flags.city-banner--town .city-banner__bz-town-focus-bg {
+.bz-flags.city-banner--town .bz-city-banner__town-focus-bg {
   top: -0.0833333333rem;
   left: -0.1388888889rem;
   background-image: url(blp:hud_sub_circle_bk);
@@ -523,20 +523,20 @@
   /* background-color: #fffa;  /* DEBUG */
 }
 /* BZ-TOWN-FOCUS-ICON:
-   city-banner__bz-town-focus-icon bg-center bg-cover bg-no-repeat
+   bz-city-banner__town-focus-icon bg-center bg-cover bg-no-repeat
    size-9 absolute */
-.bz-flags.city-banner--town .city-banner__bz-town-focus-icon {
+.bz-flags.city-banner--town .bz-city-banner__town-focus-icon {
   background-image: url(blp:focus_growth);
   background-size: 100%;
   top: -0.0277777778rem;
   left: 0.0277777778rem;
   /* background-color: #fffa;  /* DEBUG */
 }
-.bz-flags .city-banner__bz-town-focus-icon[bz-town-focus="PROJECT_TOWN_URBAN_CENTER"] {
+.bz-flags .bz-city-banner__town-focus-icon[bz-town-focus="PROJECT_TOWN_URBAN_CENTER"] {
   top: -0.0277777778rem;
   left: 0.0555555556rem;
 }
-.bz-flags .city-banner__bz-town-focus-icon.bz-paused-focus {
+.bz-flags .bz-city-banner__town-focus-icon.bz-paused-focus {
   filter: saturate(0) contrast(0.5) brightness(1.5) fxs-color-tint(#60c000);
 }
 /* CITY-STATE-CONTAINER: city-banner__city-state-container justify-center */

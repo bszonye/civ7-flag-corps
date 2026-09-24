@@ -3,9 +3,14 @@ import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
 import { getTownFocusInfo } from '/bz-flag-corps/ui-next/screens/city-banners/bz-city-banner.js';
 
 const BZ_TARGETS = [
+    ".bz-city-banner__conquered",
+    ".bz-city-banner__town-focus-container",
+    ".city-banner__capital-star",
+    ".city-banner__city-state-container",
+    ".city-banner__original-capital-curr-star",
+    ".city-banner__original-capital-star",
     ".city-banner__queue-container",
     ".city-banner__status-religion",
-    ".bz-city-banner__conquered",
 ];
 
 // custom & adapted icons

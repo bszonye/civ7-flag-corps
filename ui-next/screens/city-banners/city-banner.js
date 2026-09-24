@@ -256,7 +256,7 @@ const CityBannerImpl = (props) => {
                       },
                       get children() {
                         return createComponent(Icon, {
-                          "class": "city-banner__bz-civ-symbol size-8",
+                          "class": "bz-city-banner__civ-symbol size-8",
                           isUrl: true,
                           get name() {
                             return props.data.identity.civIcon;
@@ -434,7 +434,7 @@ const CityBannerImpl = (props) => {
                     return props.data.identity.bannerType == BannerType.Town && props.data.status.townFocusInfo.isSpecialized;
                   },
                   get children() {
-                    const tmplFocus = template(`<div class="city-banner__bz-town-focus-container relative size-8 justify-center"><div class="city-banner__bz-town-focus-bg bg-center bg-cover bg-no-repeat size-9 absolute flex"></div></div>`);
+                    const tmplFocus = template(`<div class="bz-city-banner__town-focus-container relative size-8 justify-center"><div class="bz-city-banner__town-focus-bg bg-center bg-cover bg-no-repeat size-9 absolute flex"></div></div>`);
                     var elFocus = tmplFocus(), elFocusBG = elFocus.firstChild;
                     insert(elFocusBG, createComponent(Tooltip.Text, {
                       get text() {
@@ -442,7 +442,7 @@ const CityBannerImpl = (props) => {
                       },
                       get children() {
                         const info = props.data.status.townFocusInfo;
-                        const tmplFocusIcon = template(`<div class="city-banner__bz-town-focus-icon bg-center bg-cover bg-no-repeat size-9 absolute"></div>`);
+                        const tmplFocusIcon = template(`<div class="bz-city-banner__town-focus-icon bg-center bg-cover bg-no-repeat size-9 absolute"></div>`);
                         var elFocusIcon = tmplFocusIcon();
                         use((el) => {
                           createEffect(() => {
