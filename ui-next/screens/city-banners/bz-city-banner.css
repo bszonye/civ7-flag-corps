@@ -538,7 +538,7 @@
   top: -0.0277777778rem;
   left: 0.0555555556rem;
 }
-.bz-flags .bz-city-banner__town-focus-icon.bz-paused-focus {
+.bz-flags .bz-city-banner__town-focus-icon.bz-inactive-focus {
   filter: saturate(0) contrast(0.5) brightness(1.5) fxs-color-tint(#60c000);
 }
 /* CITY-STATE-CONTAINER: city-banner__city-state-container justify-center */

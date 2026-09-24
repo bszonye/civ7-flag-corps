@@ -443,7 +443,7 @@ const CityBannerImpl = (props) => {
                     var elFocus = tmplFocus(), elFocusBG = elFocus.firstChild;
                     insert(elFocusBG, createComponent(Tooltip.Text, {
                       get text() {
-                        return props.data.status.townFocusInfo?.Name;
+                        return props.data.status.townFocusInfo?.tooltip;
                       },
                       get children() {
                         const info = props.data.status.townFocusInfo;
@@ -452,7 +452,7 @@ const CityBannerImpl = (props) => {
                         use((el) => {
                           createEffect(() => {
                             el.setAttribute("bz-town-focus", info.ProjectType);
-                            el.classList.toggle("bz-paused-focus", info.isPaused);
+                            el.classList.toggle("bz-inactive-focus", !info.isActive);
                           });
                         }, elFocusIcon);
                         const icon = UI.getIconCSS(info.ProjectType);

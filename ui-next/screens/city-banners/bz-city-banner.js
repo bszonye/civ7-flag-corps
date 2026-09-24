@@ -104,16 +104,26 @@ function getTownFocusInfo(city) {
     )?.Projects;
     return projects?.length == 1 ? projects[0] : -1;
   })();
-  const info = {
+  const grow = {
     ProjectType: "PROJECT_GROWTH",
     Name: "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH",
     Description: "LOC_PROJECT_TOWN_FOOD_INCREASE_DESCRIPTION",
-    ...GameInfo.Projects.lookup(id),
-  };
-  // TODO: build tooltip with description and status
+  }
+  const info = { ...grow, ...GameInfo.Projects.lookup(id) };
   info.isGrowing = city.Growth.growthType == GrowthTypes.EXPAND;
   info.isSpecialized = info.ProjectType != "PROJECT_GROWTH";
-  info.isPaused = info.isGrowing && info.isSpecialized;
+  info.isActive = info.isSpecialized && !info.isGrowing;
+  const tip = "LOC_PEDIA_CONCEPTS_TOWN_FOCUS_TOOLTIP";
+  if (info.isGrowing && info.isSpecialized) {
+    const inactive =
+      Locale.compose("LOC_BZ_PARENTHESIS", info.Name, "LOC_VOLCANO_NOT_ACTIVE");
+    info.tooltip = [
+      `[tip:${tip}]{${grow.Name}}[/tip][n]{${grow.Description}}`,
+      `[tip:${tip}]${inactive}[/tip][n]{${info.Description}}`,
+    ].join("[n] [n]");
+  } else {
+    info.tooltip = `[tip:${tip}]{${info.Name}}[/tip][n]{${info.Description}}`;
+  }
   return info;
 }
 

@@ -326,7 +326,7 @@ function getTownFocus(city) {
     const info = getTownFocusInfo(city);
     if (info) {
         info.name = info?.Name ?? "LOC_CAPITAL_SELECT_PROMOTION_NONE";
-        info.note = info.isPaused ? "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH" : null;
+        info.note = info.isActive ? null : "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH";
         info.icon = info.ProjectType;
     }
     return info;
@@ -517,8 +517,15 @@ class bzCityTooltip {
             this.settlementType = this.city.isOriginalCapital ?
                 "LOC_CAPITAL_SELECT_PROMOTION_CAPITAL" :
                 "LOC_UI_CITY_CAPITAL_CURR_DESC";
-        } else if (this.city.isOriginalCapital && !this.townFocus?.isSpecialized) {
+        } else if (this.city.isOriginalCapital) {
             this.settlementType = "LOC_UI_CITY_CAPITAL_OG_DESC";
+            if (this.city.isTown) {
+                this.settlementType = Locale.compose(
+                    "LOC_BZ_PARENTHESIS",
+                    `{${this.settlementType}}[n]`,
+                    this.townFocus.name
+                );
+            }
         } else if (this.city.isTown) {
             this.settlementType = this.townFocus.name;
         } else {
