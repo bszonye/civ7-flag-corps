@@ -22,7 +22,8 @@
   --bz-color-accent-6: #05070d;
   --bz-color-accent: var(--bz-color-accent-5);
   --bz-color-negative: #dc1e46;
-  --bz-color-negative-text: #ff6644;  /* brighter red for black backgrounds */
+  --bz-color-negative-fg: #ff6644;  /* brighter red for black backgrounds */
+  --bz-color-negative-bg: #46000e;  /* L25 for background contrast */
   --bz-color-pill-background: var(--bz-color-primary-4);
   --bz-color-pill-border: #53565d;
 }
@@ -69,13 +70,13 @@
   --bz-color-happiness: #f5993d;   /*  30° 90 60 orange */
   --bz-color-diplomacy: #afb7cf;   /* 225° 25 75 gray */
   /* yields adjusted to L70 for text contrast */
-  --bz-color-food-text: #80b34d;
-  --bz-color-production-text: #e87b64;  /* L70 */
-  --bz-color-gold-text: #f6ce55;
-  --bz-color-science-text: #79b3ee;     /* L75 */
-  --bz-color-culture-text: #8d92f9;     /* L70 */
-  --bz-color-happiness-text: #f5993d;
-  --bz-color-diplomacy-text: #afb7cf;
+  --bz-color-food-fg: #80b34d;
+  --bz-color-production-fg: #e87b64;  /* L70 */
+  --bz-color-gold-fg: #f6ce55;
+  --bz-color-science-fg: #79b3ee;     /* L75 */
+  --bz-color-culture-fg: #8d92f9;     /* L70 */
+  --bz-color-happiness-fg: #f5993d;
+  --bz-color-diplomacy-fg: #afb7cf;
   /* yields adjusted to L35 for background contrast */
   --bz-color-food-bg: #294307;
   --bz-color-production-bg: #580c00;  /* L30 */
@@ -95,13 +96,13 @@
   --bz-color-diplomatic: #255be4;
   --bz-color-crisis: #af1b1c;
   /* yields adjusted to L70 for text contrast */
-  --bz-color-militaristic-text: #ff8579;  /* L75 */
-  --bz-color-scientific-text: #72b8de;  /* L75 */
-  --bz-color-economic-text: #ffd553;
-  --bz-color-cultural-text: #cc6bfe;
-  --bz-color-expansionist-text: #09c01f;
-  --bz-color-diplomatic-text: #87adfa;  /* L75 */
-  --bz-color-crisis-text: #ff8579;  /* L75 */
+  --bz-color-militaristic-fg: #ff8579;  /* L75 */
+  --bz-color-scientific-fg: #72b8de;  /* L75 */
+  --bz-color-economic-fg: #ffd553;
+  --bz-color-cultural-fg: #cc6bfe;
+  --bz-color-expansionist-fg: #09c01f;
+  --bz-color-diplomatic-fg: #87adfa;  /* L75 */
+  --bz-color-crisis-fg: #ff8579;  /* L75 */
   /* yields adjusted to L35 for background contrast */
   --bz-color-militaristic-bg: #5c0205;  /* L30 */
   --bz-color-scientific-bg: #054059;
@@ -415,7 +416,7 @@
 }
 .bz-flags.city-banner--disconnected .city-banner__trade-network-background {
   border-color: #dc1e46;  /* var(--bz-color-negative) */
-  background-color: #46000e;  /* var(--bz-color-negative) at L25 */
+  background-color: var(--bz-color-negative-bg);
 }
 .bz-flags.city-banner--disconnected .city-banner__trade-network-icon {
   background-image: url(blp:fi_trade_route_64);
@@ -555,10 +556,10 @@
   --bz-color-growth: var(--bz-color-food-bg);
 }
 .bz-flags [bz-town-focus="PROJECT_GROWTH"] .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-growth);
+  background-color: var(--bz-color-expansionist-bg);
 }
 .bz-flags .bz-inactive-focus .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-growth);
+  background-color: var(--bz-color-expansionist-bg);
 }
 /* BZ-TOWN-FOCUS-ICON:
    bz-city-banner__town-focus-icon bg-center bg-cover bg-no-repeat
@@ -575,6 +576,7 @@
 }
 .bz-flags .bz-inactive-focus .bz-city-banner__town-focus-icon {
   filter: saturate(0) contrast(0.35) brightness(1.8) fxs-color-tint(#60c000);
+  filter: saturate(0) contrast(0.35) brightness(1.8) fxs-color-tint(var(--bz-color-expansionist));
 }
 /* CITY-STATE-CONTAINER: city-banner__city-state-container justify-center */
 .bz-flags .city-banner__city-state-container {
