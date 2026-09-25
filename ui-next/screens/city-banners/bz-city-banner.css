@@ -552,14 +552,6 @@
   border-style: solid;
   /* background-color: #fffa;  /* DEBUG */
 }
-.bz-flags {
-  --bz-color-growth: #5db60c;  /* sampled from PROJECT_GROWTH */
-  --bz-color-growth-fg: #67cb06;  /* L75 */
-  --bz-color-growth-bg: #204503;  /* L35 */
-}
-.bz-flags .bz-inactive-focus .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-primary-4);
-}
 .bz-flags [bz-town-focus="PROJECT_GROWTH"] .bz-city-banner__town-focus-bg {
   background-color: var(--bz-color-primary-4);
 }
@@ -592,6 +584,9 @@
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_URBAN_CENTER"] .bz-city-banner__town-focus-bg {
   background-color: var(--bz-color-diplomatic);
+}
+.bz-flags .bz-inactive-focus .bz-city-banner__town-focus-bg {
+  background-color: var(--bz-color-primary-4);
 }
 /* BZ-TOWN-FOCUS-ICON:
    bz-city-banner__town-focus-icon bg-center bg-cover bg-no-repeat
@@ -637,6 +632,11 @@
 .bz-flags [bz-town-focus="PROJECT_TOWN_URBAN_CENTER"] .bz-city-banner__town-focus-icon {
   left: -0.25rem;
   filter: brightness(1.2);
+}
+.bz-flags {
+  --bz-color-growth: #5db60c;  /* sampled from PROJECT_GROWTH */
+  --bz-color-growth-fg: #67cb06;  /* L75 */
+  --bz-color-growth-bg: #204503;  /* L35 */
 }
 .bz-flags .bz-inactive-focus .bz-city-banner__town-focus-icon {
   filter: saturate(0) brightness(1.5) fxs-color-tint(var(--bz-color-growth-fg));
