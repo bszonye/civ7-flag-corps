@@ -436,7 +436,7 @@ const CityBannerImpl = (props) => {
                 }), null);
                 insert(_el$6, createComponent(Show, {  // TRIX: town focus
                   get when() {
-                    return props.data.identity.bannerType == BannerType.Town;  // TODO: && props.data.status.townFocusInfo.isSpecialized;
+                    return props.data.identity.bannerType == BannerType.Town && props.data.status.townFocusInfo.isSpecialized;
                   },
                   get children() {
                     const tmplFocus = template(`<div class="bz-city-banner__town-focus-container relative size-8 justify-center items-center"><div class="bz-city-banner__town-focus-bg bg-center bg-cover bg-no-repeat size-7 absolute flex"></div></div>`);

@@ -552,49 +552,46 @@
   border-style: solid;
   /* background-color: #fffa;  /* DEBUG */
 }
-.bz-flags {  /* TODO: move to top */
+.bz-flags {
   --bz-color-growth: #5db60c;  /* sampled from PROJECT_GROWTH */
   --bz-color-growth-fg: #67cb06;  /* L75 */
   --bz-color-growth-bg: #204503;  /* L35 */
 }
 .bz-flags .bz-inactive-focus .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-primary-4);  /* TODO */
+  background-color: var(--bz-color-primary-4);
 }
 .bz-flags [bz-town-focus="PROJECT_GROWTH"] .bz-city-banner__town-focus-bg {
   background-color: var(--bz-color-primary-4);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_FACTORY"] .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-primary-4);  /* TODO */
+  background-color: #d2a90d;  /* var(--bz-color-economic) L80 */
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_FISHING"] .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-primary-4);  /* TODO */
+  background-color: var(--bz-color-food);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_FORT"] .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-primary-4);  /* TODO */
+  background-color: var(--bz-color-militaristic);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_GRANARY"] .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-primary-4);  /* TODO */
+  background-color: var(--bz-color-food);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_INN"] .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-primary-4);  /* TODO */
+  background-color: var(--bz-color-diplomacy);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_PRODUCTION"] .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-primary-4);  /* TODO */
+  background-color: var(--bz-color-production);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_RESORT"] .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-primary-4);  /* TODO */
+  background-color: var(--bz-color-happiness);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_TEMPLE"] .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-primary-4);  /* TODO */
+  background-color: var(--bz-color-culture);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_TRADE"] .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-primary-4);  /* TODO */
+  background-color: #e1b93c;  /* var(--bz-color-gold) L80 */
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_URBAN_CENTER"] .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-primary-4);  /* TODO */
-}
-.bz-flags [bz-town-focus="PROJECT_TOWN_URBAN_CENTER"] .bz-city-banner__town-focus-bg {
-  background-color: var(--bz-color-primary-4);  /* TODO */
+  background-color: var(--bz-color-diplomatic);
 }
 /* BZ-TOWN-FOCUS-ICON:
    bz-city-banner__town-focus-icon bg-center bg-cover bg-no-repeat
@@ -604,42 +601,42 @@
   left: -0.2777777778rem;
   background-image: url(blp:focus_growth);
   background-size: 100%;
-  filter: brightness(1.0);  /* TODO */
+  filter: brightness(1.0);
   /* background-color: #fffa;  /* DEBUG */
 }
 .bz-flags [bz-town-focus="PROJECT_GROWTH"] .bz-city-banner__town-focus-icon {
-  filter: brightness(1.0);  /* TODO */
+  filter: brightness(1.0);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_FACTORY"] .bz-city-banner__town-focus-icon {
-  filter: brightness(1.0);  /* TODO */
+  filter: brightness(1.2);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_FISHING"] .bz-city-banner__town-focus-icon {
-  filter: brightness(1.0);  /* TODO */
+  filter: brightness(1.0);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_FORT"] .bz-city-banner__town-focus-icon {
-  filter: brightness(1.0);  /* TODO */
+  filter: brightness(1.2);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_GRANARY"] .bz-city-banner__town-focus-icon {
-  filter: brightness(1.0);  /* TODO */
+  filter: brightness(1.0);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_INN"] .bz-city-banner__town-focus-icon {
-  filter: brightness(1.0);  /* TODO */
+  filter: brightness(1.0);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_PRODUCTION"] .bz-city-banner__town-focus-icon {
-  filter: brightness(1.0);  /* TODO */
+  filter: brightness(1.2);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_RESORT"] .bz-city-banner__town-focus-icon {
-  filter: brightness(1.0);  /* TODO */
+  filter: brightness(1.0);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_TEMPLE"] .bz-city-banner__town-focus-icon {
-  filter: brightness(1.0);  /* TODO */
+  filter: brightness(1.0);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_TRADE"] .bz-city-banner__town-focus-icon {
-  filter: brightness(1.0);  /* TODO */
+  filter: brightness(1.0);
 }
 .bz-flags [bz-town-focus="PROJECT_TOWN_URBAN_CENTER"] .bz-city-banner__town-focus-icon {
   left: -0.25rem;
-  filter: brightness(1.0);  /* TODO */
+  filter: brightness(1.2);
 }
 .bz-flags .bz-inactive-focus .bz-city-banner__town-focus-icon {
   filter: saturate(0) brightness(1.5) fxs-color-tint(var(--bz-color-growth-fg));
