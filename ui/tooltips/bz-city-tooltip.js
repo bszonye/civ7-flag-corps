@@ -415,7 +415,6 @@ class bzCityTooltip {
         this.target = banner;
         this.subtarget = subtarget;
         if (this.target) {
-            this.location = JSON.parse(banner.getAttribute("data-city-location"));
             const owner = banner.getAttribute("data-city-owner") ?? "-1";
             const localId = banner.getAttribute("data-city-local-id") ?? "-1";
             this.city = Cities.get({
@@ -423,6 +422,8 @@ class bzCityTooltip {
                 id: JSON.parse(localId),
                 type: 1,
             });
+            this.location = this.city ? this.city.location :
+                JSON.parse(banner.getAttribute("data-city-location"));
         }
         this.updateQueued = false;
         return true;
