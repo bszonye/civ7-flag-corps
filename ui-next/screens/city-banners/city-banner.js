@@ -436,25 +436,25 @@ const CityBannerImpl = (props) => {
                 }), null);
                 insert(_el$6, createComponent(Show, {  // TRIX: town focus
                   get when() {
-                    return props.data.identity.bannerType == BannerType.Town && props.data.status.townFocusInfo.isSpecialized;
+                    return props.data.identity.bannerType == BannerType.Town;  // TODO: && props.data.status.townFocusInfo.isSpecialized;
                   },
                   get children() {
-                    const tmplFocus = template(`<div class="bz-city-banner__town-focus-container relative size-8 justify-center"><div class="bz-city-banner__town-focus-bg bg-center bg-cover bg-no-repeat size-9 absolute flex"></div></div>`);
+                    const tmplFocus = template(`<div class="bz-city-banner__town-focus-container relative size-8 justify-center items-center"><div class="bz-city-banner__town-focus-bg bg-center bg-cover bg-no-repeat size-7 absolute flex"></div></div>`);
                     var elFocus = tmplFocus(), elFocusBG = elFocus.firstChild;
+                    const info = props.data.status.townFocusInfo;
+                    use((el) => {
+                      createEffect(() => {
+                        el.setAttribute("bz-town-focus", info.ProjectType);
+                        el.classList.toggle("bz-inactive-focus", info.isSpecialized && !info.isActive);
+                      });
+                    }, elFocus);
                     insert(elFocusBG, createComponent(Tooltip.Text, {
                       get text() {
                         return props.data.status.townFocusInfo?.tooltip;
                       },
                       get children() {
-                        const info = props.data.status.townFocusInfo;
                         const tmplFocusIcon = template(`<div class="bz-city-banner__town-focus-icon bg-center bg-cover bg-no-repeat size-9 absolute"></div>`);
                         var elFocusIcon = tmplFocusIcon();
-                        use((el) => {
-                          createEffect(() => {
-                            el.setAttribute("bz-town-focus", info.ProjectType);
-                            el.classList.toggle("bz-inactive-focus", !info.isActive);
-                          });
-                        }, elFocusIcon);
                         const icon = UI.getIconCSS(info.ProjectType);
                         createRenderEffect((_$p) => (_$p = icon) != null ? elFocusIcon.style.setProperty("background-image", _$p) : elFocusIcon.style.removeProperty("background-image"));
                         return elFocusIcon;
