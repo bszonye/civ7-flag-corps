@@ -1,16 +1,22 @@
 import TooltipManager from '/core/ui/tooltips/tooltip-manager.js';
+import { getTownFocusInfo } from '/bz-flag-corps/ui-next/screens/city-banners/bz-city-banner.js';
 
-var bzTarget;
-(function (bzTarget) {
-    bzTarget[bzTarget["GROWTH"] = '.bz-city-growth'] = "GROWTH";
-    bzTarget[bzTarget["PRODUCTION"] = '.bz-city-queue'] = "PRODUCTION";
-})(bzTarget || (bzTarget = {}));
+const BZ_TARGETS = [
+    ".bz-city-banner__conquered",
+    ".bz-city-banner__town-focus-container",
+    ".city-banner__capital-star",
+    ".city-banner__city-state-container",
+    ".city-banner__original-capital-curr-star",
+    ".city-banner__original-capital-star",
+    ".city-banner__queue-container",
+    ".city-banner__status-religion",
+];
 
 // custom & adapted icons
 const BZ_ICON_RURAL = "CITY_RURAL";  // urban population/yield
 const BZ_ICON_URBAN = "CITY_URBAN";  // rural population/yield
-const BZ_ICON_SPECIAL = "url('specialist_tile_pip_full')";  // specialists
-const BZ_ICON_TIMER = "url('hud_turn-timer')";
+const BZ_ICON_SPECIAL = "url(blp:specialist_tile_pip_full)";  // specialists
+const BZ_ICON_TIMER = "url(blp:hud_turn-timer)";
 
 // color palette
 const BZ_COLOR = {
@@ -130,7 +136,7 @@ const BZ_HEAD_STYLE = [
 `,
 ];
 BZ_HEAD_STYLE.map(style => {
-    const e = document.createElement('style');
+    const e = document.createElement("style");
     e.textContent = style;
     document.head.appendChild(e);
 });
@@ -143,11 +149,11 @@ function docBanner(text, style, padding) {
     banner.style.paddingLeft = banner.style.paddingRight = metrics.padding.x.css;
     banner.style.marginLeft = banner.style.marginRight = `-${metrics.padding.x.css}`;
     // center content vertically and horizontally
-    banner.style.display = 'flex';
-    banner.style.flexDirection = 'column';
-    banner.style.justifyContent = 'center';
-    banner.style.alignItems = 'center';
-    banner.style.textAlign = 'center';
+    banner.style.display = "flex";
+    banner.style.flexDirection = "column";
+    banner.style.justifyContent = "center";
+    banner.style.alignItems = "center";
+    banner.style.textAlign = "center";
     // make sure the banner is tall enough for end bumpers
     banner.style.minHeight = metrics.bumper.css;
     // set the text
@@ -180,13 +186,13 @@ function docList(text, style=null, size=metrics.body) {
     // create a paragraph of rules text
     // note: very finicky! test changes thoroughly (see docRules)
     const wrap = document.createElement("div");
-    wrap.style.display = 'flex';
-    wrap.style.alignSelf = 'center';
-    wrap.style.textAlign = 'center';
+    wrap.style.display = "flex";
+    wrap.style.alignSelf = "center";
+    wrap.style.textAlign = "center";
     wrap.style.lineHeight = size.ratio;
     const list = document.createElement("div");
-    list.style.display = 'flex';
-    list.style.flexDirection = 'column';
+    list.style.display = "flex";
+    list.style.flexDirection = "column";
     if (size.width) list.style.maxWidth = size.width.css;
     for (const item of text) {
         const row = document.createElement("div");
@@ -206,7 +212,7 @@ function docRules(text, style=null, bg=BZ_COLOR.rules) {
     // function and docList set up flex boxes and style properties to
     // center text with all combinations (with/without styling and
     // wrapped/unwrapped text).
-    const size = !text.some(t => Locale.stylize(t).includes('<fxs-font-icon')) ?
+    const size = !text.some(t => Locale.stylize(t).includes("<fxs-font-icon")) ?
         metrics.body : metrics.rules;
     const list = docList(text, style, metrics.rules);
     list.style.lineHeight = size.ratio;
@@ -222,7 +228,7 @@ function docRules(text, style=null, bg=BZ_COLOR.rules) {
 function docText(text, style) {
     const e = document.createElement("div");
     if (style) e.classList.value = style;
-    e.setAttribute('data-l10n-id', text);
+    e.setAttribute("data-l10n-id", text);
     return e;
 }
 function docTimer(size, resize, ...style) {
@@ -279,19 +285,19 @@ function getFontMetrics() {
         const digits = (n) => sizes(n * figure.rem, Math.ceil);
         return { size, ratio, cap, spacing, leading, margin, figure, digits, };
     }
-    const head = font('sm', 1.25);
-    const body = font('xs', 1.25);
-    const note = font('2xs', 1);
-    const rules = font('xs');  // is this needed?
+    const head = font("sm", 1.25);
+    const body = font("xs", 1.25);
+    const note = font("2xs", 1);
+    const rules = font("xs");  // is this needed?
     rules.width = sizes(BZ_RULES_WIDTH);
-    const table = font('xs');
+    const table = font("xs");
     const yields = font(8/9);
     const radius = sizes(2/3 * padding.rem);
     radius.content = sizes(radius.rem);
     radius.tooltip = sizes(radius.rem + border.rem);
     // minimum end banner height to avoid radius glitches
     const bumper = sizes(Math.max(table.spacing.rem, 2*radius.rem));
-    const isIdeographic = Locale.getCurrentDisplayLocale().startsWith('zh_');
+    const isIdeographic = Locale.getCurrentDisplayLocale().startsWith("zh_");
     return {
         sizes, font,
         padding, margin, border,
@@ -316,24 +322,22 @@ function getReligionInfo(id) {
     return { name, icon, info, };
 }
 function getTownFocus(city) {
-    const ptype = city.Growth?.projectType ?? null;
-    const info = ptype && GameInfo.Projects.lookup(ptype);
-    const isGrowing = !info || city.Growth?.growthType == GrowthTypes.EXPAND;
-    const town = "LOC_CAPITAL_SELECT_PROMOTION_NONE";
-    const growth = "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH";
-    const name = info?.Name ?? town;
-    const note = isGrowing && name != growth ? growth : null;
-    const icon = isGrowing ? "PROJECT_GROWTH" : info.ProjectType;
-    return { isGrowing, name, note, icon, info, };
+    const info = getTownFocusInfo(city);
+    if (info) {
+        info.name = info?.Name ?? "LOC_CAPITAL_SELECT_PROMOTION_NONE";
+        info.note = info.isActive ? null : "LOC_UI_FOOD_CHOOSER_FOCUS_GROWTH";
+        info.icon = info.ProjectType;
+    }
+    return info;
 }
 const BZ_PRELOADED_ICONS = {};
 function preloadIcon(icon, context) {
     if (!icon) return;
     const url = icon.startsWith("url(") ? icon : UI.getIcon(icon, context);
-    const name = url.replace(/url|[(\042\047)]/g, '');  // \042\047 = quotation marks
+    const name = url.replace(/url|[(\042\047)]/g, "");  // \042\047 = quotation marks
     if (!name || name in BZ_PRELOADED_ICONS) return;
     BZ_PRELOADED_ICONS[name] = true;
-    Controls.preloadImage(name, 'plot-tooltip');
+    Controls.preloadImage(name, "plot-tooltip");
 }
 function setStyle(element, style, padding) {
     if (!element || !style) return;
@@ -355,10 +359,10 @@ class bzCityTooltip {
         this.city = null;
         this.location = null;
         // document root
-        this.tooltip = document.createElement('fxs-tooltip');
+        this.tooltip = document.createElement("fxs-tooltip");
         this.tooltip.classList.value = "bz-tooltip bz-city-tooltip max-w-96";
         this.tooltip.style.lineHeight = metrics.table.ratio;
-        this.container = document.createElement('div');
+        this.container = document.createElement("div");
         this.container.classList.value = "relative font-body text-xs";
         this.tooltip.appendChild(this.container);
         // point-of-view info
@@ -382,7 +386,7 @@ class bzCityTooltip {
         this.totalYields = 0;
         Loading.runWhenFinished(() => {
             for (const y of GameInfo.Yields) {
-                // Controls.preloadImage(url, 'plot-tooltip');
+                // Controls.preloadImage(url, "plot-tooltip");
                 preloadIcon(`${y.YieldType}`, "YIELD");
             }
             const icons = [
@@ -399,29 +403,27 @@ class bzCityTooltip {
     getHTML() { return this.tooltip; }
     isUpdateNeeded(target) {
         // first check for a subtarget
-        const sub = [bzTarget.GROWTH, bzTarget.PRODUCTION];
-        const subtarget = sub.find(t => target.closest(t)) ?? null;
+        const subtarget = BZ_TARGETS.find(t => target.closest(t)) ?? null;
         // get main target, if possible
         const banner =
-            target.closest('[data-tooltip-content]') ??
-            target.closest('[data-tooltip-style="bz-city-tooltip"]');
-        if (banner?.component == this.target && subtarget == this.subtarget &&
-            !this.updateQueued) return false;
+            target.closest("[data-tooltip-content]") ??
+            target.closest("[data-tooltip-style='bz-city-tooltip']");
+        if (banner == this.target && subtarget == this.subtarget && !this.updateQueued) {
+            return false;
+        }
         // set target, city, and location
-        this.target = banner?.component ?? null;
+        this.target = banner;
         this.subtarget = subtarget;
         if (this.target) {
-            this.city = this.target.city;
-            if (this.city == null) {
-                const owner = banner.getAttribute("data-city-owner") ?? "-1";
-                const localId = banner.getAttribute("data-city-local-id") ?? "-1";
-                this.city = Cities.get({
-                    owner: JSON.parse(owner),
-                    id: JSON.parse(localId),
-                    type: 1,
-                });
-            }
-            this.location = this.city?.location ?? this.target.location ?? null;
+            const owner = banner.getAttribute("data-city-owner") ?? "-1";
+            const localId = banner.getAttribute("data-city-local-id") ?? "-1";
+            this.city = Cities.get({
+                owner: JSON.parse(owner),
+                id: JSON.parse(localId),
+                type: 1,
+            });
+            this.location = this.city ? this.city.location :
+                JSON.parse(banner.getAttribute("data-city-location"));
         }
         this.updateQueued = false;
         return true;
@@ -429,16 +431,14 @@ class bzCityTooltip {
     isBlank() {
         if (!this.target) return true;
         // yield to vanilla tooltips over the progress meters
-        if (this.subtarget == bzTarget.GROWTH) return true;
-        if (this.subtarget == bzTarget.PRODUCTION) return true;
+        if (this.subtarget) return true;
         // hide the tooltip over elements with tooltip content
-        if (this.target.Root.getAttribute("data-tooltip-content")) return true;
-        if (this.subtarget == bzTarget.PRODUCTION) return this.city.BuildQueue.isEmpty;
+        if (this.target.getAttribute("data-tooltip-content")) return true;
         return false;
     }
     reset() {
         // document root
-        this.container.innerHTML = '';
+        this.container.innerHTML = "";
         // point-of-view info
         this.observerID = GameContext.localObserverID;
         this.observer = Players.get(this.observerID);
@@ -478,11 +478,10 @@ class bzCityTooltip {
     render() {
         // update metrics
         metrics = getFontMetrics();
-        const border = this.tooltip.querySelector('.img-tooltip-border');
+        const border = this.tooltip.querySelector(".img-tooltip-border");
         if (border) border.borderRadius = metrics.radius.tooltip.css;
         // yield to vanilla tooltips over the progress meters
-        if (this.subtarget == bzTarget.GROWTH) return;
-        if (this.subtarget == bzTarget.PRODUCTION) return;
+        if (this.subtarget) return;
         // render main tooltip
         this.renderSettlement();
         this.renderConnections();
@@ -503,6 +502,7 @@ class bzCityTooltip {
             this.originalOwner = Players.get(this.city.originalOwner);
         }
         // settlement type
+        this.townFocus = getTownFocus(this.city);
         if (this.owner.isIndependent) {
             // village, encampement, or captured town
             if (this.city) {
@@ -513,12 +513,21 @@ class bzCityTooltip {
             }
         } else if (this.owner.isMinor) {
             this.settlementType = "LOC_BZ_SETTLEMENT_CITY_STATE";
-        } else if (this.city.isTown) {
-            const focus = getTownFocus(this.city);
-            this.townFocus = focus;
-            this.settlementType = this.townFocus.name;
         } else if (this.city.isCapital) {
-            this.settlementType = "LOC_CAPITAL_SELECT_PROMOTION_CAPITAL";
+            this.settlementType = this.city.isOriginalCapital ?
+                "LOC_CAPITAL_SELECT_PROMOTION_CAPITAL" :
+                "LOC_UI_CITY_CAPITAL_CURR_DESC";
+        } else if (this.city.isOriginalCapital) {
+            this.settlementType = "LOC_UI_CITY_CAPITAL_OG_DESC";
+            if (this.city.isTown) {
+                this.settlementType = Locale.compose(
+                    "LOC_BZ_PARENTHESIS",
+                    `{${this.townFocus.name}}[n]`,
+                    this.settlementType
+                );
+            }
+        } else if (this.city.isTown) {
+            this.settlementType = this.townFocus.name;
         } else {
             this.settlementType = "LOC_CAPITAL_SELECT_PROMOTION_CITY";
         }
@@ -619,7 +628,7 @@ class bzCityTooltip {
         layout.style.lineHeight = metrics.head.ratio;
         layout.style.marginTop = metrics.head.margin.px;
         const ttText = document.createElement("div");
-        ttText.setAttribute('data-l10n-id', text);
+        ttText.setAttribute("data-l10n-id", text);
         layout.appendChild(ttText);
         this.container.appendChild(layout);
     }
@@ -743,7 +752,7 @@ class bzCityTooltip {
             }
             const name = document.createElement("div");
             name.classList.value = "max-w-36 mx-1 text-left font-fit-shrink truncate";
-            name.setAttribute('data-l10n-id', conn.name);
+            name.setAttribute("data-l10n-id", conn.name);
             row.appendChild(name);
             rows.push(row);
         }
@@ -800,7 +809,7 @@ class bzCityTooltip {
             const threshold = Locale.compose("LOC_BZ_GROUPED_DIGITS", food.threshold);
             const progress = `${current} / ${threshold}`;
             row.appendChild(docText(progress, "text-left flex-auto mx-1"));
-            row.appendChild(docText('•'));
+            row.appendChild(docText("•"));
             row.appendChild(docText(food.turns.toFixed(), "text-right mx-1"));
             row.appendChild(docTimer(size, size));
             this.container.appendChild(row);
@@ -842,9 +851,9 @@ class bzCityTooltip {
             const name = document.createElement("div");
             name.classList.value = "text-left flex-auto";
             name.classList.add("mx-1");  // wider spacing
-            name.setAttribute('data-l10n-id', item.name);
+            name.setAttribute("data-l10n-id", item.name);
             row.appendChild(name);
-            if (single) row.appendChild(docText('•'));
+            if (single) row.appendChild(docText("•"));
             const turns = document.createElement("div");
             turns.classList.value = "text-right mx-1";
             turns.style.width = dwidth;
@@ -872,12 +881,12 @@ class bzCityTooltip {
         // set column width based on number of digits (at least three)
         const digits = getDigits(this.yields.map(y => y.value.toFixed()), 2);
         const width = metrics.yields.digits(digits).css;
-        const tt = document.createElement('div');
+        const tt = document.createElement("div");
         tt.classList.value = "self-center flex flex-wrap justify-center w-full";
         // one column per yield type
         for (const [i, column] of this.yields.entries()) {
             const y = this.yieldColumn(column, width);
-            if (i) y.style.marginLeft = '0.3333333333rem';  // all but first column
+            if (i) y.style.marginLeft = "0.3333333333rem";  // all but first column
             tt.appendChild(y);
         }
         tt.style.marginTop = metrics.yields.margin.px;
@@ -910,5 +919,5 @@ class bzCityTooltip {
 }
 
 bzCityTooltip._instance = new bzCityTooltip();
-TooltipManager.registerType('bz-city-tooltip', bzCityTooltip.instance);
+TooltipManager.registerType("bz-city-tooltip", bzCityTooltip.instance);
 export { bzCityTooltip as default };

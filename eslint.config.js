@@ -15,9 +15,13 @@ export default [
         },
         languageOptions: {
             globals: {
+                Autoplay: "readonly",
                 Cities: "readonly",
                 CityCommandTypes: "readonly",
+                CityGovernmentLevels: "readonly",
+                CityTransferTypes: "readonly",
                 CombatTypes: "readonly",
+                Color: "readonly",
                 Configuration: "readonly",
                 Constructibles: "readonly",
                 Controls: "readonly",
@@ -38,6 +42,8 @@ export default [
                 MapConstructibles: "readonly",
                 MapPlotEffects: "readonly",
                 MapUnits: "readonly",
+                PlacementMode: "readonly",
+                PlayerIds: "readonly",
                 Players: "readonly",
                 ProductionKind: "readonly",
                 RevealedStates: "readonly",
@@ -48,10 +54,12 @@ export default [
                 Visibility: "readonly",
                 WorldAnchors: "readonly",
                 YieldTypes: "readonly",
+                cancelAnimationFrame: "readonly",
                 console: "readonly",
                 document: "readonly",
                 engine: "readonly",
                 localStorage: "readonly",
+                requestAnimationFrame: "readonly",
                 window: "readonly",
             }
         }

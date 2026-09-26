@@ -1,0 +1,84 @@
+/* optionally hide black shadows */
+.bz-flags-no-shadow .unit-flag__shadow,
+.bz-flags-no-shadow .unit-flag--army .unit-flag__shadow,
+.bz-flags-no-shadow .unit-flag--civilian .unit-flag__shadow,
+.bz-flags-no-shadow .unit-flag--combat .unit-flag__shadow {
+    background-image: none;
+}
+/* fix red shadow proportions */
+.bz-flags.unit-flag--hostile .unit-flag__shadow {
+  background-image: url("blp:unit_support-shadow_red.png");
+  left: -0.0555555556rem;
+  right: -0.0555555556rem;
+  top: -0.0555555556rem;
+  bottom: -0.0555555556rem;
+  background-size: 100% 100%;
+}
+.bz-flags.unit-flag--hostile .unit-flag--combat .unit-flag__shadow {
+  background-image: url("blp:unit_combat-shadow_red.png");
+  top: -0.1111111111rem;
+}
+/* fix flag alignment */
+.bz-flags .unit-flag__container {
+    top: 0;
+}
+.bz-flags .unit-flag--army {
+    top: 0.2777777778rem;
+}
+.bz-flags .unit-flag--combat {
+    top: 0.1666666667rem;
+}
+/* improve healthbar */
+.bz-flags .unit-flag__healthbar-container {
+    width: 1.7222222222rem;
+}
+.bz-flags .unit-flag__healthbar,
+.bz-flags.unit-flag--hostile .unit-flag__healthbar {
+    top: -0.1111111111rem;
+}
+.bz-flags .unit-flag--army .unit-flag__healthbar,
+.bz-flags.unit-flag--hostile .unit-flag--army .unit-flag__healthbar {
+    top: -0.3888888889rem;
+}
+.bz-flags .unit-flag--civilian .unit-flag__healthbar,
+.bz-flags.unit-flag--hostile .unit-flag--civilian .unit-flag__healthbar {
+    top: -0.1111111111rem;
+}
+.bz-flags .unit-flag--combat .unit-flag__healthbar,
+.bz-flags.unit-flag--hostile .unit-flag--combat .unit-flag__healthbar {
+    top: -0.2777777778rem;
+    width: 100%;
+    left: 0;
+}
+.bz-flags .unit-flag__healthbar {
+    height: 0.6666666667rem;
+    border-radius: 0.3333333333rem / 0.5rem;
+}
+.bz-flags .unit-flag__healthbar-sizer {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 0.1666666667rem;
+    bottom: 0.1666666667rem;
+    left: 0.1666666667rem;
+    right: 0.1666666667rem;
+}
+.bz-flags .unit-flag__healthbar-inner {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0.1666666667rem / 0.3333333333rem;
+    max-width: 100%;
+}
+.bz-flags-independent .unit-flag__healthbar-inner {
+    position: absolute;
+    height: auto;
+    width: auto;
+    top: 0.1666666667rem;
+    bottom: 0.1666666667rem;
+    left: 0.1666666667rem;
+    right: 0.1666666667rem;
+}
+
+/* vim:set sw=4 et: */
