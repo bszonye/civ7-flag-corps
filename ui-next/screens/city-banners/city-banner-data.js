@@ -203,9 +203,9 @@ function computeIdentity(cityID, location) {
     UI.Player.getPrimaryColorValueAsString(owner);
   const playerColorSecondary = player.isIndependent ? "white" :
     UI.Player.getSecondaryColorValueAsString(owner);
-  if (playerColorPrimary == playerColorSecondary) {
-    playerColorPrimary = "rgb(155, 0, 0)";
-  }
+  // if (playerColorPrimary == playerColorSecondary) {
+  //   playerColorPrimary = "rgb(155, 0, 0)";
+  // }
   const { playerColorText, playerColorLighting } = getTextColors(owner);  // TRIX
   return {
     location: bannerLocation,
