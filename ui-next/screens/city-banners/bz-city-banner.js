@@ -65,12 +65,19 @@ function getTextColors(id) {
   const c2 = UI.Player.getSecondaryColorValue(id);
   const Y1 = getLuminance(c1);
   const Y2 = getLuminance(c2);
-  const playerColorLighting = Y1 < Y2 ? "black" : "white";
+  if (Y1 == Y2) {
+    const Lc0 = getYLc(Y1, 0);
+    const Lc1 = getYLc(Y1, 1);
+    return Lc0 < -Lc1 ?
+      { playerColorText: "white", playerColorLighting: "black" } :  // dark mode
+      { playerColorText: "black", playerColorLighting: "white" };  // light mode
+  }
   const Lc = getYLc(Y1, Y2);
-  const YT = (() => Y2 < Y1 ?
-    Math.max(getLcTarget(Y1, 75), 0.025) :
-    Math.min(getLcTarget(Y1, Math.min((Lc - 75) / 2, -45)), 0.900))();
-  if (Y1 <= Y2 && YT <= Y2 || Y2 <= Y1 && Y2 <= YT) {
+  const playerColorLighting = Lc < 0 ? "black" : "white";
+  const YT = (() => Lc < 0 ?
+    Math.min(getLcTarget(Y1, Math.min((Lc - 75) / 2, -45)), 0.900) :
+    Math.max(getLcTarget(Y1, 75), 0.025))();
+  if (Y1 < Y2 && YT <= Y2 || Y2 < Y1 && Y2 <= YT) {
     return cacheColors[id] = { playerColorText: srgbToHex(c2), playerColorLighting };
   }
   const lighten = (c) => 1 - ((1 - c) * (1 - YT) / (1 - Y2));
