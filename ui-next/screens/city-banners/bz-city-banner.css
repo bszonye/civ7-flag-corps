@@ -90,16 +90,16 @@
   /* town focus types */
   --bz-color-growing-town-fg: #5db60c;  /* sampled from PROJECT_GROWTH */
   --bz-color-growing-town-bg: var(--bz-color-primary-4);
-  --bz-color-factory-town-bg: #d2a90d;  /* var(--bz-color-economic) L80 */
-  --bz-color-farming-town-bg: var(--bz-color-food);
-  --bz-color-fishing-town-bg: var(--bz-color-food);
-  --bz-color-fort-town-bg: var(--bz-color-militaristic);
-  --bz-color-hub-town-bg: var(--bz-color-diplomacy);
-  --bz-color-mining-town-bg: var(--bz-color-production);
-  --bz-color-religious-center-bg: var(--bz-color-culture);
-  --bz-color-resort-town: var(--bz-color-happiness);
-  --bz-color-trading-outpost-bg: #e1b93c;  /* var(--bz-color-gold) L80 */
-  --bz-color-urban-center-bg: var(--bz-color-diplomatic);
+  --bz-color-factory-town-bg: #d2a90dcc;  /* var(--bz-color-economic) L80 */
+  --bz-color-farming-town-bg: #80b34dcc;  /* var(--bz-color-food) */
+  --bz-color-fishing-town-bg: #80b34dcc;  /* var(--bz-color-food) */
+  --bz-color-fort-town-bg: #af1b1ccc;  /* var(--bz-color-militaristic) */
+  --bz-color-hub-town-bg: #afb7cfcc;  /*var(--bz-color-diplomacy) */
+  --bz-color-mining-town-bg: #a33d29cc;  /* var(--bz-color-production) */
+  --bz-color-religious-center-bg: #5c5cd6cc;  /* var(--bz-color-culture) */
+  --bz-color-resort-town: #f5993dcc;  /* var(--bz-color-happiness) */
+  --bz-color-trading-outpost-bg: #e1b93ccc;  /* var(--bz-color-gold) L80 */
+  --bz-color-urban-center-bg: #255be4cc;  /* var(--bz-color-diplomatic) */
 }
 .bz-flags {
   /* city-state & independent power types */
