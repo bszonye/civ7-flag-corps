@@ -50,7 +50,7 @@ export class bzDistrictHealthBar {
             BZ_CITY_CENTER_BANNER_OFFSET : BZ_DISTRICT_BANNER_OFFSET;
         const worldAnchorHandle = WorldAnchors
             .RegisterFixedWorldAnchor(location, offset);
-        if (!worldAnchorHandle || worldAnchorHandle < 0) {
+        if (worldAnchorHandle == null || worldAnchorHandle < 0) {
             console.error(`Failed to create WorldAnchorHandle for DistrictHealthBar, District id: ${ComponentID.toLogString(this._componentID)}`);
             return;
         }
