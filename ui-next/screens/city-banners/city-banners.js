@@ -259,8 +259,11 @@ const CityBanners = () => {
       console.error("A resource was changed in a city but no associated banner was found. cid: ", ComponentID.toLogString(data.targetCity));
       return;
     }
+    // TRIX: food, production, and happiness all affect banners
     const resourceDef = GameInfo.Resources.lookup(data.resourceType);
-    if (resourceDef && resourceYieldTags.get(resourceDef.ResourceType)?.has("YIELD_HAPPINESS")) {
+    const yieldTags = resourceYieldTags.get(resourceDef?.ResourceType) ?? new Set();
+    const statusTags = ["YIELD_FOOD", "YIELD_PRODUCTION", "YIELD_HAPPINESS"];
+    if (statusTags.find(y => yieldTags.has(y))) {
       updateBanner(data.targetCity, "status", computeStatusInfo(data.targetCity, getVillageLocation(data.targetCity)));
     }
   }
