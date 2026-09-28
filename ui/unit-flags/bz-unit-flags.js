@@ -47,7 +47,7 @@ IPUF.proto.updateTop = function(position, total) {
 IPUF.realizeUnitHealth = IPUF.proto.realizeUnitHealth;
 IPUF.proto.realizeUnitHealth = function(...args) {
     IPUF.realizeUnitHealth.apply(this, args);
-    if (this.unitHealthBarInner) {
+    if (this.unitHealthBarInner && this.unit) {
         const health = this.unit.Health;
         const damage = (health.maxDamage - health.damage) / health.maxDamage;
         const MAX = 100 * 25/31;
