@@ -410,7 +410,8 @@
   display: flex;
 }
 .bz-flags .city-banner__religion-symbol-bg {
-  background-color: #d0d4d2;  /* sampled from religion icons */
+  /* background-color: #d0d4d2;  /* sampled from religion icons */
+  background-color: var(--bz-color-primary-3);
 }
 .bz-flags .city-banner__religion-symbol {
   background-size: 95%;
