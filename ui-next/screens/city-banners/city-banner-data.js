@@ -189,7 +189,7 @@ function computeIdentity(cityID, location) {
     neutral: "blp:icon_razed",
     hostile: "blp:icon_razed",
   }
-  const portraitIcon = portraitIcons.friendly;
+  const portraitIcon = portraitIcons.neutral;
   const isRival = leader && leader.id != GameContext.localObserverID;
   const civ = leader?.civilizationType ?? -1;
   const civInfo = GameInfo.Civilizations.lookup(civ);
