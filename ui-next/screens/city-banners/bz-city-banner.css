@@ -410,10 +410,14 @@
   display: flex;
 }
 .bz-flags .city-banner__religion-symbol-bg {
-  /* background-color: #d0d4d2;  /* sampled from religion icons */
-  background-color: var(--bz-color-primary-3);
+  position: relative;
+  background-color: #dadada;  /* brighten translucent religion icons */
+  border: 0.1111111111rem solid #333640;  /* var(--bz-color-primary-3); */
 }
 .bz-flags .city-banner__religion-symbol {
+  position: absolute;
+  top: -0.1111111111rem;
+  left: -0.1111111111rem;
   background-size: 95%;
 }
 .bz-flags .city-banner__trade-network .city-banner__trade-network--hidden {
