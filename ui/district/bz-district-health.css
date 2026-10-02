@@ -1,0 +1,25 @@
+.bz-flags.district-health-container {
+    pointer-events: none;
+    top: 0.8333333333rem;
+}
+.bz-flags .district-health-bar {
+    height: 0.8888888889rem;
+    border-radius: 0.4444444444rem / 0.5555555556rem;
+    pointer-events: none;
+}
+.bz-flags .district-health-bar-ink {
+    top: 0.1666666667rem;
+    right: 0.1666666667rem;
+    bottom: 0.1666666667rem;
+    left: 0.1666666667rem;
+    border-radius: 0.2777777778rem / 0.3888888889rem;
+    max-width: 100%;
+}
+.bz-flags .bz-district-hex {
+    position: absolute;
+    z-index: 1;
+    top: 0.8888888889rem;
+    left: 1.7777777778rem;
+    filter: drop-shadow(0 -0.1111111111rem 0 black);
+}
+/* vim:set sw=4 et: */
