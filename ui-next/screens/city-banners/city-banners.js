@@ -283,6 +283,13 @@ const CityBanners = () => {
         break;
     }
   }
+  function onTraditionChanged(data) {  // TRIX
+    for (const cityID of cityIds()) {
+      if (cityID.owner == data.player) {
+        updateBanner(cityID, "status", computeStatusInfo(cityID, getVillageLocation(cityID)));
+      }
+    }
+  }
   onMount(() => {
     engine.on("CityAddedToMap", onCityAddedToMap);
     engine.on("CityInitialized", onCityInitialized);
@@ -315,6 +322,7 @@ const CityBanners = () => {
     engine.on("PlotVisibilityChanged", onPlotVisibilityChanged);
     engine.on("ResourceAssigned", onResourceChanged);
     engine.on("ResourceUnassigned", onResourceChanged);
+    engine.on("TraditionChanged", onTraditionChanged);  // TRIX
     window.addEventListener("ui-hide-city-banners", onGlobalHide);
     window.addEventListener("ui-show-city-banners", onGlobalShow);
   });
@@ -350,6 +358,7 @@ const CityBanners = () => {
     engine.off("PlotVisibilityChanged", onPlotVisibilityChanged);
     engine.off("ResourceAssigned", onResourceChanged);
     engine.off("ResourceUnassigned", onResourceChanged);
+    engine.off("TraditionChanged", onTraditionChanged);  // TRIX
     window.removeEventListener("ui-hide-city-banners", onGlobalHide);
     window.removeEventListener("ui-show-city-banners", onGlobalShow);
     if (restoreVisibilityFrame !== void 0) {
