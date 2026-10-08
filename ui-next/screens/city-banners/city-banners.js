@@ -22,7 +22,7 @@ function indexResourceTypes() {
   });
   return resourceYields;
 }
-const resourceYieldTags = indexResourceTypes();
+const _resourceYieldTags = indexResourceTypes();  // TRIX: no longer used
 function isVillageConstructible(constructible) {
   const definition = GameInfo.Constructibles.lookup(constructible.type);
   return definition?.ConstructibleType == "IMPROVEMENT_VILLAGE" || definition?.ConstructibleType == "IMPROVEMENT_ENCAMPMENT";
@@ -259,13 +259,8 @@ const CityBanners = () => {
       console.error("A resource was changed in a city but no associated banner was found. cid: ", ComponentID.toLogString(data.targetCity));
       return;
     }
-    // TRIX: food, production, and happiness all affect banners
-    const resourceDef = GameInfo.Resources.lookup(data.resourceType);
-    const yieldTags = resourceYieldTags.get(resourceDef?.ResourceType) ?? new Set();
-    const statusTags = ["YIELD_FOOD", "YIELD_PRODUCTION", "YIELD_HAPPINESS"];
-    if (statusTags.find(y => yieldTags.has(y))) {
-      updateBanner(data.targetCity, "status", computeStatusInfo(data.targetCity, getVillageLocation(data.targetCity)));
-    }
+    // TRIX: many resources affect banners directly or indirectly
+    updateBanner(data.targetCity, "status", computeStatusInfo(data.targetCity, getVillageLocation(data.targetCity)));
   }
   function onNotificationAdded(data) {
     const notification = Game.Notifications.find(data.id);
