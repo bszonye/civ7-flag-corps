@@ -322,6 +322,8 @@ const CityBanners = () => {
     engine.on("PlotVisibilityChanged", onPlotVisibilityChanged);
     engine.on("ResourceAssigned", onResourceChanged);
     engine.on("ResourceUnassigned", onResourceChanged);
+    engine.on("CityRazingStarted", onStatusChanged);  // TRIX
+    engine.on("CityRazingStopped", onStatusChanged);  // TRIX
     engine.on("TraditionChanged", onTraditionChanged);  // TRIX
     window.addEventListener("ui-hide-city-banners", onGlobalHide);
     window.addEventListener("ui-show-city-banners", onGlobalShow);
@@ -358,6 +360,8 @@ const CityBanners = () => {
     engine.off("PlotVisibilityChanged", onPlotVisibilityChanged);
     engine.off("ResourceAssigned", onResourceChanged);
     engine.off("ResourceUnassigned", onResourceChanged);
+    engine.off("CityRazingStarted", onStatusChanged);  // TRIX
+    engine.off("CityRazingStopped", onStatusChanged);  // TRIX
     engine.off("TraditionChanged", onTraditionChanged);  // TRIX
     window.removeEventListener("ui-hide-city-banners", onGlobalHide);
     window.removeEventListener("ui-show-city-banners", onGlobalShow);
