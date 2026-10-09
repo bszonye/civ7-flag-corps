@@ -22,7 +22,7 @@ function indexResourceTypes() {
   });
   return resourceYields;
 }
-const resourceYieldTags = indexResourceTypes();
+const _resourceYieldTags = indexResourceTypes();  // TRIX: no longer used
 function isVillageConstructible(constructible) {
   const definition = GameInfo.Constructibles.lookup(constructible.type);
   return definition?.ConstructibleType == "IMPROVEMENT_VILLAGE" || definition?.ConstructibleType == "IMPROVEMENT_ENCAMPMENT";
@@ -259,13 +259,8 @@ const CityBanners = () => {
       console.error("A resource was changed in a city but no associated banner was found. cid: ", ComponentID.toLogString(data.targetCity));
       return;
     }
-    // TRIX: food, production, and happiness all affect banners
-    const resourceDef = GameInfo.Resources.lookup(data.resourceType);
-    const yieldTags = resourceYieldTags.get(resourceDef?.ResourceType) ?? new Set();
-    const statusTags = ["YIELD_FOOD", "YIELD_PRODUCTION", "YIELD_HAPPINESS"];
-    if (statusTags.find(y => yieldTags.has(y))) {
-      updateBanner(data.targetCity, "status", computeStatusInfo(data.targetCity, getVillageLocation(data.targetCity)));
-    }
+    // TRIX: many resources affect banners directly or indirectly
+    updateBanner(data.targetCity, "status", computeStatusInfo(data.targetCity, getVillageLocation(data.targetCity)));
   }
   function onNotificationAdded(data) {
     const notification = Game.Notifications.find(data.id);
@@ -281,6 +276,13 @@ const CityBanners = () => {
           updateBanner(notification.Target, "status", computeStatusInfo(notification.Target));
         }
         break;
+    }
+  }
+  function onTraditionChanged(data) {  // TRIX
+    for (const cityID of cityIds()) {
+      if (cityID.owner == data.player) {
+        updateBanner(cityID, "status", computeStatusInfo(cityID, getVillageLocation(cityID)));
+      }
     }
   }
   onMount(() => {
@@ -315,6 +317,9 @@ const CityBanners = () => {
     engine.on("PlotVisibilityChanged", onPlotVisibilityChanged);
     engine.on("ResourceAssigned", onResourceChanged);
     engine.on("ResourceUnassigned", onResourceChanged);
+    engine.on("CityRazingStarted", onStatusChanged);  // TRIX
+    engine.on("CityRazingStopped", onStatusChanged);  // TRIX
+    engine.on("TraditionChanged", onTraditionChanged);  // TRIX
     window.addEventListener("ui-hide-city-banners", onGlobalHide);
     window.addEventListener("ui-show-city-banners", onGlobalShow);
   });
@@ -350,6 +355,9 @@ const CityBanners = () => {
     engine.off("PlotVisibilityChanged", onPlotVisibilityChanged);
     engine.off("ResourceAssigned", onResourceChanged);
     engine.off("ResourceUnassigned", onResourceChanged);
+    engine.off("CityRazingStarted", onStatusChanged);  // TRIX
+    engine.off("CityRazingStopped", onStatusChanged);  // TRIX
+    engine.off("TraditionChanged", onTraditionChanged);  // TRIX
     window.removeEventListener("ui-hide-city-banners", onGlobalHide);
     window.removeEventListener("ui-show-city-banners", onGlobalShow);
     if (restoreVisibilityFrame !== void 0) {
