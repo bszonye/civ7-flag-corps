@@ -35,20 +35,14 @@ IPUF.proto.onAttach = function(...args) {
     this.Root.classList.add("bz-flags", "bz-flags-independent");
     // this.unitContainer.style.top = "0";  // adjust y axis
 };
-// only patch the game's own updateTop.  other mods can replace it with different
-// arguments (nasuellia-unit-flags passes pixel offsets, not position & total), and
-// this formula would throw their flags far off to the side.
-IPUF.updateTop = IPUF.proto.updateTop;
-if (IPUF.updateTop.toString().includes("this.SPACING - this.BASE_OFFSET")) {
-    IPUF.proto.updateTop = function(position, total) {
-      const offset = position - (total - 1) / 2 - 0.75;  // fix horizontal alignment
-      if (this.unitContainer) {
-        if (this.flagOffset != offset) {
-          this.flagOffset = offset;
-          this.unitContainer.style.left = Layout.pixels(offset * 32);
-        }
-      }
+IPUF.proto.updateTop = function(position, total) {
+  const offset = position - (total - 1) / 2 - 0.75;  // fix horizontal alignment
+  if (this.unitContainer) {
+    if (this.flagOffset != offset) {
+      this.flagOffset = offset;
+      this.unitContainer.style.left = Layout.pixels(offset * 32);
     }
+  }
 }
 IPUF.realizeUnitHealth = IPUF.proto.realizeUnitHealth;
 IPUF.proto.realizeUnitHealth = function(...args) {
