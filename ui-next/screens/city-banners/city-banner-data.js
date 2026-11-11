@@ -128,7 +128,6 @@ function computeIdentity(cityID, location) {
   const isLocalPlayerCity = cityID.owner === GameContext.localObserverID;
   const bannerType = getBannerType(validCity, player);
   let cityStateColor = "";
-  let cityStateIcon = "";
   let cityStateTypeName = "";
   let cityStateBonusType = "";
   let bonusDefinition = void 0;
@@ -144,38 +143,38 @@ function computeIdentity(cityID, location) {
     switch (indCivType) {
       case "MILITARISTIC":
         cityStateColor = "#AF1B1C";
-        cityStateIcon = "url('blp:bonustype_militaristic.png')";
         cityStateTypeName = "LOC_ATTRIBUTE_MILITARISTIC";
+        cityStateBonusType = "BONUSTYPE_MILITARISTIC";
         break;
       case "SCIENTIFIC":
         cityStateColor = "#4D7C96";
-        cityStateIcon = "url('blp:bonustype_scientific.png')";
         cityStateTypeName = "LOC_ATTRIBUTE_SCIENTIFIC";
+        cityStateBonusType = "BONUSTYPE_SCIENTIFIC";
         break;
       case "ECONOMIC":
         cityStateColor = "#FFD535";
-        cityStateIcon = "url('blp:bonustype_economic.png')";
         cityStateTypeName = "LOC_ATTRIBUTE_ECONOMIC";
+        cityStateBonusType = "BONUSTYPE_ECONOMIC";
         break;
       case "CULTURAL":
         cityStateColor = "#892BB3";
-        cityStateIcon = "url('blp:bonustype_cultural.png')";
         cityStateTypeName = "LOC_ATTRIBUTE_CULTURAL";
+        cityStateBonusType = "BONUSTYPE_CULTURAL";
         break;
       case "DIPLOMATIC":
         cityStateColor = "#255BE4";
-        cityStateIcon = "url('blp:bonustype_diplomatic.png')";
         cityStateTypeName = "LOC_ATTRIBUTE_POLITICAL";
+        cityStateBonusType = "BONUSTYPE_DIPLOMATIC";
         break;
       case "EXPANSIONIST":
         cityStateColor = "#00A717";
-        cityStateIcon = "url('blp:bonustype_expansionist.png')";
         cityStateTypeName = "LOC_ATTRIBUTE_EXPANSIONIST";
+        cityStateBonusType = "BONUSTYPE_EXPANSIONIST";
         break;
       case "CIVILIZATION_INDEPENDENT":
         cityStateColor = "#AF1B1C";
-        cityStateIcon = "url('blp:bonustype_crisis.png')";
         cityStateTypeName = "LOC_IMPROVEMENT_ENCAMPMENT_NAME";
+        cityStateBonusType = "BONUSTYPE_INDEPENDENT";
         break;
     }
   }
@@ -226,7 +225,6 @@ function computeIdentity(cityID, location) {
     suzerainPlayerId,
     cityStateBonusType,
     cityStateTypeName,
-    cityStateIcon,
     playerColorPrimary,
     playerColorSecondary,
     // TRIX
