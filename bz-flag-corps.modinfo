@@ -56,15 +56,8 @@
                     <Item>ui-next/screens/city-banners/city-banner-population.js</Item>
                     <Item>ui-next/screens/city-banners/city-banner-production.js</Item>
                     <Item>ui-next/screens/city-banners/city-banner.js</Item>
-                    <!--
-                    <Item>ui-next/screens/city-banners/city-banners.js</Item>
-                    -->
                 </ImportFiles>
                 <UIScripts>
-                    <!--
-                    <Item>ui/city-banners/bz-city-banner-manager.js</Item>
-                    <Item>ui/city-banners/bz-city-banners.js</Item>
-                    -->
                     <Item>ui/district/bz-district-health.js</Item>
                     <Item>ui/tooltips/bz-city-tooltip.js</Item>
                     <Item>ui/unit-flags/bz-unit-flags.js</Item>
