@@ -44,6 +44,20 @@ IPUF.proto.updateTop = function(position, total) {
     }
   }
 }
+GUF.proto.makeWorldAnchor = IPUF.proto.makeWorldAnchor = function(componentID) {
+  this.destroyWorldAnchor();
+  const height = 30;
+  const worldAnchor = WorldAnchors.RegisterUnitAnchor(componentID, height);
+  if (worldAnchor !== null && worldAnchor >= 0) {
+    this.Root.setAttribute(
+      "data-bind-style-transform2d",
+      `{{UnitAnchors.offsetTransforms[${worldAnchor}].value}}`
+    );
+    this.Root.setAttribute("data-bind-style-opacity", `{{UnitAnchors.visibleValues[${worldAnchor}]}}`);
+  } else {
+    console.error(`Failed to create WorldAnchor for unit`, JSON.stringify(componentID));
+  }
+}
 IPUF.realizeUnitHealth = IPUF.proto.realizeUnitHealth;
 IPUF.proto.realizeUnitHealth = function(...args) {
     IPUF.realizeUnitHealth.apply(this, args);
