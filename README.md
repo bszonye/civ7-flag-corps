@@ -1,4 +1,4 @@
-# Flag Corps 4.0.1
+# Flag Corps 4.0.2
 better banners and flags
 
 ## improves city banner design
@@ -37,6 +37,7 @@ supported languages:
 - German (translated by Chr1Z93)
 - Italian (translated by leonardfactory)
 - Korean (translated by Hotsolidinfill)
+- Polish (translated by Najane)
 - Russian (translated by Webrok)
 - Simplified Chinese (translated by v480615)
 - Traditional Chinese (translated by v480615)

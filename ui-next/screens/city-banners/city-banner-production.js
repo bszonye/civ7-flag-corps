@@ -1,5 +1,5 @@
 import { template, insert, setAttribute } from '../../../../core/vendor/solid-js/web/dist/web.js';
-import { createSignal, createMemo, createEffect, createComponent, createRenderEffect, Show, For } from '../../../../core/vendor/solid-js/dist/solid.js';
+import { createSignal, createMemo, createEffect, createComponent, Show, createRenderEffect, For } from '../../../../core/vendor/solid-js/dist/solid.js';
 import { defineLegacyComponent } from '../../../../core/ui-next/components/fxs-solid-component.js';
 import { L10n } from '../../../../core/ui-next/components/l10n.js';
 import { RingMeter } from '../../../../core/ui-next/components/ring-meter.js';
@@ -8,7 +8,7 @@ import { Tooltip, TooltipHorizontalPosition, TooltipVerticalPosition } from '../
 import { TicketSection, EntryDivider } from '../../tooltips/plot-tooltip/components/utility.js';
 import { ProductionTooltip } from '../../tooltips/production-tooltip.js';
 
-var _tmpl$ = /* @__PURE__ */ template(`<div class="bz-city-banner__production-icon size-4 self-center bg-contain bg-no-repeat"></div>`), _tmpl$2 = /* @__PURE__ */ template(`<div class="city-banner__turn flex flex-col relative justify-end align-center self-center w-8 mt-0-\\\\.5 pointer-events-none"><div class="city-banner__turn-number font-body-xs text-white text-center w-full bg-cover bg-center bg-no-repeat"></div></div>`), _tmpl$3 = /* @__PURE__ */ template(`<div class="items-center justify-center w-6 h-6 relative"></div>`), _tmpl$4 = /* @__PURE__ */ template(`<div class="size-11 self-center bg-contain bg-no-repeat"></div>`), _tmpl$5 = /* @__PURE__ */ template(`<div class="size-20 relative self-center -mt-14 -mb-8 flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat pointer-events-none"></div>`), _tmpl$6 = /* @__PURE__ */ template(`<div class="w-full h-7"></div>`), _tmpl$7 = /* @__PURE__ */ template(`<div class="flex flex-col items-stretch justify-center"></div>`), _tmpl$8 = /* @__PURE__ */ template(`<div class="h-px"></div>`), _tmpl$9 = /* @__PURE__ */ template(`<div class="grow h-px"></div>`), _tmpl$10 = /* @__PURE__ */ template(`<div class="w-px self-stretch bg-accent-2 opacity-30 mx-2"></div>`), _tmpl$11 = /* @__PURE__ */ template(`<div class="flex flex-col"><div class="size-9 self-center bg-contain bg-no-repeat"></div><div class="flex flex-row items-center justify-center"><div class="text-xs text-accent-3"></div><div class="size-5 bg-cover bg-no-repeat"></div></div></div>`), _tmpl$12 = /* @__PURE__ */ template(`<div class="w-9 flex item-center justify-center"></div>`), _tmpl$13 = /* @__PURE__ */ template(`<div class="self-center uppercase font-title text-accent-3 opacity-60"></div>`);
+var _tmpl$ = /* @__PURE__ */ template(`<div class="size-11 self-center bg-contain bg-no-repeat"></div>`), _tmpl$2 = /* @__PURE__ */ template(`<div class="size-20 relative self-center -mt-14 -mb-8 flex flex-col items-center justify-center bg-cover bg-center bg-no-repeat pointer-events-none"></div>`), _tmpl$3 = /* @__PURE__ */ template(`<div class="w-full h-7"></div>`), _tmpl$4 = /* @__PURE__ */ template(`<div class="flex flex-col items-stretch justify-center"></div>`), _tmpl$5 = /* @__PURE__ */ template(`<div class="h-px"></div>`), _tmpl$6 = /* @__PURE__ */ template(`<div class="bz-city-banner__production-icon size-4 self-center bg-contain bg-no-repeat"></div>`), _tmpl$7 = /* @__PURE__ */ template(`<div class="city-banner__turn flex flex-col relative justify-end align-center self-center w-8 mt-0-\\\\.5 pointer-events-none"><div class="city-banner__turn-number font-body-xs text-white text-center w-full bg-cover bg-center bg-no-repeat"></div></div>`), _tmpl$8 = /* @__PURE__ */ template(`<div class="items-center justify-center w-6 h-6 relative"></div>`), _tmpl$9 = /* @__PURE__ */ template(`<div class="grow h-px"></div>`), _tmpl$10 = /* @__PURE__ */ template(`<div class="w-px self-stretch bg-accent-2 opacity-30 mx-2"></div>`), _tmpl$11 = /* @__PURE__ */ template(`<div class="flex flex-col"><div class="size-9 self-center bg-contain bg-no-repeat"></div><div class="flex flex-row items-center justify-center"><div class="text-xs text-accent-3"></div><div class="size-5 bg-cover bg-no-repeat"></div></div></div>`), _tmpl$12 = /* @__PURE__ */ template(`<div class="w-9 flex item-center justify-center"></div>`), _tmpl$13 = /* @__PURE__ */ template(`<div class="self-center uppercase font-title text-accent-3 opacity-60"></div>`);
 const CityBannerProduction = (props) => {
   const [currentProd, setCurrentProd] = createSignal(void 0);
   const [buildQueue, setBuildQueue] = createSignal([]);
@@ -42,40 +42,52 @@ const CityBannerProduction = (props) => {
     get children() {
       return [createComponent(Tooltip.Trigger, {
         get children() {
-          var _el$ = _tmpl$3();
-          insert(_el$, createComponent(RingMeter, {
-            min: 0,
-            max: 100,
-            get value() {
-              return percent();
-            },
-            "class": "city-banner__ring city-banner__production-ring bg-cover bg-center flex size-9 self-center align-center pointer-events-auto",
-            get children() {
-              var _el$2 = _tmpl$();
-              createRenderEffect((_p$) => {
-                var _v$ = Locale.compose(`{LOC_UI_CITY_BANNER_PRODUCTION} {${currentProd()?.name ?? ""}}, `), _v$2 = currentProd()?.icon ?? "";
-                _v$ !== _p$.e && setAttribute(_el$2, "aria-label", _p$.e = _v$);
-                _v$2 !== _p$.t && ((_p$.t = _v$2) != null ? _el$2.style.setProperty("background-image", _v$2) : _el$2.style.removeProperty("background-image"));
-                return _p$;
-              }, {
-                e: void 0,
-                t: void 0
-              });
-              return _el$2;
-            }
-          }), null);
-          insert(_el$, createComponent(Show, {
+          return createComponent(Show, {
             get when() {
-              return turnsLeft() >= 0;
+              return props.children;
+            },
+            get fallback() {
+              return (() => {
+                var _el$7 = _tmpl$8();
+                insert(_el$7, createComponent(RingMeter, {
+                  min: 0,
+                  max: 100,
+                  get value() {
+                    return percent();
+                  },
+                  "class": "city-banner__ring city-banner__production-ring bg-cover bg-center flex size-9 self-center align-center pointer-events-auto",
+                  get children() {
+                    var _el$8 = _tmpl$6();
+                    createRenderEffect((_p$) => {
+                      var _v$ = Locale.compose(`{LOC_UI_CITY_BANNER_PRODUCTION} {${currentProd()?.name ?? ""}}, `), _v$2 = currentProd()?.icon ?? "";
+                      _v$ !== _p$.e && setAttribute(_el$8, "aria-label", _p$.e = _v$);
+                      _v$2 !== _p$.t && ((_p$.t = _v$2) != null ? _el$8.style.setProperty("background-image", _v$2) : _el$8.style.removeProperty("background-image"));
+                      return _p$;
+                    }, {
+                      e: void 0,
+                      t: void 0
+                    });
+                    return _el$8;
+                  }
+                }), null);
+                insert(_el$7, createComponent(Show, {
+                  get when() {
+                    return turnsLeft() >= 0;
+                  },
+                  get children() {
+                    var _el$9 = _tmpl$7(), _el$10 = _el$9.firstChild;
+                    insert(_el$10, turnsLeft);
+                    createRenderEffect(() => setAttribute(_el$10, "aria-label", Locale.compose("LOC_UI_CITY_BANNER_TURNS_TO_COMPLETION", turnsLeft())));
+                    return _el$9;
+                  }
+                }), null);
+                return _el$7;
+              })();
             },
             get children() {
-              var _el$3 = _tmpl$2(), _el$4 = _el$3.firstChild;
-              insert(_el$4, turnsLeft);
-              createRenderEffect(() => setAttribute(_el$4, "aria-label", Locale.compose("LOC_UI_CITY_BANNER_TURNS_TO_COMPLETION", turnsLeft())));
-              return _el$3;
+              return props.children;
             }
-          }), null);
-          return _el$;
+          });
         }
       }), createComponent(Tooltip.Content, {
         get children() {
@@ -83,9 +95,9 @@ const CityBannerProduction = (props) => {
             "class": "w-auto min-w-62 max-w-84 self-start text-sm",
             get children() {
               return [(() => {
-                var _el$5 = _tmpl$5();
-                _el$5.style.setProperty("background-image", "url(blp:base_triumph_ring)");
-                insert(_el$5, createComponent(RingMeter, {
+                var _el$ = _tmpl$2();
+                _el$.style.setProperty("background-image", "url(blp:base_triumph_ring)");
+                insert(_el$, createComponent(RingMeter, {
                   "class": "size-14 absolute flex justify-center bg-contain bg-center flex-auto items-center",
                   min: 0,
                   max: 100,
@@ -96,19 +108,19 @@ const CityBannerProduction = (props) => {
                   ringImage: `url("blp:progress_ring_triumph")`,
                   ringTint: "rgb(143, 113, 71)",
                   get children() {
-                    var _el$6 = _tmpl$4();
-                    createRenderEffect((_$p) => (_$p = currentProd().icon) != null ? _el$6.style.setProperty("background-image", _$p) : _el$6.style.removeProperty("background-image"));
-                    return _el$6;
+                    var _el$2 = _tmpl$();
+                    createRenderEffect((_$p) => (_$p = currentProd().icon) != null ? _el$2.style.setProperty("background-image", _$p) : _el$2.style.removeProperty("background-image"));
+                    return _el$2;
                   }
                 }));
-                return _el$5;
-              })(), _tmpl$6(), createComponent(L10n.Stylize, {
+                return _el$;
+              })(), _tmpl$3(), createComponent(L10n.Stylize, {
                 "class": "text-secondary text-center uppercase font-title",
                 text: "LOC_UI_CITY_INSPECTOR_CURRENTLY_PRODUCING"
               }), createComponent(TicketSection, {
                 get children() {
-                  var _el$8 = _tmpl$7();
-                  insert(_el$8, createComponent(ProductionTooltip, {
+                  var _el$4 = _tmpl$4();
+                  insert(_el$4, createComponent(ProductionTooltip, {
                     get type() {
                       return currentProd().type;
                     },
@@ -141,17 +153,17 @@ const CityBannerProduction = (props) => {
                       });
                     }
                   }), null);
-                  insert(_el$8, createComponent(EntryDivider, {
+                  insert(_el$4, createComponent(EntryDivider, {
                     "class": "w-full"
                   }), null);
-                  insert(_el$8, createComponent(L10n.Stylize, {
+                  insert(_el$4, createComponent(L10n.Stylize, {
                     "class": "text-xs text-center",
                     get args() {
                       return [turnsLeft()];
                     },
                     text: "LOC_UI_CITY_BANNER_TURNS_TO_COMPLETION"
                   }), null);
-                  return _el$8;
+                  return _el$4;
                 }
               }), createComponent(L10n.Stylize, {
                 "class": "text-xs text-secondary text-center font-title uppercase mt-2",
@@ -170,7 +182,7 @@ const CityBannerProduction = (props) => {
                       }), _tmpl$9()];
                     },
                     get children() {
-                      return [_tmpl$8(), createComponent(For, {
+                      return [_tmpl$5(), createComponent(For, {
                         get each() {
                           return buildQueue();
                         },
@@ -227,7 +239,7 @@ const CityBannerProduction = (props) => {
                           }));
                           return _el$14;
                         })()]
-                      }), _tmpl$8()];
+                      }), _tmpl$5()];
                     }
                   });
                 }
@@ -264,5 +276,4 @@ defineLegacyComponent("city-banner-production", {
 }));
 
 export { CityBannerProduction };
-//# sourceMappingURL=city-banner-production.js.map
 // vim: sw=2

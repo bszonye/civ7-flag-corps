@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Database>
+    <LocalizedText>
+        <Replace Tag="LOC_BZ_GROUPED_DIGITS" Language="pl_PL">
+            <Text>{1_amount: number #,###;-#,###}</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_GROUPED_MODIFIER" Language="pl_PL">
+            <Text>{1_amount: number +#,###;-#,###}</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_PARENTHESIS" Language="pl_PL">
+            <Text>{1_text} ({2_parenthesis})</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_PEOPLE_NAME" Language="pl_PL">
+            <Text>Lud {1_name[2]}</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_RELATIONSHIP_TRIBUTARY" Language="pl_PL">
+            <Text>Trybutariusz</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_SETTLEMENT_CITY_STATE" Language="pl_PL">
+            <Text>Miasto-państwo</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_SETTLEMENT_CONNECTIONS" Language="pl_PL">
+            <Text>Połączenia</Text>
+        </Replace>
+        <Replace Tag="LOC_BZ_WAS_PREVIOUSLY" Language="pl_PL">
+            <Text>(Wcześniej {1_name})</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS" Language="pl_PL">
+            <Text>Flag Corps • usunięcie portretów przywódców</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_HEADS_DESCRIPTION" Language="pl_PL">
+            <Text>Usuwa portrety przywódców z banerów miast.</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW" Language="pl_PL">
+            <Text>Flag Corps • usunięcie czarnego „cienia” z flag jednostek</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_BZ_FLAGS_NO_SHADOW_DESCRIPTION" Language="pl_PL">
+            <Text>Usuwa grubą czarną obwódkę z flag jednostek przyjaznych i neutralnych.</Text>
+        </Replace>
+        <Replace Tag="LOC_OPTIONS_GROUP_BZ_MODS" Language="pl_PL">
+            <Text>mody trixie</Text>
+        </Replace>
+    </LocalizedText>
+</Database>

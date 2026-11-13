@@ -29,14 +29,13 @@ var
   _tmpl$10 = template(`<div class="city-banner__religion self-center relative flex flex-row"></div>`),
   _tmpl$11 = template(`<div class="city-banner__trade-network flex justify-center align-center pointer-events-auto"><div class="city-banner__trade-network-background h-full w-full absolute"></div><div class="city-banner__trade-network-icon absolute w-full h-full bg-no-repeat"></div></div>`),
   _tmpl$12 = template(`<div class="city-banner__production-container city-banner__queue-container queue-production items-center justify-center w-8 h-6 -mt-2"><div class="city-banner__production"></div></div>`),
-  _tmpl$13 = template(`<div class="city-banner__city-state-icon size-8 self-center align-center bg-cover bg-no-repeat"></div>`),
-  _tmpl$14 = template(`<div class="city-banner__city-state-container justify-center"><div class="city-banner__city-state-type size-7 self-center align-center justify-center flex"></div></div>`),
+  _tmpl$13 = template(`<div class="city-banner__city-state-container justify-center"><div class="city-banner__city-state-type size-7 self-center align-center justify-center flex"></div></div>`),
   // top level
-  _tmpl$15 = template(`<div class="city-banner__container flex flex-col mt-2 pointer-events-none"><div class="city-banner__stretch absolute flex flex-row justify-center align-center w-full h-8 top-1\\.5 pointer-events-none"><div class="city-banner__city-state-border absolute -left-2 -right-2 -top-0 -bottom-0"></div><div class="city-banner__city-state-ring absolute -left-1 -right-1 top-1 bottom-0"></div></div><div class="city-banner__name-container relative flex justify-between"><div class="pointer-events-auto cursor-pointer max-h-10 relative flex flex-col"><div class="flex flex-row"></div><div class="city-banner__status-religion relative flex flex-row"></div></div><div class="city-banner__population-container city-banner__queue-container queue-growth items-center justify-center w-8 h-6 -mt-2"><div class="city-banner__population"></div></div></div></div>`),
-  _tmpl$16 = template(`<div class="bz-city-banner__conquered flex-auto -mr-3 flex flex-col"><div class="city-banner__conquered-icon relative size-14 -mr-6 bg-cover bg-no-repeat flex"></div></div>`),
-  _tmpl$17 = template(`<div class="city-banner__unrest -mr-3 flex flex-col"><div class="city-banner__unrest-icon relative size-14 bg-cover bg-no-repeat flex"></div><div class="city-banner__time-container -mt-3 pr-2 flex flex-row"><div class="city-banner__time-icon self-center bg-cover bg-no-repeat size-6 ml-1"></div><div class="city-banner__time-text self-center font-body-xs text-white"></div></div></div>`),
-  _tmpl$18 = template(`<div class="city-banner__razing -mr-3 flex flex-col"><div class="city-banner__razing-icon relative size-14 bg-cover bg-no-repeat flex"></div><div class="city-banner__time-container -mt-3 pr-2 flex flex-row"><div class="city-banner__time-icon self-center bg-cover bg-no-repeat size-6 ml-1"></div><div class="city-banner__time-text self-center font-body-xs text-white"></div></div></div>`),
-  _tmpl$19 = template(`<div class="items-center -ml-12 mt-10 city-banner__right-container flex flex-row"></div>`);
+  _tmpl$14 = template(`<div class="city-banner__container flex flex-col mt-2 pointer-events-none"><div class="city-banner__stretch absolute flex flex-row justify-center align-center w-full h-8 top-1\\.5 pointer-events-none"><div class="city-banner__city-state-border absolute -left-2 -right-2 -top-0 -bottom-0"></div><div class="city-banner__city-state-ring absolute -left-1 -right-1 top-1 bottom-0"></div></div><div class="city-banner__name-container relative flex justify-between"><div class="pointer-events-auto cursor-pointer max-h-10 relative flex flex-col"><div class="flex flex-row"></div><div class="city-banner__status-religion relative flex flex-row"></div></div><div class="city-banner__population-container city-banner__queue-container queue-growth items-center justify-center w-8 h-6 -mt-2"><div class="city-banner__population"></div></div></div></div>`),
+  _tmpl$15 = template(`<div class="bz-city-banner__conquered flex-auto -mr-3 flex flex-col"><div class="city-banner__conquered-icon relative size-14 -mr-6 bg-cover bg-no-repeat flex"></div></div>`),
+  _tmpl$16 = template(`<div class="city-banner__unrest -mr-3 flex flex-col"><div class="city-banner__unrest-icon relative size-14 bg-cover bg-no-repeat flex"></div><div class="city-banner__time-container -mt-3 pr-2 flex flex-row"><div class="city-banner__time-icon self-center bg-cover bg-no-repeat size-6 ml-1"></div><div class="city-banner__time-text self-center font-body-xs text-white"></div></div></div>`),
+  _tmpl$17 = template(`<div class="city-banner__razing -mr-3 flex flex-col"><div class="city-banner__razing-icon relative size-14 bg-cover bg-no-repeat flex"></div><div class="city-banner__time-container -mt-3 pr-2 flex flex-row"><div class="city-banner__time-icon self-center bg-cover bg-no-repeat size-6 ml-1"></div><div class="city-banner__time-text self-center font-body-xs text-white"></div></div></div>`),
+  _tmpl$18 = template(`<div class="items-center -ml-12 mt-10 city-banner__right-container flex flex-row"></div>`);
 
 const BANNER_ANCHOR_OFFSET = {
   x: 0,
@@ -124,9 +123,9 @@ const CityBannerImpl = (props) => {
             },
             get children() {
               return [(() => {
-                // _tmpl$15 = template(`<div class="city-banner__container flex flex-col mt-2 pointer-events-none"><div class="city-banner__stretch absolute flex flex-row justify-center align-center w-full h-8 top-1\\.5 pointer-events-none"><div class="city-banner__city-state-border absolute -left-2 -right-2 -top-0 -bottom-0"></div><div class="city-banner__city-state-ring absolute -left-1 -right-1 top-1 bottom-0"></div></div><div class="city-banner__name-container relative flex justify-between"><div class="pointer-events-auto cursor-pointer max-h-10 relative flex flex-col"><div class="flex flex-row"></div><div class="city-banner__status-religion relative flex flex-row"></div></div><div class="city-banner__population-container city-banner__queue-container queue-growth items-center justify-center w-8 h-6 -mt-2"><div class="city-banner__population"></div></div></div></div>`);
+                // _tmpl$14 = template(`<div class="city-banner__container flex flex-col mt-2 pointer-events-none"><div class="city-banner__stretch absolute flex flex-row justify-center align-center w-full h-8 top-1\\.5 pointer-events-none"><div class="city-banner__city-state-border absolute -left-2 -right-2 -top-0 -bottom-0"></div><div class="city-banner__city-state-ring absolute -left-1 -right-1 top-1 bottom-0"></div></div><div class="city-banner__name-container relative flex justify-between"><div class="pointer-events-auto cursor-pointer max-h-10 relative flex flex-col"><div class="flex flex-row"></div><div class="city-banner__status-religion relative flex flex-row"></div></div><div class="city-banner__population-container city-banner__queue-container queue-growth items-center justify-center w-8 h-6 -mt-2"><div class="city-banner__population"></div></div></div></div>`);
                 var
-                  _el$ = _tmpl$15(),  // CONTAINER flex-col
+                  _el$ = _tmpl$14(),  // CONTAINER flex-col
                   _el$2 = _el$.firstChild,  // STRETCH absolute flex-row
                   _el$3 = _el$2.firstChild,  // CITY-STATE-BORDER absolute
                   _el$4 = _el$3.nextSibling,  // CITY-STATE-RING absolute
@@ -175,7 +174,7 @@ const CityBannerImpl = (props) => {
                     return createComponent(Tooltip.Text, {
                       text: "LOC_CITY_BANNER_CONQUERED_TOOLTIP",
                       get children() {
-                        return _tmpl$16();
+                        return _tmpl$15();
                       }
                     });
                   }
@@ -186,9 +185,9 @@ const CityBannerImpl = (props) => {
                     return props.data.status.hasUnrest;
                   },
                   get children() {
-                    var _el$34 = _tmpl$17(), _el$35 = _el$34.firstChild, _el$36 = _el$35.nextSibling, _el$37 = _el$36.firstChild, _el$38 = _el$37.nextSibling;
-                    insert(_el$38, () => props.data.status.unrestTurns);
-                    return _el$34;
+                    var _el$33 = _tmpl$16(), _el$34 = _el$33.firstChild, _el$35 = _el$34.nextSibling, _el$36 = _el$35.firstChild, _el$37 = _el$36.nextSibling;
+                    insert(_el$37, () => props.data.status.unrestTurns);
+                    return _el$33;
                   }
                 }), null);
                 insert(_el$2, createComponent(Show, {
@@ -196,9 +195,9 @@ const CityBannerImpl = (props) => {
                     return props.data.status.isBeingRazed;
                   },
                   get children() {
-                    var _el$39 = _tmpl$18(), _el$40 = _el$39.firstChild, _el$41 = _el$40.nextSibling, _el$42 = _el$41.firstChild, _el$43 = _el$42.nextSibling;
-                    insert(_el$43, () => props.data.status.razedTurns);
-                    return _el$39;
+                    var _el$38 = _tmpl$17(), _el$39 = _el$38.firstChild, _el$40 = _el$39.nextSibling, _el$41 = _el$40.firstChild, _el$42 = _el$41.nextSibling;
+                    insert(_el$42, () => props.data.status.razedTurns);
+                    return _el$38;
                   }
                 }), null);
                 insert(_el$6, createComponent(Show, {  // CityBannerNameTooltip, {
@@ -282,13 +281,13 @@ const CityBannerImpl = (props) => {
                         return props.data.identity;
                       },
                       get children() {
-                        var _el$45 = _tmpl$6();
-                        insert(_el$45, createComponent(L10n.Compose, {
+                        var _el$44 = _tmpl$6();
+                        insert(_el$44, createComponent(L10n.Compose, {
                           get text() {
                             return props.data.identity.name;
                           }
                         }));
-                        return _el$45;
+                        return _el$44;
                       }
                     });
                   },
@@ -348,18 +347,18 @@ const CityBannerImpl = (props) => {
                     var _el$21 = _tmpl$10();
                     insert(_el$21, createComponent(Tooltip.Text, {
                       get text() {
-                        return props.data.religion.urbanReligionTooltip;
+                        return props.data.religion.urbanReligionTooltip ?? "";
                       },
                       get args() {
-                        return props.data.religion.urbanReligionTooltipArgs;
+                        return props.data.religion.urbanReligionTooltipArgs ?? [];
                       },
                       get children() {
                         var _el$22 = _tmpl$8();
                         insert(_el$22, createComponent(Icon, {
-                          isUrl: true,
                           get name() {
-                            return props.data.religion.urbanReligionIcon;
+                            return props.data.religion.urbanReligionType;
                           },
+                          context: "RELIGION",
                           "class": "city-banner__religion-symbol"
                         }));
                         return _el$22;
@@ -372,18 +371,18 @@ const CityBannerImpl = (props) => {
                       get children() {
                         return createComponent(Tooltip.Text, {
                           get text() {
-                            return props.data.religion.ruralReligionTooltip;
+                            return props.data.religion.ruralReligionTooltip ?? "";
                           },
                           get args() {
-                            return props.data.religion.ruralReligionTooltipArgs;
+                            return props.data.religion.ruralReligionTooltipArgs ?? [];
                           },
                           get children() {
                             var _el$23 = _tmpl$9();
                             insert(_el$23, createComponent(Icon, {
-                              isUrl: true,
                               get name() {
-                                return props.data.religion.ruralReligionIcon;
+                                return props.data.religion.ruralReligionType;
                               },
+                              context: "RELIGION",
                               "class": "city-banner__religion-symbol religion-symbol--right"
                             }));
                             return _el$23;
@@ -468,20 +467,24 @@ const CityBannerImpl = (props) => {
                     return props.data.identity.bannerType == BannerType.CityState || props.data.identity.bannerType == BannerType.Village;
                   },
                   get children() {
-                    var _el$29 = _tmpl$14(), _el$30 = _el$29.firstChild;
+                    var _el$29 = _tmpl$13(), _el$30 = _el$29.firstChild;
                     insert(_el$30, createComponent(Tooltip.Text, {
                       get text() {
                         return props.data.identity.cityStateTypeName;
                       },
                       get children() {
-                        var _el$31 = _tmpl$13();
-                        use((el) => {
-                          createEffect(() => {
-                            el.style.setProperty("fxs-background-image-tint", props.data.identity.cityStateColor);
-                          });
-                        }, _el$31);
-                        createRenderEffect((_$p) => (_$p = props.data.identity.cityStateIcon) != null ? _el$31.style.setProperty("background-image", _$p) : _el$31.style.removeProperty("background-image"));
-                        return _el$31;
+                        return createComponent(Icon, {
+                          "class": "city-banner__city-state-icon size-8 self-center align-center bg-cover bg-no-repeat",
+                          context: "CITY_STATE_BONUS",
+                          get name() {
+                            return props.data.identity.cityStateBonusType;
+                          },
+                          ref: (el) => {
+                            createEffect(() => {
+                              el.style.setProperty("fxs-background-image-tint", props.data.identity.cityStateColor);
+                            });
+                          }
+                        });
                       }
                     }));
                     return _el$29;
@@ -489,10 +492,10 @@ const CityBannerImpl = (props) => {
                 }), null);
                 return _el$;
               })()];
-              // TRIX: moved from _tmpl$19 to _el$6 of _tmpl$15
+              // TRIX: moved from _tmpl$18 to _el$6 of _tmpl$14
               (() => {  // eslint-disable-line no-unreachable
-                var _el$32 = _tmpl$19();
-                insert(_el$32, createComponent(Show, {
+                var _el$31 = _tmpl$18();
+                insert(_el$31, createComponent(Show, {
                   get when() {
                     return props.data.conquered;
                   },
@@ -500,32 +503,32 @@ const CityBannerImpl = (props) => {
                     return createComponent(Tooltip.Text, {
                       text: "LOC_CITY_BANNER_CONQUERED_TOOLTIP",
                       get children() {
-                        return _tmpl$16();
+                        return _tmpl$15();
                       }
                     });
                   }
                 }), null);
-                insert(_el$32, createComponent(Show, {
+                insert(_el$31, createComponent(Show, {
                   get when() {
                     return props.data.status.hasUnrest;
                   },
                   get children() {
-                    var _el$34 = _tmpl$17(), _el$35 = _el$34.firstChild, _el$36 = _el$35.nextSibling, _el$37 = _el$36.firstChild, _el$38 = _el$37.nextSibling;
-                    insert(_el$38, () => props.data.status.unrestTurns);
-                    return _el$34;
+                    var _el$33 = _tmpl$16(), _el$34 = _el$33.firstChild, _el$35 = _el$34.nextSibling, _el$36 = _el$35.firstChild, _el$37 = _el$36.nextSibling;
+                    insert(_el$37, () => props.data.status.unrestTurns);
+                    return _el$33;
                   }
                 }), null);
-                insert(_el$32, createComponent(Show, {
+                insert(_el$31, createComponent(Show, {
                   get when() {
                     return props.data.status.isBeingRazed;
                   },
                   get children() {
-                    var _el$39 = _tmpl$18(), _el$40 = _el$39.firstChild, _el$41 = _el$40.nextSibling, _el$42 = _el$41.firstChild, _el$43 = _el$42.nextSibling;
-                    insert(_el$43, () => props.data.status.razedTurns);
-                    return _el$39;
+                    var _el$38 = _tmpl$17(), _el$39 = _el$38.firstChild, _el$40 = _el$39.nextSibling, _el$41 = _el$40.firstChild, _el$42 = _el$41.nextSibling;
+                    insert(_el$42, () => props.data.status.razedTurns);
+                    return _el$38;
                   }
                 }), null);
-                return _el$32;
+                return _el$31;
               });
             }
           });

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Mod id="bz-flag-corps" version="4.0.1"
+<Mod id="bz-flag-corps" version="40002"
     xmlns="ModInfo">
     <Properties>
         <Name>LOC_MOD_BZ_FLAG_CORPS_NAME</Name>
-        <Version>4.0.1</Version>
+        <Version>4.0.2</Version>
         <Description>LOC_MOD_BZ_FLAG_CORPS_DESCRIPTION</Description>
         <Authors>beezany</Authors>
         <URL>https://forums.civfanatics.com/resources/flag-corps.32132/</URL>
@@ -32,6 +32,7 @@
                     <Item locale="fr_FR">text/fr_FR/InGameText.xml</Item>
                     <Item locale="it_IT">text/it_IT/InGameText.xml</Item>
                     <Item locale="ko_KR">text/ko_KR/InGameText.xml</Item>
+                    <Item locale="pl_PL">text/pl_PL/InGameText.xml</Item>
                     <Item locale="ru_RU">text/ru_RU/InGameText.xml</Item>
                     <Item locale="zh_Hans_CN">text/zh_Hans_CN/InGameText.xml</Item>
                     <Item locale="zh_Hant_HK">text/zh_Hant_HK/InGameText.xml</Item>
@@ -55,13 +56,8 @@
                     <Item>ui-next/screens/city-banners/city-banner-population.js</Item>
                     <Item>ui-next/screens/city-banners/city-banner-production.js</Item>
                     <Item>ui-next/screens/city-banners/city-banner.js</Item>
-                    <Item>ui-next/screens/city-banners/city-banners.js</Item>
                 </ImportFiles>
                 <UIScripts>
-                    <!--
-                    <Item>ui/city-banners/bz-city-banner-manager.js</Item>
-                    <Item>ui/city-banners/bz-city-banners.js</Item>
-                    -->
                     <Item>ui/district/bz-district-health.js</Item>
                     <Item>ui/tooltips/bz-city-tooltip.js</Item>
                     <Item>ui/unit-flags/bz-unit-flags.js</Item>
@@ -72,6 +68,7 @@
                     <Item locale="fr_FR">text/fr_FR/InGameText.xml</Item>
                     <Item locale="it_IT">text/it_IT/InGameText.xml</Item>
                     <Item locale="ko_KR">text/ko_KR/InGameText.xml</Item>
+                    <Item locale="pl_PL">text/pl_PL/InGameText.xml</Item>
                     <Item locale="ru_RU">text/ru_RU/InGameText.xml</Item>
                     <Item locale="zh_Hans_CN">text/zh_Hans_CN/InGameText.xml</Item>
                     <Item locale="zh_Hant_HK">text/zh_Hant_HK/InGameText.xml</Item>
@@ -85,6 +82,7 @@
         <File>text/fr_FR/ModInfoText.xml</File>
         <File>text/it_IT/ModInfoText.xml</File>
         <File>text/ko_KR/ModInfoText.xml</File>
+        <File>text/pl_PL/ModInfoText.xml</File>
         <File>text/ru_RU/ModInfoText.xml</File>
         <File>text/zh_Hans_CN/ModInfoText.xml</File>
         <File>text/zh_Hant_HK/ModInfoText.xml</File>
